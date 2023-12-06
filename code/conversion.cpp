@@ -1,8 +1,10 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "TROOT.h"
 #include "TFile.h"
 #include "TChain.h"
+#include "TTree.h"
 #include "TH1F.h"
 
 
@@ -74,13 +76,19 @@ int main(){
 	std::unordered_map<ULong64_t, int> truthEventIndicies;
 
 	// initiate histograms (name, title, bins, min_val, max_val) to save
-	TH1F* hist_deltaMass_Wbosons = new TH1F("Delta Mass W-Boson", "Delta Mass (W-Boson) in MeV", 100, -50e3, 50e3);
-	TH1F* hist_deltaMass_bquark = new TH1F("Delta Mass b-Quark", "Delta Mass (B-quark) in MeV", 100, -30e3, 30e3);
-	TH1F* hist_wboson1_ids = new TH1F("WBoson1_decay_ids", "Partle Data Group IDs for Wboson1", 10, 0, 10);
-	TH1F* hist_wboson2_ids = new TH1F("WBoson2_decay_ids", "Partle Data Group IDs for Wboson2", 10, 0, 10);
-	TH1F* hist_bquark1_deltaR = new TH1F("DeltaR_bquark1", "Delta R for bquark1", 12, 0, 6);
-	TH1F* hist_bquark2_deltaR = new TH1F("DeltaR_bquark2", "Delta R for bquark2", 12, 0, 6);
+	TH1F hist_deltaMass_Wbosons = *(new TH1F("Delta Mass W-Boson", "Delta Mass (W-Boson) in MeV", 100, -50e3, 50e3));
+	TH1F hist_deltaMass_bquark = *(new TH1F("Delta Mass b-Quark", "Delta Mass (B-quark) in MeV", 100, -30e3, 30e3));
+	TH1F hist_wboson1_ids = *(new TH1F("WBoson1_decay_ids", "Partle Data Group IDs for Wboson1", 10, 0, 10));
+	TH1F hist_wboson2_ids = *(new TH1F("WBoson2_decay_ids", "Partle Data Group IDs for Wboson2", 10, 0, 10));
+	TH1F hist_bquark1_deltaR = *(new TH1F("DeltaR_bquark1", "Delta R for bquark1", 12, 0, 6));
+	TH1F hist_bquark2_deltaR = *(new TH1F("DeltaR_bquark2", "Delta R for bquark2", 12, 0, 6));
 
+
+	// ttree
+	TTree t1("name", "description");
+	UInt_t run_number = 0;
+	recoChain.SetBranchAddress("runNumber", &run_number);
+	t1.Branch("name", &run_number);
 
 	// event loop: get truth entries
 	for(int i=0; i<truthChain.GetEntries(); i++){
@@ -91,8 +99,7 @@ int main(){
 		}
 
 		truthEventIndicies.insert({currentEventNumber,i}); // map eventNumber to index for reco loop
-	}
-	
+	}	
 	
 	// event loop: reconstruct W-Boson/b-Quark mass
 	recoChain.SetBranchAddress("eventNumber", &currentEventNumber);
@@ -106,6 +113,9 @@ int main(){
 		
 		truthChain.GetEntry(truthEventIndicies[currentEventNumber]); // get corresponding truth event
 		truthEventIndicies.erase(currentEventNumber); // remove event from map
+		
+		// ttree
+		t1.Fill();
 		
 		// define indicies to gurantee unique match of jet to object
 		int nJets = (*jet_e).size();
@@ -172,16 +182,16 @@ int main(){
 		} 
 
 		// safe mass difference between truth and reconstructed (matched) mass
-		hist_deltaMass_Wbosons->Fill( recoMassW1-wBoson1_m );
-		hist_deltaMass_Wbosons->Fill( recoMassW2-wBoson2_m);
-		hist_deltaMass_bquark->Fill( recoMassb1-bquark1_m);
-		hist_deltaMass_bquark->Fill( recoMassb2-bquark2_m );
-		hist_wboson1_ids->Fill( wboson1_decay1_id );
-		hist_wboson1_ids->Fill( wboson1_decay2_id );
-		hist_wboson2_ids->Fill( wboson2_decay1_id );
-		hist_wboson2_ids->Fill( wboson2_decay2_id );
-		hist_bquark1_deltaR->Fill( sqrt( (reco_b1_eta-bquark1_eta)*(reco_b1_eta-bquark1_eta) + (reco_b1_phi-bquark1_phi)*(reco_b1_phi-bquark1_phi) ) );
-		hist_bquark2_deltaR->Fill( sqrt( (reco_b2_eta-bquark2_eta)*(reco_b2_eta-bquark2_eta) + (reco_b2_phi-bquark2_phi)*(reco_b2_phi-bquark2_phi) ) );
+		hist_deltaMass_Wbosons.Fill( recoMassW1-wBoson1_m );
+		hist_deltaMass_Wbosons.Fill( recoMassW2-wBoson2_m);
+		hist_deltaMass_bquark.Fill( recoMassb1-bquark1_m);
+		hist_deltaMass_bquark.Fill( recoMassb2-bquark2_m );
+		hist_wboson1_ids.Fill( wboson1_decay1_id );
+		hist_wboson1_ids.Fill( wboson1_decay2_id );
+		hist_wboson2_ids.Fill( wboson2_decay1_id );
+		hist_wboson2_ids.Fill( wboson2_decay2_id );
+		hist_bquark1_deltaR.Fill( sqrt( (reco_b1_eta-bquark1_eta)*(reco_b1_eta-bquark1_eta) + (reco_b1_phi-bquark1_phi)*(reco_b1_phi-bquark1_phi) ) );
+		hist_bquark2_deltaR.Fill( sqrt( (reco_b2_eta-bquark2_eta)*(reco_b2_eta-bquark2_eta) + (reco_b2_phi-bquark2_phi)*(reco_b2_phi-bquark2_phi) ) );
 //		std::cout << "truth: " << wBoson1Mass*1e-3 << " | " << wBoson2Mass*1e-3 << std::endl;
 //		std::cout << "reco:  " << recoMassW1*1e-3 << " | " << recoMassW2*1e-3 << std::endl;
 //		std::cout << nJets << ": (" << indexW1a << "," << indexW1b << ") / (" << indexW2a << "," << indexW2b << ")" << std::endl << std::endl;
@@ -191,12 +201,13 @@ int main(){
 	// print histogram into output_data.root file
 	TFile* fileOutput = new TFile( (pathOutput+"output_data.root").c_str(), "RECREATE" );
 	fileOutput->cd();
-	hist_deltaMass_Wbosons->Write("DeltaMass Wbosons");
-	hist_deltaMass_bquark->Write("DeltaMass bquark");
-	hist_wboson1_ids->Write("Wboson1 decay ids");
-	hist_wboson2_ids->Write("Wboson2 decay ids");
-	hist_bquark1_deltaR->Write("DeltaR bquark1");
-	hist_bquark2_deltaR->Write("DeltaR bquark2");
+	hist_deltaMass_Wbosons.Write("DeltaMass Wbosons");
+	hist_deltaMass_bquark.Write("DeltaMass bquark");
+	hist_wboson1_ids.Write("Wboson1 decay ids");
+	hist_wboson2_ids.Write("Wboson2 decay ids");
+	hist_bquark1_deltaR.Write("DeltaR bquark1");
+	hist_bquark2_deltaR.Write("DeltaR bquark2");
+	t1.Write();
 	fileOutput->Close();	
 	
 	return 0;
