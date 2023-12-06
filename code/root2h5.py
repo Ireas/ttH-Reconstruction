@@ -2,41 +2,38 @@ import uproot
 import h5py
 
 
-output_file_destination = "../output/v1/output_data.root"
-infile = uproot.open(output_file_destination)
-print(type(infile))
-
-keys = infile.keys()
-print(keys)
-
-events = infile['name']
-print(type(events))
-
-branches = infile['name'].keys()
-for branch in branches:
-	print(f"{branch:20s} {infile['name'][branch]}")
-	var = events['name']
-	print()
-	print()
-	print(var)
-	print(var.array())
-	print()
+# ==========  CONSTANTS  ==========
+# =================================
+ROOT_FILE_DESTINATION = "../output/v1/output_data.root"
+H5_FILE_DESTINATION = "./h5_file.h5"
 
 
-h5file = h5py.File('h5_file.h5', 'w')
-h5file.create_dataset('test_dataset', data=events['name'].array())
-h5file.close()
+
+# ==========  READ ROOT FILE  ==========
+# ======================================
+root_file = uproot.open(ROOT_FILE_DESTINATION)
+print("=====  ROOT FILE STRUCTURE  =====")
+for tree in root_file.keys():
+	print("TTree: " + tree)
+	for branch in root_file[tree].keys():
+		print("\tTBranch: " + branch)
+		var = root_file[tree][branch]
+		# print("\t" + str(var.array()))
 
 
-h5file = h5py.File('h5_file.h5', 'r')
-print(h5file.keys())
 
-for key in h5file.keys():
-	print(key)
-	print(type(key))
-	n1 = h5file.get(key)
-	print(n1)
-	print(type(n1))
 
-h5file.close()
-
+# =========  WRITE h5 FILE  ==========
+# ====================================
+## Write h5 files
+#h5_file = h5py.File(H5_FILE_DESTINATION, 'w')
+#h5_file.create_dataset('test_dataset', data=test_events['name'].array())
+#h5_file.close()
+#
+#
+## Read h5 files
+#h5_file = h5py.File(H5_FILE_DESTINATION, 'r')
+#print(h5_file.keys())
+#for key in h5_file.keys():
+#	print(key + ": " + str(h5_file.get(key)))
+#h5_file.close()
