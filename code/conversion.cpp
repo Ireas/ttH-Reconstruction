@@ -9,7 +9,7 @@
 int main(){
 	// define input/output filepaths
 	std::string pathInput = "/home/ireas/master/data/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
-	std::string pathOutput = "/home/ireas/master/data/v1/output/";
+	std::string pathOutput = "/home/ireas/master/output/v1/";
 	
 	// put into array for easier access later
 	const char* fileNames[1] = {
