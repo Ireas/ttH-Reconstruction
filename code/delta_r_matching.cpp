@@ -7,12 +7,21 @@
 #include "TTree.h"
 #include "TH1F.h"
 
+
+// ==========  DELTA R MATCHING  ==========
+// ========================================
+// matches jets with truth level particles using the delta R variable
+//
+// todo: add timestep/completion prints
+// todo: add information about invariant mass to improve matching (?)
+
+
 // ==========  CONSTANTS  ==========
 // =================================
 const float DELTA_R_THRESHOLD = 0.4;
 const std::string INPUT_PATH = "/home/ireas/master/data/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
 const std::string OUTPUT_PATH = "/home/ireas/master/output/v1/";
-const char* FILE_NAMES[1] = { // put into array for easier access
+const char* INPUT_FILE_NAMES[1] = { // put into array for easier access
 	"user.ravinab.35392295._000001.output.root"
 };
 
@@ -49,23 +58,24 @@ int find_best_match(
 float calc_delta_R(Float_t eta1, Float_t phi1, Float_t eta2, Float_t phi2);
 
 
-
+// ==========  MAIN  ==========
+// ============================
 int main(){
-	// ==========  FILES  ==========
-	// =============================
+	// ========== FILES  
+	// ================
 	
 
 	// collect all truth/reco trees
 	TChain reco_chain("reco");
 	TChain truth_chain("truth");
-	for(int i=0; i<(int)(sizeof(FILE_NAMES)/sizeof(FILE_NAMES[0])); i++){
-		truth_chain.Add( (INPUT_PATH+FILE_NAMES[i]).c_str() ); 
-		reco_chain.Add( (INPUT_PATH+FILE_NAMES[i]).c_str() ); 
+	for(int i=0; i<(int)(sizeof(INPUT_FILE_NAMES)/sizeof(INPUT_FILE_NAMES[0])); i++){
+		truth_chain.Add( (INPUT_PATH+INPUT_FILE_NAMES[i]).c_str() ); 
+		reco_chain.Add( (INPUT_PATH+INPUT_FILE_NAMES[i]).c_str() ); 
 	}
 	
 
-	// ==========  SETUP  ==========
-	// =============================
+	// ==========  SETUP
+	// =================
 
 	// global
 	ULong64_t current_event_number = 0;
@@ -188,8 +198,8 @@ int main(){
 
 
 
-	// ==========  EVENT LOOP  ==========
-	// ==================================
+	// ==========  EVENT LOOP
+	// ======================
 
 	// truth loop: save all entries in hashmap for fast and labeled access
 	truth_chain.SetBranchAddress("eventNumber", &current_event_number);
@@ -239,7 +249,8 @@ int main(){
 	}
 
 
-	// print histogram into output_data.root file
+	// ==========  OUTPUT
+	// ==================
 	TFile* output_file = new TFile( (OUTPUT_PATH+"output_data.root").c_str(), "RECREATE" );
 	output_file->cd();
 	tree.Write();
@@ -252,6 +263,8 @@ int main(){
 
 // =========  FUNCTION DEFINITION  ===========
 // ===========================================
+
+
 bool fill_with_best_indicies(
 	int* indicies,
 	std::vector<Float_t> jet_eta,
