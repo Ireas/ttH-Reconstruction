@@ -9,6 +9,6 @@ ttH(->WW) event reconstruction using neutrino-weighting &amp; SPANet
 
 ---
 ### Information about this repository
-data and output are not included in the git repository and must be added manualy
+data and output are not included in the git repository and must be added manually
 
 input and output paths must be adapted to the system
