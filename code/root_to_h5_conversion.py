@@ -7,7 +7,7 @@ import h5py
 # todo: implement creating nested dataset/groups 
 
 ROOT_FILE_DESTINATION = "../output/v1/output_data.root"
-H5_FILE_DESTINATION = "./h5_file.h5"
+H5_FILE_DESTINATION = "../output/v1/output_data.h5"
 
 
 
