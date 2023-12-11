@@ -80,6 +80,7 @@ int main(){
 	
 	
 	// reco: jets
+	int number_of_jets = 0;
 	std::vector<Float_t>* jet_pt = nullptr;
 	std::vector<Float_t>* jet_eta = nullptr;
 	std::vector<Float_t>* jet_phi = nullptr;
@@ -182,6 +183,11 @@ int main(){
 	int bquark2_jet_index = -1;
 	
 	tree.Branch("reconstruction_successful", &reconstruction_successful);
+	tree.Branch("number_of_jets", &number_of_jets);
+	tree.Branch("jet_pt", &jet_pt);
+	tree.Branch("jet_eta", &jet_eta);
+	tree.Branch("jet_phi", &jet_phi);
+	tree.Branch("jet_e", &jet_e);
 	tree.Branch("wboson1_decay1_jet_index", &wboson1_decay1_jet_index);
 	tree.Branch("wboson1_decay2_jet_index", &wboson1_decay2_jet_index);
 	tree.Branch("wboson2_decay1_jet_index", &wboson2_decay1_jet_index);
@@ -244,7 +250,7 @@ int main(){
 
 
 		// put reco jets into lorentzvectors	
-		int number_of_jets = jet_pt->size();
+		number_of_jets = jet_pt->size();
 		PtEtaPhiEVector jet_lvectors[number_of_jets];
 		for(int j=0; j<number_of_jets; j++){
 			jet_lvectors[j].SetCoordinates( (*jet_pt)[j], (*jet_eta)[j], (*jet_phi)[j], (*jet_e)[j] );

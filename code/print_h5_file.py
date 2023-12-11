@@ -5,6 +5,7 @@ import h5py
 # =====================================
 # prints the first file given as argument
 # todo: implement reading nested dataset/groups 
+# todo: more robust
 
 def main():
 	if(len(sys.argv)<2):
@@ -18,9 +19,10 @@ def main():
 def read_file(file_destination):
 	print(file_destination + ":")
 	h5_file = h5py.File(sys.argv[1], 'r')
+
 	for key in h5_file.keys():
 		dataset = h5_file.get(key)
-		print("\t" + key + ": " + str(dataset.shape) + " of " + str(dataset.dtype) ) 
+		print("\t" + key + ": " + str(dataset.shape) + " of " + str(dataset.dtype) ) # dtype=object is array 
 	
 	h5_file.close()
 
