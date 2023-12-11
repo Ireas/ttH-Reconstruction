@@ -5,7 +5,7 @@ import h5py
 # =====================================
 # prints the first file given as argument
 # todo: implement reading nested dataset/groups 
-# todo: more robust
+# todo: more robust for different formats
 
 def main():
 	if(len(sys.argv)<2):
