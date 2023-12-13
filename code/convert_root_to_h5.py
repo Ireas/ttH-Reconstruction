@@ -7,10 +7,9 @@ import numpy as np
 # ==========  CONVERT .root TO .h5 FILES  ==========
 # ==================================================
 # converts .root file to a .h5 file at same destination and with same name
-# todo: implement creating nested dataset/groups 
 # todo: improve speed (mutlithreading, non-uniform data, ...)
 # todo: take input from argument as print function
-# todo: make print root file own script
+# todo: add timestamps to output estimated time
 
 ROOT_FILE_DESTINATION = "../output/v1/output_data.root"
 H5_FILE_DESTINATION = "../output/v1/output_data.h5"
