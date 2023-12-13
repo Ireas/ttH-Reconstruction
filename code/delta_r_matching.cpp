@@ -80,7 +80,6 @@ int main(){
 	
 	
 	// reco: jets
-	int number_of_jets = 0;
 	std::vector<Float_t>* jet_pt = nullptr;
 	std::vector<Float_t>* jet_eta = nullptr;
 	std::vector<Float_t>* jet_phi = nullptr;
@@ -172,9 +171,13 @@ int main(){
 	truth_chain.SetBranchAddress("Tth_MC_b_from_tbar_m", &bquark2_m);
 
 	// jet indicies for matching during training
-	TTree tree("jet_indicies", "jet indicies for wbosons and bquarks");
+	TTree tree_other("other", "other information for spanet");
+	TTree tree_source("source", "source input information for spanet");
+	TTree tree_indicies("indicies", "truth matched jet indicies via delta R");
 	
 	bool reconstruction_successful = false;
+	int number_of_jets = 0;
+	int max_number_of_jets = 0;
 	int wboson1_decay1_jet_index = -1;
 	int wboson1_decay2_jet_index = -1;
 	int wboson2_decay1_jet_index = -1;
@@ -182,23 +185,25 @@ int main(){
 	int bquark1_jet_index = -1;
 	int bquark2_jet_index = -1;
 	
-	tree.Branch("reconstruction_successful", &reconstruction_successful);
-	tree.Branch("number_of_jets", &number_of_jets);
-	tree.Branch("jet_pt", &jet_pt);
-	tree.Branch("jet_eta", &jet_eta);
-	tree.Branch("jet_phi", &jet_phi);
-	tree.Branch("jet_e", &jet_e);
-	tree.Branch("wboson1_decay1_jet_index", &wboson1_decay1_jet_index);
-	tree.Branch("wboson1_decay2_jet_index", &wboson1_decay2_jet_index);
-	tree.Branch("wboson2_decay1_jet_index", &wboson2_decay1_jet_index);
-	tree.Branch("wboson2_decay2_jet_index", &wboson2_decay2_jet_index);
-	tree.Branch("bquark1_jet_index", &bquark1_jet_index);
-	tree.Branch("bquark2_jet_index", &bquark2_jet_index);
+	tree_other.Branch("reconstruction_successful", &reconstruction_successful);
+	tree_other.Branch("number_of_jets", &number_of_jets);
+	tree_source.Branch("jet_pt", &jet_pt);
+	tree_source.Branch("jet_eta", &jet_eta);
+	tree_source.Branch("jet_phi", &jet_phi);
+	tree_source.Branch("jet_e", &jet_e);
+	tree_indicies.Branch("wboson1_decay1_jet_index", &wboson1_decay1_jet_index);
+	tree_indicies.Branch("wboson1_decay2_jet_index", &wboson1_decay2_jet_index);
+	tree_indicies.Branch("wboson2_decay1_jet_index", &wboson2_decay1_jet_index);
+	tree_indicies.Branch("wboson2_decay2_jet_index", &wboson2_decay2_jet_index);
+	tree_indicies.Branch("bquark1_jet_index", &bquark1_jet_index);
+	tree_indicies.Branch("bquark2_jet_index", &bquark2_jet_index);
 
 	// ==========  EVENT LOOPS
 	// =======================
 
 	// truth loop: save all entries in hashmap for fast and labeled access
+	if(VERBOSE)
+		std::cout << "TRUTH EVENT LOOP" << std::endl;
 	std::chrono::steady_clock::time_point timestamp_begin_truth_chain = std::chrono::steady_clock::now();
 	truth_chain.SetBranchAddress("eventNumber", &current_event_number);
 	for(int i=0; i<truth_chain.GetEntries(); i++){
@@ -212,10 +217,12 @@ int main(){
 	}
 	std::chrono::steady_clock::time_point timestamp_end_truth_chain = std::chrono::steady_clock::now();
 	if(VERBOSE)
-		std::cout << "> time needed for truth chain: " << std::chrono::duration_cast<std::chrono::seconds>(timestamp_end_truth_chain - timestamp_begin_truth_chain).count() << "s" << std::endl;
+		std::cout << "  > time needed for truth event loop: " << std::chrono::duration_cast<std::chrono::seconds>(timestamp_end_truth_chain - timestamp_begin_truth_chain).count() << "s" << std::endl;
 
 	
 	// reco loop: match jets to objects via delta R
+	if(VERBOSE)
+		std::cout << "RECO EVENT LOOP" << std::endl;
 	std::chrono::steady_clock::time_point timestamp_begin_reco_chain = std::chrono::steady_clock::now();
 	std::chrono::steady_clock::time_point timestamp_last_checkpoint = std::chrono::steady_clock::now();
 	float percentage = 0.0;
@@ -232,7 +239,7 @@ int main(){
 			std::chrono::steady_clock::time_point timestamp_checkpoint = std::chrono::steady_clock::now();
 			int duration = std::chrono::duration_cast<std::chrono::seconds>(timestamp_checkpoint- timestamp_last_checkpoint).count();			
 			if(VERBOSE)
-				std::cout << "> time for " << static_cast<int>(100*percentage_target) << "%: " << duration << "s (est. remaining time: " << static_cast<int>(duration*10*(1.0-percentage_target)) << "s)"<< std::endl;
+				std::cout << "  > time needed for " << static_cast<int>(100*percentage_target) << "%: " << duration << "s (estimated remaining time: " << static_cast<int>(duration*10*(1.0-percentage_target)) << "s)"<< std::endl;
 			timestamp_last_checkpoint = timestamp_checkpoint;
 			percentage_target+= 0.1;
 		}
@@ -251,6 +258,9 @@ int main(){
 
 		// put reco jets into lorentzvectors	
 		number_of_jets = jet_pt->size();
+		if(number_of_jets>max_number_of_jets)
+			max_number_of_jets = number_of_jets;
+		
 		PtEtaPhiEVector jet_lvectors[number_of_jets];
 		for(int j=0; j<number_of_jets; j++){
 			jet_lvectors[j].SetCoordinates( (*jet_pt)[j], (*jet_eta)[j], (*jet_phi)[j], (*jet_e)[j] );
@@ -289,24 +299,46 @@ int main(){
 		bquark1_jet_index = best_indicies[4];
 		bquark2_jet_index = best_indicies[5];
 
-		// fill data to tree
-		tree.Fill();
+		// fill data to tree_indicies
+		tree_other.Fill();
+		tree_source.Fill();
+		tree_indicies.Fill();
 	}
+	
+	TBranch* branch_max_number_of_jets = tree_other.Branch("max_number_of_jets", &max_number_of_jets); // outside of loop because only last value is needed
+	branch_max_number_of_jets->Fill();
 
 	std::chrono::steady_clock::time_point timestamp_end_reco_chain = std::chrono::steady_clock::now();
-	if(VERBOSE){
-		std::cout << "> time needed for reco chain: " << std::chrono::duration_cast<std::chrono::seconds>(timestamp_end_reco_chain - timestamp_begin_reco_chain).count() << "s" << std::endl;
-		std::cout << "> time needed to complete: " << std::chrono::duration_cast<std::chrono::seconds>(timestamp_end_reco_chain - timestamp_begin_truth_chain).count() << "s" << std::endl;
-	}
+	if(VERBOSE)
+		std::cout << "  > time needed for reco event loop: " << std::chrono::duration_cast<std::chrono::seconds>(timestamp_end_reco_chain - timestamp_begin_reco_chain).count() << "s" << std::endl;
 
 
 	// ==========  OUTPUT
 	// ==================
+	if(VERBOSE)
+		std::cout << "OUTPUT" << std::endl;
+	std::chrono::steady_clock::time_point timestamp_begin_output= std::chrono::steady_clock::now();
+
 	TFile* output_file = new TFile( (OUTPUT_PATH+"output_data.root").c_str(), "RECREATE" );
 	output_file->cd();
-	tree.Write();
+	tree_other.Write();
+	tree_source.Write();
+	tree_indicies.Write();
 	output_file->Close();	
+
+	std::chrono::steady_clock::time_point timestamp_end_output= std::chrono::steady_clock::now();
+	if(VERBOSE)
+		std::cout << "  > time needed for output: " << std::chrono::duration_cast<std::chrono::seconds>(timestamp_end_output - timestamp_begin_output).count() << "s" << std::endl;
 	
+	// ==========  COMPLETION
+	// ======================
+	if(VERBOSE){
+		std::cout << "COMPLETION" << std::endl;
+		std::cout << "  > time needed for event loops: " << std::chrono::duration_cast<std::chrono::seconds>(timestamp_end_reco_chain - timestamp_begin_truth_chain).count() << "s" << std::endl;
+		std::cout << "  > time needed for output: " << std::chrono::duration_cast<std::chrono::seconds>(timestamp_end_output - timestamp_begin_output).count() << "s" << std::endl;
+		std::cout << "  > time needed for completion: " << std::chrono::duration_cast<std::chrono::seconds>(timestamp_end_output - timestamp_begin_truth_chain).count() << "s" << std::endl;
+	}	
+
 	return 0;
 }
 
@@ -343,12 +375,13 @@ void fill_with_best_indicies(
 
 
 	// check whether matching was successful or not
-	if(number_of_jets<6) 
-		*reconstruction_successful = false; // unsuccessful, not enough jets for all truth objects
-	
+	*reconstruction_successful = false;
+	if(number_of_jets<6)
+		return; // unsuccessful, not enough jets for all truth objects
+
 	for(int i=0; i<6; i++){ 
 		if(indicies[i]==-1)
-			*reconstruction_successful = false; // unsuccessful, not every truth object has a matching jet index
+			return; // unsuccessful, not every truth object has a matching jet index
 	}
 
 	*reconstruction_successful = true; // successful matching
