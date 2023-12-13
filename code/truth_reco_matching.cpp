@@ -9,7 +9,6 @@
 #include <Math/Vector4D.h> // for PtEtaPhiEVector
 using namespace ROOT::Math;
 #include <chrono> // for time measurements during the program
-#include "H5Cpp.h"
 
 // ==========  DELTA R MATCHING  ==========
 // ========================================
@@ -22,6 +21,7 @@ using namespace ROOT::Math;
 // ==========  CONSTANTS  ==========
 // =================================
 const bool VERBOSE = true;
+const bool TESTING = false;
 const float DELTA_R_THRESHOLD = 0.4;
 const std::string INPUT_PATH = "/home/ireas/master/data/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
 const std::string OUTPUT_PATH = "/home/ireas/master/output/v1/";
@@ -178,6 +178,7 @@ int main(){
 	bool reconstruction_successful = false;
 	int number_of_jets = 0;
 	int max_number_of_jets = 0;
+	int max_number_of_events = 0;
 	int wboson1_decay1_jet_index = -1;
 	int wboson1_decay2_jet_index = -1;
 	int wboson2_decay1_jet_index = -1;
@@ -232,7 +233,11 @@ int main(){
 		percentage_step = 1.0/reco_chain.GetEntries();
 
 	reco_chain.SetBranchAddress("eventNumber", &current_event_number);
-	for(int i=0; i<reco_chain.GetEntries(); i++){
+	int number_of_entries_to_process = reco_chain.GetEntries();
+	if(TESTING)
+		number_of_entries_to_process = 100;
+
+	for(int i=0; i<number_of_entries_to_process; i++){
 		// print estimated time
 		percentage+= percentage_step;
 		if(percentage<1.0 && percentage>=percentage_target){
@@ -254,6 +259,7 @@ int main(){
 		// get corresponding truth event from map
 		truth_chain.GetEntry(truth_event_indicies[current_event_number]);
 		truth_event_indicies.erase(current_event_number); // remove event from map (is not really important i guess)
+		max_number_of_events++;
 
 
 		// put reco jets into lorentzvectors	
@@ -305,8 +311,11 @@ int main(){
 		tree_indicies.Fill();
 	}
 	
-	TBranch* branch_max_number_of_jets = tree_other.Branch("max_number_of_jets", &max_number_of_jets); // outside of loop because only last value is needed
+	// fill outside of loop because only lsat value is needed
+	TBranch* branch_max_number_of_jets = tree_other.Branch("max_number_of_jets", &max_number_of_jets);
+	TBranch* branch_max_number_of_events = tree_other.Branch("max_number_of_events", &max_number_of_events);
 	branch_max_number_of_jets->Fill();
+	branch_max_number_of_events->Fill();
 
 	std::chrono::steady_clock::time_point timestamp_end_reco_chain = std::chrono::steady_clock::now();
 	if(VERBOSE)

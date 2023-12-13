@@ -1,11 +1,17 @@
-compile_and_run_all: delta_r_matching.cpp root_to_h5_conversion.py
-	g++ delta_r_matching.cpp -o executable -fPIC `root-config --cflags --libs`
+compile_and_run_all: truth_reco_matching.cpp convert_root_to_h5.py
+	g++ truth_reco_matching.cpp -o executable -fPIC `root-config --cflags --libs`
 	./executable
-	python3 root_to_h5_conversion.py
+	python3 convert_root_to_h5.py
 
-compile_and_run: delta_r_matching.cpp
-	g++ delta_r_matching.cpp -o executable -fPIC `root-config --cflags --libs`
+compile_and_run: truth_reco_matching.cpp
+	g++ truth_reco_matching.cpp -o executable -fPIC `root-config --cflags --libs`
 	./executable
 
-compile: delta_r_matching.cpp
-	g++ delta_r_matching.cpp -o executable -fPIC `root-config --cflags --libs`
+compile: truth_reco_matching.cpp
+	g++ truth_reco_matching.cpp -o executable -fPIC `root-config --cflags --libs`
+
+compare: print_root_file.py print_h5_file.py
+	echo ">>>>> .root file"
+	python3 print_root_file.py ../output/v1/output_data.root
+	echo ">>>>> .h5 file"
+	python3 print_h5_file.py ../output/v1/output_data.h5
