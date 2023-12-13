@@ -8,14 +8,14 @@ import h5py
 
 def main():
 	if(len(sys.argv)<2):
-		print("Error: No file for reading was given as parameter, exiting")
+		print("Error: no file was given as argument, exiting")
 		return
 	
 	print_file(sys.argv[1])
 
 
 def print_file(file_destination):
-	print("PRINTING FILE AT " + file_destination)
+	print(">> PRINTING .h5 FILE AT " + file_destination)
 	h5_file = h5py.File(sys.argv[1], 'r')
 	print_group("FILE", h5_file, 0)	#treat file level as group	
 	h5_file.close()
