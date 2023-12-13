@@ -11,7 +11,7 @@ compile: truth_reco_matching.cpp
 	g++ truth_reco_matching.cpp -o executable -fPIC `root-config --cflags --libs`
 
 compare: print_root_file.py print_h5_file.py
-	echo ">>>>> .root file"
+	echo "\n>>>>> .root file"
 	python3 print_root_file.py ../output/v1/output_data.root
-	echo ">>>>> .h5 file"
+	echo "\n>>>>> .h5 file"
 	python3 print_h5_file.py ../output/v1/output_data.h5
