@@ -1,3 +1,6 @@
 [submodule "SPANet"]
 	path = SPANet
 	url = git@github.com:Ireas/SPANet.git
+[submodule "RDataFrames"]
+	path = RDataFrames
+	url = git@github.com:Ireas/RDataFrames.git
