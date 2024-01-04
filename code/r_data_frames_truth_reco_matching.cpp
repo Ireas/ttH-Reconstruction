@@ -29,25 +29,24 @@ using namespace ROOT::Math;
 
 // ==========  CONSTANTS  ==========
 // =================================
-const float DELTA_R_THRESHOLD = 0.4;
+const float DELTA_R_THRESHOLD = 1;
 
 const std::string INPUT_PATH = "/home/ireas/git_repos/master/data/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
-const std::string OUTPUT_PATH = "/home/ireas/git_repos/master/output/v1/";
+const std::string OUTPUT_PATH = "/home/ireas/git_repos/master/output/";
 const char* INPUT_FILE_NAMES[1] = { // put into array for easier access
 	"user.ravinab.35392295._000001.output.root"
 };
 
 const plog::Severity LOG_LEVEL = plog::Severity::debug; // set logger output severity filer
 
-
+// bit-shift amounts for matching
 enum TRUTH_OBJ_MATCH_VALUES{
-	unmatched = 0,
-	b_from_t = 1,
-	b_from_tbar = 2,
-	Wdecay1_from_t = 3,
-	Wdecay2_from_t = 4,
-	Wdecay1_from_tbar = 6,
-	Wdecay2_from_tbar = 7,
+	b_from_t = 0,
+	b_from_tbar = 1,
+	Wdecay1_from_t = 2,
+	Wdecay2_from_t = 3,
+	Wdecay1_from_tbar = 4,
+	Wdecay2_from_tbar = 5,
 };
 
 
@@ -78,7 +77,18 @@ std::vector<int> match_jets_to_objs(
 	PtEtaPhiMVector obj_Wdecay1_from_tbar,
 	PtEtaPhiMVector obj_Wdecay2_from_tbar
 );
-int find_best_jet(std::vector<PtEtaPhiEVector> jets, PtEtaPhiMVector truth_obj);
+
+int find_best_jet_index(std::vector<PtEtaPhiEVector> jets, PtEtaPhiMVector truth_obj);
+std::vector<int> find_all_jet_indicies_within_threshold(std::vector<PtEtaPhiEVector> jets, PtEtaPhiMVector truth_obj);
+
+
+// combine jets to parent object
+PtEtaPhiEVector combine_tbar(std::vector<PtEtaPhiEVector> jets, std::vector<int> jet_match_masks);
+PtEtaPhiEVector combine_t(std::vector<PtEtaPhiEVector> jets, std::vector<int> jet_match_masks);
+
+
+float mass_from_lvec_in_gev(PtEtaPhiEVector jet);
+
 
 
 // ==========  MAIN  ==========
@@ -93,7 +103,7 @@ int main(){
 
 	// setup ROOT
 	PLOG_DEBUG << "start: setup ROOT";
-	//ROOT::EnableImplicitMT()
+	//ROOT::EnableImplicitMT() // commented out for using fixxed range
 
 	
 	// setup TChain
@@ -113,7 +123,7 @@ int main(){
 
 
 	// for speedy testing
-	auto loop_manager = data_frame.Range(10);
+	auto loop_manager = data_frame.Range(1000);
 
 
 	// generate jet lorentz vectors
@@ -153,18 +163,49 @@ int main(){
 	);
 
 
-	// matching jets and objs
+	// matching jets and objs (fixed object order)
 	loop_manager = loop_manager.Define(
 		"jet_match_mask", 
 		match_jets_to_objs, 
 		{"jet_lvecs", "lvec_b_from_t", "lvec_b_from_tbar", "lvec_Wdecay1_from_t", "lvec_Wdecay2_from_t", "lvec_Wdecay1_from_tbar", "lvec_Wdecay2_from_tbar"}
-		);
+	);
+
+	
+	// combine jets to top and anti-top quarks
+	loop_manager = loop_manager.Define(
+		"t_combined",
+		combine_t,
+		{"jet_lvecs", "jet_match_mask"}
+	);
+	
+	loop_manager = loop_manager.Define(
+		"tbar_combined",
+		combine_tbar,
+		{"jet_lvecs", "jet_match_mask"}
+	);
 
 
-	// accessing stuff
+	// get mass from top and anti_top quarks
+	loop_manager = loop_manager.Define(
+		"t_combined_m_GeV",
+		mass_from_lvec_in_gev,
+		{"t_combined"}
+	);
+	
+	loop_manager = loop_manager.Define(
+		"tbar_combined_m_GeV",
+		mass_from_lvec_in_gev,
+		{"tbar_combined"}
+	);
+
+
+
+
+	// accessing and printing information
 	PLOG_DEBUG << "start: accessing RDataFrame";
-	loop_manager.Display("jet_lvecs")->Print();
 	loop_manager.Display("jet_match_mask")->Print();
+	loop_manager.Display("t_combined")->Print();
+	loop_manager.Display("tbar_combined")->Print();
 	
 
 	// finishing
@@ -182,7 +223,6 @@ int main(){
 float delta_R(float eta1, float phi1, float eta2, float phi2){ 
 	return sqrt( (eta2-eta1)*(eta2-eta1) + (phi2-phi1)*(phi2-phi1) ); 
 }
-
 
 float delta_R(PtEtaPhiEVector jet, PtEtaPhiMVector obj){ 
 	return delta_R(jet.Eta(), jet.Phi(), obj.Eta(), obj.Phi());
@@ -225,76 +265,186 @@ std::vector<int> match_jets_to_objs(
 	PtEtaPhiMVector obj_Wdecay2_from_tbar
 ){
 	std::vector<int> jet_match_masks(jets.size());	
-
-	int current_index;
+	std::vector<int> jet_indicies_within_threshold;
+	
 	
 	//match b_from_t
-	current_index = find_best_jet(jets, obj_b_from_t);
-	if(current_index!=-1)
-		jet_match_masks[current_index]+= 1<<TRUTH_OBJ_MATCH_VALUES::b_from_t;
+	jet_indicies_within_threshold = find_all_jet_indicies_within_threshold(jets, obj_b_from_t);
+	if(!jet_indicies_within_threshold.empty()){
+		for(int i=0; i<jet_indicies_within_threshold.size(); i++){
+			jet_match_masks[jet_indicies_within_threshold[i]]+= 1<<TRUTH_OBJ_MATCH_VALUES::b_from_t;
+		}
+	}
+	
 
 
 	//match b_from_tbar
-	current_index = find_best_jet(jets, obj_b_from_tbar);
-	if(current_index!=-1)
-		jet_match_masks[current_index]+= 1<<TRUTH_OBJ_MATCH_VALUES::b_from_tbar;
+	jet_indicies_within_threshold = find_all_jet_indicies_within_threshold(jets, obj_b_from_tbar);
+	if(!jet_indicies_within_threshold.empty()){
+		for(int i=0; i<jet_indicies_within_threshold.size(); i++){
+			jet_match_masks[jet_indicies_within_threshold[i]]+= 1<<TRUTH_OBJ_MATCH_VALUES::b_from_tbar;
+		}
+	}
 	
 
 	//match Wdecay1_from_t
-	current_index = find_best_jet(jets, obj_Wdecay1_from_t);
-	if(current_index!=-1)
-		jet_match_masks[current_index]+= 1<<TRUTH_OBJ_MATCH_VALUES::Wdecay1_from_t;
+	jet_indicies_within_threshold = find_all_jet_indicies_within_threshold(jets, obj_Wdecay1_from_t);
+	if(!jet_indicies_within_threshold.empty()){
+		for(int i=0; i<jet_indicies_within_threshold.size(); i++){
+			jet_match_masks[jet_indicies_within_threshold[i]]+= 1<<TRUTH_OBJ_MATCH_VALUES::Wdecay1_from_t;
+		}
+	}
 	
 
 	//match Wdecay2_from_t
-	current_index = find_best_jet(jets, obj_Wdecay2_from_t);
-	if(current_index!=-1)
-		jet_match_masks[current_index]+= 1<<TRUTH_OBJ_MATCH_VALUES::Wdecay2_from_t;
+	jet_indicies_within_threshold = find_all_jet_indicies_within_threshold(jets, obj_Wdecay2_from_t);
+	if(!jet_indicies_within_threshold.empty()){
+		for(int i=0; i<jet_indicies_within_threshold.size(); i++){
+			jet_match_masks[jet_indicies_within_threshold[i]]+= 1<<TRUTH_OBJ_MATCH_VALUES::Wdecay2_from_t;
+		}
+	}
 	
 
 	//match Wdecay1_from_tbar
-	current_index = find_best_jet(jets, obj_Wdecay1_from_t);
-	if(current_index!=-1)
-		jet_match_masks[current_index]+= 1<<TRUTH_OBJ_MATCH_VALUES::Wdecay1_from_tbar;
+	jet_indicies_within_threshold = find_all_jet_indicies_within_threshold(jets, obj_Wdecay1_from_t);
+	if(!jet_indicies_within_threshold.empty()){
+		for(int i=0; i<jet_indicies_within_threshold.size(); i++){
+			jet_match_masks[jet_indicies_within_threshold[i]]+= 1<<TRUTH_OBJ_MATCH_VALUES::Wdecay1_from_tbar;
+		}
+	}
 	
 
 	//match Wdecay2_from_tbar
-	current_index = find_best_jet(jets, obj_Wdecay2_from_tbar);
-	if(current_index!=-1)
-		jet_match_masks[current_index]+= 1<<TRUTH_OBJ_MATCH_VALUES::Wdecay2_from_tbar;
+	jet_indicies_within_threshold = find_all_jet_indicies_within_threshold(jets, obj_Wdecay2_from_tbar);
+	if(!jet_indicies_within_threshold.empty()){
+		for(int i=0; i<jet_indicies_within_threshold.size(); i++){
+			jet_match_masks[jet_indicies_within_threshold[i]]+= 1<<TRUTH_OBJ_MATCH_VALUES::Wdecay2_from_tbar;
+		}
+	}
 
 	
 	return jet_match_masks;
 }
 
-int find_best_jet(std::vector<PtEtaPhiEVector> jets, PtEtaPhiMVector truth_obj){
-	int best_index = -1;
+
+int find_best_jet_index(std::vector<PtEtaPhiEVector> jets, PtEtaPhiMVector truth_obj){
+	int best_jet_index = -1;
 	float best_delta_R = 999;
 
-	for(int current_index=0; current_index<jets.size(); current_index++){
-		float current_delta_R = delta_R(jets[current_index], truth_obj);
-		if(current_delta_R>DELTA_R_THRESHOLD)
-			continue;
-		if(current_delta_R>best_delta_R)
-			continue;
-
-		best_delta_R = current_delta_R;
-		best_index = current_index;
-	}
-
-	return best_index;
-}
-
-
-bool check_match(std::vector<int> jet_match_masks, int truth_obj_bit_value){
-	for(int i=0; i<jet_match_masks.size(); i++){
-		if( (jet_match_masks[i] & 1<<truth_obj_bit_value)!=0 ){
-			return true;
+	for(int i=0; i<jets.size(); i++){
+		float current_delta_R = delta_R(jets[i], truth_obj);
+		if(current_delta_R<=DELTA_R_THRESHOLD && current_delta_R<best_delta_R){
+			best_delta_R = current_delta_R;
+			best_jet_index = i;
 		}
 	}
 
-	return false;
+	return best_jet_index;
 }
 
 
-int generate_truth_match_value(){return 3;}
+
+std::vector<int> find_all_jet_indicies_within_threshold(std::vector<PtEtaPhiEVector> jets, PtEtaPhiMVector truth_obj){
+	std::vector<int> all_jet_indicies;
+
+	for(int i=0; i<jets.size(); i++){
+		float current_delta_R = delta_R(jets[i], truth_obj);
+		if(current_delta_R<=DELTA_R_THRESHOLD){
+			all_jet_indicies.push_back(i);
+		}
+	}
+
+	return all_jet_indicies;
+}
+
+
+
+int find_match(std::vector<int> jet_match_masks, int truth_obj_bit_value, std::vector<int> ignored_match_mask_indicies = {}){
+	for(int i=0; i<jet_match_masks.size(); i++){
+		if( !ignored_match_mask_indicies.empty() ){
+			bool skip_jet_mask = false;
+			
+			for(int j=0; j<ignored_match_mask_indicies.size(); j++){
+				if(ignored_match_mask_indicies[j]==i){
+					skip_jet_mask = true;
+					break;
+				}
+			}
+			
+			if(skip_jet_mask)
+				continue;
+		}
+
+	
+
+		if( (jet_match_masks[i] & 1<<truth_obj_bit_value)!=0 ){
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+
+PtEtaPhiEVector combine_t(std::vector<PtEtaPhiEVector> jets, std::vector<int> jet_match_masks){
+	if(jets.size()!=jet_match_masks.size()){
+		PLOG_ERROR << "ERROR: jet size does not match jet_match_masks size";
+		return PtEtaPhiEVector();
+	}
+	
+
+	std::vector<int> matched_indicies;
+
+	int index_b = find_match(jet_match_masks, TRUTH_OBJ_MATCH_VALUES::b_from_t, matched_indicies);
+	matched_indicies.push_back(index_b);
+	if(index_b==-1)
+		return PtEtaPhiEVector();
+	
+	int index_Wdecay1 = find_match(jet_match_masks, TRUTH_OBJ_MATCH_VALUES::Wdecay1_from_t, matched_indicies);
+	matched_indicies.push_back(index_Wdecay1);
+	if(index_Wdecay1==-1)
+		return PtEtaPhiEVector();
+	
+	int index_Wdecay2 = find_match(jet_match_masks, TRUTH_OBJ_MATCH_VALUES::Wdecay2_from_t, matched_indicies);
+	matched_indicies.push_back(index_Wdecay2);
+	if(index_Wdecay2==-1)
+		return PtEtaPhiEVector();
+
+
+	return jets[index_b] + jets[index_Wdecay1] + jets[index_Wdecay2];
+}
+
+
+PtEtaPhiEVector combine_tbar(std::vector<PtEtaPhiEVector> jets, std::vector<int> jet_match_masks){
+	if(jets.size()!=jet_match_masks.size()){
+		PLOG_ERROR << "ERROR: jet size does not match jet_match_masks size";
+		return PtEtaPhiEVector();
+	}
+		
+
+	std::vector<int> matched_indicies;
+
+	int index_b = find_match(jet_match_masks, TRUTH_OBJ_MATCH_VALUES::b_from_tbar, matched_indicies);
+	matched_indicies.push_back(index_b);
+	if(index_b==-1)
+		return PtEtaPhiEVector();
+	
+	int index_Wdecay1 = find_match(jet_match_masks, TRUTH_OBJ_MATCH_VALUES::Wdecay1_from_tbar, matched_indicies);
+	matched_indicies.push_back(index_Wdecay1);
+	if(index_Wdecay1==-1)
+		return PtEtaPhiEVector();
+	
+	int index_Wdecay2 = find_match(jet_match_masks, TRUTH_OBJ_MATCH_VALUES::Wdecay2_from_tbar, matched_indicies);
+	matched_indicies.push_back(index_Wdecay2);
+	if(index_Wdecay2==-1)
+		return PtEtaPhiEVector();
+
+
+	return jets[index_b] + jets[index_Wdecay1] + jets[index_Wdecay2];
+}
+
+float mass_from_lvec_in_gev(PtEtaPhiEVector jet){
+	if(jet.M()<1e-3)
+		return -999-3;
+	return jet.M()*1e-3;
+}
