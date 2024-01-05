@@ -110,21 +110,38 @@ int main(){
 	PLOG_DEBUG << "start: setup TChain";
 	TChain reco_chain("reco");
 	TChain truth_chain("truth");
-	for(int i=0; i<(int)(sizeof(INPUT_FILE_NAMES)/sizeof(INPUT_FILE_NAMES[0])); i++){
-		truth_chain.Add( (INPUT_PATH+INPUT_FILE_NAMES[i]).c_str() ); 
-		reco_chain.Add( (INPUT_PATH+INPUT_FILE_NAMES[i]).c_str() ); 
-	}
-	reco_chain.AddFriend(&truth_chain);
 
+	for (auto input_file_name : INPUT_FILE_NAMES) {
+		auto file_path = std::string();
+		file_path.append(INPUT_PATH).append(input_file_name);
+
+		truth_chain.Add(file_path.c_str());
+		reco_chain.Add(file_path.c_str());
+	}
+
+	// index TruthChain to kick out un-matched events - Then declare friends
+	truth_chain.BuildIndex("mcChannelNumber", "eventNumber");  // Just for security, use DSID too
+	reco_chain.AddFriend(&truth_chain);
 
 	// setup RDataFrame
 	PLOG_DEBUG << "start: setup RDataFrame";
-	RDataFrame data_frame(reco_chain);
+	auto data_frame = RDataFrame(reco_chain);
 
 
 	// for speedy testing
 	auto loop_manager = data_frame.Range(1000);
 
+	// First check that event numbers agree
+	auto nTotalEvents = loop_manager.Count();
+	auto nMismatchedEvents = loop_manager.Filter(
+			"mcChannelNumber != truth.mcChannelNumber || eventNumber != truth.eventNumber"
+	).Count();
+
+	if (nMismatchedEvents.GetValue() > 0) {
+		PLOG_ERROR << "There are " << nMismatchedEvents.GetValue() << " / " << nTotalEvents.GetValue()
+		           << " mismatched events!";
+		exit(1);
+	}
 
 	// generate jet lorentz vectors
 	loop_manager = loop_manager.Define("jet_lvecs", generate_lvecs, {"jet_pt_NOSYS", "jet_eta", "jet_phi", "jet_e_NOSYS"});
