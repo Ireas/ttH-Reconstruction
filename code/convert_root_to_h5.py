@@ -8,22 +8,26 @@ import time
 # ==========  CONVERT .root TO .h5 FILES  ==========
 # ==================================================
 # converts .root file to a .h5 file at same destination and with same name
-# todo: improve speed (mutlithreading, non-uniform data, ...)
-# todo: take input from argument as print function
+# TODO: improve speed (mutlithreading, non-uniform data, ...)
+# TODO: CORRECT INDEXING FOR TARGETS
 
 TESTING_MODE = True
-ROOT_FILE_DESTINATION = "../output/rdataframes_output.root"
-H5_FILE_DESTINATION = "../output/output.h5"
 
 
 def main():
-	root_file = uproot.open(ROOT_FILE_DESTINATION)
-	convert_to_h5(root_file)
+	if(len(sys.argv)<2):
+		print("Error: no file for conversion is given, exiting")
+		exit()
+	if(len(sys.argv)<3):
+		print("Error: no file for conversion is given, exiting")
+		exit()
+	root_file = uproot.open(sys.argv[1])
+	convert_to_h5(root_file, sys.argv[2])
 
 
 
-def convert_to_h5(root_file):
-	h5_file = h5py.File(H5_FILE_DESTINATION, 'w')
+def convert_to_h5(root_file, destination):
+	h5_file = h5py.File(destination, 'w')
 	
 	start = time.time()
 
@@ -35,14 +39,15 @@ def convert_to_h5(root_file):
 	
 	print("creating group 'INPUTS'")
 	input_group = h5_file.create_group("INPUTS")
-	source_group = input_group.create_group("SOURCE")
+	source_group = input_group.create_group("Source")
 	mask = source_group.create_dataset("MASK", (number_of_events,max_number_of_jets), dtype=bool)
-	jet_match_mask = source_group.create_dataset("JET_MATCH_MASK", (number_of_events,max_number_of_jets), dtype=int)
-	jet_pt = source_group.create_dataset("JET_PT", (number_of_events,max_number_of_jets), dtype=float)
-	jet_eta = source_group.create_dataset("JET_ETA", (number_of_events,max_number_of_jets), dtype=float)
-	jet_phi = source_group.create_dataset("JET_PHI", (number_of_events,max_number_of_jets), dtype=float)
-	jet_e = source_group.create_dataset("JET_E", (number_of_events,max_number_of_jets), dtype=float)
+	jet_e = source_group.create_dataset("energy", (number_of_events,max_number_of_jets), dtype=float)
+	jet_pt = source_group.create_dataset("pt", (number_of_events,max_number_of_jets), dtype=float)
+	jet_eta = source_group.create_dataset("eta", (number_of_events,max_number_of_jets), dtype=float)
+	jet_phi = source_group.create_dataset("phi", (number_of_events,max_number_of_jets), dtype=float)
+	#jet_match_mask = source_group.create_dataset("JET_MATCH_MASK", (number_of_events,max_number_of_jets), dtype=int)
 		
+	start_group = time.time()
 	step = 1/number_of_events
 	ratio = 0.0
 	displayed_percentage = 0
@@ -52,18 +57,19 @@ def convert_to_h5(root_file):
 		for j in range(number_of_jets):
 			# important that both indicies are used simultanously, otherwise data is set in copied array and is discarded!
 			mask[i,j] = True
+			jet_e[i,j] = root_file['matched/jet_e_NOSYS'].array()[i,j]
 			jet_pt[i,j] = root_file['matched/jet_pt_NOSYS'].array()[i,j]
 			jet_eta[i,j] = root_file['matched/jet_eta'].array()[i,j]
 			jet_phi[i,j] = root_file['matched/jet_phi'].array()[i,j]
-			jet_e[i,j] = root_file['matched/jet_e_NOSYS'].array()[i,j]
-			jet_match_mask[i,j] = root_file['matched/jet_match_mask'].array()[i,j]
+			#jet_match_mask[i,j] = root_file['matched/jet_match_mask'].array()[i,j]
 
 		ratio+= step
 		if ratio>=0.1:
 			displayed_percentage+= 1
 			ratio-= 0.1
 			partial = time.time()
-			print("  >", 10*displayed_percentage, "% (estimated remaining time: ", round((partial-start)/displayed_percentage*(10-displayed_percentage)), "s)")
+			print("  >", 10*displayed_percentage, "% (estimated remaining time: ", round((partial-start_group)/displayed_percentage*(10-displayed_percentage)), "s)")
+	
 	
 	print()	
 	print("creating group 'TARGET'")
@@ -78,6 +84,24 @@ def convert_to_h5(root_file):
 	q2_1 = t2_group.create_dataset("q1", (number_of_events), dtype=int)
 	q2_2 = t2_group.create_dataset("q2", (number_of_events), dtype=int)
 	
+	start_group = time.time()
+	ratio = 0.0
+	displayed_percentage = 0
+	# dummy variable	
+	for i in range(number_of_events):
+		b1[i] = 1
+		q1_1[i] = 2
+		q1_2[i] = 3
+		b2[i] = 4
+		q2_1[i] = 5
+		q2_2[i] = 6
+
+		ratio+= step
+		if ratio>=0.1:
+			displayed_percentage+= 1
+			ratio-= 0.1
+			partial = time.time()
+			print("  >", 10*displayed_percentage, "% (estimated remaining time: ", round((partial-start_group)/displayed_percentage*(10-displayed_percentage)), "s)")
 	
 	h5_file.close()
 	end = time.time()
