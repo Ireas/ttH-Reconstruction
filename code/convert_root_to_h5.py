@@ -33,19 +33,20 @@ def convert_to_h5(root_file, destination):
 
 	number_of_events = len(root_file['matched/nJets'].array())
 	max_number_of_jets = max(root_file['matched/nJets'].array())
-	if TESTING_MODE and number_of_events>100:
-		number_of_events = 100
+	if TESTING_MODE and number_of_events>1000:
+		number_of_events = 1000
 
 	
 	print("creating group 'INPUTS'")
 	input_group = h5_file.create_group("INPUTS")
 	source_group = input_group.create_group("Source")
 	mask = source_group.create_dataset("MASK", (number_of_events,max_number_of_jets), dtype=bool)
-	jet_e = source_group.create_dataset("energy", (number_of_events,max_number_of_jets), dtype=float)
-	jet_pt = source_group.create_dataset("pt", (number_of_events,max_number_of_jets), dtype=float)
-	jet_eta = source_group.create_dataset("eta", (number_of_events,max_number_of_jets), dtype=float)
-	jet_phi = source_group.create_dataset("phi", (number_of_events,max_number_of_jets), dtype=float)
+	jet_e = source_group.create_dataset("mass", (number_of_events,max_number_of_jets), dtype=np.float32)
+	jet_pt = source_group.create_dataset("pt", (number_of_events,max_number_of_jets), dtype=np.float32)
+	jet_eta = source_group.create_dataset("eta", (number_of_events,max_number_of_jets), dtype=np.float32)
+	jet_phi = source_group.create_dataset("phi", (number_of_events,max_number_of_jets), dtype=np.float32)
 	#jet_match_mask = source_group.create_dataset("JET_MATCH_MASK", (number_of_events,max_number_of_jets), dtype=int)
+	btag = source_group.create_dataset("btag", (number_of_events,max_number_of_jets), dtype=int)
 		
 	start_group = time.time()
 	step = 1/number_of_events
@@ -62,6 +63,7 @@ def convert_to_h5(root_file, destination):
 			jet_eta[i,j] = root_file['matched/jet_eta'].array()[i,j]
 			jet_phi[i,j] = root_file['matched/jet_phi'].array()[i,j]
 			#jet_match_mask[i,j] = root_file['matched/jet_match_mask'].array()[i,j]
+			btag[i,j] = 0
 
 		ratio+= step
 		if ratio>=0.1:
@@ -89,12 +91,12 @@ def convert_to_h5(root_file, destination):
 	displayed_percentage = 0
 	# dummy variable	
 	for i in range(number_of_events):
-		b1[i] = 1
-		q1_1[i] = 2
-		q1_2[i] = 3
-		b2[i] = 4
-		q2_1[i] = 5
-		q2_2[i] = 6
+		b1[i] = 0
+		q1_1[i] = 1
+		q1_2[i] = 2
+		b2[i] = 3
+		q2_1[i] = 4
+		q2_2[i] = 5
 
 		ratio+= step
 		if ratio>=0.1:
