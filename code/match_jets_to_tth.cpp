@@ -37,12 +37,29 @@ const float DELTA_R_THRESHOLD = 0.4;
 const plog::Severity LOG_LEVEL = plog::Severity::verbose; // set logger output severity filter
 
 
-const std::string INPUT_PATH = "/home/ireas/git_repos/master/data/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
-const std::string OUTPUT_PATH = "/home/ireas/git_repos/master/output/";
+const string INPUT_PATH = "/home/ireas/git_repos/master/data/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
+const string OUTPUT_PATH = "/home/ireas/git_repos/master/output/";
+
 const char* INPUT_FILE_NAMES[1] = { // put into array for easier access
 	"user.ravinab.35392295._000001.output.root"
 };
 
+
+const initializer_list<string> OUTPUT_COLOUMN_NAMES = { // put into array for easier access
+	"jet_match_mask",
+	"indicies",
+	"jet_e_NOSYS",
+	"jet_pt_NOSYS",
+	"jet_eta",
+	"jet_phi",
+	"nJets",
+	"jet_lvecs",
+	"reconstructed_t",
+	"reconstructed_tbar",
+	"reconstructed_W_from_t",
+	"reconstructed_W_from_tbar",
+	"successful_reconstruction",
+};
 
 // bit-shift amounts for matching
 enum TRUTH_MATCH_VALUES{
@@ -109,6 +126,10 @@ int nSuccessfulReconstructionT = 0;
 int nSuccessfulReconstructionTbar = 0;
 int nSuccessfulReconstructionWfromT = 0;
 int nSuccessfulReconstructionWfromTbar = 0;
+
+
+// Get indicies of matched truth
+vector<int> GenerateIndiciesFixed(vector<PtEtaPhiEVector> jetLvecs, vector<int> jetMatchMasks);
 
 
 
@@ -243,41 +264,17 @@ int main(){
 	);
 
 
-	// get mass from top and anti_top quarks
+	// get indicies
 	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_t_m_GeV",
-		MassInGeV,
-		{"reconstructed_t"}
+		"indicies",
+		GenerateIndiciesFixed,
+		{"jet_lvecs", "jet_match_mask"}
 	);
-	
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_tbar_m_GeV",
-		MassInGeV,
-		{"reconstructed_t"}
-	);
-
-	
-	// calculate mass difference for W's
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_W_from_t_deltam",
-		MassDifference,
-		{"reconstructed_W_from_t","truth.Tth_MC_W_from_t_m"}
-	);
-	
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_W_from_tbar_deltam",
-		MassDifference,
-		{"reconstructed_W_from_tbar","truth.Tth_MC_W_from_tbar_m"}
-	);
-
-
 
 
 	// accessing and printing information
 	PLOG_DEBUG << "Start: accessing RDataFrame";
 	rLoopManagerFiltered.Display("jet_match_mask")->Print();
-	rLoopManagerFiltered.Display("reconstructed_t")->Print();
-	rLoopManagerFiltered.Display("reconstructed_W_from_t_deltam")->Print();
 		
 	
 	// evaluate t and tbar reconstruction
@@ -290,7 +287,11 @@ int main(){
 
 	// finishing
 	PLOG_DEBUG << "Start: saving snapshot";
-	rLoopManagerFiltered.Snapshot("matched", OUTPUT_PATH+"rdataframes_output.root");
+	rLoopManagerFiltered.Snapshot(
+		"matched", 
+		OUTPUT_PATH+"rdataframes_output.root",
+		OUTPUT_COLOUMN_NAMES
+);
 	
 
 	// print evaluation after lazy action is done
@@ -609,47 +610,33 @@ float EvaluateReconstruction(PtEtaPhiEVector reconstructedTLvec, PtEtaPhiEVector
 
 
 
-// =========  OLD CODE  ======================
-// ===========================================
-//vector<int> FindAllJetIndicies(vector<PtEtaPhiEVector> jets, PtEtaPhiMVector truth_obj){
-//	vector<int> all_jet_indicies;
-//
-//	for(int i=0; i<jets.size(); i++){
-//		float current_ = DeltaR(jets[i], truth_obj);
-//		if(current_<=DELTA_R_THRESHOLD){
-//			all_jet_indicies.push_back(i);
-//		}
-//	}
-//
-//	return all_jet_indicies;
-//}
 
 
-//int FindBestJetIndex(vector<PtEtaPhiEVector> jetLvecs, PtEtaPhiMVector truthLvec, vector<int> unavailableJetIndicies={}){
-//	int bestJetIndex = -1;
-//	float bestDeltaR = 999;
-//
-//	for(int i=0; i<jetLvecs.size(); i++){
-//		// check if index is available
-//		bool indexIsAvailable = true;
-//		for(int j=0; j<unavailableJetIndicies.size(); j++){
-//			if(i==unavailableJetIndicies[j]){
-//				indexIsAvailable = false;
-//				break;
-//			}
-//		}
-//		
-//		// skip if index is not available
-//		if(!indexIsAvailable)
-//			continue;
-//
-//		// calculate deltaR if index is available
-//		float currentDeltaR = DeltaR(jetLvecs[i], truthLvec);
-//		if(currentDeltaR<=_THRESHOLD && currentDeltaR<bestDeltaR){
-//			bestDeltaR = currentDeltaR;
-//			bestJetIndex = i;
-//		}
-//	}
-//
-//	return bestJetIndex;
-//}
+
+// Indicies stuff
+vector<int> GenerateIndiciesFixed(vector<PtEtaPhiEVector> jetLvecs, vector<int> jetMatchMasks){
+	vector<int> objectIndicies;
+	
+
+	// b from tbar
+	objectIndicies.push_back( FindFirstMatchIndex(jetMatchMasks, TRUTH_MATCH_VALUES::b_from_t, objectIndicies) );
+ 
+	// Wdecay1 from tbar
+	objectIndicies.push_back( FindFirstMatchIndex(jetMatchMasks, TRUTH_MATCH_VALUES::Wdecay1_from_t, objectIndicies) );
+ 	
+	// Wdecay2 from tbar
+	objectIndicies.push_back( FindFirstMatchIndex(jetMatchMasks, TRUTH_MATCH_VALUES::Wdecay2_from_t, objectIndicies) );
+
+
+	// b from tbar
+	objectIndicies.push_back( FindFirstMatchIndex(jetMatchMasks, TRUTH_MATCH_VALUES::b_from_tbar, objectIndicies) );
+ 
+	// Wdecay1 from tbar
+	objectIndicies.push_back( FindFirstMatchIndex(jetMatchMasks, TRUTH_MATCH_VALUES::Wdecay1_from_tbar, objectIndicies) );
+ 	
+	// Wdecay2 from tbar
+	objectIndicies.push_back( FindFirstMatchIndex(jetMatchMasks, TRUTH_MATCH_VALUES::Wdecay2_from_tbar, objectIndicies) );
+
+	
+	return objectIndicies;
+}

@@ -1,9 +1,17 @@
 compile: match_jets_to_tth.cpp
 	g++ match_jets_to_tth.cpp -o executable -fPIC `root-config --glibs --cflags --libs`
 
-compile_and_run: match_jets_to_tth.cpp
+compile_run: match_jets_to_tth.cpp
 	g++ match_jets_to_tth.cpp -o executable -fPIC `root-config --glibs --cflags --libs`
 	./executable
+
+compile_run_convert: match_jets_to_tth.cpp convert_root_to_h5.py
+	g++ match_jets_to_tth.cpp -o executable -fPIC `root-config --glibs --cflags --libs`
+	./executable
+	python3 convert_root_to_h5.py ~/git_repos/master/output/rdataframes_output.root ~/git_repos/master/output/output.h5
+
+convert: convert_root_to_h5.py
+	python3 convert_root_to_h5.py ~/git_repos/master/output/rdataframes_output.root ~/git_repos/master/output/output.h5
 
 
 #old_compile_and_run_all: truth_reco_matching.cpp convert_root_to_h5.py
