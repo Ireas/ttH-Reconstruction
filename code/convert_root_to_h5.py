@@ -1,4 +1,4 @@
-import sys
+i:wqmport sys
 import uproot # root in python
 import h5py # h5 in python
 import awkward # working with irregular arrays
@@ -8,7 +8,6 @@ import time
 # ==========  CONVERT .root TO .h5 FILES  ==========
 # ==================================================
 # converts .root file to a .h5 file at same destination and with same name
-# TODO: improve speed (mutlithreading, non-uniform data, ...)
 
 
 MAX_NUMBER_OF_EVENTS = 1000 # set to -1 to use all events

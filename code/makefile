@@ -10,8 +10,16 @@ compile_run_convert: match_jets_to_tth.cpp convert_root_to_h5.py
 	./executable
 	python3 convert_root_to_h5.py ~/git_repos/master/output/rdataframes_output.root ~/git_repos/master/output/output.h5
 
+compile_run_plot: match_jets_to_tth.cpp plot.py
+	g++ match_jets_to_tth.cpp -o executable -fPIC `root-config --glibs --cflags --libs`
+	./executable
+	python3 plot.py ~/git_repos/master/output/rdataframes_output.root
+
 convert: convert_root_to_h5.py
 	python3 convert_root_to_h5.py ~/git_repos/master/output/rdataframes_output.root ~/git_repos/master/output/output.h5
+
+plot: plot.py
+	python3 plot.py ~/git_repos/master/output/rdataframes_output.root
 
 
 #old_compile_and_run_all: truth_reco_matching.cpp convert_root_to_h5.py

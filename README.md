@@ -15,9 +15,8 @@ input and output paths must be adapted to the system
 
 
 ---
-### Plans for the Future
-- improve speed of .root to .h5 conversion (multithreading, no manual array casting, other language)
-- improve robustness of .root to .h5 conversion and .h5 print file (nested datasets, multiple TTrees)
-- change structure of output for easier use (with SPANet) 
+### Current Tasks
+- Verify matching
 - include mass information in the jet reconstruction algorithm (truth-to-reco matching)
+- Format root output, look out for MeV usage in root MC
 - compare process effficiency of SPANet to classical Chi^2 algorithm (See 05.12.2023, tth(WW) Project Logistics)

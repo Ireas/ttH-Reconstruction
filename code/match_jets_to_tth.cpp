@@ -58,6 +58,12 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = { // put into array for ea
 	"reconstructed_tbar",
 	"reconstructed_W_from_t",
 	"reconstructed_W_from_tbar",
+	"reconstructed_t_m",
+	"reconstructed_tbar_m",
+	"reconstructed_W_from_t_m",
+	"reconstructed_W_from_tbar_m",
+	"truth.Tth_MC_W_from_t_m",
+	"truth.Tth_MC_W_from_tbar_m",
 	"successful_reconstruction",
 };
 
@@ -131,6 +137,7 @@ int nSuccessfulReconstructionWfromTbar = 0;
 // Get indicies of matched truth
 vector<int> GenerateIndiciesFixed(vector<PtEtaPhiEVector> jetLvecs, vector<int> jetMatchMasks);
 
+float GetMass(PtEtaPhiEVector lvec);
 
 
 // ==========  MAIN  ==========
@@ -261,6 +268,31 @@ int main(){
 		"reconstructed_W_from_tbar",
 		CombineTopBar,
 		{"jet_lvecs", "jet_match_mask"}
+	);
+	
+	// mass
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"reconstructed_t_m",
+		GetMass,
+		{"reconstructed_t"}
+	);
+
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"reconstructed_tbar_m",
+		GetMass,
+		{"reconstructed_tbar"}
+	);
+
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"reconstructed_W_from_t_m",
+		GetMass,
+		{"reconstructed_W_from_t"}
+	);
+
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"reconstructed_W_from_tbar_m",
+		GetMass,
+		{"reconstructed_W_from_tbar"}
 	);
 
 
@@ -640,3 +672,5 @@ vector<int> GenerateIndiciesFixed(vector<PtEtaPhiEVector> jetLvecs, vector<int> 
 	
 	return objectIndicies;
 }
+
+float GetMass(PtEtaPhiEVector lvec){return lvec.M();}
