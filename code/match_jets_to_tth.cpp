@@ -66,6 +66,7 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = { // put into array for ea
 	"truth_tbar_m",
 	"truth_W_from_t_m",
 	"truth_W_from_tbar_m",
+	"successful_reconstruction",
 };
 
 
@@ -129,10 +130,13 @@ PtEtaPhiEVector ReconstructWFromTBar(vector<PtEtaPhiEVector> jetLvecs, vector<in
 
 
 // Small helper methods
+int successReco = 0;
+int unsuccessReco = 0;
+
 int GetNumberOfJets(vector<PtEtaPhiEVector> jetLvecs);
+bool CheckReconstruction(PtEtaPhiEVector tLvec, PtEtaPhiEVector tBarLvev);
 
 float RenameFloat(float target);
-
 float GetMass(PtEtaPhiEVector lvec);
 
 
@@ -199,7 +203,7 @@ int main(){
 
 
 	// apply jet filter	
-	auto rLoopManagerFiltered = rLoopManager.Filter("number_of_jets>=6");
+	auto rLoopManagerFiltered = rLoopManager.Filter("number_of_jets>=0");
 
 
 	// generate truth obj lorentz vectors
@@ -316,6 +320,15 @@ int main(){
 	);
 
 
+	// check if event is fully reconstructed
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"successful_reconstruction",
+		CheckReconstruction,
+		{"reconstructed_t_lvec", "reconstructed_tbar_lvec"}
+	);
+	 
+
+
 	// rename truth trees
 	rLoopManagerFiltered = rLoopManagerFiltered.Define(
 		"truth_t_m",
@@ -346,6 +359,10 @@ int main(){
 		OUTPUT_PATH+"rdataframes_output.root",
 		OUTPUT_COLOUMN_NAMES
 	);
+
+	PLOG_VERBOSE << "Success: " << successReco;
+	PLOG_VERBOSE << "Unsuccess: " << unsuccessReco;
+	PLOG_VERBOSE << "Ratio: " << (float)successReco/unsuccessReco;
 		
 	return 0;
 }
@@ -615,6 +632,15 @@ vector<int> CollectJetToObjectIndiciesFixed(vector<int> jetFinalMatchMasks){
 
 // ==========  HELPER FUNCTONS
 int GetNumberOfJets(vector<PtEtaPhiEVector> jetLvecs){return jetLvecs.size();}
+
+bool CheckReconstruction(PtEtaPhiEVector tLvec, PtEtaPhiEVector tBarLvec){
+	if(tLvec.M()>0 && tBarLvec.M()>0){
+		successReco++;
+		return true;
+	}
+	unsuccessReco++;
+	return false;
+}
 
 float RenameFloat(float target){return target;}
 

@@ -16,7 +16,5 @@ input and output paths must be adapted to the system
 
 ---
 ### Current Tasks
-- Verify matching
 - include mass information in the jet reconstruction algorithm (truth-to-reco matching)
-- Format root output, look out for MeV usage in root MC
 - compare process effficiency of SPANet to classical Chi^2 algorithm (See 05.12.2023, tth(WW) Project Logistics)
