@@ -1,6 +1,6 @@
 import sys
 import uproot # root in python
-import h5py # h5 in pytho
+import h5py # h5 in python
 import numpy as np
 from timeit import default_timer as timer
 
