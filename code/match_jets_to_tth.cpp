@@ -33,6 +33,7 @@ using namespace ROOT::Math::VectorUtil;
 // ==========  CONSTANTS  ==========
 // =================================
 const float DELTA_R_THRESHOLD = 0.4;
+const int MAX_NUMBER_OF_EVENTS = 1e5; // set to 0 for no limit
 const plog::Severity LOG_LEVEL = plog::Severity::verbose; // set logger output severity filter
 
 
@@ -67,6 +68,7 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = { // put into array for ea
 	"truth_W_from_t_m",
 	"truth_W_from_tbar_m",
 	"successful_reconstruction",
+	"higgs_decay_mode_custom",
 };
 
 
@@ -81,6 +83,17 @@ enum TRUTH_MATCH_VALUES{
 	Wdecay2_from_tbar = 5,
 };
 
+enum HIGGS_DECAY_MODE{
+	undefined = -1,
+	b_b = 0,
+	e_e = 1,
+	mu_mu = 2,
+	tau_tau = 3,
+	y_y = 4,
+	w_w = 5,
+	z_z = 6,
+	other = 7,
+};
 
 
 // ==========  FUNCTION DECLARATION  ==========
@@ -129,7 +142,11 @@ PtEtaPhiEVector ReconstructWFromT(vector<PtEtaPhiEVector> jetLvecs, vector<int> 
 PtEtaPhiEVector ReconstructWFromTBar(vector<PtEtaPhiEVector> jetLvecs, vector<int> jetFinalMatchMasks);
 
 
-// Small helper methods
+// higgs
+int GenerateHiggsDecayModeCustom(int higgsDecay1PdgId, int higgsDecay2PdgId);
+
+
+// small helper methods
 int successReco = 0;
 int unsuccessReco = 0;
 
@@ -138,6 +155,7 @@ bool CheckReconstruction(PtEtaPhiEVector tLvec, PtEtaPhiEVector tBarLvev);
 
 float RenameFloat(float target);
 float GetMass(PtEtaPhiEVector lvec);
+
 
 
 // ==========  MAIN  ==========
@@ -177,7 +195,7 @@ int main(){
 	// setup RDataFrame
 	PLOG_DEBUG << "Start: setup RDataFrame";
 	auto rDataFrame = RDataFrame(rRecoChain);
-	auto rLoopManager = rDataFrame.Range(100000); // limit input for testing
+	auto rLoopManager = rDataFrame.Range(MAX_NUMBER_OF_EVENTS); // limit input for testing
 
 
 	// check if chains are matched properly
@@ -203,7 +221,7 @@ int main(){
 
 
 	// apply jet filter	
-	auto rLoopManagerFiltered = rLoopManager.Filter("number_of_jets>=0");
+	auto rLoopManagerFiltered = rLoopManager.Filter("number_of_jets>=6");
 
 
 	// generate truth obj lorentz vectors
@@ -349,6 +367,14 @@ int main(){
 		"truth_W_from_tbar_m",
 		RenameFloat,
 		{"truth.Tth_MC_W_from_tbar_m"}
+	);
+
+
+	// get higgs information
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"higgs_decay_mode_custom",
+		GenerateHiggsDecayModeCustom,
+		{"truth.Tth_MC_Higgs_decay1_pdgId", "truth.Tth_MC_Higgs_decay2_pdgId"}
 	);
 	
 
@@ -626,6 +652,45 @@ vector<int> CollectJetToObjectIndiciesFixed(vector<int> jetFinalMatchMasks){
 	}
 	
 	return jetToObjectIndicies;
+}
+
+
+// ==========  HIGGS
+int GenerateHiggsDecayModeCustom(int higgsDecay1PdgId, int higgsDecay2PdgId){
+	int pdgid1 = -1;
+	int pdgid2 = -1;
+	
+	higgsDecay1PdgId = abs(higgsDecay1PdgId);
+	higgsDecay2PdgId = abs(higgsDecay2PdgId);
+
+	if(higgsDecay1PdgId!=higgsDecay1PdgId)
+		return HIGGS_DECAY_MODE::undefined;
+
+	if(higgsDecay1PdgId>999)
+		return HIGGS_DECAY_MODE::undefined;
+	
+	if(higgsDecay1PdgId==5)
+		return HIGGS_DECAY_MODE::b_b;
+	
+	if(higgsDecay1PdgId==11)
+		return HIGGS_DECAY_MODE::e_e;
+	
+	if(higgsDecay1PdgId==13)
+		return HIGGS_DECAY_MODE::mu_mu;
+	
+	if(higgsDecay1PdgId==15)
+		return HIGGS_DECAY_MODE::tau_tau;
+	
+	if(higgsDecay1PdgId==22)
+		return HIGGS_DECAY_MODE::y_y;
+	
+	if(higgsDecay1PdgId==23)
+		return HIGGS_DECAY_MODE::z_z;
+	
+	if(higgsDecay1PdgId==24)
+		return HIGGS_DECAY_MODE::w_w;
+	
+	return HIGGS_DECAY_MODE::other;
 }
 
 
