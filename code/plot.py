@@ -3,6 +3,7 @@ import numpy as np
 import uproot
 import matplotlib.pyplot as plt
 
+import module_plot_mass_differences as plot_delta
 import module_plot_higgs_decay_modes as plot_higgs
 import module_plot_jet_multiplicity as plot_njets
 
@@ -23,6 +24,10 @@ def main():
 	# access given root file
 	assert len(sys.argv)==2, "Error: root file must be given as only argument"
 	root_file = uproot.open(sys.argv[1])
+	
+	# mass difference
+	print("Verbose: verify mass difference")	
+	plot_delta.verify(root_file, OUTPUT_DESTINATION)
 
 	# higgs decay mode
 	print("Verbose: verify higgs decay modes")	
@@ -34,7 +39,7 @@ def main():
 	
 	# old
 	generate_plots_success(root_file)
-	generate_plots_mass(root_file)
+	#generate_plots_mass(root_file)
 
 
 
@@ -113,81 +118,6 @@ def generate_plots_success(root_file):
 
 
 
-def generate_plots_mass(root_file):
-	"""
-	DESCRIPTION:
-	Generates mass plots for W-boson and top quark from given .root file.
-	"""
-
-	### PREPARE INPUT
-	# read data from .root file
-	number_of_jets = root_file['matched/number_of_jets'].array()
-	higgs_decay_mode_ids = root_file['matched/higgs_decay_mode_custom'].array()
-
-	
-	# get masses and convert MeV to GeV
-	masses_W_from_t_truth = root_file['matched/truth_W_from_t_m'].array()*1e-3
-	masses_W_from_t_reconstructed = root_file['matched/reconstructed_W_from_t_m'].array()*1e-3
-	masses_W_from_tbar_truth = root_file['matched/truth_W_from_tbar_m'].array()*1e-3
-	masses_W_from_tbar_reconstructed = root_file['matched/reconstructed_W_from_tbar_m'].array()*1e-3
-	masses_t_truth = root_file['matched/truth_t_m'].array()*1e-3
-	masses_t_reconstructed = root_file['matched/reconstructed_t_m'].array()*1e-3
-	masses_tbar_truth = root_file['matched/truth_tbar_m'].array()*1e-3
-	masses_tbar_reconstructed = root_file['matched/reconstructed_tbar_m'].array()*1e-3
-
-
-	# create arrays for saving mass differences
-	mass_difference_W = np.array([])	
-	mass_difference_t = np.array([])	
-
-
-
-	# loop over .root file, skip unsuccessful reconstructions
-	for m_truth, m_reco, n_jets in zip(masses_W_from_t_truth, masses_W_from_t_reconstructed, number_of_jets):
-		if m_reco<1:
-			continue
-		mass_difference_W = np.append(mass_difference_W, m_reco - m_truth)
-	
-	for m_truth, m_reco, n_jets in zip(masses_W_from_tbar_truth, masses_W_from_tbar_reconstructed, number_of_jets):
-		if m_reco<1:
-			continue
-		mass_difference_W = np.append(mass_difference_W, m_reco - m_truth)
-
-	for m_truth, m_reco, n_jets in zip(masses_t_truth, masses_t_reconstructed, number_of_jets):
-		if m_reco<1:
-			continue
-		mass_difference_t = np.append(mass_difference_t, m_reco - m_truth)
-	
-	for m_truth, m_reco, n_jets in zip(masses_tbar_truth, masses_tbar_reconstructed, number_of_jets):
-		if m_reco<1:
-			continue
-		mass_difference_t = np.append(mass_difference_t, m_reco - m_truth)
-
-
-	
-
-	### GENERATE PLOTS 	
-	# plot mass difference between truth and reco
-	plot_histogram(
-		data = mass_difference_W,
-		bins = np.arange(-50,140,10), 
-		title = "$\Delta M$ for W-bosons from (Anti-)Top", 
-		xlabel = "$\Delta M$ in GeV", 
-		ylabel = "Number of Events", 
-		file_name = "delta_m_w"
-	)
-	
-	plot_histogram(
-		data = mass_difference_t,
-		bins = np.arange(-80,200,10), 
-		title = "$\Delta M$ for (Anti-)Top", 
-		xlabel = "$\Delta M$ in GeV", 
-		ylabel = "Number of Events", 
-		file_name = "delta_m_t"
-	)
-	
-
-
 
 
 def plot_bar(data, categories, custom_xlims=None, custom_ylims=None, title='Bar Plot', xlabel='x-axis', ylabel='y-axis', width=0.35, file_name=None):	
@@ -253,81 +183,6 @@ def plot_grouped_bar(data1, data2, categories, title='Grouped Bar Plot', xlabel=
 		plt.savefig(OUTPUT_DESTINATION+file_name+".png")
 
     # show plot
-	if SHOW_PLOTS:
-		plt.show()
-
-	# clean up
-	plt.clf()
-
-
-
-def plot_histogram(data, bins=[], normalized=False, title='Histogram', xlabel="x-axis", ylabel="y-axis", yscale="linear", file_name=None):	
-	"""
-	DESCRIPTION
-	Plots simple histrogram from data array. Bins must be array-like.
-	"""	
-	
-	# creates histogram
-	data = np.clip(data, bins[0], bins[-1])
-	plt.hist(data, bins=bins, density=normalized, range=(bins[0], bins[-1]), color=COLORS[0], alpha=0.7, edgecolor="black")
-
-
-    # customize plot
-	plt.title(title)
-	plt.xlabel(xlabel)
-	plt.ylabel(ylabel)
-	plt.yscale(yscale)
-	plt.xlim([bins[0],bins[-1]])
-		
-	# save plot
-	if file_name:
-		plt.savefig(OUTPUT_DESTINATION+file_name+".png")
-	
-	# show plot
-	if SHOW_PLOTS:
-		plt.show()
-
-	# clean up
-	plt.clf()
-
-
-
-def plot_multidata_histogram(data_dict, fixed_bins, stacked=True, normalized=False, label_additions=None, title="Stacked Histogram", xlabel="x-axis", ylabel="y-label", yscale="linear",  file_name=None):
-	"""
-	DESCRIPTION
-	Plots dictionary containing multiple dataset as (stacked) histrogram. Bins should be fixed manually. Dictionary is expected in the following format.
-		{ [LABEL] : [DATA_ARRAY] }
-	"""    
-
-	# format input to arrays
-	data_array = []
-	labels_array = []
-	colors_array = []
-	for i, (key, value) in enumerate(data_dict.items()):
-		data_array+= [value]
-		labels_array+= [key+" ("+str(label_additions[i])+")"] if label_additions else [key] 
-		colors_array+= [COLORS[i]]
-
-	# plot array of data
-	if stacked:
-		plt.hist(data_array, bins=fixed_bins, label=labels_array, color=colors_array, alpha=0.7, edgecolor="black", stacked=stacked, density=normalized, histtype="bar")
-	else:
-		for (data, label, color) in zip(data_array, labels_array, colors_array):
-			plt.hist(data, bins=fixed_bins, label=label, edgecolor=color, density=normalized, histtype="step")
-
-	# customize_plot
-	plt.title(title)
-	plt.xlabel(xlabel)
-	plt.ylabel(ylabel)
-	plt.yscale(yscale)
-	plt.xlim([fixed_bins[0],fixed_bins[-1]])
-	plt.legend()
-
-	# save plot
-	if file_name:
-		plt.savefig(OUTPUT_DESTINATION+file_name+".png")
-
-	# shot plot
 	if SHOW_PLOTS:
 		plt.show()
 

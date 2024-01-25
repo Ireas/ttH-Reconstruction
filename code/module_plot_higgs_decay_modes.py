@@ -5,7 +5,7 @@ import module_plot as plot
 
 OUTPUT_DESTINATION = "./"
 
-DECAY_MODE_LABELS= {
+LABELS= {
 	0 : r"$bb$",
 	1 : r"$ee$",
 	2 : r"$\mu\mu$",
@@ -21,20 +21,24 @@ DECAY_MODE_LABELS= {
 class ContainerMassWDecayMode:
 	def __init__(self, data, decay_mode_id):
 		self.data = data
-		self.decay_mode_id= decay_mode_id
+		self.decay_mode_id = decay_mode_id
 
 	def plot_histogram(self):
-		plot_title = "Reconstructed Mass of W-Boson for " + DECAY_MODE_LABELS[self.decay_mode_id] + " H Decay Mode (normalized)"
-		plot.plot_histogram(
+		source = plot.HistogramSource(
 			data = self.data, 
-			bins = np.arange(20,200,10),
-			normalize = True,
-			title = plot_title,
+			label = "yield = "+str(len(self.data))
+		)
+
+		options = plot.HistogramOptions(
+			bins = np.arange(20,200,10), 
+			title = "Reconstructed Mass of W-Boson for " + LABELS[self.decay_mode_id] + " H Decay Mode (normalized)",
 			x_label = r"$M_\text{reco}$ in GeV",
 			y_label = r"Fraction of Events",
-			data_label = "yield = " + str(len(self.data)),
-			file_name = OUTPUT_DESTINATION + "mass_higgs_dm_" + str(self.decay_mode_id) +".png"
+			normalize = True,
+			file_destination = OUTPUT_DESTINATION + "mass_higgs_dm_" + str(self.decay_mode_id) +".png"
 		)
+		
+		plot.histogram(source, options)
 	
 
 

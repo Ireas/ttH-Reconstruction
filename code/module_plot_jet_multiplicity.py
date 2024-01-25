@@ -18,17 +18,21 @@ class ContainerMassW:
 		self.jet_multiplicity = jet_multiplicity
 
 	def plot_histogram(self):
-		plot_title = "Reconstructed Mass of W-Boson for " + LABELS[self.jet_multiplicity] + " (normalized)"
-		plot.plot_histogram(
-			data = self.data, 
+		source = plot.HistogramSource(
+			data = self.data,
+			label = "yield = "+str(len(self.data))
+		)
+
+		options = plot.HistogramOptions(
 			bins = np.arange(20,200,10),
-			normalize = True,
-			title = plot_title,
+			title = "Reconstructed Mass of W-Boson for " + LABELS[self.jet_multiplicity] + " (normalized)",
 			x_label = r"$M_\text{reco}$ in GeV",
 			y_label = r"Fraction of Events",
-			data_label = "yield = " + str(len(self.data)),
-			file_name = OUTPUT_DESTINATION + "mass_njets_" + str(self.jet_multiplicity) +".png"
+			normalize = True,
+			file_destination= OUTPUT_DESTINATION + "mass_njets_" + str(self.jet_multiplicity) +".png"
 		)
+
+		plot.histogram(source, options)
 	
 
 
