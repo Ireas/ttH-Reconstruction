@@ -3,9 +3,11 @@ import numpy as np
 import uproot
 import matplotlib.pyplot as plt
 
+import module_plot_higgs_decay_modes as plot_higgs
+import module_plot_jet_multiplicity as plot_njets
 
 
-OUTPUT_DESTINATION = "../output/"
+OUTPUT_DESTINATION = "../output/plots/"
 SHOW_PLOTS = False
 
 COLORS= [
@@ -22,6 +24,15 @@ def main():
 	assert len(sys.argv)==2, "Error: root file must be given as only argument"
 	root_file = uproot.open(sys.argv[1])
 
+	# higgs decay mode
+	print("Verbose: verify higgs decay modes")	
+	plot_higgs.verify(root_file, OUTPUT_DESTINATION)
+	
+	# jet multiplicity
+	print("Verbose: verify jet multiplicities")	
+	plot_njets.verify(root_file, OUTPUT_DESTINATION)
+	
+	# old
 	generate_plots_success(root_file)
 	generate_plots_mass(root_file)
 
@@ -130,111 +141,30 @@ def generate_plots_mass(root_file):
 	mass_difference_t = np.array([])	
 
 
-	# create dictionaries for saving reco mass by jet multiplicity
-	dict_m_w = {}
-	dict_m_t = {}
-	
-	for i in range(max(number_of_jets)+1):
-		dict_m_w[i] = np.array([])
-		dict_m_t[i] = np.array([])
-	
 
 	# loop over .root file, skip unsuccessful reconstructions
 	for m_truth, m_reco, n_jets in zip(masses_W_from_t_truth, masses_W_from_t_reconstructed, number_of_jets):
 		if m_reco<1:
 			continue
 		mass_difference_W = np.append(mass_difference_W, m_reco - m_truth)
-		dict_m_w[n_jets] = np.append(dict_m_w[n_jets], m_reco)
 	
 	for m_truth, m_reco, n_jets in zip(masses_W_from_tbar_truth, masses_W_from_tbar_reconstructed, number_of_jets):
 		if m_reco<1:
 			continue
 		mass_difference_W = np.append(mass_difference_W, m_reco - m_truth)
-		dict_m_w[n_jets] = np.append(dict_m_w[n_jets], m_reco)
 
 	for m_truth, m_reco, n_jets in zip(masses_t_truth, masses_t_reconstructed, number_of_jets):
 		if m_reco<1:
 			continue
 		mass_difference_t = np.append(mass_difference_t, m_reco - m_truth)
-		dict_m_t[n_jets] = np.append(dict_m_t[n_jets], m_reco)
 	
 	for m_truth, m_reco, n_jets in zip(masses_tbar_truth, masses_tbar_reconstructed, number_of_jets):
 		if m_reco<1:
 			continue
 		mass_difference_t = np.append(mass_difference_t, m_reco - m_truth)
-		dict_m_t[n_jets] = np.append(dict_m_t[n_jets], m_reco)
 
 
-	## PROCESS INPUT
-	# create compact dictionaries that combine higher jet multiplicities	
-	dict_m_w_compact = {
-		"6 Jets" : np.array([]),
-		"7 Jets" : np.array([]),
-		"8 Jets" : np.array([]),
-		"9+ Jets" : np.array([])
-	}
-
-	dict_m_t_compact = {
-		"6 Jets" : np.array([]),
-		"7 Jets" : np.array([]),
-		"8 Jets" : np.array([]),
-		"9+ Jets" : np.array([])
-	}
-
-	# fill compact dictionaries
-	for i in range(max(number_of_jets)):
-		if i==6:
-			dict_m_w_compact["6 Jets"] = np.append(dict_m_w_compact["6 Jets"], dict_m_w[i])
-			dict_m_t_compact["6 Jets"] = np.append(dict_m_t_compact["6 Jets"], dict_m_t[i])
-		elif i==7:
-			dict_m_w_compact["7 Jets"] = np.append(dict_m_w_compact["7 Jets"], dict_m_w[i])
-			dict_m_t_compact["7 Jets"] = np.append(dict_m_t_compact["7 Jets"], dict_m_t[i])
-		elif i==8:
-			dict_m_w_compact["8 Jets"] = np.append(dict_m_w_compact["8 Jets"], dict_m_w[i])
-			dict_m_t_compact["8 Jets"] = np.append(dict_m_t_compact["8 Jets"], dict_m_t[i])
-		else:
-			dict_m_w_compact["9+ Jets"] = np.append(dict_m_w_compact["9+ Jets"], dict_m_w[i])
-			dict_m_t_compact["9+ Jets"] = np.append(dict_m_t_compact["9+ Jets"], dict_m_t[i])
 	
-	
-	# higgs decay modes
-	dict_m_w_decay_mode = {
-		r"$bb$" : np.array([]),
-		r"$ee$" : np.array([]),
-		r"$\mu\mu$" : np.array([]),
-		r"$\tau\tau$" : np.array([]),
-		r"$yy$" : np.array([]),
-		r"$zz$" : np.array([]),
-		r"$ww$" : np.array([])
-	}
-
-	dict_m_t_decay_mode = {
-		r"$bb$" : np.array([]),
-		r"$ee$" : np.array([]),
-		r"$\mu\mu$" : np.array([]),
-		r"$\tau\tau$" : np.array([]),
-		r"$yy$" : np.array([]),
-		r"$zz$" : np.array([]),
-		r"$ww$" : np.array([])
-	}
-	
-	for (higgs_decay_mode_id, m_reco) in zip(higgs_decay_mode_ids, masses_W_from_t_reconstructed):
-		if(higgs_decay_mode_id==0):
-			dict_m_w_decay_mode[r"$bb$"] = np.append(dict_m_w_decay_mode[r"$bb$"], m_reco)
-		elif(higgs_decay_mode_id==1):
-			dict_m_w_decay_mode[r"$ee$"] = np.append(dict_m_w_decay_mode[r"$ee$"], m_reco)
-		elif(higgs_decay_mode_id==2):
-			dict_m_w_decay_mode[r"$\mu\mu$"] = np.append(dict_m_w_decay_mode[r"$\mu\mu$"], m_reco)
-		elif(higgs_decay_mode_id==3):
-			dict_m_w_decay_mode[r"$\tau\tau$"] = np.append(dict_m_w_decay_mode[r"$\tau\tau$"], m_reco)
-		elif(higgs_decay_mode_id==4):
-			dict_m_w_decay_mode[r"$yy$"] = np.append(dict_m_w_decay_mode[r"$yy$"], m_reco)
-		elif(higgs_decay_mode_id==5):
-			dict_m_w_decay_mode[r"$zz$"] = np.append(dict_m_w_decay_mode[r"$zz$"], m_reco)
-		elif(higgs_decay_mode_id==6):
-			dict_m_w_decay_mode[r"$ww$"] = np.append(dict_m_w_decay_mode[r"$ww$"], m_reco)
-	
-
 
 	### GENERATE PLOTS 	
 	# plot mass difference between truth and reco
@@ -257,52 +187,7 @@ def generate_plots_mass(root_file):
 	)
 	
 
-	# plot reconstructed mass in respect to jet multiplicity
-	plot_multidata_histogram(
-		data_dict = dict_m_w_compact,
-		fixed_bins = np.arange(20,220,10),
-		stacked = False,
-		normalized = True,
-		label_additions = [
-			len(dict_m_w_compact["6 Jets"]),
-			len(dict_m_w_compact["7 Jets"]),
-			len(dict_m_w_compact["8 Jets"]),
-			len(dict_m_w_compact["9+ Jets"])
-		],
-		title = "Reconstructed W Boson Mass by Jets, Normalized, Yields Given",
-		xlabel = "Mass in GeV",
-		ylabel = "Number of Events",
-		file_name = "multidata_m_w_by_jets"
-	)
 
-	plot_multidata_histogram(
-		data_dict = dict_m_t_compact,
-		fixed_bins = np.arange(100,340,10),
-		stacked = False,
-		normalized = True,
-		label_additions = [
-			len(dict_m_w_compact["6 Jets"]),
-			len(dict_m_w_compact["7 Jets"]),
-			len(dict_m_w_compact["8 Jets"]),
-			len(dict_m_w_compact["9+ Jets"])
-		],
-		title = "Reconstructed Top Quark Mass by Jets, Normalized, Yields Given",
-		xlabel = "Mass in GeV",
-		ylabel = "Number of Events",
-		file_name = "multidata_m_t_by_jets"
-	)
-
-	# plot reconstructed mass in respect to higgs decay mode
-	plot_multidata_histogram(
-		data_dict = dict_m_w_decay_mode,
-		fixed_bins = np.arange(20,200,10),
-		stacked = False,
-		normalized = True,
-		title = "Reconstructed Top Quark Mass by Higgs Decay Mode, Normalized",
-		xlabel = "Mass in GeV",
-		ylabel = "Number of Events",
-		file_name = "multidata_m_t_by_decay_mode"
-	)
 
 
 def plot_bar(data, categories, custom_xlims=None, custom_ylims=None, title='Bar Plot', xlabel='x-axis', ylabel='y-axis', width=0.35, file_name=None):	
@@ -376,7 +261,7 @@ def plot_grouped_bar(data1, data2, categories, title='Grouped Bar Plot', xlabel=
 
 
 
-def plot_histogram(data, bins=[], title='Histogram', xlabel="x-axis", ylabel="y-axis", yscale="linear", file_name=None):	
+def plot_histogram(data, bins=[], normalized=False, title='Histogram', xlabel="x-axis", ylabel="y-axis", yscale="linear", file_name=None):	
 	"""
 	DESCRIPTION
 	Plots simple histrogram from data array. Bins must be array-like.
@@ -384,7 +269,7 @@ def plot_histogram(data, bins=[], title='Histogram', xlabel="x-axis", ylabel="y-
 	
 	# creates histogram
 	data = np.clip(data, bins[0], bins[-1])
-	plt.hist(data, bins=bins, range=(bins[0], bins[-1]), color=COLORS[0], alpha=0.7, edgecolor="black")
+	plt.hist(data, bins=bins, density=normalized, range=(bins[0], bins[-1]), color=COLORS[0], alpha=0.7, edgecolor="black")
 
 
     # customize plot
