@@ -1,10 +1,8 @@
 import numpy as np
-
-import module_plot as plot
+import module_histograms as histogram
 
 
 OUTPUT_DESTINATION = "./"
-
 LABELS= {
 	0 : r"$bb$",
 	1 : r"$ee$",
@@ -16,30 +14,6 @@ LABELS= {
 	8 : r"Other",
 }
 
-
-
-class ContainerMassWDecayMode:
-	def __init__(self, data, decay_mode_id):
-		self.data = data
-		self.decay_mode_id = decay_mode_id
-
-	def plot_histogram(self):
-		source = plot.HistogramSource(
-			data = self.data, 
-			label = "yield = "+str(len(self.data))
-		)
-
-		options = plot.HistogramOptions(
-			bins = np.arange(20,200,10), 
-			title = "Reconstructed Mass of W-Boson for " + LABELS[self.decay_mode_id] + " H Decay Mode (normalized)",
-			x_label = r"$M_\text{reco}$ in GeV",
-			y_label = r"Fraction of Events",
-			normalize = True,
-			file_destination = OUTPUT_DESTINATION + "mass_higgs_dm_" + str(self.decay_mode_id) +".png"
-		)
-		
-		plot.histogram(source, options)
-	
 
 
 def check_higgs_decay_modes(root_file):
@@ -66,13 +40,25 @@ def check_higgs_decay_modes(root_file):
 
 	containers = []
 	for (dm_id, masses) in recos_by_dm_id.items():
-		container = ContainerMassWDecayMode(masses, dm_id)
-		container.plot_histogram()
-		containers.append(container)	
+		source = histogram.HistogramSource(
+			data = masses, 
+			label = "yield = "+str(len(masses))
+		)
+
+		options = histogram.HistogramOptions(
+			bins = np.arange(20,200,10), 
+			title = "Reconstructed Mass of W-Boson for " + LABELS[dm_id] + " H Decay Mode (normalized)",
+			x_label = r"$M_\text{reco}$ in GeV",
+			y_label = r"Fraction of Events",
+			normalize = True,
+			file_destination = OUTPUT_DESTINATION + "mass_higgs_dm_" + str(dm_id) +".png"
+		)
+		
+		histogram.plot_single_dataset(source, options)
 
 
 
-def verify(root_file, output_destination):
+def plot(root_file, output_destination):
 	global OUTPUT_DESTINATION
 	OUTPUT_DESTINATION = output_destination
 	check_higgs_decay_modes(root_file)

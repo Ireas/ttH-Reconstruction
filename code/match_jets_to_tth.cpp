@@ -33,6 +33,7 @@ using namespace ROOT::Math::VectorUtil;
 // ==========  CONSTANTS  ==========
 // =================================
 const float DELTA_R_THRESHOLD = 0.4;
+const float DELTA_PT_THRESHOLD = 30e3;
 const int MAX_NUMBER_OF_EVENTS = 1e5; // set to 0 for no limit
 const plog::Severity LOG_LEVEL = plog::Severity::verbose; // set logger output severity filter
 
@@ -67,6 +68,14 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = { // put into array for ea
 	"truth_tbar_m",
 	"truth_W_from_t_m",
 	"truth_W_from_tbar_m",
+	"reconstructed_t_pt",
+	"reconstructed_tbar_pt",
+	"reconstructed_W_from_t_pt",
+	"reconstructed_W_from_tbar_pt",
+	"truth_t_pt",
+	"truth_tbar_pt",
+	"truth_W_from_t_pt",
+	"truth_W_from_tbar_pt",
 	"successful_reconstruction",
 	"higgs_decay_mode_custom",
 };
@@ -155,6 +164,8 @@ bool CheckReconstruction(PtEtaPhiEVector tLvec, PtEtaPhiEVector tBarLvev);
 
 float RenameFloat(float target);
 float GetMass(PtEtaPhiEVector lvec);
+float GetPt(PtEtaPhiEVector lvec);
+bool ComparePt(float recoLvecPt, float truthLvecPt);
 
 
 
@@ -318,32 +329,45 @@ int main(){
 		GetMass,
 		{"reconstructed_t_lvec"}
 	);
-
 	rLoopManagerFiltered = rLoopManagerFiltered.Define(
 		"reconstructed_tbar_m",
 		GetMass,
 		{"reconstructed_tbar_lvec"}
 	);
-
 	rLoopManagerFiltered = rLoopManagerFiltered.Define(
 		"reconstructed_W_from_t_m",
 		GetMass,
 		{"reconstructed_W_from_t_lvec"}
 	);
-
 	rLoopManagerFiltered = rLoopManagerFiltered.Define(
 		"reconstructed_W_from_tbar_m",
 		GetMass,
 		{"reconstructed_W_from_tbar_lvec"}
 	);
 
-
-	// check if event is fully reconstructed
+	// get pt from reconstruced object
 	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"successful_reconstruction",
-		CheckReconstruction,
-		{"reconstructed_t_lvec", "reconstructed_tbar_lvec"}
+		"reconstructed_t_pt",
+		GetPt,
+		{"reconstructed_t_lvec"}
 	);
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"reconstructed_tbar_pt",
+		GetPt,
+		{"reconstructed_tbar_lvec"}
+	);
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"reconstructed_W_from_t_pt",
+		GetPt,
+		{"reconstructed_W_from_t_lvec"}
+	);
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"reconstructed_W_from_tbar_pt",
+		GetPt,
+		{"reconstructed_W_from_tbar_lvec"}
+	);
+
+
 	 
 
 
@@ -367,6 +391,41 @@ int main(){
 		"truth_W_from_tbar_m",
 		RenameFloat,
 		{"truth.Tth_MC_W_from_tbar_m"}
+	);
+	
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"truth_t_pt",
+		RenameFloat,
+		{"truth.Tth_MC_t_afterFSR_pt"}
+	);
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"truth_tbar_pt",
+		RenameFloat,
+		{"truth.Tth_MC_tbar_afterFSR_pt"}
+	);
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"truth_W_from_t_pt",
+		RenameFloat,
+		{"truth.Tth_MC_W_from_t_pt"}
+	);
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"truth_W_from_tbar_pt",
+		RenameFloat,
+		{"truth.Tth_MC_W_from_tbar_pt"}
+	);
+
+	// test pt variation
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"__",
+		ComparePt,
+		{"reconstructed_W_from_t_pt", "truth_W_from_t_pt"}
+	);
+
+	// check if event is fully reconstructed
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"successful_reconstruction",
+		CheckReconstruction,
+		{"reconstructed_t_lvec", "reconstructed_tbar_lvec"}
 	);
 
 
@@ -455,7 +514,8 @@ int GenerateJetPotentialMatchMask(PtEtaPhiEVector jetLvec, vector<PtEtaPhiMVecto
 	// iterate all truth objects
 	for(int i=0; i<truthLvecs.size(); i++){ // i equals the corresponding TRUTH_MATCH_VALUE
 		float currentDeltaR = DeltaR(jetLvec, truthLvecs[i]);
-		if(currentDeltaR<=DELTA_R_THRESHOLD)
+		float currentDeltaPt = jetLvec.Pt() - truthLvecs[i].Pt();
+		if(currentDeltaR<=DELTA_R_THRESHOLD && abs(currentDeltaPt)<DELTA_PT_THRESHOLD)
 			jetPotentialMatchMask+= 1<<i;
 	}
 
@@ -710,3 +770,10 @@ bool CheckReconstruction(PtEtaPhiEVector tLvec, PtEtaPhiEVector tBarLvec){
 float RenameFloat(float target){return target;}
 
 float GetMass(PtEtaPhiEVector lvec){return lvec.M();}
+float GetPt(PtEtaPhiEVector lvec){return lvec.Pt();}
+bool ComparePt(float recoLvecPt, float truthLvecPt){
+	if( abs(recoLvecPt-truthLvecPt)>DELTA_PT_THRESHOLD )
+		cout << "diff " << recoLvecPt-truthLvecPt << " | " << abs(recoLvecPt-truthLvecPt) << endl;
+
+	return true;
+}

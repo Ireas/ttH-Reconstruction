@@ -1,5 +1,5 @@
 import numpy as np
-import module_plot as plot
+import module_histograms as histogram
 
 
 OUTPUT_DESTINATION = "./"
@@ -10,30 +10,6 @@ LABELS = {
 	8: r"8 Jets",
 }
 
-
-
-class ContainerMassW:
-	def __init__(self, data, jet_multiplicity):
-		self.data = data
-		self.jet_multiplicity = jet_multiplicity
-
-	def plot_histogram(self):
-		source = plot.HistogramSource(
-			data = self.data,
-			label = "yield = "+str(len(self.data))
-		)
-
-		options = plot.HistogramOptions(
-			bins = np.arange(20,200,10),
-			title = "Reconstructed Mass of W-Boson for " + LABELS[self.jet_multiplicity] + " (normalized)",
-			x_label = r"$M_\text{reco}$ in GeV",
-			y_label = r"Fraction of Events",
-			normalize = True,
-			file_destination= OUTPUT_DESTINATION + "mass_njets_" + str(self.jet_multiplicity) +".png"
-		)
-
-		plot.histogram(source, options)
-	
 
 
 def plot_number_of_jets(root_file):
@@ -73,12 +49,25 @@ def plot_number_of_jets(root_file):
 		
 	# create and plot containers
 	for (jet_multiplicity, masses) in recos_by_jet_multiplicity_reduced.items():
-		container = ContainerMassW(masses, jet_multiplicity)
-		container.plot_histogram()
+		source = histogram.HistogramSource(
+			data = masses,
+			label = "yield = "+str(len(masses))
+		)
+
+		options = histogram.HistogramOptions(
+			bins = np.arange(20,200,10),
+			title = "Reconstructed Mass of W-Boson for " + LABELS[jet_multiplicity] + " (normalized)",
+			x_label = r"$M_\text{reco}$ in GeV",
+			y_label = r"Fraction of Events",
+			normalize = True,
+			file_destination= OUTPUT_DESTINATION + "mass_njets_" + str(jet_multiplicity) +".png"
+		)
+
+		histogram.plot_single_dataset(source, options)
 
 
 
-def verify(root_file, output_destination):
+def plot(root_file, output_destination):
 	global OUTPUT_DESTINATION 
 	OUTPUT_DESTINATION = output_destination
 	plot_number_of_jets(root_file)

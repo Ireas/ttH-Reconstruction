@@ -1,5 +1,5 @@
 import numpy as np
-import module_plot as plot
+import module_histograms as histogram
 
 
 OUTPUT_DESTINATION = "./"
@@ -9,30 +9,6 @@ LABELS = {
 	7: r"7 Jets",
 	8: r"8 Jets",
 }
-
-
-
-class ContainerMassW:
-	def __init__(self, data):
-		self.data = data
-
-	def plot_histogram(self):
-		source = plot.HistogramSource(
-			data = self.data,
-			label = "yield = "+str(len(self.data))
-		)
-
-		options = plot.HistogramOptions(
-			bins = np.arange(-50, 120, 10),
-			title = "Mass Difference of Reconstructed W-Boson",
-			x_label = r"$\Delta M_\text{reco}$ in GeV",
-			y_label = r"Number of Events",
-			normalize = False,
-			file_destination= OUTPUT_DESTINATION + "mass_w_delta.png"
-		)
-
-		plot.histogram(source, options)
-	
 
 
 def plot_mass_difference(root_file):
@@ -58,12 +34,25 @@ def plot_mass_difference(root_file):
 	
 		
 	# create and plot containers
-	container = ContainerMassW(mass_difference_w)
-	container.plot_histogram()
+	source = histogram.HistogramSource(
+		data = mass_difference_w,
+		label = "yield = "+str(len(mass_difference_w))
+	)
+
+	options = histogram.HistogramOptions(
+		bins = np.arange(-50, 120, 10),
+		title = "Mass Difference of Reconstructed W-Boson",
+		x_label = r"$\Delta M_\text{reco}$ in GeV",
+		y_label = r"Number of Events",
+		normalize = False,
+		file_destination= OUTPUT_DESTINATION + "mass_w_delta.png"
+	)
+
+	histogram.plot_single_dataset(source, options)
 
 
 
-def verify(root_file, output_destination):
+def plot(root_file, output_destination):
 	global OUTPUT_DESTINATION 
 	OUTPUT_DESTINATION = output_destination
 	plot_mass_difference(root_file)

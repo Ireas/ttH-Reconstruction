@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-COLOR = [
+COLORS = [
     '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
     '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf',
     '#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5',
@@ -31,7 +31,7 @@ class HistogramOptions:
 		self.show_plot = show_plot
 
 
-def histogram(source, options):
+def plot_single_dataset(source, options):
 	# Preprocessing
 	if source==None or not isinstance(source, HistogramSource):
 		raise ValueError("Error: Source not properly set.")
@@ -43,7 +43,7 @@ def histogram(source, options):
 	# Plotting
 	plt.figure()
 
-	plt.hist(data, bins=options.bins, density=options.normalize, label=source.label, edgecolor='black', alpha=0.8, color=COLOR[0])
+	plt.hist(data, bins=options.bins, density=options.normalize, label=source.label, edgecolor='black', alpha=0.8, color=COLORS[0])
 
 	
 	# Customize
