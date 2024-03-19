@@ -1,0 +1,13 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}The Standard Model of Particle Physics}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Characteristics of the Top Quark}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Effective Field Theory}{4}{section.2.2}%
+\contentsline {chapter}{\numberline {3}Experimental Setup}{7}{chapter.3}%
+\contentsline {chapter}{\numberline {4}Methods}{9}{chapter.4}%
+\contentsline {section}{\numberline {4.1}SPANet}{9}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Neutrino Weighting}{9}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Current Status}{11}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Outlook}{13}{chapter.6}%
+\contentsline {section}{\numberline {6.1}ttH}{13}{section.6.1}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

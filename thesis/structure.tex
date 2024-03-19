@@ -1,0 +1,85 @@
+%  =================================================================================  %
+%  ==========  PACKAGES  ===========================================================  %
+%  =================================================================================  %
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{lmodern}
+\usepackage{calc}
+\usepackage{float}
+\usepackage{setspace}
+
+\usepackage{svg}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{subfigure}
+\usepackage{floatflt}
+\usepackage[it, bf]{caption}
+\graphicspath{{./}{./figures/}{./logos/}}
+
+\newcommand{\tabheadfont}[1]{\textbf{#1}}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hhline}
+
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{units} 
+
+\usepackage[comma,numbers,sort&compress]{natbib}
+\bibliographystyle{bthesis_raschke}
+% \bibliographystyle{plainnat}
+
+\usepackage{blindtext}
+\usepackage{xspace}
+\usepackage[pdfstartview=FitH, 
+            breaklinks=true,
+            bookmarksopen=true,
+            bookmarksnumbered=true 
+]{hyperref}
+
+
+%  =================================================================================  %
+%  ==========  PAGE SETUP  =========================================================  %
+%  =================================================================================  %
+\pagestyle{headings}
+
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+\setlength{\topmargin}{-1cm}
+\setlength{\textheight}{23cm}
+\setlength{\textwidth}{16cm}
+
+\renewcommand{\sectfont}{\bfseries\rmfamily}
+\renewcommand{\floatpagefraction}{0.7}
+\renewcommand{\textfraction}{0.1}
+
+
+%  =================================================================================  %
+%  ==========  COLOURS  ============================================================  %
+%  =================================================================================  %
+\definecolor{highlight}{RGB}{200, 210, 215}
+
+
+%  =================================================================================  %
+%  ==========  TABLES  =============================================================  %
+%  =================================================================================  %
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{?}{!{\vrule width .1mm}}
+\newcolumntype{V}{!{\vrule width .3mm}}
+
+
+%  =================================================================================  %
+%  ==========  Patches  ============================================================  %
+%  =================================================================================  %
+\makeatletter
+\g@addto@macro\bfseries{\boldmath} %Patch math in Section/Capter title
+\makeatother

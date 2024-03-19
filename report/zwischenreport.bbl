@@ -1,0 +1,66 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem{qcd}
+{M. Gell-Mann}, \emph{The Eightfold Way: A Theory of strong interaction symmetry}, California Institute of Technology  (1961)
+
+\bibitem{qed01}
+{A. Salam}, \emph{Weak and Electromagnetic Interactions}, Conf. Proc. C. \textbf{680519} (1968)
+
+\bibitem{qed02}
+{S. Weinberg}, \emph{A Model of Leptons}, Phys. Rev. Lett. \textbf{19} (1967)
+
+\bibitem{qed03}
+{S. L. Glashow}, \emph{Partial Symmetries of Weak Interactions}, J. Phys. G. \textbf{22} (1961)
+
+\bibitem{qft}
+C.~Jarlskog, \emph{Quantum flavour dynamics}, Phys. Scrs \textbf{24(5)} (1981)
+
+\bibitem{higgs_mechanism_1}
+{P. W. Higgs}, \emph{Broken Symmetries and the Masses of Gauge Bosons}, Phys. Rev. Lett. \textbf{13} (1964)
+
+\bibitem{higgs_mechanism_2}
+{F. Englert and R. Brout}, \emph{Broken Symmetry and the Mass of Gauge Vector Mesons}, Phys. Rev. Lett. \textbf{13} (1964)
+
+\bibitem{higgs_mechanism_3}
+{G. S. Guralnik, C. R. Hagen and T. W. B. Kibble}, \emph{Global Conservation Laws and Massless Particles}, Phys. Rev. Lett. \textbf{13} (1964)
+
+\bibitem{neutrino_oscillation}
+{SNO Collaboration}, \emph{Direct Evidence for Neutrino Flavor Transformation from Neutral-Current Interactions in the Sudbury Neutrino Observatory}, Phys. Rev. Lett. \textbf{89} (2002)
+
+\bibitem{dark_matter}
+{F. Zwicky}, \emph{{Die Rotverschiebung von extragalaktischen Nebeln}}, Helv. Phys. Acta \textbf{6} (1933)
+
+\bibitem{top_production01}
+{{CDF Collaboration}}, \emph{{Observation of top quark production in $\bar{p}p$ collisions}}, Phys. Rev. Lett. \textbf{74} (1995)
+
+\bibitem{top_production02}
+{{D{\O} Collaboration}}, \emph{{Observation of the top quark}}, Phys. Rev. Lett. \textbf{74} (1995)
+
+\bibitem{top_mass}
+{ATLAS Collaboration}, \emph{{Measurement of the top quark mass in the $t\bar{t}\rightarrow $ lepton+jets channel from $\sqrt{s}=8$ TeV ATLAS data and combination with previous results}}, Eur. Phys. J. C \textbf{79(4)} (2019)
+
+\bibitem{ckm_matrix}
+{N. Cabibbo}, \emph{Unitary Symmetry and Leptonic Decays}, Phys. Rev. Lett. \textbf{10} (1963)
+
+\bibitem{eft_operatorlist}
+{D. Barducci et al.}, \emph{{Interpreting top-quark LHC measurements in the standard-model effective field theory}}  (2018), \eprint{1802.07237}
+
+\bibitem{eft_introduction}
+{B. Grzadkowski et al.}, \emph{{Dimension-Six Terms in the Standard Model Lagrangian}}, JHEP \textbf{10} (2010), \eprint{1008.4884}
+
+\bibitem{lhc2}
+{L. R. Evans}, \emph{The Large Hadron Collider (LHC)}, Eur. Phys. J. C \textbf{34} (2004)
+
+\bibitem{lhc_run3}
+{N. Karastathis et al.}, \emph{{LHC Run 3 Configuration Working Group Report}}  (2019)
+
+\bibitem{atlas}
+{ATLAS Collaboration}, \emph{The ATLAS experiment at the CERN large hadron collider}, JINST \textbf{3(S08003)} (2008)
+
+\bibitem{atlas_calorimeter}
+{ATLAS Collaboration}, \emph{{ATLAS Calorimeter: Run 2 performance and Phase-II upgrades}}, PoS \textbf{EPS-HEP2017} (2017)
+
+\end{thebibliography}
