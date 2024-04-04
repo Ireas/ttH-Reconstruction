@@ -1,0 +1,36 @@
+\graphicspath{{./figures/}{./}}
+
+
+
+
+
+
+%\usetikzlibrary{calc}
+
+% Nasty command to get a nice overline in math mode
+\newcommand\Overline[2][1pt]{%
+  \begin{tikzpicture}[baseline=(a.base)]
+    \node[inner xsep=0pt,inner ysep=1.5pt] (a) {$#2$};
+    \draw[line width= #1] (a.north west) -- (a.north east);
+  \end{tikzpicture}
+}
+
+% Same for text mode (lemme know if you know a way for LaTeX to automatically check the mode, then these can be combined into one command!
+\newcommand\textoverline[2][0.05em]{%
+  \kern-0.05em
+  \begin{tikzpicture}[baseline=(a.base)]
+    \node[inner xsep=0pt,inner ysep=1.5pt] (a) {#2};
+    \draw[line width= #1] ([yshift=0ex]a.north west) -- ([yshift=0ex]a.north east);
+  \end{tikzpicture}
+  \kern-0.37em
+}
+
+% Same for bold text (again, lemme know if there is a way to figure out text environments for combining these commands :D)
+\newcommand{\textboldoverline}[2][0.07em]{
+  \kern-0.35em
+  \begin{tikzpicture}[baseline=(a.base)]
+    \node[outer xsep=0pt, inner xsep=0pt,inner ysep=1.5pt] (a) {#2};
+    \draw[line width= #1] (a.north west) -- (a.north east);
+  \end{tikzpicture}
+  \kern-0.35em
+}

@@ -3,47 +3,61 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: zwischenreport.aux
 The style file: datenbank.bst
 Database file #1: datenbank.bib
-Warning--empty journal in eft_operatorlist
-Warning--empty journal in lhc_run3
-You've used 20 entries,
+Warning--empty author in lhc_01
+Warning--empty journal in lhc_run1
+Warning--empty journal in lhc_run2
+Warning--missing institution in lhc_run3
+Warning--empty journal in atlas:tech_design_report_01
+Warning--empty journal in atlas:tech_design_report_02
+Warning--empty journal in atlas:tech_design_report_inner_01
+Warning--empty journal in atlas:tech_design_report_inner_02
+Warning--empty journal in atlas:pixel_detector
+Warning--empty journal in atlas:strip_detector
+Warning--empty author in atlas:muon_chamber
+Warning--empty journal in atlas:muon_chamber
+Warning--empty journal in atlas:muon_chamber_upgrade
+Warning--missing institution in atlas:new_small_wheel
+Warning--empty journal in atlas:trigger_lvl_1
+Warning--empty journal in atlas:trigger_lvl_high
+You've used 70 entries,
             2352 wiz_defined-function locations,
-            628 strings with 6203 characters,
-and the built_in function-call counts, 4743 in all, are:
-= -- 211
-> -- 80
-< -- 0
-+ -- 40
-- -- 20
-* -- 254
-:= -- 525
+            817 strings with 11109 characters,
+and the built_in function-call counts, 16012 in all, are:
+= -- 654
+> -- 274
+< -- 3
++ -- 138
+- -- 68
+* -- 808
+:= -- 1703
 add.period$ -- 0
-call.type$ -- 20
-change.case$ -- 0
+call.type$ -- 70
+change.case$ -- 2
 chr.to.int$ -- 0
-cite$ -- 22
-duplicate$ -- 698
-empty$ -- 624
-format.name$ -- 20
-if$ -- 1032
+cite$ -- 86
+duplicate$ -- 2332
+empty$ -- 2204
+format.name$ -- 68
+if$ -- 3527
 int.to.chr$ -- 0
-int.to.str$ -- 20
-missing$ -- 157
-newline$ -- 66
-num.names$ -- 20
-pop$ -- 265
+int.to.str$ -- 70
+missing$ -- 528
+newline$ -- 216
+num.names$ -- 68
+pop$ -- 1011
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 119
+skip$ -- 417
 stack$ -- 0
 substring$ -- 0
-swap$ -- 323
-text.length$ -- 0
+swap$ -- 1014
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 2
-while$ -- 20
-width$ -- 22
-write$ -- 182
-(There were 2 warnings)
+warning$ -- 16
+while$ -- 68
+width$ -- 72
+write$ -- 591
+(There were 16 warnings)

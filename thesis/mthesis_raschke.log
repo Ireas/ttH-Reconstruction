@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.29)  19 MAR 2024 16:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.29)  21 MAR 2024 11:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -790,7 +790,6 @@ LaTeX Info: Redefining \ohm on input line 11.
 Package gensymb Info: Using \textohm for \ohm on input line 11.
 Package gensymb Info: Using \textmu for \micro on input line 11.
 Package hyperref Info: Link coloring OFF on input line 11.
- (./mthesis_raschke.out) (./mthesis_raschke.out)
 \@outlinefile=\write4
 \openout4 = `mthesis_raschke.out'.
 
@@ -856,19 +855,34 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 
 
 
-{c:/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc} <./logos/Logo_Uni_Goettingen.pdf> <./logos/Logo_Physik_links.pdf>] [2
+{c:/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc} <./logos/Logo_Uni_Goettingen.pdf> <./logos/Logo_Physik_links.pdf>]
+
+d:/Masters-Thesis/thesis/mthesis_raschke.tex:29: Package inputenc Error: Keyboard character used is undefined
+(inputenc)                in inputencoding `latin1'.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.29 ...n mit einem $Z$/$W$-Boson in Regionen auß
+                                                  erhalb der Massenschale. D...
+You need to provide a definition with \DeclareInputText 
+or \DeclareInputMath before using this key.
+
+[2
 
 
-{c:/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}] (./mthesis_raschke.toc)
+{c:/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}]
+No file mthesis_raschke.toc.
 \tf@toc=\write5
 \openout5 = `mthesis_raschke.toc'.
 
- [3
+[3
 
 
 
 
-{c:/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
+]
 chapter 1.
 
 Class scrbook Warning: \float@addtolists detected!
@@ -889,7 +903,32 @@ Class scrbook Warning: \float@addtolists detected!
 
 
 
-] [2]
+]
+
+LaTeX Warning: Reference `ch:standard_model' on page 2 undefined on input line 79.
+
+
+LaTeX Warning: Reference `ch:experimental_setup' on page 2 undefined on input line 79.
+
+
+LaTeX Warning: Reference `ch:region_definition' on page 2 undefined on input line 79.
+
+
+LaTeX Warning: Reference `ch:neural_networks' on page 2 undefined on input line 79.
+
+
+LaTeX Warning: Reference `ch:theoretical_and_experimental_systematic_uncertainties' on page 2 undefined on input line 79.
+
+
+LaTeX Warning: Reference `ch:measurements_of_the_inclusive_cross_section' on page 2 undefined on input line 79.
+
+
+LaTeX Warning: Reference `ch:eft_sensitivity' on page 2 undefined on input line 79.
+
+
+LaTeX Warning: Reference `ch:conclusion' on page 2 undefined on input line 79.
+
+[2]
 chapter 2.
 
 Package natbib Warning: Citation `qcd' on page 3 undefined on input line 86.
@@ -929,6 +968,9 @@ Package natbib Warning: Citation `dark_matter' on page 3 undefined on input line
 
 {c:/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
 
+LaTeX Warning: Reference `fig:standard_model' on page 4 undefined on input line 95.
+
+
 Package natbib Warning: Citation `qed03' on page 4 undefined on input line 97.
 
 Package epstopdf Info: Source file: <figures/theory/standard_model.eps>
@@ -940,7 +982,7 @@ Package epstopdf Info: Source file: <figures/theory/standard_model.eps>
 (epstopdf)             Command: <repstopdf --outfile=figures/theory/standard_model-eps-converted-to.pdf figures/theory/standard_model.eps>
 (epstopdf)             \includegraphics on input line 105.
 Package epstopdf Info: Output file is already uptodate.
-<figures/theory/standard_model-eps-converted-to.pdf, id=123, 1014.79124pt x 927.465pt>
+<figures/theory/standard_model-eps-converted-to.pdf, id=71, 1014.79124pt x 927.465pt>
 File: figures/theory/standard_model-eps-converted-to.pdf Graphic file (type pdf)
 <use figures/theory/standard_model-eps-converted-to.pdf>
 Package pdftex.def Info: figures/theory/standard_model-eps-converted-to.pdf  used on input line 105.
@@ -960,7 +1002,10 @@ Package natbib Warning: Citation `top_mass' on page 4 undefined on input line 11
 
 Package natbib Warning: Citation `ckm_matrix' on page 4 undefined on input line 111.
 
-[4]
+
+LaTeX Warning: Reference `fig:production_ttz_ttw' on page 4 undefined on input line 126.
+
+[4{c:/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <17.28> on input line 128.
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -990,16 +1035,25 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 128.
 
+
+LaTeX Warning: Reference `fig:production_ttz_ttw' on page 5 undefined on input line 130.
+
+
+LaTeX Warning: Reference `tab:decay_modes_ttz_ttW' on page 5 undefined on input line 130.
+
 [5 <./figures/theory/standard_model-eps-converted-to.pdf>]
+
+LaTeX Warning: Reference `fig:production_ttz_ttw' on page 6 undefined on input line 134.
+
 
 Package natbib Warning: Citation `sm_eft_top' on page 6 undefined on input line 136.
 
-<figures/theory/ttZ_feynman.png, id=152, 1368.11125pt x 731.73375pt>
+<figures/theory/ttZ_feynman.png, id=98, 1368.11125pt x 731.73375pt>
 File: figures/theory/ttZ_feynman.png Graphic file (type png)
 <use figures/theory/ttZ_feynman.png>
 Package pdftex.def Info: figures/theory/ttZ_feynman.png  used on input line 140.
 (pdftex.def)             Requested size: 182.09485pt x 97.38412pt.
-<figures/theory/ttW_feynman.png, id=154, 1341.01pt x 798.985pt>
+<figures/theory/ttW_feynman.png, id=100, 1341.01pt x 798.985pt>
 File: figures/theory/ttW_feynman.png Graphic file (type png)
 <use figures/theory/ttW_feynman.png>
 Package pdftex.def Info: figures/theory/ttW_feynman.png  used on input line 141.
@@ -1020,6 +1074,12 @@ Package natbib Warning: Citation `higgs_mechanism_1' on page 7 undefined on inpu
 
 Package natbib Warning: Citation `eft_operatorlist' on page 7 undefined on input line 175.
 
+
+LaTeX Warning: Reference `eq:SM-EFT' on page 7 undefined on input line 179.
+
+
+LaTeX Warning: Reference `ch:eft_sensitivity' on page 7 undefined on input line 179.
+
 [7]
 chapter 3.
 
@@ -1031,7 +1091,10 @@ Package natbib Warning: Citation `lhc_run3' on page 8 undefined on input line 18
 
 Package natbib Warning: Citation `atlas' on page 8 undefined on input line 188.
 
-<figures/atlas/atlas3.png, id=172, 1093.08376pt x 1084.05pt>
+
+LaTeX Warning: Reference `fig:atlas' on page 8 undefined on input line 188.
+
+<figures/atlas/atlas3.png, id=118, 1093.08376pt x 1084.05pt>
 File: figures/atlas/atlas3.png Graphic file (type png)
 <use figures/atlas/atlas3.png>
 Package pdftex.def Info: figures/atlas/atlas3.png  used on input line 192.
@@ -1050,12 +1113,15 @@ Package natbib Warning: Citation `atlas' on page 8 undefined on input line 200.
 Package natbib Warning: Citation `atlas' on page 9 undefined on input line 202.
 
 
+LaTeX Warning: Reference `fig:atlas' on page 9 undefined on input line 205.
+
+
 Package natbib Warning: Citation `atlas_calorimeter' on page 9 undefined on input line 205.
 
 
 Package natbib Warning: Citation `atlas_calorimeter' on page 9 undefined on input line 207.
 
-[9{c:/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc} <./figures/atlas/atlas3.png>]
+[9 <./figures/atlas/atlas3.png>]
 
 Package natbib Warning: Citation `atlas_calorimeter' on page 10 undefined on input line 209.
 
@@ -1070,21 +1136,51 @@ chapter 4.
 
 Package natbib Warning: Citation `algorithm_transfod' on page 11 undefined on input line 223.
 
+
+LaTeX Warning: Reference `sec:theory_ttZ_ttW' on page 11 undefined on input line 246.
+
 [11
 
 
 ]
-<./figures/initial_config/separation/_hiZ_sep_eT_miss.pdf, id=203, 569.12625pt x 553.06625pt>
+
+LaTeX Warning: Reference `fig:InitialSeparationPlotsETMissdR' on page 12 undefined on input line 254.
+
+
+LaTeX Warning: Reference `fig:InitialSeparationPlotsETMissdR' on page 12 undefined on input line 254.
+
+
+LaTeX Warning: Reference `tab:Regions' on page 12 undefined on input line 254.
+
+
+LaTeX Warning: Reference `tab:Yields' on page 12 undefined on input line 254.
+
+<./figures/initial_config/separation/_hiZ_sep_eT_miss.pdf, id=145, 569.12625pt x 553.06625pt>
 File: ./figures/initial_config/separation/_hiZ_sep_eT_miss.pdf Graphic file (type pdf)
 <use ./figures/initial_config/separation/_hiZ_sep_eT_miss.pdf>
 Package pdftex.def Info: ./figures/initial_config/separation/_hiZ_sep_eT_miss.pdf  used on input line 276.
 (pdftex.def)             Requested size: 182.09485pt x 176.95949pt.
-<./figures/initial_config/separation/_hiZ_sep_dRllz1_dR.pdf, id=204, 569.12625pt x 553.06625pt>
+<./figures/initial_config/separation/_hiZ_sep_dRllz1_dR.pdf, id=146, 569.12625pt x 553.06625pt>
 File: ./figures/initial_config/separation/_hiZ_sep_dRllz1_dR.pdf Graphic file (type pdf)
 <use ./figures/initial_config/separation/_hiZ_sep_dRllz1_dR.pdf>
 Package pdftex.def Info: ./figures/initial_config/separation/_hiZ_sep_dRllz1_dR.pdf  used on input line 277.
 (pdftex.def)             Requested size: 182.09485pt x 176.95949pt.
- [12]
+
+LaTeX Warning: Reference `sec:NeuralNetworkArchitecture' on page 12 undefined on input line 285.
+
+
+LaTeX Warning: Reference `fig:Final2DSeparationPlots' on page 12 undefined on input line 287.
+
+
+LaTeX Warning: Reference `fig:Final2DSeparationPlots' on page 12 undefined on input line 287.
+
+[12]
+
+LaTeX Warning: Reference `tab:Regions' on page 13 undefined on input line 289.
+
+
+LaTeX Warning: Reference `tab:Yields' on page 13 undefined on input line 289.
+
 Package epstopdf Info: Source file: <./figures/final_config/2d_mva/MyModel_ttZ_2DMVA.eps>
 (epstopdf)                    date: 2022-06-30 17:03:01
 (epstopdf)                    size: 175825 bytes
@@ -1094,7 +1190,7 @@ Package epstopdf Info: Source file: <./figures/final_config/2d_mva/MyModel_ttZ_2
 (epstopdf)             Command: <repstopdf --outfile=./figures/final_config/2d_mva/MyModel_ttZ_2DMVA-eps-converted-to.pdf ./figures/final_config/2d_mva/MyModel_ttZ_2DMVA.eps>
 (epstopdf)             \includegraphics on input line 307.
 Package epstopdf Info: Output file is already uptodate.
-<./figures/final_config/2d_mva/MyModel_ttZ_2DMVA-eps-converted-to.pdf, id=219, 569.12625pt x 409.53pt>
+<./figures/final_config/2d_mva/MyModel_ttZ_2DMVA-eps-converted-to.pdf, id=154, 569.12625pt x 409.53pt>
 File: ./figures/final_config/2d_mva/MyModel_ttZ_2DMVA-eps-converted-to.pdf Graphic file (type pdf)
 <use ./figures/final_config/2d_mva/MyModel_ttZ_2DMVA-eps-converted-to.pdf>
 Package pdftex.def Info: ./figures/final_config/2d_mva/MyModel_ttZ_2DMVA-eps-converted-to.pdf  used on input line 307.
@@ -1108,7 +1204,7 @@ Package epstopdf Info: Source file: <./figures/final_config/2d_mva/MyModel_ttW_2
 (epstopdf)             Command: <repstopdf --outfile=./figures/final_config/2d_mva/MyModel_ttW_2DMVA-eps-converted-to.pdf ./figures/final_config/2d_mva/MyModel_ttW_2DMVA.eps>
 (epstopdf)             \includegraphics on input line 308.
 Package epstopdf Info: Output file is already uptodate.
-<./figures/final_config/2d_mva/MyModel_ttW_2DMVA-eps-converted-to.pdf, id=220, 569.12625pt x 409.53pt>
+<./figures/final_config/2d_mva/MyModel_ttW_2DMVA-eps-converted-to.pdf, id=155, 569.12625pt x 409.53pt>
 File: ./figures/final_config/2d_mva/MyModel_ttW_2DMVA-eps-converted-to.pdf Graphic file (type pdf)
 <use ./figures/final_config/2d_mva/MyModel_ttW_2DMVA-eps-converted-to.pdf>
 Package pdftex.def Info: ./figures/final_config/2d_mva/MyModel_ttW_2DMVA-eps-converted-to.pdf  used on input line 308.
@@ -1122,7 +1218,7 @@ Package epstopdf Info: Source file: <./figures/final_config/2d_mva/MyModel_Fakes
 (epstopdf)             Command: <repstopdf --outfile=./figures/final_config/2d_mva/MyModel_Fakese(HF)_2DMVA-eps-converted-to.pdf ./figures/final_config/2d_mva/MyModel_Fakese(HF)_2DMVA.eps>
 (epstopdf)             \includegraphics on input line 310.
 Package epstopdf Info: Output file is already uptodate.
-<./figures/final_config/2d_mva/MyModel_Fakese(HF)_2DMVA-eps-converted-to.pdf, id=221, 569.12625pt x 409.53pt>
+<./figures/final_config/2d_mva/MyModel_Fakese(HF)_2DMVA-eps-converted-to.pdf, id=156, 569.12625pt x 409.53pt>
 File: ./figures/final_config/2d_mva/MyModel_Fakese(HF)_2DMVA-eps-converted-to.pdf Graphic file (type pdf)
 <use ./figures/final_config/2d_mva/MyModel_Fakese(HF)_2DMVA-eps-converted-to.pdf>
 Package pdftex.def Info: ./figures/final_config/2d_mva/MyModel_Fakese(HF)_2DMVA-eps-converted-to.pdf  used on input line 310.
@@ -1136,12 +1232,12 @@ Package epstopdf Info: Source file: <./figures/final_config/2d_mva/MyModel_Fakes
 (epstopdf)             Command: <repstopdf --outfile=./figures/final_config/2d_mva/MyModel_Fakesmu(HF)_2DMVA-eps-converted-to.pdf ./figures/final_config/2d_mva/MyModel_Fakesmu(HF)_2DMVA.eps>
 (epstopdf)             \includegraphics on input line 311.
 Package epstopdf Info: Output file is already uptodate.
-<./figures/final_config/2d_mva/MyModel_Fakesmu(HF)_2DMVA-eps-converted-to.pdf, id=222, 569.12625pt x 409.53pt>
+<./figures/final_config/2d_mva/MyModel_Fakesmu(HF)_2DMVA-eps-converted-to.pdf, id=157, 569.12625pt x 409.53pt>
 File: ./figures/final_config/2d_mva/MyModel_Fakesmu(HF)_2DMVA-eps-converted-to.pdf Graphic file (type pdf)
 <use ./figures/final_config/2d_mva/MyModel_Fakesmu(HF)_2DMVA-eps-converted-to.pdf>
 Package pdftex.def Info: ./figures/final_config/2d_mva/MyModel_Fakesmu(HF)_2DMVA-eps-converted-to.pdf  used on input line 311.
 (pdftex.def)             Requested size: 182.09485pt x 131.03352pt.
- [13 <./figures/initial_config/separation/_hiZ_sep_eT_miss.pdf, page is rotated 90 degrees> <./figures/initial_config/separation/_hiZ_sep_dRllz1_dR.pdf, page is rotated 90 degrees>] [14 <./figures/final_config/2d_mva/MyModel_ttZ_2DMVA-eps-converted-to.pdf> <./figures/final_config/2d_mva/MyModel_ttW_2DMVA-eps-converted-to.pdf> <./figures/final_config/2d_mva/MyModel_Fakese(HF)_2DMVA-eps-converted-to.pdf> <./figures/final_config/2d_mva/MyModel_Fakesmu(HF)_2DMVA-eps-converted-to.pdf>]
+[13 <./figures/initial_config/separation/_hiZ_sep_eT_miss.pdf, page is rotated 90 degrees> <./figures/initial_config/separation/_hiZ_sep_dRllz1_dR.pdf, page is rotated 90 degrees>] [14 <./figures/final_config/2d_mva/MyModel_ttZ_2DMVA-eps-converted-to.pdf> <./figures/final_config/2d_mva/MyModel_ttW_2DMVA-eps-converted-to.pdf> <./figures/final_config/2d_mva/MyModel_Fakese(HF)_2DMVA-eps-converted-to.pdf> <./figures/final_config/2d_mva/MyModel_Fakesmu(HF)_2DMVA-eps-converted-to.pdf>]
 chapter 5.
 
 Package natbib Warning: Citation `nn_application01' on page 15 undefined on input line 357.
@@ -1159,6 +1255,9 @@ Package natbib Warning: Citation `nn_hist01' on page 15 undefined on input line 
 Package natbib Warning: Citation `nn_hist02' on page 15 undefined on input line 360.
 
 
+LaTeX Warning: Reference `fig:NeuralNetwork' on page 15 undefined on input line 362.
+
+
 Package natbib Warning: Citation `nn_nodecalculation' on page 15 undefined on input line 362.
 
 
@@ -1172,6 +1271,9 @@ Package natbib Warning: Citation `nn_nodecalculation' on page 15 undefined on in
 Package natbib Warning: Citation `nn_nodecalculation' on page 16 undefined on input line 368.
 
 
+LaTeX Warning: Reference `fig:NeuralNetwork' on page 16 undefined on input line 368.
+
+
 Package natbib Warning: Citation `nn_activationfunction' on page 16 undefined on input line 368.
 
 
@@ -1180,7 +1282,7 @@ Package natbib Warning: Citation `nn_overfitting' on page 16 undefined on input 
 
 Package natbib Warning: Citation `nn_overfitting' on page 16 undefined on input line 370.
 
-<figures/neural_networks/nn_map.png, id=349, 264.99pt x 164.2938pt>
+<figures/neural_networks/nn_map.png, id=286, 264.99pt x 164.2938pt>
 File: figures/neural_networks/nn_map.png Graphic file (type png)
 <use figures/neural_networks/nn_map.png>
 Package pdftex.def Info: figures/neural_networks/nn_map.png  used on input line 375.
@@ -1190,7 +1292,7 @@ Overfull \hbox (9.10681pt too wide) in paragraph at lines 375--375
 []|[]| 
  []
 
-<figures/neural_networks/nn_node.png, id=350, 476.833pt x 283.86464pt>
+<figures/neural_networks/nn_node.png, id=287, 476.833pt x 283.86464pt>
 File: figures/neural_networks/nn_node.png Graphic file (type png)
 <use figures/neural_networks/nn_node.png>
 Package pdftex.def Info: figures/neural_networks/nn_node.png  used on input line 376.
@@ -1204,6 +1306,9 @@ Overfull \hbox (9.10683pt too wide) in paragraph at lines 376--377
 Overfull \hbox (1.2364pt too wide) in paragraph at lines 374--378
  [][] 
  []
+
+
+LaTeX Warning: Reference `sec:NeuralNetworkBasedRegionDefinition' on page 16 undefined on input line 385.
 
 
 Package natbib Warning: Citation `nn_keras' on page 16 undefined on input line 387.
@@ -1236,6 +1341,18 @@ Package natbib Warning: Citation `nn_parameters' on page 17 undefined on input l
 
 Package natbib Warning: Citation `nn_nodecalculation' on page 17 undefined on input line 391.
 
+
+LaTeX Warning: Reference `sec:theory_ttZ_ttW' on page 17 undefined on input line 395.
+
+
+LaTeX Warning: Reference `sec:CountAndCountBasedRegionDefinition' on page 17 undefined on input line 395.
+
+
+LaTeX Warning: Reference `sec:theory_ttZ_ttW' on page 17 undefined on input line 397.
+
+
+LaTeX Warning: Reference `fig:PermutationImportance' on page 17 undefined on input line 399.
+
 [17]
 Package epstopdf Info: Source file: <figures/neural_networks/output/MyModel_Permutation_ImportancettZ.eps>
 (epstopdf)                    date: 2022-07-01 12:06:57
@@ -1246,7 +1363,7 @@ Package epstopdf Info: Source file: <figures/neural_networks/output/MyModel_Perm
 (epstopdf)             Command: <repstopdf --outfile=figures/neural_networks/output/MyModel_Permutation_ImportancettZ-eps-converted-to.pdf figures/neural_networks/output/MyModel_Permutation_ImportancettZ.eps>
 (epstopdf)             \includegraphics on input line 403.
 Package epstopdf Info: Output file is already uptodate.
-<figures/neural_networks/output/MyModel_Permutation_ImportancettZ-eps-converted-to.pdf, id=367, 569.12625pt x 552.0625pt>
+<figures/neural_networks/output/MyModel_Permutation_ImportancettZ-eps-converted-to.pdf, id=301, 569.12625pt x 552.0625pt>
 File: figures/neural_networks/output/MyModel_Permutation_ImportancettZ-eps-converted-to.pdf Graphic file (type pdf)
 <use figures/neural_networks/output/MyModel_Permutation_ImportancettZ-eps-converted-to.pdf>
 Package pdftex.def Info: figures/neural_networks/output/MyModel_Permutation_ImportancettZ-eps-converted-to.pdf  used on input line 403.
@@ -1260,7 +1377,7 @@ Package epstopdf Info: Source file: <figures/neural_networks/output/MyModel_Perm
 (epstopdf)             Command: <repstopdf --outfile=figures/neural_networks/output/MyModel_Permutation_ImportancettW-eps-converted-to.pdf figures/neural_networks/output/MyModel_Permutation_ImportancettW.eps>
 (epstopdf)             \includegraphics on input line 404.
 Package epstopdf Info: Output file is already uptodate.
-<figures/neural_networks/output/MyModel_Permutation_ImportancettW-eps-converted-to.pdf, id=368, 569.12625pt x 552.0625pt>
+<figures/neural_networks/output/MyModel_Permutation_ImportancettW-eps-converted-to.pdf, id=302, 569.12625pt x 552.0625pt>
 File: figures/neural_networks/output/MyModel_Permutation_ImportancettW-eps-converted-to.pdf Graphic file (type pdf)
 <use figures/neural_networks/output/MyModel_Permutation_ImportancettW-eps-converted-to.pdf>
 Package pdftex.def Info: figures/neural_networks/output/MyModel_Permutation_ImportancettW-eps-converted-to.pdf  used on input line 404.
@@ -1274,17 +1391,29 @@ Package epstopdf Info: Source file: <figures/neural_networks/output/MyModel_Perm
 (epstopdf)             Command: <repstopdf --outfile=figures/neural_networks/output/MyModel_Permutation_ImportanceFakes-eps-converted-to.pdf figures/neural_networks/output/MyModel_Permutation_ImportanceFakes.eps>
 (epstopdf)             \includegraphics on input line 405.
 Package epstopdf Info: Output file is already uptodate.
-<figures/neural_networks/output/MyModel_Permutation_ImportanceFakes-eps-converted-to.pdf, id=369, 569.12625pt x 552.0625pt>
+<figures/neural_networks/output/MyModel_Permutation_ImportanceFakes-eps-converted-to.pdf, id=303, 569.12625pt x 552.0625pt>
 File: figures/neural_networks/output/MyModel_Permutation_ImportanceFakes-eps-converted-to.pdf Graphic file (type pdf)
 <use figures/neural_networks/output/MyModel_Permutation_ImportanceFakes-eps-converted-to.pdf>
 Package pdftex.def Info: figures/neural_networks/output/MyModel_Permutation_ImportanceFakes-eps-converted-to.pdf  used on input line 405.
 (pdftex.def)             Requested size: 145.68143pt x 141.30898pt.
 
 
+LaTeX Warning: Reference `fig:ConfusionMatricies' on page 18 undefined on input line 410.
+
+
+LaTeX Warning: Reference `tab:Yields' on page 18 undefined on input line 410.
+
+
+LaTeX Warning: Reference `tab:Yields' on page 18 undefined on input line 410.
+
+
 Package natbib Warning: Citation `nn_roccurve' on page 18 undefined on input line 412.
 
 
 Package natbib Warning: Citation `nn_roccurve' on page 18 undefined on input line 412.
+
+
+LaTeX Warning: Reference `fig:nn_OutputROCCurves' on page 18 undefined on input line 412.
 
 Package epstopdf Info: Source file: <figures/neural_networks/output/MyModel_Confusion_ttZ.eps>
 (epstopdf)                    date: 2022-06-30 16:07:40
@@ -1295,7 +1424,7 @@ Package epstopdf Info: Source file: <figures/neural_networks/output/MyModel_Conf
 (epstopdf)             Command: <repstopdf --outfile=figures/neural_networks/output/MyModel_Confusion_ttZ-eps-converted-to.pdf figures/neural_networks/output/MyModel_Confusion_ttZ.eps>
 (epstopdf)             \includegraphics on input line 416.
 Package epstopdf Info: Output file is already uptodate.
-<figures/neural_networks/output/MyModel_Confusion_ttZ-eps-converted-to.pdf, id=374, 573.14125pt x 409.53pt>
+<figures/neural_networks/output/MyModel_Confusion_ttZ-eps-converted-to.pdf, id=304, 573.14125pt x 409.53pt>
 File: figures/neural_networks/output/MyModel_Confusion_ttZ-eps-converted-to.pdf Graphic file (type pdf)
 <use figures/neural_networks/output/MyModel_Confusion_ttZ-eps-converted-to.pdf>
 Package pdftex.def Info: figures/neural_networks/output/MyModel_Confusion_ttZ-eps-converted-to.pdf  used on input line 416.
@@ -1309,7 +1438,7 @@ Package epstopdf Info: Source file: <figures/neural_networks/output/MyModel_Conf
 (epstopdf)             Command: <repstopdf --outfile=figures/neural_networks/output/MyModel_Confusion_ttW-eps-converted-to.pdf figures/neural_networks/output/MyModel_Confusion_ttW.eps>
 (epstopdf)             \includegraphics on input line 418.
 Package epstopdf Info: Output file is already uptodate.
-<figures/neural_networks/output/MyModel_Confusion_ttW-eps-converted-to.pdf, id=375, 573.14125pt x 409.53pt>
+<figures/neural_networks/output/MyModel_Confusion_ttW-eps-converted-to.pdf, id=305, 573.14125pt x 409.53pt>
 File: figures/neural_networks/output/MyModel_Confusion_ttW-eps-converted-to.pdf Graphic file (type pdf)
 <use figures/neural_networks/output/MyModel_Confusion_ttW-eps-converted-to.pdf>
 Package pdftex.def Info: figures/neural_networks/output/MyModel_Confusion_ttW-eps-converted-to.pdf  used on input line 418.
@@ -1323,7 +1452,7 @@ Package epstopdf Info: Source file: <figures/neural_networks/output/MyModel_Conf
 (epstopdf)             Command: <repstopdf --outfile=figures/neural_networks/output/MyModel_Confusion_Fakes-eps-converted-to.pdf figures/neural_networks/output/MyModel_Confusion_Fakes.eps>
 (epstopdf)             \includegraphics on input line 419.
 Package epstopdf Info: Output file is already uptodate.
-<figures/neural_networks/output/MyModel_Confusion_Fakes-eps-converted-to.pdf, id=376, 577.15625pt x 409.53pt>
+<figures/neural_networks/output/MyModel_Confusion_Fakes-eps-converted-to.pdf, id=306, 577.15625pt x 409.53pt>
 File: figures/neural_networks/output/MyModel_Confusion_Fakes-eps-converted-to.pdf Graphic file (type pdf)
 <use figures/neural_networks/output/MyModel_Confusion_Fakes-eps-converted-to.pdf>
 Package pdftex.def Info: figures/neural_networks/output/MyModel_Confusion_Fakes-eps-converted-to.pdf  used on input line 419.
@@ -1337,7 +1466,7 @@ Package epstopdf Info: Source file: <figures/neural_networks/output/MyModel_ROCC
 (epstopdf)             Command: <repstopdf --outfile=figures/neural_networks/output/MyModel_ROCCurve_Combined_ttZ-eps-converted-to.pdf figures/neural_networks/output/MyModel_ROCCurve_Combined_ttZ.eps>
 (epstopdf)             \includegraphics on input line 426.
 Package epstopdf Info: Output file is already uptodate.
-<figures/neural_networks/output/MyModel_ROCCurve_Combined_ttZ-eps-converted-to.pdf, id=377, 569.12625pt x 409.53pt>
+<figures/neural_networks/output/MyModel_ROCCurve_Combined_ttZ-eps-converted-to.pdf, id=307, 569.12625pt x 409.53pt>
 File: figures/neural_networks/output/MyModel_ROCCurve_Combined_ttZ-eps-converted-to.pdf Graphic file (type pdf)
 <use figures/neural_networks/output/MyModel_ROCCurve_Combined_ttZ-eps-converted-to.pdf>
 Package pdftex.def Info: figures/neural_networks/output/MyModel_ROCCurve_Combined_ttZ-eps-converted-to.pdf  used on input line 426.
@@ -1351,7 +1480,7 @@ Package epstopdf Info: Source file: <figures/neural_networks/output/MyModel_ROCC
 (epstopdf)             Command: <repstopdf --outfile=figures/neural_networks/output/MyModel_ROCCurve_Combined_ttW-eps-converted-to.pdf figures/neural_networks/output/MyModel_ROCCurve_Combined_ttW.eps>
 (epstopdf)             \includegraphics on input line 428.
 Package epstopdf Info: Output file is already uptodate.
-<figures/neural_networks/output/MyModel_ROCCurve_Combined_ttW-eps-converted-to.pdf, id=378, 569.12625pt x 409.53pt>
+<figures/neural_networks/output/MyModel_ROCCurve_Combined_ttW-eps-converted-to.pdf, id=308, 569.12625pt x 409.53pt>
 File: figures/neural_networks/output/MyModel_ROCCurve_Combined_ttW-eps-converted-to.pdf Graphic file (type pdf)
 <use figures/neural_networks/output/MyModel_ROCCurve_Combined_ttW-eps-converted-to.pdf>
 Package pdftex.def Info: figures/neural_networks/output/MyModel_ROCCurve_Combined_ttW-eps-converted-to.pdf  used on input line 428.
@@ -1365,7 +1494,7 @@ Package epstopdf Info: Source file: <figures/neural_networks/output/MyModel_ROCC
 (epstopdf)             Command: <repstopdf --outfile=figures/neural_networks/output/MyModel_ROCCurve_Combined_Fakes-eps-converted-to.pdf figures/neural_networks/output/MyModel_ROCCurve_Combined_Fakes.eps>
 (epstopdf)             \includegraphics on input line 429.
 Package epstopdf Info: Output file is already uptodate.
-<figures/neural_networks/output/MyModel_ROCCurve_Combined_Fakes-eps-converted-to.pdf, id=379, 569.12625pt x 409.53pt>
+<figures/neural_networks/output/MyModel_ROCCurve_Combined_Fakes-eps-converted-to.pdf, id=309, 569.12625pt x 409.53pt>
 File: figures/neural_networks/output/MyModel_ROCCurve_Combined_Fakes-eps-converted-to.pdf Graphic file (type pdf)
 <use figures/neural_networks/output/MyModel_ROCCurve_Combined_Fakes-eps-converted-to.pdf>
 Package pdftex.def Info: figures/neural_networks/output/MyModel_ROCCurve_Combined_Fakes-eps-converted-to.pdf  used on input line 429.
@@ -1376,6 +1505,12 @@ Package natbib Warning: Citation `fitting_profilelikelihood01' on page 18 undefi
 [18 <./figures/neural_networks/output/MyModel_Permutation_ImportancettZ-eps-converted-to.pdf> <./figures/neural_networks/output/MyModel_Permutation_ImportancettW-eps-converted-to.pdf> <./figures/neural_networks/output/MyModel_Permutation_ImportanceFakes-eps-converted-to.pdf>]
 
 Package natbib Warning: Citation `fitting_pullplots' on page 19 undefined on input line 472.
+
+
+LaTeX Warning: Reference `ch:theoretical_and_experimental_systematic_uncertainties' on page 19 undefined on input line 474.
+
+
+LaTeX Warning: Reference `ch:measurements_of_the_inclusive_cross_section' on page 19 undefined on input line 474.
 
 [19 <./figures/neural_networks/output/MyModel_Confusion_ttZ-eps-converted-to.pdf> <./figures/neural_networks/output/MyModel_Confusion_ttW-eps-converted-to.pdf> <./figures/neural_networks/output/MyModel_Confusion_Fakes-eps-converted-to.pdf>] [20 <./figures/neural_networks/output/MyModel_ROCCurve_Combined_ttZ-eps-converted-to.pdf> <./figures/neural_networks/output/MyModel_ROCCurve_Combined_ttW-eps-converted-to.pdf> <./figures/neural_networks/output/MyModel_ROCCurve_Combined_Fakes-eps-converted-to.pdf>]
 chapter 6.
@@ -1447,83 +1582,123 @@ Package natbib Warning: Citation `uncertainty_tZq03' on page 23 undefined on inp
 
 Package natbib Warning: Citation `uncertainty_ttH01' on page 23 undefined on input line 505.
 
+
+LaTeX Warning: Reference `tab:Yields' on page 23 undefined on input line 507.
+
 [23]
 chapter 7.
+
+LaTeX Warning: Reference `sec:FittingAlgorithm' on page 24 undefined on input line 512.
+
+
+LaTeX Warning: Reference `ch:region_definition' on page 24 undefined on input line 512.
+
+
+LaTeX Warning: Reference `fig:InitialPostFit' on page 24 undefined on input line 516.
+
+
+LaTeX Warning: Reference `sec:preselection' on page 24 undefined on input line 516.
+
+
+LaTeX Warning: Reference `fig:InitialRankingPlots' on page 24 undefined on input line 522.
+
+
+LaTeX Warning: Reference `tab:Yields' on page 24 undefined on input line 522.
+
+
+LaTeX Warning: Reference `fig:PullPlots' on page 24 undefined on input line 522.
+
 [24
 
 
 ]
-<figures/initial_config/distribution/region1_postFit.png, id=508, 598.235pt x 674.52pt>
+<figures/initial_config/distribution/region1_postFit.png, id=431, 598.235pt x 674.52pt>
 File: figures/initial_config/distribution/region1_postFit.png Graphic file (type png)
 <use figures/initial_config/distribution/region1_postFit.png>
 Package pdftex.def Info: figures/initial_config/distribution/region1_postFit.png  used on input line 526.
 (pdftex.def)             Requested size: 145.68143pt x 164.25534pt.
-<figures/initial_config/distribution/region2_postFit.png, id=509, 598.235pt x 674.52pt>
+<figures/initial_config/distribution/region2_postFit.png, id=432, 598.235pt x 674.52pt>
 File: figures/initial_config/distribution/region2_postFit.png Graphic file (type png)
 <use figures/initial_config/distribution/region2_postFit.png>
 Package pdftex.def Info: figures/initial_config/distribution/region2_postFit.png  used on input line 527.
 (pdftex.def)             Requested size: 145.68143pt x 164.25534pt.
-<figures/initial_config/distribution/region3_postFit.png, id=510, 598.235pt x 674.52pt>
+<figures/initial_config/distribution/region3_postFit.png, id=433, 598.235pt x 674.52pt>
 File: figures/initial_config/distribution/region3_postFit.png Graphic file (type png)
 <use figures/initial_config/distribution/region3_postFit.png>
 Package pdftex.def Info: figures/initial_config/distribution/region3_postFit.png  used on input line 528.
 (pdftex.def)             Requested size: 145.68143pt x 164.25534pt.
-<figures/initial_config/ranking/RankingSysts_mu_ttZ_systs.png, id=511, 598.235pt x 508.90125pt>
+<figures/initial_config/ranking/RankingSysts_mu_ttZ_systs.png, id=434, 598.235pt x 508.90125pt>
 File: figures/initial_config/ranking/RankingSysts_mu_ttZ_systs.png Graphic file (type png)
 <use figures/initial_config/ranking/RankingSysts_mu_ttZ_systs.png>
 Package pdftex.def Info: figures/initial_config/ranking/RankingSysts_mu_ttZ_systs.png  used on input line 537.
 (pdftex.def)             Requested size: 145.68143pt x 123.92479pt.
-<figures/initial_config/ranking/RankingSysts_N_ttW_systs.png, id=512, 598.235pt x 508.90125pt>
+<figures/initial_config/ranking/RankingSysts_N_ttW_systs.png, id=435, 598.235pt x 508.90125pt>
 File: figures/initial_config/ranking/RankingSysts_N_ttW_systs.png Graphic file (type png)
 <use figures/initial_config/ranking/RankingSysts_N_ttW_systs.png>
 Package pdftex.def Info: figures/initial_config/ranking/RankingSysts_N_ttW_systs.png  used on input line 538.
 (pdftex.def)             Requested size: 145.68143pt x 123.92479pt.
-<figures/initial_config/ranking/RankingSysts_N_Fakes_systs.png, id=513, 598.235pt x 508.90125pt>
+<figures/initial_config/ranking/RankingSysts_N_Fakes_systs.png, id=436, 598.235pt x 508.90125pt>
 File: figures/initial_config/ranking/RankingSysts_N_Fakes_systs.png Graphic file (type png)
 <use figures/initial_config/ranking/RankingSysts_N_Fakes_systs.png>
 Package pdftex.def Info: figures/initial_config/ranking/RankingSysts_N_Fakes_systs.png  used on input line 539.
 (pdftex.def)             Requested size: 145.68143pt x 123.92479pt.
- [25 <./figures/initial_config/distribution/region1_postFit.png> <./figures/initial_config/distribution/region2_postFit.png> <./figures/initial_config/distribution/region3_postFit.png> <./figures/initial_config/ranking/RankingSysts_mu_ttZ_systs.png> <./figures/initial_config/ranking/RankingSysts_N_ttW_systs.png> <./figures/initial_config/ranking/RankingSysts_N_Fakes_systs.png>]
-<figures/final_config/distribution/SR-offZ-ttZ_postFit.png, id=524, 598.235pt x 674.52pt>
+
+
+LaTeX Warning: Reference `fig:FinalPostFitPlots' on page 25 undefined on input line 562.
+
+[25 <./figures/initial_config/distribution/region1_postFit.png> <./figures/initial_config/distribution/region2_postFit.png> <./figures/initial_config/distribution/region3_postFit.png> <./figures/initial_config/ranking/RankingSysts_mu_ttZ_systs.png> <./figures/initial_config/ranking/RankingSysts_N_ttW_systs.png> <./figures/initial_config/ranking/RankingSysts_N_Fakes_systs.png>]
+
+LaTeX Warning: Reference `fig:FinalRankingPlots' on page 26 undefined on input line 569.
+
+
+LaTeX Warning: Reference `fig:PullPlots' on page 26 undefined on input line 569.
+
+<figures/final_config/distribution/SR-offZ-ttZ_postFit.png, id=444, 598.235pt x 674.52pt>
 File: figures/final_config/distribution/SR-offZ-ttZ_postFit.png Graphic file (type png)
 <use figures/final_config/distribution/SR-offZ-ttZ_postFit.png>
 Package pdftex.def Info: figures/final_config/distribution/SR-offZ-ttZ_postFit.png  used on input line 573.
 (pdftex.def)             Requested size: 145.68143pt x 164.25534pt.
-<figures/final_config/distribution/CR-offZ-ttW_postFit.png, id=525, 598.235pt x 674.52pt>
+<figures/final_config/distribution/CR-offZ-ttW_postFit.png, id=445, 598.235pt x 674.52pt>
 File: figures/final_config/distribution/CR-offZ-ttW_postFit.png Graphic file (type png)
 <use figures/final_config/distribution/CR-offZ-ttW_postFit.png>
 Package pdftex.def Info: figures/final_config/distribution/CR-offZ-ttW_postFit.png  used on input line 574.
 (pdftex.def)             Requested size: 145.68143pt x 164.25534pt.
-<figures/final_config/distribution/CR-offZ-Fakes_postFit.png, id=526, 598.235pt x 674.52pt>
+<figures/final_config/distribution/CR-offZ-Fakes_postFit.png, id=446, 598.235pt x 674.52pt>
 File: figures/final_config/distribution/CR-offZ-Fakes_postFit.png Graphic file (type png)
 <use figures/final_config/distribution/CR-offZ-Fakes_postFit.png>
 Package pdftex.def Info: figures/final_config/distribution/CR-offZ-Fakes_postFit.png  used on input line 575.
 (pdftex.def)             Requested size: 145.68143pt x 164.25534pt.
-<figures/final_config/ranking/RankingSysts_mu_ttZ_systs.png, id=527, 598.235pt x 508.90125pt>
+<figures/final_config/ranking/RankingSysts_mu_ttZ_systs.png, id=447, 598.235pt x 508.90125pt>
 File: figures/final_config/ranking/RankingSysts_mu_ttZ_systs.png Graphic file (type png)
 <use figures/final_config/ranking/RankingSysts_mu_ttZ_systs.png>
 Package pdftex.def Info: figures/final_config/ranking/RankingSysts_mu_ttZ_systs.png  used on input line 583.
 (pdftex.def)             Requested size: 145.68143pt x 123.92479pt.
-<figures/final_config/ranking/RankingSysts_N_ttW_systs.png, id=528, 598.235pt x 508.90125pt>
+<figures/final_config/ranking/RankingSysts_N_ttW_systs.png, id=448, 598.235pt x 508.90125pt>
 File: figures/final_config/ranking/RankingSysts_N_ttW_systs.png Graphic file (type png)
 <use figures/final_config/ranking/RankingSysts_N_ttW_systs.png>
 Package pdftex.def Info: figures/final_config/ranking/RankingSysts_N_ttW_systs.png  used on input line 584.
 (pdftex.def)             Requested size: 145.68143pt x 123.92479pt.
-<figures/final_config/ranking/RankingSysts_N_Fakes_systs.png, id=529, 598.235pt x 508.90125pt>
+<figures/final_config/ranking/RankingSysts_N_Fakes_systs.png, id=449, 598.235pt x 508.90125pt>
 File: figures/final_config/ranking/RankingSysts_N_Fakes_systs.png Graphic file (type png)
 <use figures/final_config/ranking/RankingSysts_N_Fakes_systs.png>
 Package pdftex.def Info: figures/final_config/ranking/RankingSysts_N_Fakes_systs.png  used on input line 585.
 (pdftex.def)             Requested size: 145.68143pt x 123.92479pt.
- [26 <./figures/final_config/distribution/SR-offZ-ttZ_postFit.png> <./figures/final_config/distribution/CR-offZ-ttW_postFit.png> <./figures/final_config/distribution/CR-offZ-Fakes_postFit.png>]
+
+LaTeX Warning: Reference `tab:Yields' on page 26 undefined on input line 592.
+
+
+LaTeX Warning: Reference `tab:Yields' on page 26 undefined on input line 594.
+
+[26 <./figures/final_config/distribution/SR-offZ-ttZ_postFit.png> <./figures/final_config/distribution/CR-offZ-ttW_postFit.png> <./figures/final_config/distribution/CR-offZ-Fakes_postFit.png>]
 
 Package natbib Warning: Citation `highlumiupgrade' on page 27 undefined on input line 598.
 
-<figures/initial_config/pullplots/NuisPar.png, id=541, 798.985pt x 2541.495pt>
+<figures/initial_config/pullplots/NuisPar.png, id=459, 798.985pt x 2541.495pt>
 File: figures/initial_config/pullplots/NuisPar.png Graphic file (type png)
 <use figures/initial_config/pullplots/NuisPar.png>
 Package pdftex.def Info: figures/initial_config/pullplots/NuisPar.png  used on input line 602.
 (pdftex.def)             Requested size: 200.3085pt x 637.15608pt.
-<figures/final_config/pullplots/NuisPar.png, id=542, 798.985pt x 2541.495pt>
+<figures/final_config/pullplots/NuisPar.png, id=460, 798.985pt x 2541.495pt>
 File: figures/final_config/pullplots/NuisPar.png Graphic file (type png)
 <use figures/final_config/pullplots/NuisPar.png>
 Package pdftex.def Info: figures/final_config/pullplots/NuisPar.png  used on input line 603.
@@ -1534,39 +1709,74 @@ LaTeX Warning: Float too large for page by 21.74269pt on input line 606.
 [27 <./figures/final_config/ranking/RankingSysts_mu_ttZ_systs.png> <./figures/final_config/ranking/RankingSysts_N_ttW_systs.png> <./figures/final_config/ranking/RankingSysts_N_Fakes_systs.png>] [28 <./figures/initial_config/pullplots/NuisPar.png> <./figures/final_config/pullplots/NuisPar.png>]
 chapter 8.
 
+LaTeX Warning: Reference `sec:theory_ttZ_ttW' on page 29 undefined on input line 611.
+
+
+LaTeX Warning: Reference `eq:OparatortZ' on page 29 undefined on input line 611.
+
+
+LaTeX Warning: Reference `fig:EFTDistributions' on page 29 undefined on input line 617.
+
+
+LaTeX Warning: Reference `tab:CrossSectionRatio' on page 29 undefined on input line 617.
+
+
+LaTeX Warning: Reference `fig:EFTDistributions' on page 29 undefined on input line 619.
+
+
 Package natbib Warning: Citation `shape' on page 29 undefined on input line 619.
 
-<figures/eft/ctBRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, id=557, 569.12625pt x 553.06625pt>
+<figures/eft/ctBRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, id=472, 569.12625pt x 553.06625pt>
 File: figures/eft/ctBRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf Graphic file (type pdf)
 <use figures/eft/ctBRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf>
 Package pdftex.def Info: figures/eft/ctBRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf  used on input line 669.
 (pdftex.def)             Requested size: 191.20168pt x 185.80367pt.
-<figures/eft/ctBIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, id=558, 569.12625pt x 553.06625pt>
+<figures/eft/ctBIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, id=473, 569.12625pt x 553.06625pt>
 File: figures/eft/ctBIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf Graphic file (type pdf)
 <use figures/eft/ctBIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf>
 Package pdftex.def Info: figures/eft/ctBIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf  used on input line 670.
 (pdftex.def)             Requested size: 191.20168pt x 185.80367pt.
-<figures/eft/ctWRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, id=559, 569.12625pt x 553.06625pt>
+<figures/eft/ctWRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, id=474, 569.12625pt x 553.06625pt>
 File: figures/eft/ctWRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf Graphic file (type pdf)
 <use figures/eft/ctWRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf>
 Package pdftex.def Info: figures/eft/ctWRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf  used on input line 672.
 (pdftex.def)             Requested size: 191.20168pt x 185.80367pt.
-<figures/eft/ctWIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, id=560, 569.12625pt x 553.06625pt>
+<figures/eft/ctWIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, id=475, 569.12625pt x 553.06625pt>
 File: figures/eft/ctWIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf Graphic file (type pdf)
 <use figures/eft/ctWIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf>
 Package pdftex.def Info: figures/eft/ctWIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf  used on input line 673.
 (pdftex.def)             Requested size: 191.20168pt x 185.80367pt.
+
+LaTeX Warning: Reference `eq:SeparationPower' on page 29 undefined on input line 681.
+
 [29
 
 
-] [30] [31 <./figures/eft/ctBRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, page is rotated 90 degrees> <./figures/eft/ctBIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, page is rotated 90 degrees> <./figures/eft/ctWRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, page is rotated 90 degrees> <./figures/eft/ctWIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, page is rotated 90 degrees>]
+]
+
+LaTeX Warning: Reference `ch:measurements_of_the_inclusive_cross_section' on page 30 undefined on input line 683.
+
+[30] [31 <./figures/eft/ctBRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, page is rotated 90 degrees> <./figures/eft/ctBIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, page is rotated 90 degrees> <./figures/eft/ctWRe/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, page is rotated 90 degrees> <./figures/eft/ctWIm/cos_theta_starZ/_cos_theta_starZ_region00_ttZ.pdf, page is rotated 90 degrees>]
 chapter 9.
+
+LaTeX Warning: Reference `ch:region_definition' on page 32 undefined on input line 741.
+
+
+LaTeX Warning: Reference `ch:measurements_of_the_inclusive_cross_section' on page 32 undefined on input line 747.
+
 [32
 
 
-] [33]
+]
+
+LaTeX Warning: Reference `ch:eft_sensitivity' on page 33 undefined on input line 749.
+
+
+LaTeX Warning: Reference `sec:theory_ttZ_ttW' on page 33 undefined on input line 751.
+
+[33]
 No file mthesis_raschke.bbl.
-<./figures/sign.png, id=762, 317.988pt x 104.0688pt>
+<./figures/sign.png, id=675, 317.988pt x 104.0688pt>
 File: ./figures/sign.png Graphic file (type png)
 <use ./figures/sign.png>
 Package pdftex.def Info: ./figures/sign.png  used on input line 841.
@@ -1582,22 +1792,35 @@ Package natbib Warning: There were undefined citations.
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
-Package rerunfilecheck Info: File `mthesis_raschke.out' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `mthesis_raschke.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `mthesis_raschke.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 20353 strings out of 474221
- 375076 string characters out of 5750188
+ 20337 strings out of 474221
+ 374758 string characters out of 5750188
  1948978 words of memory out of 5000000
- 42102 multiletter control sequences out of 15000+600000
- 639147 words of font info for 109 fonts, out of 8000000 for 9000
+ 42093 multiletter control sequences out of 15000+600000
+ 637568 words of font info for 104 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  122i,15n,121p,11006b,511s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmmib10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmro12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmsy8.pfb>
-Output written on mthesis_raschke.pdf (37 pages, 2959227 bytes).
+Output written on mthesis_raschke.pdf (37 pages, 2958379 bytes).
 PDF statistics:
- 935 PDF objects out of 1000 (max. 8388607)
- 605 compressed objects within 7 object streams
+ 850 PDF objects out of 1000 (max. 8388607)
+ 520 compressed objects within 6 object streams
  101 named destinations out of 1000 (max. 500000)
  407 words of extra memory for PDF output out of 10000 (max. 10000000)
 

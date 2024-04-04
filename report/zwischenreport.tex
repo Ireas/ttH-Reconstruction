@@ -6,7 +6,7 @@
 	
 \ThesisAuthor{Ireas Tom}{Raschke}
 \PlaceOfBirth{Finsterwalde}
-\ThesisTitle{\ttHWW Rekonstruktion mit Neutrino Gewichtung \& SPANet}{\ttHWW event reconstruction techniques using neutrino-weighting \& SPANet}
+\ThesisTitle{\ttHWW Rekonstruktion mit Neutrino Gewichtung \& SPA-Net}{\ttHWW event reconstruction techniques using neutrino-weighting \& SPA-Net}
 \FirstReferee{Prof.~Dr.~Arnulf Quadt}
 \Institute{II. Physikalisches Institut}
 \ReferenceNumber{M.Phy.408: Research Lab Course in Nuclear and Particle Physics}
@@ -20,304 +20,567 @@
 \tableofcontents
 \mainmatter
 
+TODO UPDATE REFERENCES
+
 \chapter{Introduction}
 \label{ch:introduction}
-As far back as 400 BC, humans pondered the fundamental makeup of the natural world. The Greek philosopher Democritus proposed the notion that matter cannot be infinitely divisible. Thus, there must exist a smallest, indivisible particle, which he termed the 'atom' (from Greek \textit{atomos} meaning 'indivisible'). Although this idea was not empirically tested but derived from philosophical musings, it marked the inception of the quest for a fundamental understanding of the universe.
+TODO EXPAND ON THE INTRODUCTION - AFTER HISTORIC SAME CONCRETE THINGS ABOUT LHC AND ATLAS IN CONTEXT OF SM: GIVE BRIEF OVERVIEW OVER WHICH TOPICS THE INDIVIDUAL SECTION OF REPORT WILL COVER!
+% As far back as 400 BC, humans pondered the fundamental makeup of the natural world. The Greek philosopher Democritus proposed the notion that matter cannot be infinitely divisible. Thus, there must exist the smallest, indivisible particle, which he termed the `atom' (from Greek \textit{atomos} meaning `indivisible'). Although this idea was not empirically tested but derived from philosophical musings, it marked the inception of the quest for a fundamental understanding of the universe.
 
-More than 2000 years later, in 1808, the chemist John Dalton refined Democritus's idea by introducing the concept of elements. Each element was seen as a distinct, indivisible atom differing in mass and size. This refined model enabled Dalton to account for the apparent conservation of mass.
+% More than 2000 years later, in 1808, the chemist John Dalton refined Democritus' idea by introducing the concept of elements. Each element was seen as made up from distinct, indivisible atoms differing in mass and size. This refined model enabled Dalton to account for the apparent conservation of mass.
 
-In the late 19$^\text{th}$ century, physicist Sir Joseph John Thomson developed an atomic model portraying atoms as positively charged spheres containing lighter, negatively charged particles known as electrons. The atom as a concept was no longer the smallest, most fundamental particle. Thomson's model was derived from experiments utilising a hot, radiating cathode emitting electrons, thus explaining the observed cathode electron beam.
+% In the late 19$^\text{th}$ century, physicist Sir Joseph John Thomson developed an atomic model portraying atoms as positively charged spheres containing lighter, negatively charged particles known as electrons. The atom as a concept was no longer the smallest, most fundamental particle. Thomson's model was derived from experiments utilising a hot, radiating cathode emitting electrons, thus explaining the observed cathode electron beam.
 
-In 1911, Ernest Rutherford conducted an experiment using an $\alpha$-particle beam directed at a thin gold foil. The results suggested that the majority of an atom's mass is concentrated in a very small volume – the positively charged nucleus – surrounded by negatively charged electrons orbiting in mostly empty space.
+% In 1911, Ernest Rutherford conducted an experiment using an $\alpha$ particle beam directed at a thin gold foil. The results suggested that the majority of an atom's mass is concentrated in a very small volume – the positively charged nucleus – surrounded by negatively charged electrons orbiting in mostly empty space.
 
-Two years later, in 1913, Niels Bohr refined the model further, likening the motion of electrons around the nucleus to planets orbiting the sun. He proposed that electrons move in circular orbits without emitting radiation, with orbit radii restricted to specific quantised values, marking the inception of quantum mechanics.
+% Two years later, in 1913, Niels Bohr refined the model further, likening the motion of electrons around the nucleus to planets orbiting the sun. He proposed that electrons move in circular orbits without emitting radiation, with orbit radii restricted to specific quantised values, marking the inception of quantum mechanics.
 
-Electrons can transition between orbits by emitting or absorbing photons of quantised energies, thus explaining the photoelectric effect. In 1916, Arnold Sommerfeld expanded the Bohr model, permitting elliptical orbits and providing an explanation for the presence of closely spaced spectral lines.
+% Electrons can transition between orbits by emitting or absorbing photons of quantised energies, thus explaining the photoelectric effect. In 1916, Arnold Sommerfeld expanded the Bohr model, permitting elliptical orbits and providing an explanation for the presence of closely spaced spectral lines.
 
-In 1926, Werner Heisenberg and Erwin Schrödinger independently developed a mathematical framework for quantum mechanics. The requirement that electrons adhere to Schrödinger's equation led to the concept of atomic orbitals – regions in space with a high probability of containing electrons, subject to specific selection rules.
+% In 1926, Werner Heisenberg and Erwin Schrödinger independently developed a mathematical framework for quantum mechanics. The requirement that electrons adhere to Schrödinger's equation led to the concept of atomic orbitals – regions in space with a high probability of containing electrons and subject to specific selection rules.
 
-While the concept of an atomic nucleus was first proposed by Rutherford, it was initially thought to consist solely of positively charged protons. However, this model was expanded in 1932 by James Chadwick, who introduced neutral particles, neutrons, as constituents of the nucleus.
+% While the concept of an atomic nucleus was first proposed by Rutherford, it was initially thought to consist solely of positively charged protons. However, this model was expanded in 1932 by James Chadwick, who discovered neutral particles, neutrons, as constituents of the nucleus.
 
-Today, research into the fundamental structure of nature continues, with particle physics superseding nuclear physics. The contemporary aim of particle physics is to develop a comprehensive understanding of fundamental phenomena, centred around formulating and expanding upon the Standard Model of particle physics, which stands as the most successful description of the fundamental nature of the universe.
+% Today, research into the fundamental structure of nature continues with particle physics superseding nuclear physics. The contemporary aim of particle physics is to develop a comprehensive understanding of fundamental phenomena, centred around formulating and expanding upon the Standard Model of particle physics, which stands as the most successful description of the fundamental nature of the universe.
 
 
 \chapter{The Standard Model of Particle Physics}
 \label{ch:standard_model}
-
-The Standard Model of particle physics (SM) stands as the most triumphant framework to date in understanding the fundamental particles and their interactions. It encompasses all known elementary particles along with their antiparticles, and three out of the four recognised fundamental forces: the strong, weak, and electromagnetic forces. Notably, gravity remains beyond the scope of the SM.
-
-The SM is a renormalisable quantum field theory characterised by an internal SU(3)$\otimes$SU(2)$\otimes$U(1) gauge symmetry. The SU(3) group symmetry elucidates the strong interactions, stemming from quantum chromodynamics (QCD) \cite{qcd}, while the SU(2)$\otimes$U(1) group symmetry corresponds to the electroweak interactions. The latter entails the unification of the electromagnetic force, originating from quantum electrodynamics (QED) \cite{qed01, qed02, qed03}, and the weak force, stemming from quantum flavour dynamics (QFD) \cite{qft}.
-
-Incorporated into the electroweak interaction in 1967, the Brout-Englert-Higgs mechanism introduces a quantum Higgs-field \cite{higgs_mechanism_1, higgs_mechanism_2, higgs_mechanism_3}. This mechanism instigates spontaneous symmetry breaking within the SU(2)$\otimes$U(1) symmetry. Initially, all bosons are massless, yet this symmetry breaking results in bosons interacting with the Higgs-field to become massive. Fermions, too, acquire their masses via interaction with the Higgs-field. The massive gauge bosons of the electroweak interaction are denoted as the \zwboson. Furthermore, one of the degrees of freedom introduced by the Higgs-field which is not defined via the Brout-Englert-Higgs mechanism, manifests as the scalar Higgs-boson $H$ \cite{higgs_mechanism_1}.
-
-Despite the SM's commendable precision in predicting most observations, certain phenomena elude its fundamental explanations. Notably, neutrino oscillations \cite{neutrino_oscillation} exemplify this shortfall, delineating flavour-changing neutrinos. This oscillation necessitates at least two massive neutrinos, while the SM posits all neutrinos as massless. Consequently, the SM fails to account for neutrino oscillations. Another enigma is dark matter \cite{dark_matter}. The measured rotational velocities of vast spiral galaxies necessitate significantly more mass than visible matter provides. These astronomical observations indicate the presence of a stable form of matter that eludes electromagnetic interaction, rendering it invisible. No particle within the SM can explain these measurements.
+The Standard Model of particle physics (SM) stands as the most successful framework in understanding the fundamental particles and their interactions to date. It encompasses all known elementary particles along with their antiparticles, and three out of the four known fundamental forces: the strong, weak, and electromagnetic forces. Notably, gravity remains beyond the scope of the SM.
 
 
-\section{Characteristics of the Top Quark}
-\label{sec:theory_top}
-The discovery of the top ($t$) quark took place in 1995 at \fermilab through the collaborative efforts of the \dzero \cite{top_production01} and \cdf \cite{top_production02} experiments. With a mass of $m_t=172.76\pm0.30,\text{GeV}$ \cite{top_mass}, the top quark is acknowledged as the most massive among all known quarks. Its exceedingly brief lifespan is approximately $tau_t\approx5\cdot10^{-25},\text{s}$ \cite{top_mass}. Upon decaying through the weak interaction, the top quark decays into a \wboson and a down-type quark which then undergoes hadronisation. The likelihood of decaying into a specific down-type quark is determined by the corresponding CKM-matrix element \cite{ckm_matrix}. Given that the CKM-matrix predominantly features vanishing off-diagonal elements, the primary decay mode for top quarks involves transitioning into \bquarks. Subsequently, the \wboson undergoes further decay, either into a charged lepton and neutrino, yielding one observable jet originating from the \bquark alongside a detectable lepton, or into a quark-antiquark pair, resulting in the production of three detectable jets.
+\section{Gauge Symmetry and Spontaneous Symmetry Breaking}
+\label{sec:theory:gauge_symmetry_and_higgs_meachanism}
+The SM is a renormalisable quantum field theory \cite{theory:quantum_fields_01,theory:quantum_fields_02} characterised by an internal gauge symmetry that is denoted as a SU(3)$_C$$\otimes$SU(2)$_L$$\otimes$U(1)$_Y$. A gauge symmetry describes the fundamental principle of the invariance of physical systems under certain transformations associated with the corresponding gauge field \cite{theory:gauge_fields}. 
 
-Generating \tquarks necessitates significant energies owing to the mass of the \tquark. Such energies are attainable in hadron colliders. Figure~\ref{fig:production_ttz_ttw} illustrates two exemplar processes for \tquark production within \ttbar processes. Each of the two \tquarks decays as previously described. Thus, the observed signal is contingent upon the decay mode of the \wboson.
+The SU(3)$_C$ group symmetry describes the strong interaction, stemming from quantum chromodynamics (QCD) \cite{theory:qcd_01,theory:qcd_02}. It introduces colour charges and their corresponding mediators, the gluons, which are explained in more detail in Sec.~\ref{sec:theory:bosons}.
+
+The combined SU(2)$_L$$\otimes$U(1)$_Y$ group symmetry corresponds to the electromagnetic and to the weak force \cite{theory:quantum_fields_02}. They introduce the electrical charge $Q$ and the weak isospin $T$, respectively. Those two forces further combine at very high energies via the electroweak unification \cite{theory:electroweak_unification}. The latter entails the unification of the electromagnetic force, originating from quantum electrodynamics (QED) \cite{theory:qed01,theory:qed02,theory:qed03,theory:qed04}, and the weak force, stemming from quantum flavour dynamics (QFD) \cite{theory:qft_01,theory:qft_02,theory:weak}. The charge of the combined interaction is the weak hypercharge $Y$. However, the bosons $W^{0,1,2}$ and $B^0$ predicted by this symmetry are massless which is contradicting the massive bosons observed. This necessitates a process that introduces massive bosons. 
+
+The Brout-Englert-Higgs Mechanism \cite{theory:higgs_mechanism_01,theory:higgs_mechanism_02,theory:higgs_mechanism_03} explains how bosons, and fermions as well, acquire their mass. The theory introduces a quantum Higgs-field. Every particle interacting with the field becomes massive. At very high energies, this Higgs-field is symmetric. However, at energies which we observe under normal conditions, this symmetry is spontaneously broken \cite{theory:spontaneous_symmetry_breaking_01,theory:spontaneous_symmetry_breaking_02}. One of the results of this is a non-zero vacuum expectation value. This vacuum energy introduces additional terms to the Lagrangian, spoiling the electroweak symmetry. These additional terms mix the four massless bosons of the electroweak symmetry and introduce interactions between the $W^{1,2}$ and the Higgs-field \cite{theory:spontaneous_symmetry_breaking_01}. This effect yields three massive bosons $W^\pm, Z^0$ and one massless photon $\gamma$. The $W$ bosons are associated with the SU(2)$_L$ symmetry group. The remaining two bosons are associated with the U(1)$_Y$ symmetry group. All of these bosons are further discussed in Sec.~\ref{sec:theory:bosons}.
+
+Furthermore, one of the degrees of freedom introduced by the Higgs-field is not defined via the Brout-Englert-Higgs mechanism. It manifests as the scalar Higgs boson $H$ \cite{theory:higgs_mechanism_01}. The properties of this particle is also discussed more in Sec.~\ref{sec:theory:bosons}.
 
 
-\section{Effective Field Theory}
-\label{sec:theory_eft}
-For examining phenomena beyond the Standard Model, one can adopt an Effective Field Theory (EFT) framework like the Standard-Model Effective Field Theory (SM-EFT) \cite{eft_operatorlist}. This approach assumes that the current Standard Model serves as a practical low-energy approximation, valid for interactions up to an energy scale $\Lambda$. It can be expanded using higher-dimensional interactions \cite{eft_introduction}. The transition to the Standard Model occurs through the decoupling of heavy particles at energies greater than $\Lambda$. Thus, higher-dimensional operators $Q$, suppressed by powers of $\Lambda$, are utilised in a perturbation expansion \cite{eft_introduction}.
+\section{Particles}
+The SM describes particles as elemental units of matter or forces. All particles have various properties such as mass, electrical charge and spin. Furthermore, each particle has an antiparticle that has the same properties as the complementary particle, but its electrical charge is inverted \cite{theory:general_particles_nuclei,theory:general_sm}. These antiparticles are typically denoted with a bar on top of the particle identifier. Uncharged particles do not have a complementary antiparticle. At its core, the SM categorizes particles into two main groups by their spin. These groups are fermions and bosons which are explained in Sec.~\ref{sec:theory:fermions} and Sec.~\ref{sec:theory:bosons}, respectively. In the following the focus will be on particles, since antiparticles have identical properties but with an inverted electrical charge. 
 
-\begin{align}
-\mathcal{L}\text{SM-EFT} = \mathcal{L}\text{SM} + \frac{1}{\Lambda}\sum_{k}C_k^{(5)}Q_k^{(5)} + \frac{1}{\Lambda^2}\sum_{k}C_k^{(6)}Q_k^{(6)} + \mathcal{O}\left(\frac{1}{\Lambda^3}\right);.\label{eq:SM-EFT}
-\end{align}
 
-In this expansion, $\mathcal{L}_\text{SM}$ denotes the standard SM Lagrangian, $Q_k^{(n)}$ represents the $n$-dimensional interaction operators, and $C_k^{(n)}$ are their corresponding Wilson coefficients.
+\subsection{Fermions}
+\label{sec:theory:fermions}
+In the SM, fermions are one of the two fundamental classes of elementary particles, the other being bosons as described in Sec.~\ref{sec:theory:bosons}. Fermions are particles with half-integer spin \cite{theory:general_sm}. They are the basic constituents of matter and obey the Fermi-Dirac statistics as well as the Pauli exclusion principle \cite{theory:fermions_bosons}. Moreover, Fermions can be subdivided into quarks and leptons as further described in the following sections. 
 
-For a deeper understanding of \ttbarZ and \ttbarW production, it's valuable to scrutinise their pertinent operators. Given that the \zboson combines the $W^0$ and $B$ bosons originating from the Brout-Englert-Higgs mechanism, the operator %\optZ for the $tZ$ coupling is expressed as \cite{higgs_mechanism_1}
+\subsubsection*{Quarks}
+Quarks are elementary particles that interact via the strong nuclear force, as well as the weak and electromagnetic forces which were introduced in Sec.~\ref{sec:theory:gauge_symmetry_and_higgs_meachanism}. Quarks are classified into three generations \cite{theory:general_sm}. In each generation, there is an up-type and a down-type quark defined by their electrical charge and weak isospin \cite{theory:fermions_01}. The up-type quarks have a positive electrical charge of +2/3 times the elementary charge $e$ and a weak isospin of +1/2. The down-type quarks have an electrical charge of -1/3 $e$ and a weak isospin of -1/2. 
 
-\begin{align}
-Q_\text{tZ} &= \cos(\Theta_W)Q_\text{tW} - \sin(\Theta_W)Q_\text{tB};.\label{eq:OparatortZ}
-\end{align}
+For each generation, a weak isospin doublet can be defined. To better describe these quarks, 6 flavours are defined \cite{theory:fermions_01}. Each quark flavour has unique properties. The first generation's doublet contains the up ($u$) and down ($d'$) quark. The second generation consists of the charm ($c$) and strange ($s'$) and the final and third generation includes the top ($t$) and bottom ($b'$) quark. %The first quark mentioned for each generation is the up-type quark while the latter is the down-type quark \cite{theory:fermions_01}.   
 
-Therefore, the operators for the $tW$ and the $tB$ couplings, along with their complex coefficients %\ctW and \ctB, are particularly pertinent for this analysis \cite{eft_operatorlist}. To quantify sensitivity, the separation power
+Note that down-type quarks denoted as $q'$ in the isospin doublets describe the weak eigenstate while $q$ describes the mass eigenstate. These two eigenstates are related via the unitary Cabibbo-Kobayashi-Maskawa (CKM) matrix \cite{theory:ckm_matrix,theory:fermions_01}. The matrix describes the probability amplitude $V_\text{ij}$ for the transition from quark flavour $i$ to quark flavour $j$ under the weak interaction. Furthermore, it describes the relation of the weak and mass eigenstates of down-type quarks
 
 \begin{align}
-S &= \frac{1}{2}\sum_\text{Bins}\frac{\left(\text{EFT}_i-\text{SM}_i\right)^2}{\text{EFT}_i+\text{SM}_i}\label{eq:SeparationPower}
+    \begin{pmatrix}
+        d'\\
+        s'\\
+        b'
+    \end{pmatrix} &=
+    \begin{bmatrix}
+        V_\text{ud} & V_\text{us} & V_\text{ub}\\
+        V_\text{cd} & V_\text{cs} & V_\text{cb}\\
+        V_\text{td} & V_\text{ts} & V_\text{tb}
+    \end{bmatrix}
+    \begin{pmatrix}
+        d\\
+        s\\
+        b
+    \end{pmatrix}
+    \label{eq:down-type_weak_mass_eigentstates}\,.
 \end{align}
 
-is employed. The expression within the summation is computed for each bin based on a given normalised distribution. Here, $\text{SM}$ denotes the Standard Model prediction, and $\text{EFT}$ incorporates a specific variation on one or multiple Wilson coefficients as shown in Equation~\ref{eq:SM-EFT}. Investigations concerning the sensitivity of various variables for these coefficients are summarised in Chapter~\ref{ch:eft_sensitivity}.
+The entries in the CKM matrix are not predicted by theory. Hence, the amplitudes must be measured experimentally. The current best fitted values \cite{pdg} are the following:
+
+\begin{align}
+    \begin{bmatrix}
+        V_\text{ud} & V_\text{us} & V_\text{ub}\\
+        V_\text{cd} & V_\text{cs} & V_\text{cb}\\
+        V_\text{td} & V_\text{ts} & V_\text{tb}
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        0.97373\pm0.00031   & 0.2243\pm0.2243   & 0.00382\pm0.00020\\
+        0.221\pm0.221       & 0.975\pm0.006     & 0.0408\pm0.0014\\
+        0.0086\pm0.0002     & 0.0415\pm0.0009   & 1.014\pm0.029
+    \end{bmatrix}
+    \label{eq:ckm_matrix}
+\end{align}
+
+With increasing quark generation, the masses of the quarks also increases. The current best measurements of the masses for the up-type quarks and the down-type mass eigenstates \cite{pdg} yield 
+
+\begin{gather}
+    \begin{aligned}
+        m_u &= 2.16^{+0.49}_{-0.26}\,\text{MeV},    & m_d &= 24.68^{+0.48}_{-0.17}\,\text{MeV},\\
+        m_c &= 1.27^{+0.02}_{-0.02}\,\text{GeV},    & m_s &= 93.4^{+8.6}_{-3.4}\,\text{MeV},\\
+        m_t &= 172.69^{+0.30}_{-0.30}\,\text{GeV},  & m_b &= 4.18^{+0.03}_{-0.02}\,\text{GeV}.
+        \label{eq:mass_quarks}
+    \end{aligned}
+\end{gather}
+
+Quarks also carry a property known as colour charge \cite{theory:qcd_01,theory:qcd_02}. It is analogous to the electric charge but associated with the strong nuclear force. However, unlike electric charge, which comes in positive and negative values, colour has six possible states: red, green, blue and their complements anti-red, anti-green, and anti-blue. Quarks always combine to a state in which all three colours are combined, or any colour combined with its complement \cite{theory:qcd_02}. These states are called colourless. This is known as colour confinement and is responsible for the fact that isolated quarks are never observed in nature.
+
+\subsubsection*{The Top Quark}
+\label{sec:theory:top}
+The top quark will be explained in more detail since its of particular interest for this project. The discovery of the top quark took place in 1995 at \fermilab through the efforts of the \dzero \cite{theory:top_discovery_01} and \cdf \cite{theory:top_discovery_02} experiments that both discovered the top quark independently. The top quark is acknowledged as the most massive among all quarks. Producing \tquarks needs significant energies owing to  high mass of the \tquark. Such energies are attainable in hadron colliders. The top quark decays before it hadronises due to its brief lifetime is approximately $\tau_t\approx5\cdot10^{-25}\,\text{s}$ \cite{pdg}. It decays into a \wboson and a down-type quark which then undergoes hadronisation. 
+
+The likelihood of decaying into a specific down-type quark is determined by the previously mentioned CKM matrix in Eq.~\ref{eq:ckm_matrix}. Comparing the values of $V_\text{td}$ and $V_\text{ts}$ to $V_\text{tb}$ from Eq.~\ref{eq:ckm_matrix} shows the predominant top decay mode to $b$ quarks.
+ 
+The \wboson, the second particle from the top decay, also decays further. It can decay either into a charged lepton \& neutrino pair or into a quark and antiquark pair. Thus, the resulting final state from a top decay include one quark and a lepton or three quark, depending on the \wboson decay mode. 
+
+\subsubsection*{$b$ tagging}
+To precisely identify $t$ quarks, an accurate algorithm to distinguish $b$ is necessary. The reason for this is the top quarks predominant decay mode into $b$ quarks which was explained previously. To achieve this, $b$ tagging is introduced \cite{btag:atlas,btag:cms}.
+
+The accurate identification of works by exploiting the properties of the $b$ quark. It has a relatively large mass and a long lifetime. The latter is explained by its suppressed decay modes. Equations~\ref{eq:ckm_matrix} shows that the $V_{tb}$ element is the highest values for $b$ quark row. Thus, the $b$ flavour couples predominantly to the $t$ flavour and decay modes into other flavours are suppressed. However, the $t$ is significantly heavier than the $b$ quark as seen in Eq.~\ref{eq:mass_quarks}. Hence, the decay into a top quark is also strongly suppressed.
+
+Due to the long lifetime of the $b$ quark, it can travel a measurable distance before decaying. Thus, its decay products do not originate from the primary vertex of the collision. Instead, reconstructing these decay products yields a displaced vertex position which is typically referred as `secondary vertex'. This reconstruction combined with the hard momentum spectra of the $b$ quarks decay products yields a sufficiently accurate $b$ tagging which reaches an efficiency of 70\% \cite{btag:performance} at the \atlas experiment. This approach can also be applied, to a lesser extent, to charm tagging. 
+
+
+\subsubsection*{Leptons}
+Leptons are the second group of fermions. They do not experience the strong nuclear force and interact via the weak and electromagnetic forces. Analogue to the quarks, there are three generations of leptons: electron, muon and tau \cite{theory:general_sm}. These are typically denoted as $e$, $\mu$ and $\tau$, respectively.
+
+Each generation consists of a weak isospin doublet containing an uncharged neutrino $\nu_l$ and its respective charged lepton $l$ \cite{theory:general_sm}. Charged leptons have an electrical charge of -1$e$ and a weak isospin of -1/2. Furthermore, the charged leptons are massive. Their masses increase with higher generations as current measurements \cite{pdg} show
+
+\begin{gather}
+    \begin{aligned}
+        m_e     &=0.511\pm0.001\,\text{MeV},\\
+        m_\mu   &=105.66\pm0.001\,\text{MeV},\\
+        m_\tau  &=1776.86\pm0.12\,\text{MeV}.
+        \label{eq:mass_leptons}
+    \end{aligned}
+\end{gather}
+
+On the contrary, the uncharged neutrinos have no electrical charge \cite{pdg}, a weak isospin of +1/2 and are predicted to be massless by the SM \cite{theory:general_sm}. However, the later prediction is conflicting with some observed phenomena that are explained in Sec.~\ref{sec:theory:bsm}.
+
+
+\subsection{Bosons}
+\label{sec:theory:bosons}
+Bosons are the second group of particles in the SM. Unlike the Fermions, bosons have integer values of spin and obey Bose-Einstein statistics \cite{theory:fermions_bosons}. Bosons can be subdivided into gauge bosons that mediate three of the four fundamental forces and the Higgs boson. %They do not obey the Pauli exclusion principle and thus, multiple bosons can occupy the same quantum state simultaneously \cite{theory:fermions_bosons}.
+
+\subsubsection*{Gauge Bosons}
+In the SM there are 4 different gauge bosons types \cite{theory:general_sm} that are responsible for the interaction between particles of the SM. While many of their properties differ, they all have spin 1. The remaining properties are discussed in the following paragraphs.  
+
+The photon ($\gamma$) is the massless mediator of the electromagnetic force \cite{theory:qed01}. It itself is not electrical charged and thus, couples to positively and negatively charged particles equally. The behaviour of photons is determined by QED which was introduced in Sec.~\ref{sec:theory:gauge_symmetry_and_higgs_meachanism}.
+
+A gluon ($g$) is a type of massless gauge bosons that is responsible for the mediation of the strong nuclear force \cite{theory:qcd_01}. They couple to the colour charge of quarks. And unlike the photon, gluons themselves also carry colour charges which are exchange during a strong interaction. There are eight different possible colour combination for gluons due to the rules of QCD. Since they carry the charge they couple to, gluons are able to couple to other gluons. These processes are called self-couplings.
+
+Lastly, there are $W^\pm$ and $Z^0$ bosons. These are the mediators of the weak nuclear force. In contrast to the other gauge bosons, these are massive due to symmetry breaking in the Brout-Englert-Higgs Mechanism which is explained in more detail in Sec.~\ref{sec:theory:gauge_symmetry_and_higgs_meachanism}. Their masses were measured to be \cite{pdg}
+
+\begin{gather}
+    \begin{aligned}
+        m_W &= 80.377\pm0.012\,\text{GeV},\\
+        m_Z &= 91.1876\pm0.0021\,\text{GeV}. 
+        \label{eq:mass_wz}
+    \end{aligned}
+\end{gather}
+
+$W^\pm$ bosons have an electrical charge of $\pm1e$. Moreover, they have a weak isospin. Its third component of the weak isospin is $\pm1$, respectively. Fermions interacting with the $W$ bosons undergo a flavour transition. Charged leptons convert to lepton neutrinos and vice versa. Quarks also change their flavour. Their transition rate from one quark to the other is determined by the previously discussed CKM matrix. Couplings with the $W$ bosons are CP violating. The $Z^0$ boson, as indicated by its superscript, has no electrical charge and its third component of the weak isospin is 0. 
+
+\subsubsection*{Higgs Boson}
+The Higgs boson ($H^0$) was the last particle of the SM discovered in 2012 \cite{theory:higgs_discovery_01,theory:higgs_discovery_02} by the combined efforts of the \atlas \cite{theory:higgs_discovery_atlas} and \cms \cite{theory:higgs_discovery_cms} experiments. The Higgs boson's detection gave strong support to the Brout-Englert-Higgs mechanism discussed in Sec.~\ref{sec:theory:gauge_symmetry_and_higgs_meachanism}. It is electrically neutral and has spin 0, making it the only scalar boson. Moreover, it is the second-heaviest particle ever detected with current measurements \cite{pdg} showing a mass of 
+
+\begin{gather}
+    \begin{aligned}
+        m_H=125.25\pm0.17\,\text{GeV}.
+        \label{eq:mass_h}
+    \end{aligned}
+\end{gather}
+
+Furthermore, it represents the quantum manifestation of the Higgs field and thus, couples to mass of particles. Its production and decay branching ratios are strongly dependent on the mass of the interacting particle. The higher the mass, the stronger is the Higgs coupling resulting in higher branching ratios. The reason for this is the linearity between the Yukawa coupling strength and the (fermion) masses \cite{theory:general_sm,theory:general_physics}. Hence, the most common production modes are in combination with either $t$ quarks or $W$ /$Z$ bosons. 
+
+For the decay, the most likely modes are decays into pairs of $b$ quarks or $W$  and $Z$ bosons. While the Higgs coupling of the $t$ is stronger than the $b$, the decay into a $t$ quark pair is strongly suppressed, due to its significantly higher mass $2m_t>m_H$. Couplings with the Higgs field (thus also with the \Hboson) are described as Yukawa couplings that also generate the mass of fermions and bosons \cite{theory:higgs_mechanism_01,theory:higgs_mechanism_03}. Since the \Hboson is massive, it can couple to itself, similar to the gluon. This gives rise to Higgs self-coupling.   
+
+
+% \section{Physics of the Detectors}
+% \label{sec:theory:detector}
+% TODO HOW DO Detectors WORK AND WHY CAN THEY ONLY DETECT CHARGED PARTICLES?
+% TODO ELECTRON MAGNETIC SHOWERS HOW DO THEY WORK
+% charged only \cite{theory:general_physics,theory:detector_physics}
+% electronic magnetic showers \cite{theory:general_physics,theory:detector_physics}
+
+\section{Beyond the Standard Model}
+\label{sec:theory:bsm}
+Despite the incredible range of phenomena that the SM can predict and explain as well as its precision, certain phenomena contradict its fundamental explanations. 
+
+\subsubsection*{Neutrino Oscillation}
+One of these problematic observations is neutrino oscillation \cite{bsm_neutrino_oscillation_01,bsm_neutrino_oscillation_02,bsm_neutrino_oscillation_03}. It describes how neutrinos change their flavour while propagating through space. The first indication was found by the Homestake Experiment in 1968. It detected solar neutrinos using a large tank of fluid and observed a neutrino deficit. In 1998, the Super-Kamiokande experiment studied atmospheric neutrinos and discovered a changing electron/muon neutrinos flux during the runtime. 
+
+The oscillation originates from the separation of the flavour eigenstates of the neutrinos ($\nu_e$, $\nu_\mu$, $\nu_\tau$) and its mass eigenstates ($\nu_1$, $\nu_2$, $\nu_3$). If these eigenstates are not equal, then neutrinos could change their flavour. The probability of a neutrino of a given flavour transitioning into another flavour depends on the mixing angles and mass differences between the mass eigenstates. The observed oscillation necessitates at least two massive neutrinos. Contradictory, the SM predicts all neutrinos as massless which would result in their flavour and mass eigenstates to be identical. Consequently, the oscillation would be prohibited and thus, the SM fails to account for neutrino oscillations. 
+
+\subsubsection*{Gravity}
+Another obvious problem with the SM is the absence of gravity. While the force of gravity is observed, the SM has no boson responsible for mediating gravity. Possible solutions include the introduction of a hypothetical massless and uncharged graviton \cite{bsm_gravity_01} or string theory \cite{bsm_gravity_02}. Without an explanation of gravity, the SM can not achieve to be a unified theory of everything. 
+
+\subsubsection*{Further Contradictions}
+There are more contradicting observations that need explanations beyond the SM. These examples contain, but are not limited to, dark matter \cite{bsm_dark_matter_01,bsm_dark_matter_02,bsm_dark_matter_03}, atype of invisible mass needed for stellar observations, prediction of vacuum energy \cite{bsm_vacuum_energy}, a deviation between QFT and cosmological predictions and the hierarchy problem \cite{bsm_hierarchy}, a relatively low \Hboson mass that necessitates fine-tuning. For each of the problems, severalBSM explanations such as supersymmetry \cite{bsm_supersymmetry} or modified gravity \cite{bsm_mond} are possible.
+
+
+\section{Higgs-Associated Top Quark Pair Production}
+\label{sec:theory:tthww}
+TODO: IMPLEMENT ITS BACKGROUND CROSS SECTIONS SOMEWHERE\\
+% TODO: IMPLEMENT OVERVIEW OF HIGGS PROPERTY MEASUREMENTS AND PRODUCTION/DECAY CHANNELS ALREADY INVESTIGATED (WHICH ARE ALREADY OBSERVED)\\
+
+The targeted event topology is the Higgs-associated top quark pair production in which the Higgs boson decays into two $W$ bosons. In the following, these events will be referred to as \ttHWW events. The topology is a fully hadronic decaying \ttbar pair with an additional \Hboson being radiated. The latter decays to two $W$ bosons which then further decay semi-leptonically, which means one \wboson decays hadronically into two quarks while the other decays leptonically into a lepton neutrino pair.
+
+Due to the insufficient mass of the \Hboson to create to on-shell $W$ bosons \cite{pdg}, one of the two $W$ bosons must be off-shell. This is denoted by the asterisk superscript $W^*$. To suppress backgrounds, the off-shell $W^*$ boson is assumed to decay leptonically. Then the on-shell hadronic $W$ boson can be directly reconstructed.
+
+The corresponding Feynman diagram of the targeted topology can be seen in Fig.~\ref{fig:feynman_tthww}. The final state contains six quarks from the top quarks, two additional quarks from the hadronic $W$ boson decay and one lepton \& neutrino pair from the leptonically decaying $W^*$ boson.   
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.61\textwidth]{figures/feynman/ttH_labeled.png}
+    \caption{Feynman diagram of the targeted \ttHWW event topology.}
+    \label{fig:feynman_tthww}
+\end{figure}
+
+% This channel offers insight into the spin coupling between the spin-0 \Hboson and its to decay spin-1 $W$ bosons as discussed in Sec.~\ref{sec:theory:bosons}. Furthermore, additional measurements on the top Yukawa $tH$ coupling \cite{theory:why_tH_coupling} or Higgs decay branching ratios are possible using this channel. However, due to the targeted Higgs decay mode, the missing energy due to the $\nu$ in the final state as well as the off-shell $W^*$ boson pose a challenge for the event reconstruction. 
 
 
 \chapter{Experimental Setup}
 \label{ch:experimental_setup}
-To collect data on \ttbarZ and \ttbarW events, a high-energy particle collider is indispensable. Additionally, a setup for signal detection and suitable reconstruction algorithms are required.
+To collect data on \ttHWW events, a high-energy particle collider is necessary. Additionally, a setup for signal detection and suitable reconstruction algorithms are required. This chapter introduces the Large Hadron Collider in Sec.~\ref{sec:exp:lhc} which is used for collecting the data for this project. It is one of the most important particle accelerators worldwide and includes many experiments such as the \atlas experiment. The \atlas experiment provides the data for the project and is discussed in great detail in Sec.~\ref{sec:exp:atlas}. Other experiments are briefly described in Sec.~\ref{sec:exp:other_experiments}.
 
-The Large Hadron Collider (\lhc), spanning 27 kilometres, operates as a proton-proton collider. During Run~I, it achieved a centre-of-mass energy of approximately 7-8 TeV, rising to 13 TeV in Run~II \cite{lhc2}. For Run~III, an anticipated centre-of-mass energy of 13.6 TeV is projected \cite{lhc_run3}. These high-energy collisions yield multiple particles, including \tquarks, which subsequently decay into additional particles. Detecting these events necessitates a calibrated detector system capable of measuring particle properties such as charge, momentum, and energy. Moreover, event reconstruction from measured signals involves employing various algorithms to reconstruct, for instance, particle trajectories and collision vertices.
+\section{Large Hadron Collider}
+\label{sec:exp:lhc}
+The Large Hadron Collider (\lhc) \cite{lhc_01,lhc_02} is the world's largest and most powerful particle accelerator. It's located underground near Geneva, Switzerland, straddling the border between Switzerland and France. Specifically, it's situated at the European Organization for Nuclear Research (\cern). The collider spans 27\,km in circumference and reaches depths of up to 175\,m. Along the collider, there are several detectors build which will be explored in Sec.~\ref{sec:exp:atlas} and Sec.~\ref{sec:exp:other_experiments}. Fig.~\ref{fig:lhc_aerial_view} shows and aerial view of the regions above the \lhc demonstrating its size and showing the position of the different experiments.
 
-The \atlas-detector \cite{atlas} serves as a versatile particle detector comprising distinct layers designed to detect various particles. These layers are arranged in concentric cylinders around the beam axis. Through tracking measurements and energy deposition of decay products, the initial particles can be reconstructed. Figure~\ref{fig:atlas} illustrates a schematic representation of these detector layers. Each layer is described below.
+It is used to create and accelerate bunches of protons close to the speed of light. Then a collision of these bunches is induced. During such a collision, partons from the protons interact and give rise to a large multitude of processes \cite{theory:general_particles_nuclei}. By studying the debris produced by these collisions, physicists can gain insights into fundamental questions about the nature of the universe. Moreover, predictions of the SM introduced in Ch.~\ref{ch:standard_model} can be tested with such collisions. 
 
-% \begin{figure}[t]
-%     \centering
-%     \includegraphics[width=.61\textwidth]{figures/atlas/atlas3.png}
-%     \caption{Cross-section of the concentric layers within the \atlas Detector (\copyright{} \cern)}
-%     \label{fig:atlas}
-% \end{figure}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.80\textwidth]{figures/lhc/lhc_overview.jpg}
+    \caption{Aerial view above the Large Hadron Collider showing its size. The different experiments are marked along the \lhc course. \copyright{\cern}}
+    \label{fig:lhc_aerial_view}
+\end{figure}
 
-\section*{The Inner Detector}
-The Inner Detector is tasked with precisely measuring the tracks of various charged particles. A 2 T magnetic field, generated by a central solenoid, causes the movement of charged particles to deflect via the Lorentz force. By measuring the curvature, precise momentum measurements and particle track reconstruction are achieved. This tracking system is vital for $b$-tagging, enabling the identification of secondary vertices, indicative of $b$-jets \cite{atlas}. Given the high particle density near the collision point, high-precision measurements utilise Pixel, Strip, and Transition Radiation Trackers.
+The \lhc is operating for certain time periods with long shutdowns in between. The first operation period, Run~I \cite{lhc_run1}, which was active from November 2009 until February 2013. It started with a beam energy of 1.2\,TeV which was then later increased to 3.5\,TeV. In the last year it reached a beam energy of 4\,TeV. During the operation, 5.6\,fb$^{-1}$ had been accumulated by \atlas and \cms. Additionally, 1.2\,fb$1{-1}$ had been accumulated by \lhcb. Then Long Shutdown 1 followed Run~I. 
 
-The Pixel Tracker, constructed from silicon to withstand collision radiation, detects tracks near the collision point using small Pixel-modules \cite{atlas}. The Semiconductor Strip Tracker (SCT) comprises longer strips, enhancing tracking with larger scale measurements.
+In April 2015, Run~II \cite{lhc_run2} started. The second run reached beam energies of 6.5\,TeV and lasted until December 2018. It acquired an integrated production of 160\,fb$^{-1}$. The Long Shutdown 2 then held on until 2022. 
 
-The Transition Radiation Tracker (TRT) consists of thin polyimide straws filled with a gas mixture \cite{atlas}. While offering a lower resolution, these straws provide a cost-effective means to cover a larger volume, contributing to precise measurements. The TRT aids in distinguishing electrons $e^\pm$ from charged pions $\pi^\pm$.
+The currently active Run~III \cite{lhc_run3} launched in April 2022 with a centre-of-mass energy of 13.6 TeV, 6.8 TeV per beam. It is planned to operate until the coming Long Shutdown 3 planned for 2026. 
 
-\section*{The Calorimeters}
-As depicted in Figure~\ref{fig:atlas}, the calorimeters envelop the Inner Detector and the solenoid magnet. Generally, they measure particle energy by halting their motion. The \atlas-detector utilises electromagnetic and hadronic calorimeters, both sampling calorimeters comprising an absorber material inducing particle showers and an active medium for signal measurement \cite{atlas_calorimeter}.
 
-The electromagnetic calorimeter detects particles interacting electromagnetically, with charged particles and photons generating electromagnetic showers. This facilitates reconstruction of initial particles, offering precise energy measurement and deposition location. Constructed with Lead as the absorber and liquid Argon as the active medium, it provides accurate measurements \cite{atlas_calorimeter}.
+\section{The \atlas Experiment}
+\label{sec:exp:atlas}
+\atlas (A Toroidial \lhc ApparatuS) \cite{atlas} is one of the four main experiments at the \lhc. Its detector is designed as a general-purpose detector to explore a wide range of physics phenomena \cite{atlas:tech_design_report_01,atlas:tech_design_report_02}. The detector began its operation along the start-up of the \lhc. It spans a height of 25\,m and a length of 44\,m. It is build almost hermetically around the \lhc beam pipe as a toroidal shape which can be seen in Fig.~\ref{fig:atlas_overview}. Constructing the detector so close to the interaction point allows measuring the maximum possible phase space. Within the detector, there are several layers that are explained in great detail in Sec.~\ref{sec:exp:atlas_detector}. The coordinate system used in \atlas is important for this project and is explained in Sec.~\ref{sec:exp:atlas_coordinate_system}.
 
-The hadronic calorimeter absorbs particles passing through the electromagnetic calorimeter that interact via the strong force. Hadronic showers produced may yield additional electromagnetic sub-showers, complicating reconstruction and reducing precision. Comprising steel as the absorber and plastic scintillating tiles, it fulfils its role effectively \cite{atlas_calorimeter}.
 
-\section*{The Muon Spectrometer}
-Serving as the outermost layer, the Muon Spectrometer employs a similar approach to the Inner Detector to measure muon momentum, typically undetected by the Inner Detector and Calorimeter. It comprises four subsystems \cite{atlas}.
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.61\textwidth]{figures/lhc/atlas_overview.jpg}
+    \caption{Overview of the \atlas detector showing its size and structure. Moreover, every important component is labelled. \copyright{BMBF}}
+    \label{fig:atlas_overview}
+\end{figure}
 
-For muon triggering and coordinate measurement, Resistive Plate Chambers (RPC) and Thin Gap Chambers (TGC) are deployed across different detector regions. Additionally, Cathode Strip Chambers (CSC) offer precise coordinate measurements at the detector ends. Monitored Drift Tubes (MDT) track muon trajectories' curvature. Outer toroidal magnets generate the magnetic field responsible for muon deflection \cite{atlas}.
+\subsection{Detector}
+\label{sec:exp:atlas_detector}
+The detector of the \atlas experiment is of particular interest. The following sections will cover its elements including the detector modules and magnetic systems in great detail. An overview of the detector is shown in Fig.~\ref{fig:atlas_overview}. The individual layers of the detector are further visualised in Fig.~\ref{fig:atlas_layers}. 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.61\textwidth]{figures/lhc/atlas_layers.png}
+    \caption{Cross-section of the concentric layers within the \atlas detector. \copyright{\cern}}
+    \label{fig:atlas_layers}
+\end{figure}
+
+\subsubsection*{Magnetic System}
+For the measurement of particle trajectories and their curvature, significant magnetic fields are required. For that reason, \atlas implemented superconducting magnet system build from Aluminium, Copper and Niobium-Titanium. alloy. 
+
+It includes a central solenoid magnet surrounding the Inner Detector. It provides a central field of 2\,T \cite{atlas:tech_design_report_01}. Since the central solenoid is placed right before the calorimeter, this magnet is build as thin as possible. 
+
+Furthermore, three large air-core toroids generate an additional magnetic field for the outer muon spectrometer. Each consisting of eight symmetrical coils placed radially around the beam axis \cite{atlas:tech_design_report_01}. These magnet systems are cooled using liquid Helium at 4.5\,K \cite{atlas:tech_design_report_01}. 
+
+\subsubsection*{The Inner Detector}
+The Inner Detector \cite{atlas:tech_design_report_inner_01,atlas:tech_design_report_inner_02} is a combined system of high-resolution detectors close to the beam pipe and continuos tracking elements at outer radii. Its task is to measure the particles' momentum. As mention before, the complete Inner Detector is surrounded by the 2\,T central solenoid magnet. Charged particles are deflected inside the detector, due to the Lorentz force \cite{theory:general_particles_nuclei}. By precisely measuring the curvature, momentum measurements and particle track reconstruction are achieved.
+
+All modules are placed either in the barrel or the end-cap region. The first region is arranged on concentric cylinders surrounding the beam axis and typically covers the low $\eta$ region. The later region's detectors are installed on disks perpendicular to the beam axis and cover the remaining space for a full coverage up to $\eta\pm2.5$.
+
+The innermost detector tiles are semiconductor pixel detectors \cite{atlas:tech_design_report_01,atlas:pixel_detector}. The first barrel layer is only 4\,cm from the beam pipe, covers an area of 0.2\,m$^2$ and measures the complete space up to $\eta=\pm2.5$. It reaches a resolution of $\sigma_{R\phi}=12\,\mu\text{m}$ and $\sigma_{z}=66\,\mu\text{m}$. This layer is followed by two more barrel layers that cover $\eta=\pm1.7$ and reach the same resolution. To compensate this lower $\eta$ acceptance, 5 end-cap disks are placed in each side. These cover the remaining space up to $\eta=\pm2.5$. Each module is only 21.4\,mm wide and 62.4\,mm long containing 61440 pixels controlled 16 chips. Every pixel detector has its individual circuit including buffering to store data until the trigger decision. While the precision and radiation resistance of these pixel detectors are remarkable, they also introduce some material before the calorimeters and are expensive. Hence, the amount of pixel detectors that can be included in the detector is limited. 
+
+Directly surrounding the pixel modules, the silicon strips are introduced \cite{atlas:tech_design_report_01,atlas:strip_detector}. It is subdivided into four barrel layers for the $\eta$ range up to $\eta=\pm1.4$ and 9 end-cap wheels on each side for the remaining space up to $\eta=\pm2.5$. They achieve slightly lower precision compared to the pixel modules with resolution achieving $\sigma_{R\phi}=16\,\mu\text{m}$ and $\sigma_{z/R}=580\,\mu\text{m}$. Each detector is 6.28x6.40\,cm$^2$ in size and includes 768 strips. Moreover, each module consists of four of these silicon detectors.
+
+Straw tube trackers around the previous modules allow for a lot of measured tracking points \cite{atlas:tech_design_report_01,atlas:transition_detector}. In the barrel regions, these are placed parallel to the beam axis. In contrast to the end-caps where these are aligned perpendicular to the beam axis. Previously, these were filled with a Xenon gas mixture. However, due some leakage this Xenon was changed to Argon to reduce costs. While these achieve significantly worse resolutions of $\sigma=170\,\mu\text{m}$, they can cover a greater area to their lower cost and less material per tracking point. Hence, they strongly contribute the precise momentum measurements.
+
+\subsubsection*{The Calorimeters}
+The calorimeters \cite{atlas:tech_design_report_01,atlas:calorimeter} are used to detect charged particles by absorbing them, allowing for a measurement of their deposited energy. The physical process of showering which allow such measurements was previously described in Ch.~\ref{ch:standard_model}. \atlas' calorimeter system is subdivided into four parts: electromagnetic calorimeter, hadronic barrel calorimeter, hadronic end-cap calorimeter and hadronic forward calorimeter.
+
+The first of these calorimeters, the electromagnetic calorimeter \cite{atlas:tech_design_report_01}, is built from Lead, liquid Argon and Kapton electrodes. It covers the pseudorapidity range up to $\eta=\pm3.2$ while the barrel region can detect up to $\eta=\pm1.475$. It is the innermost calorimeter and is primarily responsible for detecting photons and electrons. 
+
+The hadronic calorimeter \cite{atlas:tech_design_report_01} is build around the electromagnetic calorimeter and is build from plastic scintillator plates and Iron absorber in the barrel region and from Copper, Lead and liquid Argon in the end-cap regions. This separation is done to optimise the detector for the varying requirements of the great $\eta$ range. The barrel region reaches up to $\eta=pm1.7$ and the end-caps up to $\eta=\pm3.2$. Its thickness is one of the most important parameters for the calorimeter, since it has to be suffieciently thick to contain the hadronic showers and thus, minimize punch-trough into the adjacent Muon Spectrometer.
+
+The forward hadronic calorimeter \cite{atlas:tech_design_report_01} is implemented to cover the strongly boosted region of $3.1<|\eta|=4.9$. It as well is build from a Lead liquid Argon mixture with additional electrodes from Copper or a Tungsten alloy.
+
+\subsubsection*{The Muon Spectrometer}
+The outermost measurement part of the \atlas detector is the Muon Spectrometer \cite{atlas:tech_design_report_01,atlas:muon_chamber}. It bends the muon tracks by utilising the previously explained air-core magnets. The magnetic field is mostly orthogonal to the muon trajectories. In the region up to $\eta=\pm1.0$ the large barrel toroid magnet provides the needed magnetic field. Within the acceptance range of $1.4\leq|\eta|\leq2.7$ two smaller end-cap magnets bend the tracks. Between of these regions is the transition region where the deflection of the muon trajectories is done by the magnet field of both magnetic systems. The muon spectrometer consists of four parts.
+
+The first part is the monitored drift tube chamber which make up 800\,m$^3$ in volume. It consists of 30\,mm diameter aluminium tubes operating with a mixture of 93\% Argon and 7\% CO$_2$. The single-wire resolution is $\sim$80\,$\mu$m. To increase the overall resolution, multilayer pairs of multiple tubes are utilised.
+
+The New Small Wheel project replaced the original Cathode Strip Chambers \cite{atlas:muon_chamber,atlas:muon_chamber_upgrade,atlas:new_small_wheel}. It was installed after Run~II and uses Micro-Mesh Gaseous Structure as well as small-strip thing gab chambers. The former being a detector consisting of a planar electrode and a thin steel mesh forming a drift chamber. It is filled with the same Argon-CO$_2$ mixture as the first drift tube chamber. Its spatial resolution reaches 73\,$\mu$m. The later thing gab chambers consist of a Gold-plated Tungsten wire grid placed between two electrodes. The electrodes are made from a Carbon-epoxy mixture. The detector module reaches a spatial resolution of 100\,$\mu$m at the rate of up to 20\,kHz/cm$^2$.
+
+The resistive plate chambers \cite{atlas:tech_design_report_01,atlas:muon_chamber,atlas:muon_chamber_upgrade} are another gaseous detector. It uses a non-flammable C$_2$H$_2$F$_4$ SF$_6$ gas mixture. Again, the electrodes of the detection chamber are made from Carbon. The panels themselves are made polystyrene placed between Aluminium sheets. They achieve a spatial resolution of 1\,cm and a temporal resolution of 1\,ns.
+
+The thin gab chambers \cite{atlas:tech_design_report_01,atlas:muon_chamber} are the last chamber of the muon spectrometer. It is a proportional chamber using a flammable gas mixture of 55\% CO$_2$ and 45\% n-pentane. Even though it needs additional safety precautions, it is less sensitive to mechanical deformations, yields nearly Gaussian pulse height distributions and has a small dependence on the incident angle. The distance of both electrodes are 2.8\,mm.
+
+\subsubsection*{Trigger System}
+The aforementioned detector systems are able to detect and record significant amounts of data. The initial interaction rate of $\sim$1\,GHz resulting in a bunch-crossing rate of up to 40\,MHz \cite{atlas:tech_design_report_01} are too much to save. Approximately only 0.1\,kHz of data is suited for permanent storage. Thus, a very fast selection must be defined and implemented that discards most of the events to a manageable level. For that purpose, an online multi-level trigger system is introduced. Each trigger level refines the selection done from the previous level.
+
+The first level (LVL1) trigger \cite{atlas:tech_design_report_01,atlas:trigger_lvl_1} makes the initial selection. It utilises several subsets of detectors with reduced resolution to quickly decide whether the recorded event is saved or discarded. This is done by identifying potential candidates. The LVL1 decision is then based on certain object requirements. The maximum rate for the LVL1 trigger is up to 75\,kHz, targeting a decision latency of up to 2\,$\mu$s. The selected events of the LVL1 trigger are temporary saved into readout drivers and then readout buffers. 
+
+The event data stays on the readout buffers until the LVL2 trigger \cite{atlas:tech_design_report_01,atlas:trigger_lvl_high} either rejects or accepts them. The second trigger level utilises the region-of-interest information provided by the LVL1 trigger. It includes information on the position and momentum of potential objects and the sums of transverse energies $E_T$ and $E_T^\text{miss}$. The LVL2 trigger uses only the necessary information but has access to the full resolution information from the detectors. The LVL2 trigger reduces the rate to around 1\,kHz. Its latency is variable but in the range of 1-10\,ms. Events that pass both triggers are then transferred to an offline event filter system that performs the final selection. The final output data rate is approximately 100\,MB/s.
+
+
+\subsection{Coordinate System}
+\label{sec:exp:atlas_coordinate_system}
+The \atlas detector is built as a cylinder. Thus, a fitting coordinate system must be defined. For that, every position in the detector is defined by the $z$ position parallel to the beam axis, the azimuth angle $\phi$ along the detector and the pseudo-rapidity $\eta$ with respect to the collision point of the detector. Figure~\ref{fig:atlas_coordinate_system} shows qualitatively how the detector coordinate looks like when the detector cylinder is rolled out and projected onto a 2 dimensional plane. 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.80\textwidth]{figures/lhc/atlas_coordinate_system.excalidraw.png}
+    \caption{Sketch visualising the \atlas coordinate system using the azimuth angle $\phi$ and pseudo-rapidity $\eta$. It represents the rolled out detector cylinder. Moreover, it shows how a spatial cone defined by $\Delta R$ would look like.}
+    \label{fig:atlas_coordinate_system}
+\end{figure}
+
+To properly work with spatial separations in this coordinate system, the variable
+
+\begin{align}
+    \Delta R &= \sqrt{\left(\Delta \phi\right)^2 + \left(\Delta \eta\right)^2}\label{eq:delta_r}
+\end{align} 
+
+is introduced. It represents a cone around each point in the coordinate system as shown in Fig.~\ref{fig:atlas_coordinate_system}. This should not be confused with $R$ which is typically the radius from the beam pipe. Hence, expressions such as $R\phi$ correspond to the radial scaled azimuth angle and is used in classifying detector resolutions as seen before.
+
+\section{Other Experiments}
+\label{sec:exp:other_experiments}
+Besides the discussed \atlas experiment, there are three more main experiments at the \lhc: \cms, \alice and \lhcb. This section will briefly mention each of these experiments and compare them to the \atlas experiment.
+
+The \cms (Compact Muon Solenoid) \cite{other:cms} detector is a general-purpose similar to the \atlas detector. Its detector is shown in Fig.~\ref{fig:detector_cms}. As its name suggest, a particular focus is set on the precise measurement of high energy muons over a wide range of angles and momenta. Its main goals include muon mass resolution of around 1\% at 100\,GeV and the ability to determine the charge of muons with momentum $p$<1\,TeV. Other main goals include the reconstruction of charged particles, efficient tagging of $\tau$ leptons and $b$ quarks, precise missing transverse energies and isolation of photons and leptons at high luminosities. \cms started its operation with the commissioning of the \lhc.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.8\textwidth]{figures/lhc/detector_cms.png}
+    \caption{Overview of the \cms detector \copyright{\cern}}
+    \label{fig:detector_cms}
+\end{figure}
+
+The \alice (A Large Ion Collider Experiment) \cite{other:alice} focuses on heavy ion collisions. It is designed to measure the physics of strongly interacting matter and the quark-gluon plasma at extreme energies and temperatures. It consists of a central barrel which covers polar angles from 45$^\circ$ to 135$^\circ$ and a forward muon spectrometer covering 2$^\circ$ to 9$^\circ$. The detector layout is further visualised in Fig.~\ref{fig:detector_alice}. While the \alice physics program includes the study of light atoms, the main study utilises heavy nuclei Lead-Lead collisions. Its first collisions was recorded in November 2010.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.8\textwidth]{figures/lhc/detector_alice.jpg}
+    \caption{Overview of the \alice detector \copyright{\cern}}
+    \label{fig:detector_alice}
+\end{figure}
+
+\lhcb (Large Hadron Collider beauty) \cite{other:lhcb} is dedicated to study particles that contain $b$ quarks, which sometimes are referred as beauty quarks. Unlike the other experiments, its detector is build as a single-arm spectrometer which can be seen in Fig.~\ref{fig:detector_lhcb}. It covers a forward angle of approximately 0.5$^\circ$ to 17$^\circ$. The reason lies in \lhcb's focus on detecting $b$ hadrons which are predominantly produced in forward and backward cones. The \lhcb experiment started the operation at the same time as \atlas and \cms.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.8\textwidth]{figures/lhc/detector_lhcb.jpg}
+    \caption{Overview of the \lhcb detector \copyright{\cern}}
+    \label{fig:detector_lhcb}
+\end{figure}
+
 
 \chapter{Methods}
 \label{ch:methods}
-\section{SPANet}
+TODO RENAME CHAPTER
+TODO HOW ARE TTHWW EVENTS SELECTED => ASK BAPTISE ABOUT THAT
+TODO WHY ARE WE EVEN INTERESSTED IN THAT S?
+TODO EXPLAIN CLASSSICAL ALGORITHMS IN MORE DETIAL - KINDEMATIC LIKELIHOOD FITTER (DEVELOPED BY GÖTTINGEN GROUP; JADAJADAJADA)
+TODO EXPLAIN WHY WE ASSUME ONSHELL HADRONIC DECAY => EASIER BACKGROUND SUPPRESSION
+
+The goal of this project is to fully reconstruct the \ttHWW events which were introduced in Sec.~\ref{sec:theory:tthww}. Only the fully hadronic \ttbar and semi-leptonic \HWW decay mode is targeted. Classical combinatoric algorithms are not suited for this task, since the final state has 8 jets. Furthermore, the final state contains an undetected neutrino which needs to be reconstructed. Thus, a modern approach using neural networks and sampling is implemented.
+
+Section~\ref{sec:methods_spanet} covers the implementation and training of \spanet, a modern transformer for jet reconstruction. Its task is to match the jets of the fully hadronic \ttbar system. After the \ttbar system is matched, the remaining jets can be used to reconstruct the \HWW decay. 
+
+On-shell \Hbosons can not decay into two on-shell \wbosons. Hence, one of the \wbosons is expected to be off-shell. We assume that the on-shell \wboson decays hadronically. Then two of the remaining jets with an invariant mass closest to the \wboson SM mass are matched to the on-shell \wboson. The remaining off-shell \wboson is then assumed to decay leptonically. The missing parameters due to the unknown off-shell $W^*$ boson mass and the undetected neutrino $\nu_l$ are sampled using neutrino weighting as described in Sec.~\ref{sec:methods_neutrino_weighting}.
+
+\section{SPA-Net}
+\label{sec:methods_spanet}
+TODO EXPLAIN MASHINE LEARNING AND DNNS => OWN CHAPAER?
+TODO CHECK IF SPANET IS PRETRAINED OR NOT
+TODO HOW AND WHY IT UTILIZES EVENT symmetries
+TODO EXPLAIN THE DIFFERENT VERSIONS OF SYYMETRIES SUED IN SPANET MORE CLEARLY
+TODO LOOK AT UPDATED SPANET VERSION WITH NEW IMAGE TO INCLUDE AND LEPTON/MET INPUTS
+TODO EXPLAIN SYMMETRIC TENSOR Attention
+TODO COMBINED SYMMETRIC LOSS ONLY DURING TRAINING; DURING INFERENCE SPANET ITERATIVELY ASSIGNS JETS TO RECONISTRUCTED PARTICLES BY COMPARING THE SCORES OF INDIVIDUAL PERMUTATIONS SO THAT NO JET IS ASSIGNED TO MULTIPLE PARTICLES
+
+For this project, the pretrained transformer network \spanet (Symmetry Preserving Attention Networks) \cite{spanet} is used. It is able to match jets to predefined objects which we expect in the final state. It utilises symmetries in the event topology. These symmetries typically describe particles and anti-particles which are identical disregarding their charge. Moreover, when particles such as the \wboson decay, they produce two particles. Since physics is invariant under swapping the labels of these two particles, they also define a symmetry that is used. 
+
+The architecture of this neural network is visualised in Fig.~\ref{fig:spanet}. It can be subdivided in to four components \cite{spanet}: jet input embeddings, central transformer, particle transformers and self-attention output layer.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.85\textwidth]{figures/methods/spanet.png}
+    \caption{Overview of \spanets architecture and its four regions \cite{spanet}.}
+    \label{fig:spanet}
+\end{figure}
+
+Each prediction is split into three steps. First, the amount of valid jet assignment permutations is reduced by splitting up event into sub-structures which are predefined by the event topology. Then each sub-structure is solved by assigning the best fitting jet to parton by applying a modern `Symmetric Tensor Attention' \cite{spanet}. All solved sub-structures are then combined into a final jet-to-patron prediction by using a combined symmetric loss \cite{spanet}. Splitting up the individual particles allows partial event reconstruction. Furthermore, partial events can be used in training while still provide impactful signal.
+
+In comparison to other neural networks, \spanet offers three main advantages: \cite{spanet}
+
+\begin{itemize}
+    \item The network is agnostic to the number of input objects (jet multiplicity). Hence, training and prediction can be done with samples that contain events with different number of jets.
+    \item All predicted jet matches are unique. No object is matched to more than one jet. Furthermore, each prediction is also rated using an assignment probability that represents \spanets confidence for that particular prediction.
+    \item Expected symmetries due to the event topology can be predefined. These symmetries are then preserved and used to speed up the process by simplifying the prediction task. 
+\end{itemize}
+
+Since the neural network is pretrained on \ttbar events, some fine-tuning is needed for the \ttHWW events. However, since this event channel has not been analysed before, no training samples are pre-made. Sec.~\ref{sec:methods_truth_matching} explains how the \ttHWW training set for fine-tuning is created.
+
+
+\section{Truth Matching}
+\label{sec:methods_truth_matching}
+To train \spanet, some training samples must be prepared as described in Sec.~\ref{sec:methods_spanet}. Hence, a truth matching algorithm needs to be developed. It must take the truth and reconstructed information of well-defined MC simulations as inputs and outputs a corresponding jet for each expected final state particle.
+
+For matching a jet to a truth particle, a spatial $\Delta R$ cone is placed around each jet. The cone size is limited to $\Delta R\leq0.4$. Any truth object within a jet cone is saved as a potential match to the corresponding jet. However, if multiple particles are within one cone this would lead to non-unique assignments. 
+
+Hence, a final selection must be made if more than one truth object is potentially matched to a jet. After selecting one of the jets as the final candidate, this jet is then saved and made unavailable for other objects. Repeating this process yields samples that can be used as \spanet training input. Results from this truth matching algorithm are discussed in Ch.~\ref{ch:current_status}.
+
+
 \section{Neutrino Weighting}
+\label{sec:methods_neutrino_weighting}
+TODO FIND ORIGINAL NEUTRINO WEIGHTING PAPER => LOOK FOR REFERENCES IN THAT PAPER; PROBABLY DZERO DID IT
+TODO CURRENT CITATION USAGE AS REFERENCE ON HOW TO USE NEUTRINO WEIGHTING FOR BACKGROUND SUPPRESSION OF 
+
+Neutrino Weighting \cite{neutrino_weighting} is used for the reconstruction of the leptonically decaying $W^*$ boson in the \HWW subprocess. The problem of the unconstrained and unknown parameters due to the off-shell mass of the $W^*$ boson and the neutrino are solved by introducing some assumptions. 
+
+First, we assume that the \Hboson has a fixed mass of $M_H=125.09\,\text{GeV}$ \cite{pdg}. Additionally, the mass of the on-shell \wboson is assumed to be $M_W=80.379\,\text{GeV}$ \cite{pdg}. Then, to fully reconstruct the \HWW sub-structure, we sample several combinations of the off-shell mass $M_{W^*}$ and the pseudo-rapidity of the neutrino $\eta_\nu$. 
+
+Using these assumptions, the \HWW subsystem is fully constrained \cite{neutrino_weighting} and the neutrino transverse momentum $p_T^\nu$ can be calculated. To compare the calculated neutrino momentum to the observed missing momentum, the weight 
+
+\begin{align}
+    w = \exp{\frac{(p_x^\nu-p_x^\text{miss})^2}{\sigma_x^2}} \cdot \exp{\frac{(p_y^\nu-p_y^\text{miss})^2}{\sigma_y^2}}
+\end{align}
+
+can be calculated. The variable $\sigma_{x/y}$ is the experimental resolution of the missing momentum $p_{x,y}^\text{miss}$. The weight $w$ is in the range of $[0,1]$. Higher values mean better agreement between the calculated values and the observation. If the weight is calculated for many samples of $M_{W^*}$ and $\eta_\nu$, a plot as seen in Fig.~\ref{fig:neutrino_weighting} can be created. It shows the most likely combination of the unknown parameters.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.50\textwidth]{figures/methods/neutrino_weighting.png}
+    \caption{Example plot showing a potential distribution of weights for several sampled combinations of $\eta_\nu$ and $M_{W^*}$. The most likely combination of parameters can be seen at the red peaks \cite{neutrino_weighting}.}
+    \label{fig:neutrino_weighting}
+\end{figure}
+
 
 \chapter{Current Status}
 \label{ch:current_status}
+The project started on the 3rd of November 2023 and has been going for 5 months so far. During that time, the needed truth matching algorithm has been developed, validated and refined. Additionally, an environment for training \spanet on the `National Analysis Facility' (NAF) from DESY was implemented. Section~\ref{sec:status:truth_matching} explains the work done for the truth matching algorithm. 
+
+\section{Truth Matching}
+\label{sec:status:truth_matching}
+The following paragraphs will outline the algorithm for preparing \spanet inputs. The fundamental idea of the matching is discussed in Sec.~\ref{sec:status:truth_matching_algorithm}. Results  of the validation are given in Sec.~\ref{sec:status:successful_event_matches},\ref{sec:status:final_jet_selection} and \ref{sec:status:higgs_decay} which cover the success rate, final jet selection scheme and Higgs decay regions, respectively.
+ 
+\subsection{Truth Matching Algorithm}
+\label{sec:status:truth_matching_algorithm}
+As mentioned in Sec.~\ref{sec:methods_spanet}, the need for training input motivates the development of a matching algorithm. A simple selection was developed that takes the MC simulations and begins by sorting the \textsc{reco}- and \textsc{truth}-trees and pairing the event information from both trees. 
+
+Then, for every expected particle from the event topology a match to some reconstructed jet is attempted. For such match, a spatial cone around every truth particle is considered. The cone is defined by $\Delta R\leq0.4$ as introduced in Sec.~\ref{sec:exp:atlas_coordinate_system}. Every jet within the $\Delta R$ cone is then saved as a potential match. 
+
+If no jet is found within the cone, then the particle can not be matched. If exactly one jet is found, the potential match is saved as the final matched jet to the particle. For cases with more than one potential match, an additional step has to be implemented to decide which of the potential matches is selected. This is explained in more detail in Sec.~\ref{sec:status:final_jet_selection}. 
+
+The algorithm tries to first match a jet to each of the six final state particles from the fully hadronic \ttbar system. Then, the algorithms attempts to reconstruct both \wbosons. For successfully reconstructing the \wboson, both decay quarks must be matched. Their four-vectors are added to recreate the \wboson's four-vector. The $t$ quarks can then be reconstructed if their corresponding $b$ and \wboson is matched. Again their four-vectors are added for the top quark four-vector.
+
+An event is defined as a successful match, if both top quarks - and thus all decay particles of the fully hadronic \ttbar system - are matched. The \HWW subsystem is not matched by this algorithm yet. Soon, the hadronic \wboson decay will also be added into the matching algorithm. Then, \spanet will be trained on all jets of the events and its prediction can be directly used in neutrino weighting.   
+
+\subsection{Successful Event Matches}
+\label{sec:status:successful_event_matches}
+The first results can be seen in Fig.~\ref{fig:success_by_jets} which features two summarising plots that show the success rate of the matching algorithm per jet multiplicity. Only the success of a total event match is shown. 
+
+More jets in the final state are expected to increase the chance for successful event matches since more jets are available. This expectation is fulfilled. However, the statistics decreases for higher jet multiplicities, because every additional jet originating from some parton needs to come from some higher-order physics process with additional couplings. Events with less than 6 jets can not fully match the expected \ttbar system. Hence, these are not investigated.
+
+For the training, all events with at least 6 jets will be used to maximize the available training statistics. Even events that are classified as failures for full event matches are expected to increase the training performance. This is justified by the fact that failed event matches can still contain successful particle matches that can be trained on.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=.46\textwidth]{figures/truth_matching/success_by_jets.png}\hspace{.06\textwidth}
+    \includegraphics[width=.46\textwidth]{figures/truth_matching/success_ratio.png}
+    \caption{Overview of the total successful event count (left) and relative success rate (right) for the matching algorithm subdivided by the number of jets in the event.}
+    \label{fig:success_by_jets}
+\end{figure}
+
+\subsection{Final Jet Selection}
+\label{sec:status:final_jet_selection}
+To optimise the matching in the case of multiple possible matches, three different matching schemes were tested. The first scheme compares the spatial separation between the potential jets and the targeted particle. The closest jet in $\Delta R$ is then selected as the final match. The second approach focuses on the $\Delta p_T$ of the potential jets and the targeted particle. The closest pair in momentum space is then selected. This scheme is motivated by the CP violating properties of the \wboson which should result in non-symmetric transverse momenta for the decay particles. One last scheme was tested which combined the information of the $\Delta R$ and $\Delta p_T$ approach. For the combined scheme, the $\Delta R$ was scaled to a range of [0,4] and $\Delta p_t$ to a range of approximately [0,$\sim$10]. The latter one is not exact since it has no cut applied. Then, the pair that minimises both variables is chosen as the final match.
+
+The result of the matching success fractions per particle are summarised in Tab.~\ref{tab:final_selection}. The $\Delta R$ scheme performs the best and is used in future investigations. Interestingly, the different schemes change the results only by small amounts <1\,\%. Investigations showed that less than 20\,\% of events have any truth object with more than one potential match. Furthermore, these cases often choose the same final match regardless of the applied matching scheme. Hence, no further investigation into the final matching procedure was performed. 
+
+\begin{table}
+    \centering
+    \caption{Overview of the three different matching schemes tested for the final jet matching. It shows the success fraction for each object and the combined \ttbar system. The highlighted $\Delta R$ only approach yields the best results.}
+    \begin{tabular}{l|c|c|c|c|c|}
+        &\multicolumn{5}{c|}{successful matching in \%}\\
+        & $t\bar{t}$ & $t$ & $\bar{t}$ & $W_t$ & $\bar{W_t}$\\
+        \hline
+        \rowcolor{gray!40}
+        $\Delta R$ only & 17.6 & 43.9 & 44.1 & 53.4 & 53.6\\
+        $\Delta R$ and $\Delta p_T$ & 17.5 & 43.7 & 43.9 & 53.1 & 53.2\\
+        $\Delta p_T$ only & 17.4 & 43.6 & 43.9 & 53.0 & 53.2\\
+    \end{tabular}
+    \label{tab:final_selection}
+\end{table}
+
+\subsection{Higgs Decay Modes}
+\label{sec:status:higgs_decay}
+Finally, an overview of different regions defined by the jet multiplicity and $H$/$W$ decay modes can be seen in Tab.~\ref{tab:higgs_decay}. It shows the relative yield for each region (using a total 4M event dataset) and the ratio of successfully matched events.
+
+Immediately, the difference between the $\geq5$ and $\geq6$ jets region becomes clear. While the first region with any $H$ decay and at least 5 jets in final state includes all events, the second region has a higher match success rate of 17.6\,\% instead of 15.8\,\% for full \ttbar matching. This is expected as seen in Sec.~\ref{sec:truth_matching_success}. Furthermore, we can select certain $H$ decay modes such as \Hbb or more importantly \HWW.
+
+The targeted topology is highlighted in the table and shows that around 0.2\% of all events are in this region. This is lower than expected. The cause for this lies in the identification from the events using the decay \textsc{pdgIds}. Around 90\,\% of all events including a \HWW substructure have ill-defined \texttt{pdgIds}. Hence, these events are not classified and discarded resulting in lower statistics. A new sample with fixed truth records is expected to be available later in the analysis. If the statistics for training \spanet becomes a problem in the future, this will be investigated further. For now, the events are used for training as it is.
+
+Note that the last row (fully hadronic \HWW) behaves differently than one might expect initially. The branching ratio of \wbosons would favour hadronic decays, yet no full hadronic decays are seen in the MC Simulations. This behaviour is also expected to caused by the broken \texttt{pdgIds}. However, it is important to in mind that even with a fixed sample, the implemented single-lepton trigger will reduce the observed branching ratios. This reduction is due to the fact that events with no high $p_T$ lepton are discarded and the \ttbar system is targeted to decay fully hadronically. Hence, the other high $p_T$ leptons can only originate from effects such as radiation or NLO processes. %When the \HWW subprocess does not yield any leptons, the top quarks must decay into a lepton. However, the simulations contain only fully hadronic \ttbar samples. Thus, any event with no lepton from the \Hboson is guaranteed discarded.
+
+\begin{table}
+    \centering
+    \caption{Overview of several regions defined by jet multiplicity and decay modes showing their relative yield to the total data set and matching success rates. The last three regions are events with \HWW decays, subdivided into fully leptonic, semileptonic and fully hadronic $WW^*$ decays. The highlighted row corresponds to the targeted topology.}
+    \begin{tabular}{l|r|c|c|c|c|c|}
+        &&\multicolumn{5}{c|}{successful matches in \%}\\
+        & rel. yield & $t\bar{t}$ & $t$ & $\bar{t}$ & $W_t$ & $\bar{W_t}$\\
+        \hline
+        $(\text{all})^{\text{5+ jets}}$  & 100.0\% & 15.8 & 41.0 & 41.2 & 50.5 & 50.7\\
+        $(\text{all})^{\text{6+ jets}}$  & 90.1\% & 17.6 & 43.9 & 44.1 & 53.4 & 53.6\\
+        $(H\rightarrow bb)^{\text{6+ jets}}$ & 58.3\% & 16.5 & 42.6 & 42.8 & 53.5 & 53.6\\
+        $(\HWW)^{\text{6+ jets}}$ & 1.2\% & 21.0 & 47.7 & 48.0 & 54.8 & 54.9\\
+        \hline
+        $(\HWW)_{\text{fully leptonic}}^{\text{6+ jets}}$ & 1.0\% & 21.2 & 48.2 & 49.3 & 55.2 & 55.2\\
+        \rowcolor{gray!40}
+        $(\HWW)_{\text{semileptonic}}^{\text{6+ jets}}$ & 0.2\% & 19.9 & 45.5 & 46.6 & 52.6 & 53.7\\
+        $(\HWW)_{\text{fully hadronic}}^{\text{6+ jets}}$ & 0.0\% & - & - & - & - & -\\
+    \end{tabular}
+    \label{tab:higgs_decay}
+\end{table}
+
+\section{NAF Computing Grid}
+\label{sec:status:installing_on_naf}
+Furthermore, after obtaining a certificate from the `Deutsche Forschungsnetz' (DFN) and gaining access to the NAF cluster, \spanet was installed alongside training datasets of different sizes. Some complications due to disk space and incompatible driver versions slowed down the implementation. The first dummy training ran successfully. Now the workflow for training and fine-tuning \spanet has been established. 
+
 
 \chapter{Outlook}
 \label{ch:outlook}
+The following sections provide a brief overview of the planned steps of this project.  
 
-\section{ttH}
+\subsection*{Fine-Tuning and Training \spanet}
+Now that \spanet is installed and ready to use on the NAF computing cluster as described in Ch.~\ref{ch:current_status}, it can be fine-tuned. Using a smaller training set, several versions of \spanet will be trained independently. These versions differ by their choice of hyperparameters and will be compared to find the best performing network. The optimised version of \spanet will be used as the final model. After the hyperparameter optimisation, \spanet will be trained on a greater dataset. Then, the fully hadronic \ttbar system will be reconstructable.
 
+\subsection*{Implementing Neutrino Weighting}
+TODO: REWRITE - EXPANDING SPANET TO RECONSTRUCT HADRNOC W FROM H; THEN INPUT 4VECTOR JET + LEPTON + MET TO GET MOST LIKEY MASS AND ETA WITH A LIKELIHOOD!\\
 
-% \cleardoublepage
-% \chapter{Introduction}
-% As early as 400 BC, people were philosophising about the fundamentals of nature. The oldest known idea was formulated by the Greek philosopher Democritus, who postulated that matter can not be infinitely divisible. Thus, there has to be a smallest, indivisible particle which would be called atom (from Greek \textit{atomos}=indivisible). This idea was not experimentally tested but built purely on philosophical thoughts, however, it represents the begin of the search for a fundamental description of the universe.
+To reconstruct the other subsystem of the \ttHWW system, neutrino weighting as explained in Sec.~\ref{sec:methods_neutrino_weighting} will be implemented. The final algorithm is expected to take the event information and \spanets prediction as inputs. Its output should contain two of the remaining jets for the hadronic \wboson decay as well as the prediction about the leptonic $W^*$ boson decay. More specific, the most likely combination of off-shell mass $M_{M^*}$ and eta of the neutrinos $\eta_\nu$. When this step is completed, the full event can be reconstructed and the first main goal of this project will be fulfilled.
 
-% Over 2000 years later, in 1808, the chemist John Dalton refines the idea of Democritus by introducing the concept of elements. Each element has a unique indivisible atom and the different atoms differ in their mass and size. This refined model allowed Dalton to explain the apparent conservation of mass.
+\subsection*{Expanding the Analysis}
+As soon as the full event is reconstructable, several expansions for deeper research are possible. Some possible ideas are listed below. Currently, it has not been decided which of the following investigations will be conducted.
 
-% In the late 19th century, in 1897, the physicist Sir Joseph John Thomson developed the Thomson-model. This atomic model describes atoms as positive charged spheres which contain lighter negative charged particles, so called electrons. The entire atom is electrically neutral to the outside. The atom itself was not the smallest, most fundamental particle any more. This model was built on the experiments using a hot, radiating cathode that emits electrons. Hence, the Thomson-model explained the observed cathode electron beam.
+\begin{itemize}
+    \item Measurement and comparison of the inclusive and STXS differential cross-section. 
+    \item Further SM investigations are possible. The channel offers insight into several interesting parameters such as the top Yukawa coupling or Higgs decay branching ratios. 
+    \item Compare the usage of modern techniques to classical algorithms. The overall speed and performance gain due to using \spanet can be quantified. Furthermore, this comparison could also include estimations on power consumption and CO$_2$ emissions.
+\end{itemize}
 
-% In 1911, Ernest Rutherford conducted the famous Rutherford-experiment, which used an $\alpha$-particle beam that was focused onto a thin gold foil. The results of the experiments suggest that most of the mass in an atom is contained in a very small volume which is the positively charged atom nucleus. Almost the whole atom consist of empty space. The negatively charged electrons orbit the atom nucleus.
+No investigation into the spin correlation of the \HWW substructure will be done. The targeted event topology is expected to contain high background contamination and thus, is not suited for such analysis.
 
-% Two years later, in 1913, Niels Bohr formulated another atomic model that described the movement of electrons around the nucleus like planets around the sun. He postulated that electrons move on circular orbits without emitting radiation. Additionally, the radii of those orbits can only be certain quantised values. Electrons are able to change their orbits by emitting or absorbing photons of certain energies. This model made it possible to explain the photoelectric effect. In 1916, the Bohr-model was expanded by Arnold Sommerfeld who generalised the electron orbits and allowed an elliptical shape. Thus, the Bohr-Sommerfeld-model explained, why there are multiple spectral lines very close to each other.
-
-% In 1926, the physicist Werner Heisenberg and Erwin Schr�dinger both developed a mathematical description of quantum mechanics. Requiring that electrons fulfil the quantum mechanical Schr�dinger equation lead to the atomic-orbital-model. The orbits are space regions with high probability of containing electrons and they are classified by four quantum numbers. Additionally, those orbits must obey specific selection rules. 
-
-% While the concept of an atomic nucleus was first formulated by Rutherford, it was first thought to only be made up of positively charged protons. However, this model was expanded in 1932 by James Chadwick, who introduced neutral charged particles, neutrons, that are also part of the atomic nucleus.  
-
-% In 1968, deep inelastic scattering allowed scientist to analyse these nucleons further. Protons and neutrons are made up of even smaller particles which were called partons. Later they were identified as quarks. The quark particles were already proposed in 1964 by Murray Gell-Mann and George Zweig. Today, these quarks are part of the Standard Model of particle physics which is the most successful description of the fundamental nature of the universe.
-
-% Modern particle physics' task is to find a general description of fundamental phenomena. It focuses on expanding and refining the Standard Model to find a unified theory. To find new physics beyond the Standard Model, different experiments test various predictions of the Standard Model.
-
-
-% \chapter{The Standard Model of Particle Physics}
-% The Standard Model of particle physics (SM) is the most successful description of the fundamental particles and their interactions to this day. It covers all known elementary particles and their antiparticles as well as three of the four known fundamental forces: the strong, weak and electromagnetic force. Gravity is not described in the SM. 
-
-% The SM is a renormalisable quantum field theory which is defined by an internal SU(3)$\otimes$SU(2)$\otimes$U(1) gauge symmetry. The SU(3) group symmetry describes the strong interactions, originating from quantum chromodynamics (QCD) \cite{qcd}, and the SU(2)$\otimes$U(1) group symmetry corresponds to the electroweak interactions \cite{qed01, qed02, qed03}. The later being the unification of the electromagnetic force, originating from quantum electrodynamics (QED), and the weak force, originating from quantum flavour dynamics (QFD).
-
-% In 1967, the Higgs mechanism was incorporated into the electroweak interaction \cite{higgs_mechanism_1, higgs_mechanism_2, higgs_mechanism_3}. The Higgs mechanism adds a Higgs quantum field that induces a spontaneous symmetry breaking in the SU(2)$\otimes$U(1) symmetry. Initially all bosons were massless, but this symmetry breaking causes all bosons interacting with the Higgs-field to become massive. Fermions also obtain their masses by interacting with the Higgs field. The massive gauge bosons of the electroweak interaction are known as the \zwboson. Additionally, one of the degrees of freedom introduced by the Higgs-field is not needed by the Higgs-mechanism, thus becoming the scalar Higgs-boson $H$ \cite{higgs_mechanism_1}.
-
-% However, there are observed phenomena which cannot be explained using the SM. An example for this is neutrino oscillations \cite{neutrino_oscillation}, which describes flavour changing neutrinos. This oscillation requires neutrinos to have a mass difference but the SM predicts all neutrinos to be massless. Hence, the SM cannot explain the neutrinos oscillation. Another example is dark matter \cite{dark_matter}. Astronomical observation give evidence of a stable form that does not interact electromagnetically, making it invisible to current observations. The measured rotational velocity for large spiral galaxies requires a much larger mass than the visible matter provides.
-
-% \section{Elementary Particles}
-% The elementary particles are divided into fermions and bosons. Fermions have half-integer spin and make up matter, while bosons have integer spin and are responsible for mediating the strong, weak and electromagnetic force. All these particles also have an antiparticle partner, which has the same mass but opposite electric charge.
-
-% Figure $\ref{fig:standard_model}$ shows the different SM-particles. Furthermore, it shows that fermions are subdivided into quarks and leptons, which both are divided into three generations. Particles corresponding to a higher generation have significantly increased masses.
-
-% The six quarks are split into three up-type (up, charm, top) and three down-type (down, strange, bottom) quarks. The up-type quarks have an electric charge of $q_\text{up}=+\frac{2}{3}\,e$ and down-type quarks of $q_\text{down}=-\frac{1}{3}\,e$. All quarks also have a colour charge, thus participating in strong interactions. Fermions also have a weak isospin $T$ which is related to the electric charge $q$ and is a quantum number referring to the weak interactions \cite{qed03}. The third component of the weak isospin $T_3$ is conserved by weak interactions.
-
-% Left-handed fermions, and quarks in particular, have a weak isospin of $T=\frac{1}{2}$, which can be grouped into doublets with $T_3=\pm\frac{1}{2}$. The positive sign corresponds to up-type quarks and the negative sign to down-type quarks, respectively. Right-handed fermions form singlets and the charged electroweak \wboson does not interact with them.
-
-% Leptons on the other hand are split into charged leptons ($e, \mu, \tau$) and their corresponding neutrinos ($\nu_e, \nu_\mu, \nu_\tau$). The charged leptons all have an electric charge $q_\text{l}=-1\,e$, while neutrinos are electrically neutral. Left-handed leptons can also be grouped into doublets with $T_3=\pm\frac{1}{2}$, where neutrinos are the up-type particles and charged leptons the down-type.
-
-% \begin{figure}[ht]
-% 	\centering
-% 	\includegraphics[width=.75\textwidth]{figures/standard_model.eps}
-% 	\caption{The elementary particles of the Standard Model subdivided into fermions on the left and bosons on the right. The fermions are further split into quarks at the top and leptons on the bottom, which are each divided into three generations. The bosons are divided into four vector bosons and one scalar boson.}
-% 	\label{fig:standard_model}
-% \end{figure}
-
-% \section{The Top Quark}
-% The top quark ($t$) was discovered in 1995 at \fermilab by the experiments \cdf\cite{top_production01} and \dzero \cite{top_production02}. It is an up-type quark, has a mass of $m_t=172.76\pm0.30,\text{GeV}$, which makes it the heaviest of all known quarks and has a very short lifetime of $\tau_t\approx5\cdot10^{-25}\,\text{s}$ \cite{top_mass}. The \tquark decays via the weak interaction into a \wboson and a down-type quark before it hadronises. The probability of decaying into a certain down-type quark is given by the CKM-matrix \cite{ckm_matrix}. Due to the CKM-matrix having vanishing off-diagonal contributions, \tquarks predominantly decay into \bquarks. The \wboson further decays into a charged lepton and neutrino or into a quark and antiquark so that a variety of signatures as summarised in Tab.~\ref{tab:decay_modes_t} can be measured.
-
-% \begin{table}[t]
-% 	\renewcommand{\arraystretch}{1.5}
-% 	\centering
-% 	\begin{tabular}{R{40mm}C{60mm}C{10mm}C{10mm}}
-% 		Signal	& Reaction & Jets & Leptons\\
-% 		\hline
-% 		Lepton 		& $t\rightarrow bW^+ \rightarrow b(\bar{l}\nu_l)$ & 1 & 1(+1)\\
-% 		Jets		& $t\rightarrow bW^+ \rightarrow b(q\bar{q'})$ 	& 3 & 0\\
-% 	\end{tabular}
-% 	\caption{Possible signals from the \wboson decay modes. The number of leptons in brackets corresponds to the number of neutrinos.}
-% 	\label{tab:decay_modes_t}
-% \end{table}
-
-% Producing \tquark requires high energies corresponding to the mass of the \tquark. These energies can be achieved in hadrons colliders. Figure~\ref{fig:production_ttz_ttw} shows two example processes for \tquark production in \ttbar-processes. Each of the two \tquarks decays like mentioned before, therefore we get different signals depending on the \wboson decay mode. The possible signals consist either of hadronic decay, leptonic decay or both combined and will be discussed in more detail in Chapter~\ref{ch:methods}. 
-
-% \section{\ttbar{} Production in Association with a $Z$/$W$-Boson}
-% When producing \ttbar-pairs, one can also produce additionally a \zwboson. Figure~\ref{fig:production_ttz_ttw} shows example processes for \ttbar-production via gluon-gluon fusion and via quark-antiquark annihilation with an additional \zwboson. A selection of possible signals from \ttbarZ{}/\ttbarW{}-events is summarised in Tab.~\ref{tab:decay_modes_ttz_ttW}.
-
-% The \ttbarZ-events are interesting because they allow studying the coupling of \tquarks to neutral currents of the weak interaction through final state radiation of a \zboson in \ttbar-events. Therefore, \ttbarZ-events allow analysing the third component of the weak isospin of \tquarks.
-
-% The \ttbarW-events are not sensitive to the coupling of \tquarks to charged currents of the weak interaction, because, as seen in Fig~\ref{fig:production_ttz_ttw}, the \wbosons are often emitted as initial state radiation. However, the \ttbarW-processes are sensitive to the initial parton distribution functions (PDF) and thus generate possible constraints onto those PDFs.
-
-% Analysing \ttbarZ/\ttbarW-events together at the same time is particularly interesting because both can generate similar signals and thus are important background processes for each other. Especially studying these events in off-shell regions gives rise to a high rate of background from the respective other process. The kinematic variables, like invariant mass and transverse momentum, of \ttbarW/\ttbarZ off-shell events are also very sensitive to SM-EFT contributions. To be more precise, the sensitivity of SM-EFT contribution increases for higher boson masses \cite{sm_eft_top}.
-
-% \begin{figure}[t]
-% 	\centering
-% 	\includegraphics[width=.4\textwidth]{figures/ttZ_feynman.png}\hspace{.1\textwidth}
-% 	\includegraphics[width=.4\textwidth]{figures/ttW_feynman.png}
-% 	\caption{The left Feynman diagram shows an example \ttbarZ-process by gluon fusion. The produced \ttbar-pair emits an additional \zboson. The right Feynman diagram shows a \ttbarW-process by quark-antiquark annihilation.}
-% 	\label{fig:production_ttz_ttw}
-% \end{figure}
-
-% \begin{table}[t]
-% 	\renewcommand{\arraystretch}{1.5}
-% 	\centering
-% 	\begin{tabular}{R{40mm}L{60mm}C{10mm}C{10mm}}
-% 		Signal	& Reaction & Jets & Leptons\\
-% 	\hline
-% 		\ttbarW-Monoleptonic 	& $t\bar{t}W\rightarrow(bq\bar{q}')(\bar{b}q\bar{q}')(l\bar{\nu_l})$ 				& 6 & 1(+1)\\
-% 		\ttbarW-Dileptonic 		& $t\bar{t}W\rightarrow(bq\bar{q}')(\bar{b}l\bar{\nu_l})(l\bar{\nu_l})$ 			& 4 & 2(+2)\\
-% 		\ttbarW-Trileptonic 	& $t\bar{t}W\rightarrow(b\bar{l}\nu_l)(\bar{b}l\bar{\nu_l})(l\bar{\nu_l})$ 			& 2 & 3(+3)\\
-% 		\ttbarZ-Dileptonic 		& $t\bar{t}Z\rightarrow(bq\bar{q}')(\bar{b}q\bar{q}')(l\bar{l})$ 					& 6 & 2(+0)\\
-% 		\ttbarZ-Trileptonic 	& $t\bar{t}Z\rightarrow(bq\bar{q}')(\bar{b}l\bar{\nu_l})(l\bar{l})$ 				& 4 & 3(+1)\\
-% 		\ttbarZ-Tetraleptonic 	& $t\bar{t}Z\rightarrow(b\bar{l}\nu_l)(\bar{b}l\bar{\nu_l})(l\bar{l})$ 				& 2 & 4(+2)\\
-% 	\end{tabular}
-% 	\caption{Possible leptonic signals from \ttbarZ/\ttbarW-events which provides a cleaner measurement. Either \tquark or \zwboson decays into leptons.}
-% 	\label{tab:decay_modes_ttz_ttW}
-% \end{table}
-
-% \chapter{Experimental Setup}
-% For collecting data on the \ttbarW{} and \ttbarZ{} events, one needs to setup a high energy particle collider and an appropriate setup for detecting the corresponding signals.
-
-% The 27\,km long Large Hadron Collider (\lhc) is a proton-proton collider. The centre-of-mass energy reached by the \lhc was around 8\,TeV during Run~I and 13\,TeV during Run~II \cite{lhc1,lhc2}. During Run~III the centre-of-mass energy is expected to reach 14\,TeV \cite{lhc_run3}. Those high-energy collisions produce multiple new particles like \tquarks, which in turn decay into more particles. Detecting events requires a calibrated detector system which measures the properties of the particles such as charge, momentum and energy. Furthermore, reconstructing the events from measured signals requires specific reconstruction algorithms.
-
-% The \atlas-detector \cite{atlas} is a multi-purpose particle detector that consists of different layers for detecting various particles. These layers are built in concentric cylinders around the beam axis. For collecting data on certain events, one must measure the tracks and deposited energies of their decay products. Figure~\ref{fig:atlas} shows a schematic view of those detector layers and each layer is described in the following. 
-
-% \begin{figure}[t]
-% 	\centering
-% 	\includegraphics[width=.73\textwidth]{figures/atlas.png}
-% 	\caption{Cross section of the concentric layers inside the \atlas-Detector.}
-% 	\label{fig:atlas}
-% \end{figure}
-
-% \paragraph{The Inner Detector:}
-% The task of the Inner Detector is to precisely measure the tracks of various charged particles. Because of the 2\,T magnetic field, which is induced by a central solenoid, the moving charged particles are deflected via the Lorentz force. Measurements of the curve radius allows precise measurements of their momentum and reconstructing the particle track. Thus, the tracking system is crucial for $b$-tagging because it makes it possible to identify secondary vertices, which are very good indications for $b$-jets \cite{atlas}. The high density of particles in the detector close to the collision point utilises high-precision measurements using Pixel-, Strip- and Transition Radiation Trackers.
-
-% The Pixel Tracker is the first point of detection and allows tracking near the collision point using small Pixel-modules \cite{atlas}. It is built from silicon to withstand strong radiation from the collision. The semiconductor Strip Tracker (SCT) consists of longer strips that also contribute to the tracking by offering larger scale measurement.
-
-% The Transition Radiation Tracker (TRT) is built from thin and long polyimide straws \cite{atlas}. These straw tubes are filled with a gas mixture  and while they offer a worse resolution, they allow for a relatively cheap way to cover a greater volume and hence, contribute to a precise measurement.
-
-% \paragraph{The Calorimeters:}
-% As seen in Fig.~\ref{fig:atlas}, the calorimeters are built around the Inner Detector and the solenoid magnet. In general, the calorimeters measure the energy of particles by stopping them. The calorimeter system used in the \atlas-detector is subdivided into the electromagnetic and the hadronic calorimeter. Both are sampling calorimeters that have an absorber material, which induces particle showers and an active medium, which is used for measuring the signals \cite{atlas_calorimeter}.
-
-% The electromagnetic calorimeter measures all particles that interact electromagnetically. Those charged particles and photons each create an electromagnetic shower which can be used to reconstruct the initial particles. It offers a precise measurement of the deposited energy and the location of the energy-deposition. It is built from Lead as the absorber and liquid Argon as active medium \cite{atlas_calorimeter}.
-
-% The hadronic calorimeter absorbs particles that pass the electromagnetic calorimeter and interact via the strong force. The hadronic showers created can produce additional electromagnetic sub-showers which makes them more difficult to reconstruct and less precise. Its absorber material is Copper and its active material is also liquid Argon \cite{atlas_calorimeter}.
-
-% \paragraph{The Muon Spectrometer:}
-% The Muon Spectrometer is the outermost layer and follows a similar approach as the Inner Detector to measure the momentum of muons by tracking their deflected trajectory. The magnetic field responsible for the deflection is generated by outer toroidal magnets. Data on muons can be important for analysing neutrino-related events.
-
-% \chapter{Methods}
-% \label{ch:methods}
-% As mentioned above, there are different signal channels for \ttbarZ/\ttbarW-processes which can be used for measuring these events. Each signal channel has certain advantages and disadvantages for an analysis as described in the following.
-
-% \paragraph{Full Hadronic:} 
-% Full hadronic decays have high branching ratio ($\sim45\%$ for \ttbar-production) but they are difficult to reconstruct because of their produced jets. In theory, the measured final particles just have to collected into cone-formed jets to reconstruct the initial particles through conservation laws, however, there are multiple challenges to this. Missed information because of energy leakage or absorber material losses as well as electronic noise, jet overlapping and limited algorithm efficiencies makes reconstructing the initial state difficult. This decay mode produces 3 jets per \tquark, of which at least one is expected to be a $b$-jet, and two jets from bosons.
- 
-% \paragraph{Full Leptonic:}
-% Full leptonic decays are rarer ($\sim10\%$ for \ttbar-production) but cleaner measurements of lepton signals. These leptonic decays refer to electrons and muons only, because tau-leptons decay into hadrons and thus create jets, making them more difficult to reconstruct. Their signal is cleaner, because they do not form hadron-jets but smaller electromagnetic showers in the calorimeter. However, the produced neutrinos can not be measured, their energy has to be measured indirectly via the missing energy of the process. This decay mode produces only 1 $b$-jet per \tquark.
-
-% \paragraph{Semi-Leptonic:}
-% There are also some semi-leptonic channels which consist of some particles decay hadronically and some leptonically. Those also have a high branching ratio ($\sim45\%$ for \ttbar-production) and offer a cleaner measurement than full hadronic channels, because of less jets per event. But the jet reconstruction makes calculating the missing energy of the involved neutrinos more difficult. The number of jets depends on the exact decay of each particle but there is at least 1 $b$-jet per \tquark and there can not be more jets than in a full hadronic decay.
-
-% \section{Comparison to Previous Studies}
-% This thesis will focus on the trileptonic decay channel of \ttbarZ/\ttbarW, which is a semi-leptonic decay and is presented in Tab.~\ref{tab:decay_modes_ttz_ttW}. The current analysis can use larger datasets like the full Run~II dataset, collected during the years 2015-2018. To identify the trileptonic channel, certain signal regions have to be defined. These are characterised by the number of measured leptons, jets and identified b-jets as well as momentum and sum of charge of the leptons.
-
-% In previous studies \cite{atlas_ttw_ttz,atlas_ttz}, jets were reconstructed using the anti-$k_t$ algorithm \cite{anti_k_algorithm} and $b$-tagging was performed by using the mv2c10-algorithm \cite{b_tagging}. Current analysis uses the same parameters for jet-object reconstruction but uses the newer DL1r-algorithm \cite{dl1r_algorithm}, which is based on neural networks and has an improved performance compared to the mv2c10-algorithm. 
-
-% Moreover, current research uses some new multivariate analysis (MVA) methods for the (semi-)leptonic channels. These also allow for analysis of the off-shell \zboson processes which will be conducted in this analysis. The isolation of lepton object definitions were previously done using the FCTight-algorithm \cite{fctigth_algorithm}, the current analysis uses the PLVLoose-algorithm \cite{plvloose_algorithm}.
-
-% This analysis will also utilise up-to-date recommendations of the combined performance groups within ATLAS \cite{cp_group_ttbar} to further decrease systematic uncertainties in comparison to previous studies. Additionally, precision measurements and better understanding of background signals, especially events with misidentified or non-prompt leptons \cite{atlas_ttw_ttz} for trileptonic decays, allow for reduced modelling uncertainties.
-
-
-% \chapter{Timetable}
-% For a structured schedule, the 14-week period of working on the Bachelor Thesis is divided into different tasks for each week. The general timetable is shown in Tab.~\ref{tab:timetable}.
-% \begin{table}[ht]
-% 	\renewcommand{\arraystretch}{1.5}
-% 	\centering
-% 	\begin{tabular}{l|p{12cm}}
-% 		Week	& Task\\
-% 		\hline
-% 		1 		& Research previous \ttbarZ/\ttbarW analysis \\
-% 		2		& Study analysis framework (TRExFitter, MVA-Trainer)\\
-% 		3-5 	& Construction of signal- and background-framework for \ttbarZ/\ttbarW analysis including different fits\\
-% 		6		& Implementation of systematic uncertainties\\
-% 		7-8		& Investigation of EFT-sensitive variables in signal region\\
-% 		9-11	& Improvement of signal region through MVA-methods and neural networks\\
-% 		12-14	& Writing bachelor thesis\\
-% 	\end{tabular}
-% 	\caption{The table summarises the weekly schedule for the time required to complete the bachelor's thesis.}
-% 	\label{tab:timetable}
-% \end{table} 
-
-
-%\appendix
-%\chapter{erster Anhang}
-%Text\dots
-%\chapter{zweiter Anhang}
-%Text\dots
 
 \bibliography{datenbank} 
-
-%\begin{otherlanguage}{ngerman}
-%\Declaration
-%\end{otherlanguage}
-
 \end{document}

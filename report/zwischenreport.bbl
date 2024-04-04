@@ -3,64 +3,214 @@
 \providecommand{\urlprefix}{URL }
 \providecommand{\eprint}[2][]{\url{#2}}
 
-\bibitem{qcd}
-{M. Gell-Mann}, \emph{The Eightfold Way: A Theory of strong interaction symmetry}, California Institute of Technology  (1961)
+\bibitem{theory:quantum_fields_01}
+{S. Weinberg}, \emph{{The quantum theory of fields}}, Cambridge university press (1995)
 
-\bibitem{qed01}
-{A. Salam}, \emph{Weak and Electromagnetic Interactions}, Conf. Proc. C. \textbf{680519} (1968)
+\bibitem{theory:quantum_fields_02}
+{T. Banks}, \emph{{Modern quantum field theory: a concise introduction}}, Cambridge University Press (2008)
 
-\bibitem{qed02}
-{S. Weinberg}, \emph{A Model of Leptons}, Phys. Rev. Lett. \textbf{19} (1967)
+\bibitem{theory:gauge_fields}
+{L. D. Faddeev}, \emph{{Gauge fields: an introduction to quantum theory}}, CRC Press (2018)
 
-\bibitem{qed03}
-{S. L. Glashow}, \emph{Partial Symmetries of Weak Interactions}, J. Phys. G. \textbf{22} (1961)
+\bibitem{theory:qcd_01}
+{M. Gell-Mann}, \emph{{The Eightfold Way: A Theory of strong interaction symmetry}}, California Institute of Technology  (1961)
 
-\bibitem{qft}
-C.~Jarlskog, \emph{Quantum flavour dynamics}, Phys. Scrs \textbf{24(5)} (1981)
+\bibitem{theory:qcd_02}
+{F. J. Yndur{\'a}in}, \emph{{Quantum chromodynamics: an introduction to the theory of quarks and gluons}}, Springer (2013)
 
-\bibitem{higgs_mechanism_1}
+\bibitem{theory:electroweak_unification}
+{T.L. Barklow}, \emph{{Electroweak symmetry breaking and new physics at the TeV scale}}, volume~16, World Scientific (1996)
+
+\bibitem{theory:qed01}
+{A.I. Akhiezer and V.B. Berestetski{\u\i}}, \emph{{Quantum Electrodynamics}}, volume~1, Techical information Service extension (1953)
+
+\bibitem{theory:qed02}
+{W. Greiner and J. Reinhardt}, \emph{{Quantum Electrodynamics}}, Springer (2013)
+
+\bibitem{theory:qed03}
+{A. Salam}, \emph{{Weak and Electromagnetic Interactions}}, Conf. Proc. C. \textbf{680519} (1968)
+
+\bibitem{theory:qed04}
+{S. Weinberg}, \emph{{A Model of Leptons}}, Phys. Rev. Lett. \textbf{19} (1967)
+
+\bibitem{theory:qft_01}
+C.~Jarlskog, \emph{Quantum flavour dynamics}, Phys. Scrs \textbf{24} (1981)
+
+\bibitem{theory:qft_02}
+{M. Antonelli et. al.}, \emph{{Flavor physics in the quark sector}}, Physics Reports \textbf{494} (2010)
+
+\bibitem{theory:weak}
+{S. L. Glashow}, \emph{{Partial Symmetries of Weak Interactions}}, J. Phys. G. \textbf{22} (1961)
+
+\bibitem{theory:higgs_mechanism_01}
 {P. W. Higgs}, \emph{Broken Symmetries and the Masses of Gauge Bosons}, Phys. Rev. Lett. \textbf{13} (1964)
 
-\bibitem{higgs_mechanism_2}
+\bibitem{theory:higgs_mechanism_02}
 {F. Englert and R. Brout}, \emph{Broken Symmetry and the Mass of Gauge Vector Mesons}, Phys. Rev. Lett. \textbf{13} (1964)
 
-\bibitem{higgs_mechanism_3}
+\bibitem{theory:higgs_mechanism_03}
 {G. S. Guralnik, C. R. Hagen and T. W. B. Kibble}, \emph{Global Conservation Laws and Massless Particles}, Phys. Rev. Lett. \textbf{13} (1964)
 
-\bibitem{neutrino_oscillation}
-{SNO Collaboration}, \emph{Direct Evidence for Neutrino Flavor Transformation from Neutral-Current Interactions in the Sudbury Neutrino Observatory}, Phys. Rev. Lett. \textbf{89} (2002)
+\bibitem{theory:spontaneous_symmetry_breaking_01}
+{T. Brauner}, \emph{Spontaneous symmetry breaking and Nambu--Goldstone bosons in quantum many-body systems}, Symmetry \textbf{2} (2010)
 
-\bibitem{dark_matter}
-{F. Zwicky}, \emph{{Die Rotverschiebung von extragalaktischen Nebeln}}, Helv. Phys. Acta \textbf{6} (1933)
+\bibitem{theory:spontaneous_symmetry_breaking_02}
+{A. Beekman, L. Rademaker and J.V. Wezel}, \emph{An introduction to spontaneous symmetry breaking}, SciPost Physics Lecture Notes  (2019)
 
-\bibitem{top_production01}
-{{CDF Collaboration}}, \emph{{Observation of top quark production in $\bar{p}p$ collisions}}, Phys. Rev. Lett. \textbf{74} (1995)
+\bibitem{theory:general_particles_nuclei}
+{B. Povh et. al}, \emph{Particles and nuclei}, Springer  (1995)
 
-\bibitem{top_production02}
-{{D{\O} Collaboration}}, \emph{{Observation of the top quark}}, Phys. Rev. Lett. \textbf{74} (1995)
+\bibitem{theory:general_sm}
+{P. Langacker}, \emph{The standard model and beyond}, Taylor \& Francis (2017)
 
-\bibitem{top_mass}
-{ATLAS Collaboration}, \emph{{Measurement of the top quark mass in the $t\bar{t}\rightarrow $ lepton+jets channel from $\sqrt{s}=8$ TeV ATLAS data and combination with previous results}}, Eur. Phys. J. C \textbf{79(4)} (2019)
+\bibitem{theory:fermions_bosons}
+{G.D. Mahan}, \emph{Many-particle physics}, Springer (2013)
 
-\bibitem{ckm_matrix}
+\bibitem{theory:fermions_01}
+{F. Halzen and A.D. Martin}, \emph{Quark \& Leptons: An introductory course in modern particle physics}, John Wiley \& Sons (2008)
+
+\bibitem{theory:ckm_matrix}
 {N. Cabibbo}, \emph{Unitary Symmetry and Leptonic Decays}, Phys. Rev. Lett. \textbf{10} (1963)
 
-\bibitem{eft_operatorlist}
-{D. Barducci et al.}, \emph{{Interpreting top-quark LHC measurements in the standard-model effective field theory}}  (2018), \eprint{1802.07237}
+\bibitem{pdg}
+{Particle Data Group}, \emph{{Review of Particle Physics}}, PTEP  (2023)
 
-\bibitem{eft_introduction}
-{B. Grzadkowski et al.}, \emph{{Dimension-Six Terms in the Standard Model Lagrangian}}, JHEP \textbf{10} (2010), \eprint{1008.4884}
+\bibitem{theory:top_discovery_01}
+{{CDF Collaboration}}, \emph{{Observation of top quark production in $\bar{p}p$ collisions}}, Phys. Rev. Lett.  (1995)
 
-\bibitem{lhc2}
+\bibitem{theory:top_discovery_02}
+{{D{\O} Collaboration}}, \emph{{Observation of the top quark}}, Phys. Rev. Lett.  (1995)
+
+\bibitem{btag:atlas}
+{ATLAS Collaboration}, \emph{{Performance of $b$-Jet Identification in the ATLAS Experiment}}, JINST \textbf{11(04)} (2016)
+
+\bibitem{btag:cms}
+{CMS Collaboration}, \emph{{Identification of b-Quark Jets with the CMS Experiment}}, JINST \textbf{8} (2013)
+
+\bibitem{btag:performance}
+{ATLAS Collaboration}, \emph{{ATLAS b-jet identification performance and efficiency measurement with $t{\bar{t}}$ events in pp collisions at $\sqrt{s}=13$ TeV}}, Eur. Phys. J. C \textbf{79(11)} (2019)
+
+\bibitem{theory:higgs_discovery_01}
+{L. Randall}, \emph{Higgs discovery: the power of empty space}, Random House (2012)
+
+\bibitem{theory:higgs_discovery_02}
+{J.F. Gunion}, \emph{The Higgs hunter's guide}, CRC Press (2018)
+
+\bibitem{theory:higgs_discovery_atlas}
+{{ATLAS Collaboration}}, \emph{{Observation of a new particle in the search for the Standard Model Higgs boson with the ATLAS detector at the LHC}}, Phys. Lett. B \textbf{716} (2012)
+
+\bibitem{theory:higgs_discovery_cms}
+{{CMS Collaboration}}, \emph{{Observation of a New Boson at a Mass of 125 GeV with the CMS Experiment at the LHC}}, Phys. Lett. B \textbf{716} (2012)
+
+\bibitem{theory:general_physics}
+{D. Griffiths}, \emph{Introduction to Elementary Particles}, John Wiley \& Sons (2020)
+
+\bibitem{bsm_neutrino_oscillation_01}
+{SNO Collaboration}, \emph{Direct Evidence for Neutrino Flavor Transformation from Neutral-Current Interactions in the Sudbury Neutrino Observatory}, Phys. Rev. Lett. \textbf{89} (2002)
+
+\bibitem{bsm_neutrino_oscillation_02}
+{F. Suekane}, \emph{Neutrino oscillations: a practical guide to basics and applications}, volume 898, Springer (2015)
+
+\bibitem{bsm_neutrino_oscillation_03}
+{T. Kuo and J. Pantaleone}, \emph{Neutrino oscillations in matter}, Reviews of Modern Physics \textbf{61} (1989)
+
+\bibitem{bsm_gravity_01}
+{B.R. Holstein}, \emph{Graviton physics}, American Journal of physics \textbf{74} (2006)
+
+\bibitem{bsm_gravity_02}
+{T. Damour and A.M. Polyakov}, \emph{String theory and gravity}, General Relativity and Gravitation \textbf{26} (1994)
+
+\bibitem{bsm_dark_matter_01}
+{V. Trimble}, \emph{Existence and nature of dark matter in the universe}, Annu. Rev. Astronomy \& Astrophysics \textbf{25} (1987)
+
+\bibitem{bsm_dark_matter_02}
+{M.E. Peskin}, \emph{Dark matter and particle physics}, J. Phys. Soc. Jpn \textbf{76} (2007)
+
+\bibitem{bsm_dark_matter_03}
+{F. Zwicky}, \emph{{Die Rotverschiebung von extragalaktischen Nebeln}}, Helv. Phys. Acta \textbf{6} (1933)
+
+\bibitem{bsm_vacuum_energy}
+{S. Weinberg}, \emph{The cosmological constant problem}, Reviews of modern physics \textbf{61} (1989)
+
+\bibitem{bsm_hierarchy}
+{N. Arkani--Hamed, S. Dimopoulos and G. Dvali}, \emph{The hierarchy problem and new dimensions at a millimeter}, Phys. Lett B \textbf{429} (1998)
+
+\bibitem{bsm_supersymmetry}
+{P. Fayet and S. Ferrara}, \emph{Supersymmetry}, Physics Reports \textbf{32} (1977)
+
+\bibitem{bsm_mond}
+{T. Clifton et. al}, \emph{Modified gravity and cosmology}, Physics Reports \textbf{513} (2012)
+
+\bibitem{lhc_01}
+\emph{{LHC Machine}}, JINST \textbf{3} (2008)
+
+\bibitem{lhc_02}
 {L. R. Evans}, \emph{The Large Hadron Collider (LHC)}, Eur. Phys. J. C \textbf{34} (2004)
 
+\bibitem{lhc_run1}
+{R. Alemany-Fernandez et. al}, \emph{{Operation and Configuration of the LHC in Run 1}}  (2013), \urlprefix\url{https://cds.cern.ch/record/1631030}
+
+\bibitem{lhc_run2}
+{J. Wenninger}, \emph{{Operation and Configuration of the LHC in Run 2}}  (2019), \urlprefix\url{https://cds.cern.ch/record/2668326}
+
 \bibitem{lhc_run3}
-{N. Karastathis et al.}, \emph{{LHC Run 3 Configuration Working Group Report}}  (2019)
+S.~F. et. al, \emph{{LHC Configuration and Operational Scenario for Run 3}}, Technical report (2021), \urlprefix\url{https://cds.cern.ch/record/2790409}
 
 \bibitem{atlas}
 {ATLAS Collaboration}, \emph{The ATLAS experiment at the CERN large hadron collider}, JINST \textbf{3(S08003)} (2008)
 
-\bibitem{atlas_calorimeter}
+\bibitem{atlas:tech_design_report_01}
+{ATLAS Collaboration}, \emph{{ATLAS: Detector and physics performance technical design report. Volume 1}}  (1999)
+
+\bibitem{atlas:tech_design_report_02}
+{ATLAS Collaboration}, \emph{{ATLAS: Detector and physics performance technical design report. Volume 2}}  (1999)
+
+\bibitem{atlas:tech_design_report_inner_01}
+{ATLAS Collaboration}, \emph{{ATLAS inner detector: Technical design report. Vol. 1}}  (1997)
+
+\bibitem{atlas:tech_design_report_inner_02}
+{ATLAS Collaboration}, \emph{{ATLAS inner detector: Technical design report. Vol. 2}}  (1997)
+
+\bibitem{atlas:pixel_detector}
+{ATLAS Collaboration}, \emph{{Technical Design Report for the ATLAS Inner Tracker Pixel Detector}}  (2017)
+
+\bibitem{atlas:strip_detector}
+{ATLAS Collaboration}, \emph{{Technical Design Report for the ATLAS Inner Tracker Strip Detector}}  (2017)
+
+\bibitem{atlas:transition_detector}
+{ATLAS Collaboration}, \emph{{The ATLAS Transition Radiation Tracker (TRT) proportional drift tube: Design and performance}}, JINST \textbf{3} (2008)
+
+\bibitem{atlas:calorimeter}
 {ATLAS Collaboration}, \emph{{ATLAS Calorimeter: Run 2 performance and Phase-II upgrades}}, PoS \textbf{EPS-HEP2017} (2017)
+
+\bibitem{atlas:muon_chamber}
+\emph{{ATLAS muon spectrometer: Technical design report}}  (1997)
+
+\bibitem{atlas:muon_chamber_upgrade}
+{ATLAS Collaboration}, \emph{{Technical Design Report for the Phase-II Upgrade of the ATLAS Muon Spectrometer}}  (2022)
+
+\bibitem{atlas:new_small_wheel}
+{ATLAS Collaboration}, \emph{{New Small Wheel Technical Design Report}}, Technical report (2013)
+
+\bibitem{atlas:trigger_lvl_1}
+{ATLAS Collaboration}, \emph{{ATLAS high-level trigger, data acquisition and controls: Technical design report}}  (2003)
+
+\bibitem{atlas:trigger_lvl_high}
+{ATLAS Collaboration}, \emph{{ATLAS level-1 trigger}: {Technical Design Report}}  (1998)
+
+\bibitem{other:cms}
+{CMS Collaboration}, \emph{{The CMS Experiment at the CERN LHC}}, JINST \textbf{3} (2008)
+
+\bibitem{other:alice}
+{ALICE Collaboration}, \emph{{The ALICE experiment at the CERN LHC}}, JINST \textbf{3} (2008)
+
+\bibitem{other:lhcb}
+{LHCb Collaboration}, \emph{{The LHCb Detector at the LHC}}, JINST \textbf{3} (2008)
+
+\bibitem{spanet}
+{A. Shmakov et a.}, \emph{{SPANet: Generalized permutationless set assignment for particle physics using symmetry preserving attention}}, SciPost Phys.  (2022)
+
+\bibitem{neutrino_weighting}
+{F. Fabbri, J. Howarth and T. Maurin}, \emph{{Isolating semi-leptonic $H\rightarrow WW^*$ decays for Bell inequality tests}}, {Eur. Phys. J. C}  (2024)
 
 \end{thebibliography}

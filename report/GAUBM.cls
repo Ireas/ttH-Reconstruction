@@ -52,7 +52,7 @@
   \MessageBreak muss angegeben werden. Nehme bachelor.%
 }%
 \fi
-\LoadClass[12pt,a4paper,pagesize]{scrbook}
+\LoadClass[12pt,a4paper]{scrbook}
 \AtBeginDocument{\RequirePackage{graphicx}\RequirePackage{datenumber}}
 \RequirePackage{calc}
 \def\nomname{Nomenclature}
@@ -194,7 +194,7 @@
 \def\s@bject{%
   % \if@diplom\if@englishpreamble{Diploma Thesis}\else{Diplomarbeit}\fi%
   % \else%
-  \if@bachelor\if@englishpreamble{Intermediate Report for Masters Project}\else{Zwischenbericht zum Masterprojekt}\fi%
+  \if@bachelor\if@englishpreamble{Intermediate Report for Master's Project}\else{Zwischenbericht zum Masterprojekt}\fi%
   \else
   \if@englishpreamble{Master's Thesis}\else{Masterarbeit}\fi%
   \fi}
@@ -240,7 +240,7 @@
     \noindent
     \begin{tabular}[t]{p{0.24\linewidth}p{0.76\textwidth-4\tabcolsep}}
 % added by A.Quadt, 31.08.2010
-      \bfseries Modul number:&        
+      \bfseries Module number:&        
       \begin{minipage}[t]{0.76\textwidth-4\tabcolsep}%
         \@ReferenceNumber\end{minipage}\\&\\
       \bfseries Period:&

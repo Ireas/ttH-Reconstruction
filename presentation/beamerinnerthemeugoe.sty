@@ -1,0 +1,150 @@
+\mode<presentation>
+
+\def\hassupervisor{0}
+\def\hasdpgconsult{0}
+\def\hasqtsupervisors{0}
+\def\hasconference{0}
+\def\drawfundinglogos{1}
+
+\let\insertsupervisor\relax
+\newcommand{\supervisor}[1]
+  {\def\insertsupervisor{#1}
+   \def\hassupervisor{1}}
+\let\insertdpgconsult\relax
+\newcommand{\dpgconsult}[1]
+  {\def\insertdpgconsult{#1}
+   \def\hasdpgconsult{1}}
+\let\insertqtinst\relax
+\let\insertqttech\relax
+\newcommand{\qtsupervisors}[2]
+  {\def\insertqtinst{#1}
+   \def\insertqttech{#2}
+   \def\hasqtsupervisors{1}}
+\let\insertconference\relax
+\newcommand{\conference}[1]
+  {\def\insertconference{#1}
+   \def\hasconference{1}}
+%\newcommand{\shorttitle}[1]
+%  {\def\insertshorttitle{#1}
+%   \def\hasshorttitle{1}}
+\newcommand{\nofunding}{\def\drawfundinglogos{0}}
+
+\defbeamertemplate*{title page}{ugoe}[1][]
+{
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw (current page.north east) ++(-0.18, 0.01) coordinate(logo ne);
+    \node at (logo ne) [anchor=north east] {
+      \includegraphics[width=5cm]{logos/\ugoelogo}
+    };
+    \draw (current page.south) ++(0,0.4) node [anchor=south] { \insertlogos };
+  \end{tikzpicture}
+
+  \vskip0.6cm%
+  \begin{beamercolorbox}[sep=8pt,center,#1]{title page header}
+    \usebeamerfont{title}\bfseries\color{ugoelogodark}\inserttitle\par%
+  \end{beamercolorbox}%
+  \vskip0.15cm%
+  \begin{beamercolorbox}[center,#1]{author}
+    \usebeamerfont{author}\normalfont\insertauthor%
+  \end{beamercolorbox}
+  \ifnum\hasdpgconsult=1
+    \vskip0.15cm%
+    \begin{beamercolorbox}[center,#1]{author}
+      \usebeamerfont{author}{in consultation with \insertdpgconsult}
+    \end{beamercolorbox}
+  \else
+  \fi
+  \vskip0.15cm
+  \begin{beamercolorbox}[center,#1]{institute}
+    \usebeamerfont{author}\insertinstitute%
+  \end{beamercolorbox}
+  \ifnum\hassupervisor=1
+    \vskip0.15cm%
+    \begin{beamercolorbox}[center,#1]{supervisor}
+      \usebeamerfont{author}{supervised by: \insertsupervisor}%
+    \end{beamercolorbox}
+  \else
+  \fi
+  \ifnum\hasqtsupervisors=1
+    \vskip0.15cm%
+    \begin{beamercolorbox}[center,#1]{qtsupervisor}
+      \usebeamerfont{author}{\footnotesize QT Institute Supervisor: \insertqtinst \\ QT Technical Supervisor: \insertqttech}%
+    \end{beamercolorbox}
+  \else
+  \fi
+  \vskip0.4cm%
+  \begin{beamercolorbox}[center,#1]{date}
+    \usebeamerfont{author}\insertdate%
+  \end{beamercolorbox}
+  \ifnum\hasconference=1
+    \vskip0.05cm%
+    \begin{beamercolorbox}[center,#1]{conference}
+      \usebeamerfont{author}\insertconference%
+    \end{beamercolorbox}
+  \else
+  \fi
+  \vfill
+}
+
+\defbeamertemplate*{block example begin}{ugoe}
+{
+  \ifx\insertblocktitle\empty
+  \else
+    \par\vskip\medskipamount%
+    \begin{beamercolorbox}[colsep*=.75ex]{block title example}
+      \usebeamerfont*{block title example}\insertblocktitle%
+    \end{beamercolorbox}%
+    {\parskip0pt\par}%
+    \ifbeamercolorempty[bg]{block title example}
+    {}
+  \fi
+  {\ifbeamercolorempty[bg]{block body example}{}{\nointerlineskip\vskip-0.5pt}}%
+  \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body example}%
+  \usebeamerfont{block body example}%
+  }
+\defbeamertemplate*{block example end}{ugoe}
+{\end{beamercolorbox}\vskip\smallskipamount}
+
+
+
+\defbeamertemplate*{block alerted begin}{ugoe}
+{
+  \ifx\insertblocktitle\empty
+  \else
+    \par\vskip\medskipamount%
+    \begin{beamercolorbox}[colsep*=.75ex]{block title alerted}
+      \usebeamerfont*{block title alerted}\insertblocktitle%
+    \end{beamercolorbox}%
+    {\parskip0pt\par}%
+    \ifbeamercolorempty[bg]{block title alerted}
+    {}
+  \fi
+  {\ifbeamercolorempty[bg]{block body alerted}{}{\nointerlineskip\vskip-0.5pt}}%
+  \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body alerted}%
+  \usebeamerfont{block body alerted}%
+  }
+\defbeamertemplate*{block alerted end}{ugoe}
+{\end{beamercolorbox}\vskip\smallskipamount}
+
+
+\defbeamertemplate*{block begin}{ugoe}
+{
+  \ifx\insertblocktitle\empty
+  \else
+    \par\vskip\medskipamount%
+    \begin{beamercolorbox}[colsep*=.75ex]{block title}
+      \usebeamerfont*{block title}\insertblocktitle%
+    \end{beamercolorbox}%
+    {\parskip0pt\par}%
+    \ifbeamercolorempty[bg]{block title}
+    {}
+  \fi
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+  \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body}%
+  \usebeamerfont{block body}%
+  }
+\defbeamertemplate*{block end}{ugoe}
+{\end{beamercolorbox}\vskip\smallskipamount}
+
+\mode
+<all>
