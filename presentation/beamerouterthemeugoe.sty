@@ -1,0 +1,49 @@
+\mode<presentation>
+
+\defbeamertemplate*{frametitle}{ugoe}[1][]
+{
+  \begin{beamercolorbox}[wd=\paperwidth]{frametitle}
+    \begin{tikzpicture}
+      \useasboundingbox(current page.north west) ++ (0, -1.2) coordinate (nn) rectangle (current page.north east);
+
+      \draw (current page.north east) ++(-0.1, 0.1) coordinate(logo ne);
+      \node at (logo ne) [anchor=north east] {
+          \includegraphics[width=5cm]{logos/\ugoelogo}
+        };
+      \draw (current page.north east) ++(-0.25, -1.2) coordinate(line e);
+      \draw (current page.north west) ++( 0.25, -1.2) coordinate(line w);
+      \draw [line width=0.2mm] (line e) -- (line w);
+      \ifx\insertframesubtitle\empty
+        \draw (nn) ++ (0.25cm, 0.6cm) node [anchor=west, text width={\dimexpr\paperwidth-6cm\relax}] {\insertframetitle};
+      \else
+        \draw (nn) ++ (0.25cm, 0.7cm) node [anchor=west, text width={\dimexpr\paperwidth-6cm\relax}] {\insertframetitle};
+        \draw (nn) ++ (0.25cm, 0.2cm) node [anchor=west, text width={\dimexpr\paperwidth-5.8cm\relax}] {\usebeamerfont{framesubtitle}\insertframesubtitle};
+      \fi
+    \end{tikzpicture}
+  \end{beamercolorbox}
+}
+
+\defbeamertemplate*{footline}{ugoe}
+{
+  \leavevmode%
+  \hbox{%
+      \ifnum\insertframenumber>1
+        \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.25ex,dp=1ex,left]{author in head/foot}%
+         \hspace*{2ex}\usebeamerfont{author in head/foot}\insertshortauthor
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+          \usebeamerfont{author in head/foot}\insertshorttitle
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.25ex,dp=1ex,right]{page in head/foot}%
+          \ifnum\inappendix=0
+            \usebeamerfont{page in head/foot} \insertframenumber{}\,/\,\mainendframenumber\hspace*{2ex}
+          \fi
+          \ifnum\inappendix=1
+            \usebeamerfont{page in head/foot} \insertframenumber{}\,/\,\appendixendframenumber\,B\hspace*{2ex}
+          \fi
+        \end{beamercolorbox}%
+      \fi
+  }%
+  \vskip2ex%
+}
+\mode<all>

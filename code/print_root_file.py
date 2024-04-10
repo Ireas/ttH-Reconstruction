@@ -21,7 +21,7 @@ def print_file(file_destination):
 		print("TTree: " + tree)
 		for branch in root_file[tree].keys():
 			content = root_file[tree][branch].array()
-			print("\tTBranch: " + branch + ": " + str(content))
+			print("\tTBranch: " + branch)#+": " + str(content))
 
 
 if __name__ == '__main__':

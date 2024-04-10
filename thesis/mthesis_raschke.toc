@@ -1,0 +1,31 @@
+\babel@toc {english}{}\relax 
+\babel@toc {ngerman}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}The Standard Model of Particle Physics}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Elementary Particles}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}The Top Quark}{4}{section.2.2}%
+\contentsline {section}{\numberline {2.3}\mbox {$t\bar {t}$}\xspace {} Production in Association with a $Z$/$W$-Boson}{5}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Effective Field Theory}{6}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Experimental Setup}{8}{chapter.3}%
+\contentsline {chapter}{\numberline {4}Region Definition}{11}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Preselection}{11}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Cut And Count Based Region Definition}{11}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Neural Network Based Region Definition}{12}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Neural Networks and Fitting Algorithm}{15}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Deep Neural Networks}{15}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Neural Network Architecture}{16}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Fitting Algorithm}{19}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Experimental and Theoretical Systematic Uncertainties}{21}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Experimental Uncertainties}{21}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Theoretical Uncertainties}{22}{section.6.2}%
+\contentsline {chapter}{\numberline {7}Measurements of the Inclusive Cross-Section}{24}{chapter.7}%
+\contentsline {chapter}{\numberline {8}EFT Sensitivity}{29}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Cross-Section Ratio}{29}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Separation Power}{30}{section.8.2}%
+\contentsline {chapter}{\numberline {9}Conclusion}{32}{chapter.9}%
+\babel@toc {ngerman}{}\relax 
+\babel@toc {english}{}\relax 
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -22,8 +22,8 @@ def print_file(file_destination):
 
 
 def print_group(key, group, spacing):
-	print(spacing*" " + "->" + key)
-	spacing+= len(key)+2
+	print("|" + spacing*"-" + ">" + key)
+	spacing+= 1
 
 	for entry_key in group:
 		entry = group[entry_key]
@@ -36,7 +36,7 @@ def print_group(key, group, spacing):
 
 
 def print_dataset(key, dataset, spacing):
-		print(spacing*" " + key + ": " + str(dataset.shape) + " of " + str(dataset.dtype) ) # dtype=object is array 
+		print("|" + spacing*"-" + " " + key + ": " + str(dataset.shape) + " of " + str(dataset.dtype)) # dtype=object is array 
 	
 
 if __name__ == '__main__':
