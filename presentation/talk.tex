@@ -4,6 +4,9 @@
 \input{structure.tex}
 \input{shortcuts.tex}
 
+\usepackage{bbding}
+\usepackage{pifont}
+
 \definecolor{highlighter}{RGB}{0,95,155}
 
 \title{Studies of \ttHWW with SPA-Net \& Neutrino Weighting}
@@ -29,15 +32,22 @@
 		\begin{itemize}
 			\item full event reconstruction of \ttHWW
 			\begin{itemize}
-				\item unanalysed channel $\Rightarrow$ new observations
-				\item challenging topology
+				\item unanalysed channel
+				\begin{itemize}
+					\item only leptonic channel previously done
+				\end{itemize}  
+				\item challenging topology $\Rightarrow$ modern techniques
+				\begin{itemize}
+					\item \spanet (machine learning)
+					\item neutrino weighting
+				\end{itemize}  
 			\end{itemize}
-			\item utilising modern techniques 
+			\item main measurement
 			\begin{itemize}
-				\item \spanet (machine learning)
-				\item neutrino weighting
-			\end{itemize}  
-			\item main goal: measure event cross-section
+				\item inclusive cross-section / differential STXS
+				\item performance of new techniques
+				\item $tH$ coupling, \HWW spin correlation, ... (difficult)
+			\end{itemize}
 		\end{itemize}
 	\end{minipage}
 	\begin{minipage}{.4\textwidth}
@@ -57,17 +67,17 @@
 				\item $H$ radiated from \ttbar
 				\item semi-leptonic \HWW$\rightarrow (l\nu)(qq)$
         	\end{itemize}
-			\item final state
-			\begin{itemize}
-				\item 6 quarks from \ttbar
-				\item 2 quarks from \HWW
-				\item 1 lepton-neutrino pair from \HWW 
-			\end{itemize}
 			\item resonance particles ($W$,$H$,$t$)
 			\begin{itemize}
 				\item decay before detection
 				\item reconstruct from final state
 			\end{itemize} 
+			\item final state
+			\begin{itemize}
+				\item 6(2$b$) quarks from \ttbar
+				\item 2 quarks from \HWW
+				\item 1 lepton-neutrino pair from \HWW 
+			\end{itemize}
 		\end{itemize}
 	\end{minipage}
 	\begin{minipage}{.4\textwidth}
@@ -83,22 +93,26 @@
 		\begin{itemize}
 			\item challenges
 			\begin{itemize}
-				\item 8 jets to reconstruct
+				\item 8 quarks to reconstruct
 				\item undetected $\nu$ in final state
 				\item off-shell mass of $W^*$ from $H$
 				\item significant backgrounds
 				\begin{itemize}
-					\item \ttbar + jets
 					\item \ttbarZ and \ttbarW
 					\item $t\bar{t}t\bar{t}$
+					\item \ttbar + jets (suppressed)
 					\item $W$ + jets (suppressed)
 				\end{itemize}
 			\end{itemize}
 			\item assumptions
 			\begin{itemize}
-				\item off-shell leptonic $W^*\rightarrow l\nu$
-				\item on-shell hadronic $W\rightarrow qq'$
 				\item SM mass $H$ and on-shell $W$
+				\item on-shell hadronic $W\rightarrow qq'$
+				\begin{itemize}
+					\item further suppress background
+					\item improve \spanet training
+					\item off-shell leptonic $W^*\rightarrow l\nu$
+				\end{itemize}
 			\end{itemize}
 		\end{itemize}
 	\end{minipage}
@@ -114,14 +128,15 @@
 	\begin{minipage}{.58\textwidth}
 		\begin{itemize}
 			\item subdivide reconstruction task
-			\item hadronic (blue): \ttbar + $W$ from $H$
+			\item hadronic (blue): \ttbar and $W_\text{had.}$
 			\begin{itemize}
 				\item jet-patron assignment problem
-				\item \spanet instead of $\chi^2$
+				\item \spanet instead of $\chi^2$ (KL-Fitter)
 			\end{itemize}
-			\item leptonic (red): $W^*$ from $H$ 
+			\item leptonic (red): $W^*_\text{lep.}$
 			\begin{itemize}
-				\item unknown parameters due to $\nu$ and $W^*$ 
+				\item unknown parameters $\eta_\nu$ and $m_{W^*}$ 
+				\item underconstrained system $\Rightarrow$ sample parameters 
 				\item neutrino weighting
 			\end{itemize}
 		\end{itemize}
@@ -145,6 +160,7 @@
 			\begin{itemize}
 				\item combine jets for reconstructed mass $M$
 				\item compare to parton SM mass $m$
+				\item sum over all resonances
 			\end{itemize}
 		\end{itemize}
 
@@ -173,14 +189,8 @@
 		\begin{itemize}
 			\item \spanet (Symmetry Preserving Attention Networks)
 			\begin{itemize}
-				\item input: jet four-vectors
+				\item input: jets, $b$-tags, leptons, event info
 				\item output: jet-parton assignment
-			\end{itemize}
-			\item symmetries
-			\begin{itemize}
-				\item reduction of possible jet permutation $\Rightarrow$ fast
-				\item particle symmetry (jet origin $q\leftrightarrow \bar{q}\leftrightarrow g$)
-				\item jet symmetry (swap label of decays $q\bar{q}\leftrightarrow\bar{q}q$)
 			\end{itemize}
 			\item properties of \spanet
 			\begin{itemize}
@@ -188,6 +198,12 @@
 				\item unique parton assignment
 				\item symmetries from laws of physics 
 				\item training needs truth matched inputs
+			\end{itemize}
+			\item symmetries
+			\begin{itemize}
+				\item reduction of possible jet permutation $\Rightarrow$ fast
+				\item particle symmetry (jet origin $q\leftrightarrow \bar{q}\leftrightarrow g$)
+				\item jet symmetry (swap label of decays $q\bar{q}\leftrightarrow\bar{q}q$)
 			\end{itemize}
 		\end{itemize}
 	  \end{minipage}\hfill
@@ -200,70 +216,63 @@
 \end{frame}
 
 \begin{frame}{SPA-Net}{Under the Hood}
-    \begin{itemize}
-		\item four components
-		\begin{itemize}
-			\item embeddings $\Rightarrow$ latent space representation for each jet
-			\item central transformer $\Rightarrow$ combined for all
-			\item particle transformer $\Rightarrow$ separated for each resonance particle
-			\item tensor-attention $\Rightarrow$ jet-parton assignment distributions
-		\end{itemize}
-	\end{itemize}
+    % \begin{itemize}
+	% 	\item high-level overview
+	% 	\begin{itemize}
+	% 		\item embeddings $\Rightarrow$ latent space representation for each input object
+	% 		\item central transformer $\Rightarrow$ combined for all
+	% 		\item particle transformer $\Rightarrow$ separated for each resonance particle
+	% 		\item tensor-attention $\Rightarrow$ jet-parton assignment incl. confidence 
+	% 	\end{itemize}
+	% \end{itemize}
   
 	\begin{figure}
 		\centering
-		\includegraphics[width=.7\textwidth]{methods/spanet_detailed.png}
+		\includegraphics[width=.65\textwidth]{methods/spanet_architecture_2.jpg}
 		
-		\vspace{-4mm}{\tiny figure taken from SciPost Phys. 12, 178(2022)}
+		% \vspace{-4mm}{\tiny figure taken from SciPost Phys. 12, 178(2022)}
 	\end{figure}
 \end{frame}
 
-\begin{frame}{SPA-Net}{The Algorithm}
-    \begin{itemize}
-		\item divide assignment problem into sub-problems
-		\begin{itemize}
-			\item solve each resonance particle individually
-			\item utilise 'Symmetric Tensor Attention'
-			\begin{itemize}
-				\item input: encoded jets
-				\item apply some complicated tensor transformer (enforcing no self-combinations)
-				\item output: tensor $\mathcal{P}$ $\Rightarrow$ probabilities for each valid combination
-				\item preserves jet symmetries + allows partial event reconstructions
-			\end{itemize}
- 		\end{itemize}
-		\item combine sub-problems
-		\begin{itemize}
-			\item acquire final jet-parton assignment
-			\item utilise 'Combined Symmetric Loss'
-			\begin{itemize}
-				\item input: probability tensors $\mathcal{P}_i$ + true $\delta_i$ distributions
-				\item calculate cross entropy for each sub-problem
-				\item output: final assignment with minimal loss (for all equivalent labels)  
-				\item preserves particle symmetries
-			\end{itemize}
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Neutrino Weighting}{Sampling the Unpredicted}
+\begin{frame}{SPA-Net}{Workflow}
 	\begin{minipage}{.58\textwidth}
 		\begin{itemize}
-			\item solve leptonic off-shell $W^*$ decay
+			\item first step of the reconstruction
+			\item needs MC training samples
+			\item \spanets prediction of jet assignment
 			\begin{itemize}
-				\item unknown parameters
+				\item used as input for neutrino weighting
+				\item later applied in final reconstruction
 			\end{itemize}
-			\item implement neutrino weighting
+		\end{itemize}
+	  \end{minipage}\hfill
+	  \begin{minipage}{.2\textwidth}
+		  \begin{figure}
+			  \centering
+			  \includegraphics[width=\textwidth]{flowchart/flowchart_c.excalidraw.png}	
+		  \end{figure}
+	  \end{minipage}
+\end{frame}
+
+\begin{frame}{Neutrino Weighting}{Sampling the Unknown}
+	\begin{minipage}{.58\textwidth}
+		\begin{itemize}
+			\item weighting technique
 			\begin{itemize}
-				\item sample several possible parameters
-				\item calculate likelihood for combinations
+				\item sample possible (unknown) parameters
+				\item compare to observations
+				\item calculate likelihood for sample
 			\end{itemize}
-			\item success in dileptonic \ttbar analysis (@ \atlas)
+			\item success in dileptonic \ttbar analysis (@\atlas, \dzero)
 			\begin{itemize}
-				\item adapt for $W^*\rightarrow l\nu$  
+				\item underconstrained system due to 2$\nu$
+				\item assume $m_t$ + sample $\eta_{\nu_i}$ 
+				\item compare $\sum p_T^{\nu_i}$ $\leftrightarrow$ $E_T^\text{miss}$ $\Rightarrow$ most likely $p_T^{\nu_i}$  
 			\end{itemize}
+			\item needs adaption for $W^*\rightarrow l\nu$  
 			\item background suppression
 			\begin{itemize}
-				\item use neutrino weight in selection $\Rightarrow$ increase purity
+				\item use neutrino weight in selection $\Rightarrow$ suppress background
 			\end{itemize} 
 		\end{itemize}
 	\end{minipage}\hfill
@@ -275,7 +284,7 @@
 	\end{minipage}
 \end{frame}
 
-\begin{frame}{Neutrino Weighting}{Weight Calculation}
+\begin{frame}{Neutrino Weighting}{Adaptation}
 	\begin{minipage}{.60\textwidth}
 		\begin{itemize}
 			\item calculate neutrino $p_{x,y}^\nu$ from sampling
@@ -292,10 +301,7 @@
 		\end{align*}
 
 		\begin{itemize}
-			\item calculation not yet available $\Rightarrow$ waiting for authors
-			\begin{itemize}
-				\item not yet implemented
-			\end{itemize}
+			\item code is available $\Rightarrow$ validation still needed
 		\end{itemize}
 	\end{minipage}\hfill
 	\begin{minipage}{.38\textwidth}
@@ -306,23 +312,62 @@
 	\end{minipage}
 \end{frame}
 
-\begin{frame}{Truth Matching}{Getting Started}
-	\begin{itemize}
-		\item begin preparing the reconstruction
+\begin{frame}{Neutrino Weighting}{Workflow}
+	\begin{minipage}{.60\textwidth}
 		\begin{itemize}
-			\item need samples for \spanet training
-			\item truth-matched MC samples unavailable $\Rightarrow$ construct truth-matching script 
-		\end{itemize}
-		\item custom algorithm can be summarised in 4 steps
-		\item implemented \ttbar only currently
-		\begin{itemize}
-			\item initial plan handle \ttbar and \HWW separated and merge later
-			\item change in project $\Rightarrow$ hadronic $W$ from $H$ should be included
+			\item neutrino weighting yields second prediction
 			\begin{itemize}
-				\item not yet implemented in truth matching
-			\end{itemize}  
+				\item most likely set of leptonic parameters
+			\end{itemize}
+			\item full event reconstruction $\Rightarrow$ cross-section measruements
+			\begin{itemize}
+				\item hadronic prediction by \spanet
+				\item leptonic prediction by neutrino weighting
+			\end{itemize}
+			\item need to implement one step beforehand
+			\begin{itemize}
+				\item need training samples
+			\end{itemize}
 		\end{itemize}
-	\end{itemize}
+	\end{minipage}\hfill
+	\begin{minipage}{.2\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{flowchart/flowchart_f.excalidraw.png}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Truth Matching}{Getting Started}
+	\begin{minipage}{.75\textwidth}
+		\begin{itemize}
+			\item truth-matched MC samples unavailable 
+			\begin{itemize}
+				\item develop custom truth-matching script
+			\end{itemize}
+			\item currently only \ttbar system is matched 
+			\item $W_\text{had}$ not yet matched
+			\begin{itemize}
+				\item initial plan
+				\begin{itemize}
+					\item predict \ttbar and \HWW separated
+					\item later merge both subsystems
+				\end{itemize}
+				\item new plan
+				\begin{itemize}
+					\item also include $W_\text{had}$ from $H$ in \spanet
+					\item later merge \spanet with neutrino weighting
+				\end{itemize}  
+			\end{itemize}
+			\item truth matching algorithm can be summarised in 4 steps
+		\end{itemize}
+	\end{minipage}\hfill
+	\begin{minipage}{.2\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{flowchart/flowchart_b.excalidraw.png}
+		\end{figure}
+	\end{minipage}
 \end{frame}
 
 \begin{frame}{Truth Matching}{The Algorithm in Four Acts}
@@ -331,7 +376,7 @@
 			\item explore $\Delta R$ cone around each truth parton
 			\begin{itemize}
 				\item search for close \colorbox{red!40}{jets} around each \colorbox{highlighter!40}{truth} parton
-				\item 6(8) partons are expected
+				\item 8 partons are expected
 				\item limit $\Delta R<0.4$ $\Rightarrow$ overlaps are possible
 			\end{itemize}
 
@@ -403,7 +448,7 @@
 			\begin{itemize}
 				\item matched jets are unavailable for others
 				\item try to find match for each truth parton
-				\item some might have no match $\Rightarrow$ still usable
+				\item partial reconstruction possible $\Rightarrow$ still use in \spanet
 			\end{itemize}
 		\end{itemize}
 	\end{minipage}\hfill
@@ -415,33 +460,6 @@
 	\end{minipage}
 \end{frame}
 
-\begin{frame}{Truth Matching}{Technical Details}
-	\begin{minipage}{.69\textwidth}
-		\begin{itemize}
-			\item low resources $\Rightarrow$ can run locally
-			\begin{itemize}
-				\item save matches efficiently as integers 
-				\item utilise fast bit shifting operations
-			\end{itemize}
-			\item local runtime (1M events) 
-			\begin{itemize}
-				\item $\sim$30\,s matching
-				\item $\sim$2.4\,h conversion
-			\end{itemize}
-			\item bottleneck is .root $\rightarrow$ .hd5 conversion
-			\begin{itemize}
-				\item fixing array size + generating a mask
-				\item only needed once per training sample
-			\end{itemize}
-		\end{itemize}
-	\end{minipage}\hfill
-	\begin{minipage}{.3\textwidth}
-		\begin{figure}
-			\centering
-			\includegraphics[width=\textwidth]{methods/truth_matching_binary.png}
-		\end{figure}
-	\end{minipage}
-\end{frame}
 
 % \begin{frame}{Results}{How Many Jets are Matched}
 % 	\begin{minipage}{.43\textwidth}
@@ -466,8 +484,8 @@
 	\begin{itemize}
 		\item investigate complete \ttbar matches
 		\begin{itemize}
-			\item 6 jets needed for \ttbar (8 including hadronic $W$)
-			\item high jet multiplicity $\Rightarrow$ increased success + lower statistics (due to NLO)
+			\item 8 jets needed for \ttbar and hadronic $W_\text{hadronic}$
+			\item high jet multiplicity $\Rightarrow$ increased success but lower statistics (due to NLO)
 	  	\end{itemize}
 	\end{itemize}
 	\begin{figure}
@@ -479,11 +497,11 @@
 
 \begin{frame}{Results}{The Final Selection Scheme}
 	\begin{itemize}
-    	\item testing $\Delta R$ and $\Delta p_T$ information ($W$ parity violation $\Rightarrow$ $p_T$ beneficial?)  %violation => not same pt in quarks )
+    	\item testing $\Delta R$ and $\Delta p_T$ information %($W$ parity violation $\Rightarrow$ $p_T$ beneficial?)  %violation => not same pt in quarks )
     	\begin{itemize}
 			\item single: $\Delta R$ (or $\Delta p_T$) only
 			\begin{itemize}
-		  		\item look for the closest jet in $\eta$-$\phi$ (or $p_T$) 
+		  		\item look for the closest jet in $\eta$-$\phi$ (or $p_T$) to parton
 			\end{itemize}
 			\item hybrid: $\Delta R$ + $\Delta p_T$
 			\begin{itemize}
@@ -519,7 +537,7 @@
 			\item semileptonic \HWW of special interest
 		\end{itemize}
 		\item truth record pdgID bug prevents selecting 90\% events $\Rightarrow$ low statistics for \HWW
-		\item fully hadronic \HWW excluded due to single-lepton triggers
+		\item fully hadronic \HWW excluded due to single-lepton triggers and broken truth record
 	\end{itemize}
 
 	\begin{table}
@@ -544,75 +562,71 @@
 \end{frame}
 
 \begin{frame}{Conclusion}{Summary}
-	\begin{itemize}
-		\item currently using MC input  
+	\begin{minipage}{.75\textwidth}
 		\begin{itemize}
-			\item needs truth-matching
-			\item training/fine-tuning \spanet
-			\item implementing neutrino weighting
-			\item compare reconstruction to truth
+			\item current status   
+			\begin{itemize}
+				\item using MC input
+				\item truth-matching for training samples
+				\item training/fine-tuning \spanet for hadronic predictions
+			\end{itemize}
+			\item next steps
+			\begin{itemize}
+				\item implement neutrino weighting for leptonic predictions
+				\item full event reconstruction
+				\item validate reconstruction
+			\end{itemize}
 		\end{itemize}
-		\item later data for measurements
-	\end{itemize}
-
-	\begin{figure}
-		\centering
-		\includegraphics[width=\textwidth]{project_summary_a.excalidraw.png}
-	\end{figure}
+	\end{minipage}\hfill
+	\begin{minipage}{.2\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{flowchart/flowchart_h.excalidraw.png}
+		\end{figure}
+	\end{minipage}
 \end{frame}
 
 \addtocounter{framenumber}{-1} 
 
 \begin{frame}{Conclusion}{Summary}
-	\begin{itemize}
-		\item currently using MC input  
+	\begin{minipage}{.75\textwidth}
 		\begin{itemize}
-			\item needs truth-matching
-			\item training/fine-tuning \spanet
-			\item implementing neutrino weighting
-			\item compare reconstruction to truth
-		\end{itemize}
-		\item later data for measurements
-	\end{itemize}
-
-	\begin{figure}
-		\centering
-		\includegraphics[width=\textwidth]{project_summary_b.excalidraw.png}
-	\end{figure}
-\end{frame}
-
-\begin{frame}{Conclusion}{Current Status}
-	\begin{itemize}
-		\item currently in the 5th month (started 3rd November)
-		\item finished tasks
-		\begin{itemize}
-			\item developed, validated and refined truth matching
-			\item setup training environment on NAF (\desy)
-			\item successfully ran first \spanet training jobs
-			\item contacted developers for neutrino weighting algorithm
-		\end{itemize}
-		\item currently working on
-		\begin{itemize}
-			\item finishing the half-time report
-			\item rework the truth matching to add hadronic $W$ from $H$
-			\item regenerate the training samples 
-			\item fine-tuning \spanet
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Conclusion}{Outlook}
-	\begin{itemize}
-      	\item neutrino weighting $\Rightarrow$ merge for full event reconstruction
-      	\item acquire fixed MC samples and validate
-      	\item possible measurements on data
+			\item switch to real data
 			\begin{itemize}
-				\item main goal: cross-section measurements
-				\item SM investigations ($tH$ coupling, $H$ decay ratio,...)
-				\item compare $\chi^2$ vs \spanet (performance, precision, resources)
+				\item predictions by \spanet + neutrino weighting
+				\item background suppression using neutrino weighting 
+				\item cross-section (and other) measurements
 			\end{itemize}
+		\end{itemize}
+	\end{minipage}\hfill
+	\begin{minipage}{.2\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{flowchart/flowchart_g.excalidraw.png}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Conclusion}{Roadmap}
+	\begin{itemize}
+		\item currently in the 5th month (project start: 3rd November)
+		\begin{itemize}
+			\item[\ding{51}] develop, validate and refine truth matching
+			\item[\ding{51}] setup training environment on NAF (\desy)
+			\item[\ding{51}] successfully run first \spanet training jobs
+			\item[!] finishing the half-time report
+			\item[!] rework truth matching (add hadronic $W$ from $H$) $\Rightarrow$ new training samples 
+			\item[!] fine-tune \spanet
+			\item[o] implement neutrino weighting
+			\item[o] merge for full event reconstruction
+			\item[o] test background suppression
+			\item[o] switch to real data
+			\item[o] cross-section measurements + expand analysis
+			% \item SM investigations ($tH$ coupling, $H$ decay ratio,...)
+			% \item compare $\chi^2$ vs \spanet (performance, precision, resources)
+		\end{itemize}
 	\end{itemize}
-	
+
 	\vspace{10mm}
 
 	\begin{center}
@@ -636,6 +650,61 @@
 		\includegraphics[width=.35\textwidth]{feynman_diagrams/background_ttzww.excalidraw.png}\hspace{10mm}
 		\includegraphics[width=.35\textwidth]{feynman_diagrams/background_ttwg.excalidraw.png}
 	\end{figure}
+\end{frame}
+
+\begin{frame}{Truth Matching}{Technical Details}
+	\begin{minipage}{.69\textwidth}
+		\begin{itemize}
+			\item low resources $\Rightarrow$ can run locally
+			\begin{itemize}
+				\item save matches efficiently as integers 
+				\item utilise fast bit shifting operations
+			\end{itemize}
+			\item local runtime (1M events) 
+			\begin{itemize}
+				\item $\sim$30\,s matching
+				\item $\sim$2.4\,h conversion
+			\end{itemize}
+			\item bottleneck is .root $\rightarrow$ .hd5 conversion
+			\begin{itemize}
+				\item fixing array size + generating a mask
+				\item only needed once per training sample
+			\end{itemize}
+		\end{itemize}
+	\end{minipage}\hfill
+	\begin{minipage}{.3\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{methods/truth_matching_binary.png}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{SPA-Net}{The Algorithm}
+    \begin{itemize}
+		\item divide assignment problem into sub-problems
+		\begin{itemize}
+			\item solve each resonance particle individually
+			\item utilise 'Symmetric Tensor Attention'
+			\begin{itemize}
+				\item input: encoded jets
+				\item apply some complicated tensor transformer (enforcing no self-combinations)
+				\item output: tensor $\mathcal{P}$ $\Rightarrow$ probabilities for each valid combination
+				\item preserves jet symmetries + allows partial event reconstructions
+			\end{itemize}
+ 		\end{itemize}
+		\item combine sub-problems
+		\begin{itemize}
+			\item acquire final jet-parton assignment
+			\item utilise 'Combined Symmetric Loss'
+			\begin{itemize}
+				\item input: probability tensors $\mathcal{P}_i$ + true $\delta_i$ distributions
+				\item calculate cross entropy for each sub-problem
+				\item output: final assignment with minimal loss (for all equivalent labels)  
+				\item preserves particle symmetries
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{SPA-Net}{Jet symmetries}
