@@ -8,6 +8,9 @@ convert: convert_root_to_h5.py
 plot: plot.py
 	python3 plot.py ~/git_repos/master/output/rdataframes_output.root
 
+print: print.py
+	python3 print.py ~/git_repos/master/output/rdataframes_output.root
+
 match_convert: match_jets_to_tth.cpp convert_root_to_h5.py
 	g++ match_jets_to_tth.cpp -o executable -fPIC `root-config --glibs --cflags --libs`
 	./executable
@@ -17,4 +20,9 @@ match_plot: match_jets_to_tth.cpp plot.py
 	g++ match_jets_to_tth.cpp -o executable -fPIC `root-config --glibs --cflags --libs`
 	./executable
 	python3 plot.py ~/git_repos/master/output/rdataframes_output.root
+
+match_print: match_jets_to_tth.cpp print.py
+	g++ match_jets_to_tth.cpp -o executable -fPIC `root-config --glibs --cflags --libs`
+	./executable
+	python3 print.py ~/git_repos/master/output/rdataframes_output.root
 

@@ -1,14 +1,55 @@
 import numpy as np
 import module_histograms as histogram
+import module_bar_plots as bar
 
 
 OUTPUT_DESTINATION = "./"
 LABELS = { 
-	-1: r"Other",
 	6: r"6 Jets",
 	7: r"7 Jets",
 	8: r"8 Jets",
+	-1: r"9+ Jets",
 }
+
+
+def plot_number_of_matched_jets(root_file):
+	# read from root_file
+	final_match_masks= root_file["matched/jet_final_match_mask"].array()
+
+	# fill reconstructed masses by number of jets
+	matched_jet_multiplicities = {}
+	
+	for mask in final_match_masks:
+		number_of_matches = 0
+		for entry in mask:
+			if entry>0:
+				number_of_matches+= 1
+		
+		if not number_of_matches in matched_jet_multiplicities:
+			matched_jet_multiplicities[number_of_matches] = 0
+		
+		matched_jet_multiplicities[number_of_matches]+= 1
+
+	entries = []
+	for value in matched_jet_multiplicities.values():
+		entries.append(value)
+
+	
+	# create and plot containers
+	source = bar.BarPlotSource(
+		data = entries,
+		err = np.sqrt(entries)
+	)
+
+	options = bar.BarPlotOptions(
+		categories = np.arange(0, len(entries), 1),
+		title = "Distribution for Matched Jet Multiplicity",
+		x_label = r"Number of Matched jets",
+		y_label = r"Number of Events",
+		file_destination = OUTPUT_DESTINATION + "matched_jets.png"
+	)
+
+	bar.plot_single_dataset(source, options)
 
 
 
@@ -55,19 +96,40 @@ def plot_number_of_jets(root_file):
 		)
 
 		options = histogram.HistogramOptions(
-			bins = np.arange(20,200,10),
+			bins = np.arange(20,200,5),
 			title = "Reconstructed Mass of W-Boson for " + LABELS[jet_multiplicity] + " (normalized)",
 			x_label = r"$M_\text{reco}$ in GeV",
 			y_label = r"Fraction of Events",
 			normalize = True,
-			file_destination= OUTPUT_DESTINATION + "mass_njets_" + str(jet_multiplicity) +".png"
+			yerr = True,
+			file_destination= OUTPUT_DESTINATION + "njets_m_w_" + str(jet_multiplicity) +".png"
 		)
 
 		histogram.plot_single_dataset(source, options)
 
+	
+	sources = []
+	
+	for (jet_multiplicity, masses) in recos_by_jet_multiplicity_reduced.items():
+		source = histogram.HistogramSource(
+			data = masses,
+			label = LABELS[jet_multiplicity]
+		)
+		sources.append(source)
+	
+	options = histogram.HistogramOptions(
+		bins = np.arange(20,200,5),
+		title = "Reconstructed Mass of W-Boson by Jet Multiplcity (normalized)",
+		x_label = r"$M_\text{reco}$ in GeV",
+		y_label = r"Fraction of Events",
+		normalize = True,
+		file_destination= OUTPUT_DESTINATION + "njets_m_w_all.png"
+	)
+	histogram.plot_multiple_datasets(sources, options)
 
 
 def plot(root_file, output_destination):
 	global OUTPUT_DESTINATION 
 	OUTPUT_DESTINATION = output_destination
 	plot_number_of_jets(root_file)
+	plot_number_of_matched_jets(root_file)

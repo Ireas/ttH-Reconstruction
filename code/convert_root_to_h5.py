@@ -12,7 +12,7 @@ from timeit import default_timer as timer
 # usage: python3 convert_root_to_h5.py [INPUT_ROOT_FILE] [OUTPUT_H5_DESTINATION]
 
 
-MAX_NUMBER_OF_EVENTS = 1000 # set to -1 to use all events
+MAX_NUMBER_OF_EVENTS = -1 # set to -1 to use all events
 
 
 
@@ -63,7 +63,7 @@ def fill_h5_from_root(h5_file, root_file):
 
 
 	# set fixed out array length, use MASK to mask which jets are actually in an event
-	spanet_source_dimension= (number_of_events, max_number_of_jets)
+	spanet_source_dimension = (number_of_events, max_number_of_jets)
 	mask = source_group.create_dataset("MASK", spanet_source_dimension, dtype=bool)
 	
 	
@@ -126,18 +126,22 @@ def fill_h5_from_root(h5_file, root_file):
 	# set fixed out array length with one entry per event
 	spanet_target_dimension = (number_of_events)
 
-	# create t1 subgroup for truth infromation of first t in final state
+	# create t1 subgroup for truth infromation of first t
 	t1_group = target_group.create_group("t1")
 	b1 = t1_group.create_dataset("b", spanet_target_dimension, dtype=int)
 	q1_1 = t1_group.create_dataset("q1", spanet_target_dimension, dtype=int)
 	q1_2 = t1_group.create_dataset("q2", spanet_target_dimension, dtype=int)
 	
-	# create t2 subgroup for truth infromation of first t in final state
+	# create t2 subgroup for truth infromation of second t
 	t2_group = target_group.create_group("t2")
 	b2 = t2_group.create_dataset("b", spanet_target_dimension, dtype=int)
 	q2_1 = t2_group.create_dataset("q1", spanet_target_dimension, dtype=int)
 	q2_2 = t2_group.create_dataset("q2", spanet_target_dimension, dtype=int)
 	
+	# create HW subgroup for truth infromation of the hadronic decaying W from H
+	HW_group = target_group.create_group("HW")
+	HW_1 = HW_group.create_dataset("q1", spanet_target_dimension, dtype=int)
+	HW_2 = HW_group.create_dataset("q2", spanet_target_dimension, dtype=int)
 
 	# prepare root_files for fast access
 	indicies = root_file["matched/jet_to_object_indicies_fixed"].array()
@@ -159,6 +163,8 @@ def fill_h5_from_root(h5_file, root_file):
 		b2[i] = indicies[i][3]
 		q2_1[i] = indicies[i][4]
 		q2_2[i] = indicies[i][5]
+		HW_1[i] = indicies[i][6]
+		HW_2[i] = indicies[i][7]
 
 
 		# print progress

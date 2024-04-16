@@ -17,6 +17,11 @@ def plot_mass_difference(root_file):
 	m_reco_w_from_tbar = root_file["matched/reconstructed_W_from_tbar_m"].array()*1e-3
 	m_truth_w_from_t = root_file["matched/truth_W_from_t_m"].array()*1e-3
 	m_truth_w_from_tbar = root_file["matched/truth_W_from_tbar_m"].array()*1e-3
+
+	m_reco_t = root_file["matched/reconstructed_t_m"].array()*1e-3
+	m_reco_tbar = root_file["matched/reconstructed_tbar_m"].array()*1e-3
+	m_truth_t = root_file["matched/truth_t_m"].array()*1e-3
+	m_truth_tbar = root_file["matched/truth_tbar_m"].array()*1e-3
 	
 
 	# fill reconstructed masses by number of jets
@@ -36,19 +41,55 @@ def plot_mass_difference(root_file):
 	# create and plot containers
 	source = histogram.HistogramSource(
 		data = mass_difference_w,
-		label = "yield = "+str(len(mass_difference_w))
+		#label = "yield = "+str(len(mass_difference_w))
 	)
 
 	options = histogram.HistogramOptions(
 		bins = np.arange(-50, 120, 10),
-		title = "Mass Difference of Reconstructed W-Boson",
-		x_label = r"$\Delta M_\text{reco}$ in GeV",
+		title = r"$\Delta M$ of W-Boson",
+		x_label = r"$\Delta M$ in GeV",
 		y_label = r"Number of Events",
 		normalize = False,
-		file_destination= OUTPUT_DESTINATION + "mass_w_delta.png"
+		wip = True,
+		file_destination= OUTPUT_DESTINATION + "delta_mass_w.png"
 	)
 
 	histogram.plot_single_dataset(source, options)
+
+
+
+	# fill reconstructed masses by number of jets
+	mass_difference_t = []
+
+	for m_reco, m_truth in zip(m_reco_t, m_truth_t):
+		if m_reco<1:
+			continue
+		mass_difference_t.append( m_reco-m_truth )
+	
+	for m_reco, m_truth in zip(m_reco_tbar, m_truth_tbar):
+		if m_reco<1:
+			continue
+		mass_difference_t.append( m_reco-m_truth )
+	
+		
+	# create and plot containers
+	source = histogram.HistogramSource(
+		data = mass_difference_t
+		#label = "yield = "+str(len(mass_difference_w))
+	)
+
+	options = histogram.HistogramOptions(
+		bins = np.arange(-70, 160, 10),
+		title = r"$\Delta M$ of top quark",
+		x_label = r"$\Delta M$ in GeV",
+		y_label = r"Number of Events",
+		normalize = False,
+		wip = True,
+		file_destination= OUTPUT_DESTINATION + "delta_mass_t.png"
+	)
+
+	histogram.plot_single_dataset(source, options)
+
 
 
 

@@ -38,7 +38,7 @@ def check_higgs_decay_modes(root_file):
 			recos_by_dm_id[dm_id].append(m_reco_w_from_tbar[i]) 
 
 
-	containers = []
+	sources = []
 	for (dm_id, masses) in recos_by_dm_id.items():
 		source = histogram.HistogramSource(
 			data = masses, 
@@ -46,15 +46,33 @@ def check_higgs_decay_modes(root_file):
 		)
 
 		options = histogram.HistogramOptions(
-			bins = np.arange(20,200,10), 
-			title = "Reconstructed Mass of W-Boson for " + LABELS[dm_id] + " H Decay Mode (normalized)",
+			bins = np.arange(20,200,5), 
+			title = r"$M$ of W-Boson for " + LABELS[dm_id] + " H Decay Mode (normalized)",
 			x_label = r"$M_\text{reco}$ in GeV",
 			y_label = r"Fraction of Events",
 			normalize = True,
-			file_destination = OUTPUT_DESTINATION + "mass_higgs_dm_" + str(dm_id) +".png"
+			file_destination = OUTPUT_DESTINATION + "higgsdm_m_w_" + str(dm_id) +".png"
 		)
 		
 		histogram.plot_single_dataset(source, options)
+
+	for (dm_id, masses) in recos_by_dm_id.items():
+		source = histogram.HistogramSource(
+			data = masses, 
+			label = str(LABELS[dm_id]) +" (yield: "+str(len(masses))+ ")"
+		)
+		sources.append(source)
+	
+	# multi dataset plot
+	options = histogram.HistogramOptions(
+		bins = np.arange(20,200,5), 
+		title = r"$M$ of W-Boson for Different H Decay Mode (normalized)",
+		x_label = r"$M_\text{reco}$ in GeV",
+		y_label = r"Fraction of Events",
+		normalize = True,
+		file_destination = OUTPUT_DESTINATION + "higgsdm_m_w_all.png"
+	)
+	histogram.plot_multiple_datasets(sources, options)
 
 
 

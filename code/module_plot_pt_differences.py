@@ -29,26 +29,20 @@ def plot_pt_difference(root_file):
 			continue
 		pt_difference_w.append( pt_reco-pt_truth )
 	
-
-	for diff in pt_difference_w:
-		if abs(diff)>30:
-			print("Error", diff)
-
-
 		
 	# create and plot containers
 	source = histogram.HistogramSource(
 		data = pt_difference_w,
-		label = "yield = "+str(len(pt_difference_w))
+		#label = "yield = "+str(len(pt_difference_w))
 	)
 
 	options = histogram.HistogramOptions(
-		bins = np.arange(-100, 100, 10),
-		title = "Pt Difference of Reconstructed W-Boson",
+		bins = np.arange(-60, 120, 10),
+		title = "$\Delta p_t$ of W-Boson (Reconstructed - Truth)",
 		x_label = r"$\Delta p_t$ in GeV",
 		y_label = r"Number of Events",
 		normalize = False,
-		file_destination= OUTPUT_DESTINATION + "pt_w_delta.png"
+		file_destination= OUTPUT_DESTINATION + "delta_pt_w.png"
 	)
 
 	histogram.plot_single_dataset(source, options)
