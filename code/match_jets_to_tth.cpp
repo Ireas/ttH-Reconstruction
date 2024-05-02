@@ -7,7 +7,6 @@ using namespace std;
 #include"TLorentzVector.h"
 #include"TChain.h"
 #include"TTree.h"
-#include"TH1F.h"
 #include"ROOT/RDataFrame.hxx"
 #include<Math/VectorUtil.h> // for DeltaR
 #include<Math/Vector4D.h> // for PtEtaPhiEVector and PtEtaPhiMVector
@@ -34,7 +33,7 @@ using namespace ROOT::Math::VectorUtil;
 const float DELTA_R_THRESHOLD = 0.4;
 
 
-const int MAX_NUMBER_OF_EVENTS = 1e6;//1e6; // set to 0 for no limit
+const int MAX_NUMBER_OF_EVENTS = 0;//1e6; // set to 0 for no limit
 const plog::Severity LOG_LEVEL = plog::Severity::verbose; // set logger output severity filter
 
 
@@ -209,9 +208,8 @@ int main(){
 	for(auto input_file_name:INPUT_FILE_NAMES){
 		auto file_path = std::string();
 		file_path.append(INPUT_PATH).append(input_file_name);
-
-		rTruthChain.Add(file_path.c_str());
 		rRecoChain.Add(file_path.c_str());
+		rTruthChain.Add(file_path.c_str());
 	}
 
 
