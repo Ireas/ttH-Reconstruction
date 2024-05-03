@@ -34,19 +34,22 @@ const double SAMPLE_MASS_WLEP_MAX 	= 45;
 const double SAMPLE_MASS_WLEP_STEP 	= 1; 
 
 
-//>> directories
+//>> input/output directories/files
 const string INPUT_PATH = "/home/ireas/git_repos/master/input/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
-const string OUTPUT_PATH = "/home/ireas/git_repos/master/output/";
 const char* INPUT_FILE_NAMES[1] = { // put into array for easier access
 	"user.ravinab.35392295._000001.output.root"
 };
+
+const string OUTPUT_PATH = "/home/ireas/git_repos/master/output/";
+const string OUTPUT_FILE = "final.root";
 const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
-	"test_col",
+	"lvec_Whad",
 };
 
 
+
 ///==========  DECLARATION  ==========///
-// Using the final state information (lepton, hadronic W), solve for leptonic W
+// using the final state information (lepton, hadronic W), solve for leptonic W
 int ReconstructLeptonicWBoson(PtEtaPhiEVector lepton, PtEtaPhiEVector parton_w_had, float missing_energy_value, float missing_energy_phi);
 
 // for a given assumption (leptonic W mass, neutrino eta, Higgs Mass) calculate neutrino solutions
@@ -55,56 +58,66 @@ vector<PtEtaPhiEVector> EstimateNeutrinoSolutions(PtEtaPhiEVector lvec_lepton, P
 // calculate neutrino weight
 double CalculateNeutrinoWeight(PtEtaPhiEVector lvec_neutrino, double missing_energy_x, double missing_energy_y);
 
-// generate lorentz four vectors 
-PtEtaPhiEVector GenerateLorentzVectorE1(){return PtEtaPhiEVector(22,1.8,0.2,5);}
-PtEtaPhiEVector GenerateLorentzVectorE2(){return PtEtaPhiEVector(28,0.6,0.9,50);}
+// get hadronic lorentz vector from prediced indicies
+PtEtaPhiEVector GenerateLorentzVectorWHad(vector<PtEtaPhiEVector> lvecs_jets, int index_q1, int index_q2);
 
 
 
 ///==========  MAIN BODY  ==========///
 int main(){
-
-
-	//>> ttemporary sstuff (wrong values and stuff, but just for testing it!)
+	//>> setup TChain
 	TChain rRecoChain("reco");
 	TChain rTruthChain("truth");
+	TChain rPredictionChain("prediction");
+
 	for(auto input_file_name:INPUT_FILE_NAMES){
 		auto file_path = std::string();
 		file_path.append(INPUT_PATH).append(input_file_name);
 		rRecoChain.Add(file_path.c_str());
 		rTruthChain.Add(file_path.c_str());
+		rPredictionChain.Add(file_path.c_str());
 	}
+
+
+	//>> build befriended rDataFrame
+	rPredictionChain.BuildIndex("mcChannelNumber", "eventNumber");  // just for security, use DSID too
 	rTruthChain.BuildIndex("mcChannelNumber", "eventNumber");  // just for security, use DSID too
+	rRecoChain.AddFriend(&rPredictionChain);
 	rRecoChain.AddFriend(&rTruthChain);
+
 	auto rDataFrame = RDataFrame(rRecoChain);
-	auto rLoopManager = rDataFrame.Range(1); // limit input for testing
-	auto nTotalEvents = rLoopManager.Count();
-	// generate truth obj lorentz vectors
-	rLoopManager = rLoopManager.Define(
-		"lvec_el", 
-		GenerateLorentzVectorE1, 
-		{}
-	);
+	auto rLoopManager = rDataFrame.Range(0);
+
+	//auto nTotalEvents = rLoopManager.Count();
+	//auto nMismatchedEvents = rLoopManager.Filter("mcChannelNumber != truth.mcChannelNumber || eventNumber != truth.eventNumber").Count();
+	//if(nMismatchedEvents.GetValue()>0){ 
+	//	PLOG_ERROR << "There are " << nMismatchedEvents.GetValue() << " / " << nTotalEvents.GetValue() << " mismatched events!";
+	//	exit(1);
+	//}
+
+
+	//>> prepare inputs
 	rLoopManager = rLoopManager.Define(
 		"lvec_Whad", 
-		GenerateLorentzVectorE2,
-		{}
-	);	
-	rLoopManager = rLoopManager.Define(
-		"test_col", 
-		ReconstructLeptonicWBoson, 
-		{"lvec_el", "lvec_Whad", "met_met_NOSYS", "met_phi_NOSYS"}
-	);
-	rLoopManager.Snapshot(
-		"test_remove_me", 
-		OUTPUT_PATH+"test.root",
-		OUTPUT_COLOUMN_NAMES
+		GenerateLorentzVectorWHad, 
+		{"jet_lvecs", "prediction/HW_q1", "prediction/HW_q2"}
 	);
 
-	// load data
-	// find nu solutions	
-	// calculate leptonic w
-	// output results
+
+	//>> reconstruct event
+	rLoopManager = rLoopManager.Define(
+		"test_reco_int", 
+		ReconstructLeptonicWBoson, 
+		{"lvec_lepton", "lvec_Whad", "missing_energy_value", "missing_energy_phi"}
+	);
+
+
+	//>> save snapshot
+	rLoopManagerFiltered.Snapshot(
+		"final", 
+		OUTPUT_PATH+OUTPUT_FILE,
+		OUTPUT_COLOUMN_NAMES
+	);
 
 	return 0;
 }
@@ -135,7 +148,7 @@ int ReconstructLeptonicWBoson(
 			//>> sample_mass_wlep = mass of the leptonic W boson from H (assumed off-shell)
 			//>> sample_eta_nu = eta of the unknown neutrino from leptonic W boson
 
-			vector<PtEtaPhiEVector> neutrino_solutions = EstimateNeutrinoSolutions(lvec_lepton , lvec_Whad, sample_mass_wlep, sample_eta_nu, MASS_HIGGS);
+			vector<PtEtaPhiEVector> neutrino_solutions = EstimateNeutrinoSolutions(lvec_lepton, lvec_Whad, sample_mass_wlep, sample_eta_nu, MASS_HIGGS);
 			cout << "(" << sample_mass_wlep << "," << sample_eta_nu << ") yields " << neutrino_solutions.size() << " solutions:" << endl;
 			
 			for(PtEtaPhiEVector neutrino_solution : neutrino_solutions){

@@ -37,25 +37,23 @@ const int MAX_NUMBER_OF_EVENTS = 0;//1e6; // set to 0 for no limit
 const plog::Severity LOG_LEVEL = plog::Severity::verbose; // set logger output severity filter
 
 
-const string INPUT_PATH = "/home/ireas/git_repos/master/input/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
-const string OUTPUT_PATH = "/home/ireas/git_repos/master/output/";
-
-
+const string INPUT_PATH = "/home/ireas/git_repos/master/samples/input/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
 const char* INPUT_FILE_NAMES[1] = { // put into array for easier access
 	"user.ravinab.35392295._000001.output.root"
 };
 
 
-const initializer_list<string> OUTPUT_COLOUMN_NAMES = { // put into array for easier access
-	"jet_potential_match_mask",
+const string OUTPUT_PATH = "/home/ireas/git_repos/master/samples/matched/";
+const string OUTPUT_FILE = "matched.root";
+const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"jet_final_match_mask",
 	"jet_to_object_indicies_fixed",
+	"number_of_jets",
 	"jet_lvecs",
 	"jet_e_NOSYS",
 	"jet_pt_NOSYS",
 	"jet_eta",
 	"jet_phi",
-	"number_of_jets",
 	"reconstructed_t_lvec",
 	"reconstructed_tbar_lvec",
 	"reconstructed_W_from_t_lvec",
@@ -88,6 +86,10 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = { // put into array for ea
 	"reco_event_number",
 	"truth_mc_channel_number",
 	"truth_event_number",
+	"missing_energy_value", 
+	"missing_energy_phi",
+	"classifier_lepton_flavour",
+	"lvec_lepton",
 };
 
 
@@ -114,6 +116,13 @@ enum HIGGS_DECAY_MODE{
 	w_w = 5,
 	z_z = 6,
 	other = 7,
+};
+
+enum CLASSIFIER_LEPTON_FLAVOUR{
+	none = 0,
+	electron = 1,
+	muon = 2,
+	both = 3,
 };
 
 
@@ -166,6 +175,11 @@ PtEtaPhiEVector ReconstructTBar(vector<PtEtaPhiEVector> jetLvecs, vector<int> je
 PtEtaPhiEVector ReconstructWFromT(vector<PtEtaPhiEVector> jetLvecs, vector<int> jetFinalMatchMasks);
 PtEtaPhiEVector ReconstructWFromTBar(vector<PtEtaPhiEVector> jetLvecs, vector<int> jetFinalMatchMasks);
 PtEtaPhiEVector ReconstructHW(vector<PtEtaPhiEVector> jetLvecs, vector<int> jetFinalMatchMasks);
+
+
+// lepton identification
+int ClassifyLeptonFlavour(char passElectronChar, char passMuonChar);
+PtEtaPhiEVector GenerateLorentzVectorLepton(int classifier, vector<float> el_pt, vector<float> el_eta, vector<float> el_phi, vector<float> el_e, vector<float> mu_pt, vector<float> mu_eta, vector<float> mu_phi, vector<float> mu_e);
 
 
 // higgs
@@ -301,6 +315,21 @@ int main(){
 		GenerateTruthLvecs,
 		{"lvec_b_from_t", "lvec_b_from_tbar", "lvec_Wdecay1_from_t", "lvec_Wdecay2_from_t", "lvec_Wdecay1_from_tbar", "lvec_Wdecay2_from_tbar", "lvec_Wdecay1_from_H", "lvec_Wdecay2_from_H"}
 	);
+
+
+
+	// lepton identification
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"classifier_lepton_flavour",
+		ClassifyLeptonFlavour,
+		{"pass_ejets_NOSYS","pass_mujets_NOSYS"}
+	);
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"lvec_lepton",
+		GenerateLorentzVectorLepton,
+		{"classifier_lepton_flavour", "el_pt_NOSYS", "el_eta", "el_phi", "el_e_NOSYS", "mu_pt_NOSYS", "mu_eta", "mu_phi", "mu_e_NOSYS"}
+	);
+
 
 
 	// match jets to objs
@@ -446,6 +475,16 @@ int main(){
 		RenameFloat,
 		{"truth.Tth_MC_W_from_tbar_pt"}
 	);
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"missing_energy_value",
+		RenameFloat,
+		{"met_met_NOSYS"}
+	);
+	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+		"missing_energy_phi",
+		RenameFloat,
+		{"met_phi_NOSYS"}
+	);
 
 
 	// save eventNumber
@@ -519,7 +558,7 @@ int main(){
 	PLOG_DEBUG << "Start: saving snapshot";
 	rLoopManagerFiltered.Snapshot(
 		"matched", 
-		OUTPUT_PATH+"rdataframes_output.root",
+		OUTPUT_PATH+OUTPUT_FILE,
 		OUTPUT_COLOUMN_NAMES
 	);
 		
@@ -835,6 +874,36 @@ vector<int> CollectJetToObjectIndiciesFixed(vector<int> jetFinalMatchMasks){
 	
 	return jetToObjectIndicies;
 }
+
+
+
+// lepton identification
+int ClassifyLeptonFlavour(char passElectronChar, char passMuonChar){
+	bool passElectron = (bool)passElectronChar; //needed conversion because coloumns are saved as char
+	bool passMuon = (bool)passMuonChar;
+
+	if(passElectron && passMuon)
+		return CLASSIFIER_LEPTON_FLAVOUR::both;
+
+	if(passElectron)
+		return CLASSIFIER_LEPTON_FLAVOUR::electron;
+
+	if(passMuon)
+		return CLASSIFIER_LEPTON_FLAVOUR::muon;
+	
+	return CLASSIFIER_LEPTON_FLAVOUR::none;
+}
+
+PtEtaPhiEVector GenerateLorentzVectorLepton(int classifier, vector<float> el_pt, vector<float> el_eta, vector<float> el_phi, vector<float> el_e, vector<float> mu_pt, vector<float> mu_eta, vector<float> mu_phi, vector<float> mu_e){
+	if(classifier==CLASSIFIER_LEPTON_FLAVOUR::electron)
+		return PtEtaPhiEVector(el_pt[0], el_eta[0], el_phi[0], el_e[0]);
+
+	if(classifier==CLASSIFIER_LEPTON_FLAVOUR::muon)
+		return PtEtaPhiEVector(mu_pt[0], mu_eta[0], mu_phi[0], mu_e[0]);
+
+	return PtEtaPhiEVector(0,0,0,0);
+}
+
 
 
 // ==========  HIGGS
