@@ -13,9 +13,6 @@ from timeit import default_timer as timer
 # usage: python3 convert_root_to_h5.py [INPUT_ROOT_FILE] [OUTPUT_H5_DESTINATION]
 
 
-MAX_NUMBER_OF_EVENTS = 0# set to 0 to use all events
-
-
 
 # main method 
 def main():
@@ -49,10 +46,6 @@ def fill_h5_from_root(h5_file, root_file):
 	# get number of jets and events, apply limit on number of events
 	number_of_jets = root_file['matched/number_of_jets'].array()
 	number_of_events = len(number_of_jets)
-	max_number_of_jets = max(number_of_jets)
-	if MAX_NUMBER_OF_EVENTS>0 and number_of_events>MAX_NUMBER_OF_EVENTS:
-		number_of_events = MAX_NUMBER_OF_EVENTS
-
 
 	print("Using " +str(number_of_events)+ " events!")
 	print()
@@ -78,7 +71,6 @@ def fill_h5_from_root(h5_file, root_file):
 	jet_pt = source_group.create_dataset("pt", spanet_source_dimension, dtype=np.float32)
 	jet_eta = source_group.create_dataset("eta", spanet_source_dimension, dtype=np.float32)
 	jet_phi = source_group.create_dataset("phi", spanet_source_dimension, dtype=np.float32)
-	#jet_match_mask = source_group.create_dataset("match_mask", spanet_source_dimension, dtype=int) # integer in bit representation yields matched particle
 	
 	
 	# prepare root_files for fast access
@@ -86,7 +78,6 @@ def fill_h5_from_root(h5_file, root_file):
 	root_pt = root_file['matched/jet_pt_NOSYS'].array()
 	root_eta = root_file['matched/jet_eta'].array()
 	root_phi = root_file['matched/jet_phi'].array()
-	#root_match_mask = root_file['matched/jet_final_match_mask'].array()
 
 
 	# start timer for INPUT steps and prepare variables for printing
@@ -179,6 +170,45 @@ def fill_h5_from_root(h5_file, root_file):
 			ratio-= 0.1
 			partial = timer()
 			print("  >", 10*displayed_ratio, "% (estimated remaining time: ", round((partial-start_group)/displayed_ratio*(10-displayed_ratio)), "s)")
+	
+
+	# create OTHER group for validation
+	print("creating group 'OTHER'")
+	other_group = h5_file.create_group("OTHER")
+	spanet_other_dimension = (number_of_events)
+
+
+	# here branches can be customized if desired
+	event_number = other_group.create_dataset("eventNumber", spanet_other_dimension, dtype=np.intc)
+	mc_channel_number = other_group.create_dataset("mcChannelNumber", spanet_other_dimension, dtype=np.intc)
+	
+	
+	# prepare root_files for fast access
+	root_event_number = root_file['matched/eventNumber'].array()
+	root_mc_channel_number= root_file['matched/mcChannelNumber'].array()
+
+
+
+	# timer for target and reset variables for printing
+	ratio = 0.0
+	displayed_ratio = 0
+	start_group = timer()
+
+	# loop for OTHER group
+	for i in range(number_of_events):
+		# fill datasets with custom data
+		# important is fixed order within root file structured set in c++ code
+		event_number[i] = root_event_number[i]
+		mc_channel_number[i] = root_mc_channel_number[i]
+
+		# print progress
+		ratio+= step
+		if ratio>=0.1:
+			displayed_ratio+= 1
+			ratio-= 0.1
+			partial = timer()
+			print("  >", 10*displayed_ratio, "% (estimated remaining time: ", round((partial-start_group)/displayed_ratio*(10-displayed_ratio)), "s)")
+	print()	
 	
 
 	# print time for conversion

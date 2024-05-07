@@ -16,11 +16,6 @@ using namespace ROOT::Math::VectorUtil;
 
 #include<chrono> // for time measurements during the program
 
-#include<plog/Log.h> // c++ logger + init headers
-#include<plog/Formatters/TxtFormatter.h>
-#include<plog/Initializers/ConsoleInitializer.h>
-
-
 
 // ==========  DELTA R MATCHING  ==========
 // ========================================
@@ -33,8 +28,7 @@ using namespace ROOT::Math::VectorUtil;
 const float DELTA_R_THRESHOLD = 0.4;
 
 
-const int MAX_NUMBER_OF_EVENTS = 0;//1e6; // set to 0 for no limit
-const plog::Severity LOG_LEVEL = plog::Severity::verbose; // set logger output severity filter
+const int MAX_NUMBER_OF_EVENTS = 1e4;//1e6; // set to 0 for no limit
 
 
 const string INPUT_PATH = "/home/ireas/git_repos/master/samples/input/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
@@ -44,52 +38,30 @@ const char* INPUT_FILE_NAMES[1] = { // put into array for easier access
 
 
 const string OUTPUT_PATH = "/home/ireas/git_repos/master/samples/matched/";
-const string OUTPUT_FILE = "matched.root";
+const string OUTPUT_FILE = "_matched.root";
 const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
-	"jet_final_match_mask",
-	"jet_to_object_indicies_fixed",
+	"mcChannelNumber",
+	"eventNumber",
 	"number_of_jets",
-	"jet_lvecs",
+	"missing_energy_value", 
+	"missing_energy_phi",
+	"lvec_Wlep",
+	"lvec_lepton",
+	"lvec_neutrino",
+	"lvec_Whad",
+	"lvec_Whad1",
+	"lvec_Whad2",
+	"lvecs_jets",
 	"jet_e_NOSYS",
 	"jet_pt_NOSYS",
 	"jet_eta",
 	"jet_phi",
-	"reconstructed_t_lvec",
-	"reconstructed_tbar_lvec",
-	"reconstructed_W_from_t_lvec",
-	"reconstructed_W_from_tbar_lvec",
-	"reconstructed_HW_lvec",
-	"reconstructed_t_m",
-	"reconstructed_tbar_m",
-	"reconstructed_W_from_t_m",
-	"reconstructed_W_from_tbar_m",
-	"truth_t_m",
-	"truth_tbar_m",
-	"truth_W_from_t_m",
-	"truth_W_from_tbar_m",
-	"reconstructed_t_pt",
-	"reconstructed_tbar_pt",
-	"reconstructed_W_from_t_pt",
-	"reconstructed_W_from_tbar_pt",
-	"truth_t_pt",
-	"truth_tbar_pt",
-	"truth_W_from_t_pt",
-	"truth_W_from_tbar_pt",
-	"successful_reconstruction",
+	"classifier_lepton_flavour",
+	"classifier_neutrino_flavour",
+	"jet_final_match_mask",
+	"jet_to_object_indicies_fixed",
 	"higgs_decay_mode_custom",
 	"higgs_decay_decay_mode",
-	"higgs_decay1_decay1_filtered_pdgid",
-	"higgs_decay1_decay2_filtered_pdgid",
-	"higgs_decay2_decay1_filtered_pdgid",
-	"higgs_decay2_decay2_filtered_pdgid",
-	"reco_mc_channel_number",
-	"reco_event_number",
-	"truth_mc_channel_number",
-	"truth_event_number",
-	"missing_energy_value", 
-	"missing_energy_phi",
-	"classifier_lepton_flavour",
-	"lvec_lepton",
 };
 
 
@@ -119,11 +91,13 @@ enum HIGGS_DECAY_MODE{
 };
 
 enum CLASSIFIER_LEPTON_FLAVOUR{
-	none = 0,
+	invalid = 0,
 	electron = 1,
 	muon = 2,
 	both = 3,
 };
+
+
 
 
 
@@ -177,10 +151,6 @@ PtEtaPhiEVector ReconstructWFromTBar(vector<PtEtaPhiEVector> jetLvecs, vector<in
 PtEtaPhiEVector ReconstructHW(vector<PtEtaPhiEVector> jetLvecs, vector<int> jetFinalMatchMasks);
 
 
-// lepton identification
-int ClassifyLeptonFlavour(char passElectronChar, char passMuonChar);
-PtEtaPhiEVector GenerateLorentzVectorLepton(int classifier, vector<float> el_pt, vector<float> el_eta, vector<float> el_phi, vector<float> el_e, vector<float> mu_pt, vector<float> mu_eta, vector<float> mu_phi, vector<float> mu_e);
-
 
 // higgs
 int GenerateHiggsDecayModeCustom(int higgsDecay1PdgId, int higgsDecay2PdgId);
@@ -199,23 +169,99 @@ float GetPt(PtEtaPhiEVector lvec);
 
 
 
+
+vector<int> CombineHiggsDecayPDGIDs(int pdgIdHDecay11, int pdgIdHDecay12, int pdgIdHDecay21, int pdgIdHDecay22){
+	return vector<int>{pdgIdHDecay11, pdgIdHDecay12, pdgIdHDecay21, pdgIdHDecay22};
+}
+vector<PtEtaPhiMVector> CombineHiggsDecayLorentzVectors(PtEtaPhiMVector lvecHdecay11, PtEtaPhiMVector lvecHdecay12, PtEtaPhiMVector lvecHdecay21, PtEtaPhiMVector lvecHdecay22){
+	return vector<PtEtaPhiMVector>{lvecHdecay11, lvecHdecay12, lvecHdecay21, lvecHdecay22};
+}
+
+
+
+int ClassifyLeptonFlavourReco(char passElectronChar, char passMuonChar){
+	bool passElectron = (bool)passElectronChar; //needed conversion because coloumns are saved as char
+	bool passMuon = (bool)passMuonChar;
+
+	if(passElectron && passMuon)
+		return CLASSIFIER_LEPTON_FLAVOUR::both;
+
+	if(passElectron)
+		return CLASSIFIER_LEPTON_FLAVOUR::electron;
+
+	if(passMuon)
+		return CLASSIFIER_LEPTON_FLAVOUR::muon;
+	
+	return CLASSIFIER_LEPTON_FLAVOUR::invalid;
+}
+int ClassifyLeptonFlavour(vector<int> pdgIdsHdecay){
+	for(int i=0; i<pdgIdsHdecay.size(); i++){
+		if(pdgIdsHdecay[i]==11){
+			return CLASSIFIER_LEPTON_FLAVOUR::electron;
+		}
+		if(pdgIdsHdecay[i]==13){
+			return CLASSIFIER_LEPTON_FLAVOUR::muon;
+		}
+	}
+	return CLASSIFIER_LEPTON_FLAVOUR::invalid;
+}
+int ClassifyNeutrinoFlavour(vector<int> pdgIdsHdecay){
+	for(int i=0; i<pdgIdsHdecay.size(); i++){
+		if(pdgIdsHdecay[i]==12){
+			return CLASSIFIER_LEPTON_FLAVOUR::electron;
+		}
+		if(pdgIdsHdecay[i]==14){
+			return CLASSIFIER_LEPTON_FLAVOUR::muon;
+		}
+	}
+	return CLASSIFIER_LEPTON_FLAVOUR::invalid;
+}
+
+PtEtaPhiMVector GenerateLorentzVectorNeutrino(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
+	for(int i=0; i<pdgIdsHdecay.size(); i++){
+		if(pdgIdsHdecay[i]==12 || pdgIdsHdecay[i]==14){
+			return lvecsHdecay[i];
+		}
+	}
+	return PtEtaPhiMVector(0,0,0,0);
+}
+PtEtaPhiMVector GenerateLorentzVectorLepton(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
+	for(int i=0; i<pdgIdsHdecay.size(); i++){
+		if(pdgIdsHdecay[i]==11 || pdgIdsHdecay[i]==13){
+			return lvecsHdecay[i];
+		}
+	}
+	return PtEtaPhiMVector(0,0,0,0);
+}
+
+PtEtaPhiMVector CombineTwoPtEtaPhiM(PtEtaPhiMVector v1, PtEtaPhiMVector v2){return v1+v2;}
+
+PtEtaPhiMVector GenerateLorentzVectorWHad1(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
+	for(int i=0; i<pdgIdsHdecay.size(); i+=2){ //skip the second decay particle
+		if(pdgIdsHdecay[i]>0 && pdgIdsHdecay[i]<7){
+			return lvecsHdecay[i];
+		}
+	}
+	return PtEtaPhiMVector(0,0,0,0);
+}
+PtEtaPhiMVector GenerateLorentzVectorWHad2(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
+	for(int i=1; i<pdgIdsHdecay.size(); i+=2){ //skip the first decay particle
+		if(pdgIdsHdecay[i]>0 && pdgIdsHdecay[i]<7){
+			return lvecsHdecay[i];
+		}
+	}
+	return PtEtaPhiMVector(0,0,0,0);
+}
+
+
+
 // ==========  MAIN  ==========
 // ============================
 int main(){
 	// ==========  SETUP
-	// =================
-	// setup plog (logger)
-	static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
-	plog::init(LOG_LEVEL, &consoleAppender);
-	
-
-	// setup ROOT
-	PLOG_DEBUG << "Start: setup ROOT";
-	//ROOT::EnableImplicitMT();// use multithreading when no range is set 
-
-	
+	// =================	
 	// setup TChain
-	PLOG_DEBUG << "Start: setup TChain";
+	cout << "Start: setup TChain" << endl;
 	TChain rRecoChain("reco");
 	TChain rTruthChain("truth");
 
@@ -233,76 +279,72 @@ int main(){
 
 
 	// setup RDataFrame
-	PLOG_DEBUG << "Start: setup RDataFrame";
+	cout << "Start: setup RDataFrame" << endl;
 	auto rDataFrame = RDataFrame(rRecoChain);
-	auto rLoopManager = rDataFrame.Range(MAX_NUMBER_OF_EVENTS); // limit input for testing
+	auto rLoopManager = rDataFrame.Range(0); // limit input for testing
 
 
 	// check if chains are matched properly
 	auto nTotalEvents = rLoopManager.Count();
 	auto nMismatchedEvents = rLoopManager.Filter("mcChannelNumber != truth.mcChannelNumber || eventNumber != truth.eventNumber").Count();
 	if(nMismatchedEvents.GetValue()>0){ 
-		PLOG_ERROR << "There are " << nMismatchedEvents.GetValue() << " / " << nTotalEvents.GetValue() << " mismatched events!";
+		cout << "There are " << nMismatchedEvents.GetValue() << " / " << nTotalEvents.GetValue() << " mismatched events!" << endl;
 		exit(1);
 	}
 
 
 	// generate jet lorentz vectors
 	rLoopManager = rLoopManager.Define(
-		"jet_lvecs", 
+		"lvecs_jets", 
 		GenerateJetLvecs, 
 		{"jet_pt_NOSYS", "jet_eta", "jet_phi", "jet_e_NOSYS"}
 	);
 	rLoopManager = rLoopManager.Define(
 		"number_of_jets", 
 		GetNumberOfJets, 
-		{"jet_lvecs"}
+		{"lvecs_jets"}
 	);
 
 
-	// apply jet filter
-	auto rLoopManagerFiltered = rLoopManager.Filter("number_of_jets>=8");
-
-
 	// generate truth obj lorentz vectors
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"lvec_b_from_t", 
 		GenerateLorentzVectorM, 
 		{"truth.Tth_MC_b_from_t_pt", "truth.Tth_MC_b_from_t_eta", "truth.Tth_MC_b_from_t_phi", "truth.Tth_MC_b_from_t_m"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"lvec_b_from_tbar", 
 		GenerateLorentzVectorM, 
 		{"truth.Tth_MC_b_from_tbar_pt", "truth.Tth_MC_b_from_tbar_eta", "truth.Tth_MC_b_from_tbar_phi", "truth.Tth_MC_b_from_tbar_m"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"lvec_Wdecay1_from_t", 
 		GenerateLorentzVectorM, 
 		{"truth.Tth_MC_Wdecay1_from_t_pt", "truth.Tth_MC_Wdecay1_from_t_eta", "truth.Tth_MC_Wdecay1_from_t_phi", "truth.Tth_MC_Wdecay1_from_t_m"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"lvec_Wdecay2_from_t", 
 		GenerateLorentzVectorM, 
 		{"truth.Tth_MC_Wdecay2_from_t_pt", "truth.Tth_MC_Wdecay2_from_t_eta", "truth.Tth_MC_Wdecay2_from_t_phi", "truth.Tth_MC_Wdecay2_from_t_m"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"lvec_Wdecay1_from_tbar", 
 		GenerateLorentzVectorM, 
 		{"truth.Tth_MC_Wdecay1_from_tbar_pt", "truth.Tth_MC_Wdecay1_from_tbar_eta", "truth.Tth_MC_Wdecay1_from_tbar_phi", "truth.Tth_MC_Wdecay1_from_tbar_m"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"lvec_Wdecay2_from_tbar", 
 		GenerateLorentzVectorM, 
 		{"truth.Tth_MC_Wdecay2_from_tbar_pt", "truth.Tth_MC_Wdecay2_from_tbar_eta", "truth.Tth_MC_Wdecay2_from_tbar_phi", "truth.Tth_MC_Wdecay2_from_tbar_m"}
 	);
 
 	// find hadronic H decay and generate turth obj lorentz vectors
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"lvec_Wdecay1_from_H", 
 		GenerateLorentzVectorMHiggsDecision, 
 		{"truth.Tth_MC_Higgs_decay1_from_decay1_pt", "truth.Tth_MC_Higgs_decay1_from_decay1_eta", "truth.Tth_MC_Higgs_decay1_from_decay1_phi", "truth.Tth_MC_Higgs_decay1_from_decay1_m", "truth.Tth_MC_Higgs_decay1_from_decay1_pdgId", "truth.Tth_MC_Higgs_decay1_from_decay2_pt", "truth.Tth_MC_Higgs_decay1_from_decay2_eta", "truth.Tth_MC_Higgs_decay1_from_decay2_phi", "truth.Tth_MC_Higgs_decay1_from_decay2_m","truth.Tth_MC_Higgs_decay1_from_decay2_pdgId"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"lvec_Wdecay2_from_H", 
 		GenerateLorentzVectorMHiggsDecision, 
 		{"truth.Tth_MC_Higgs_decay2_from_decay1_pt", "truth.Tth_MC_Higgs_decay2_from_decay1_eta", "truth.Tth_MC_Higgs_decay2_from_decay1_phi", "truth.Tth_MC_Higgs_decay2_from_decay1_m","truth.Tth_MC_Higgs_decay2_from_decay1_pdgId", "truth.Tth_MC_Higgs_decay2_from_decay2_pt", "truth.Tth_MC_Higgs_decay2_from_decay2_eta", "truth.Tth_MC_Higgs_decay2_from_decay2_phi", "truth.Tth_MC_Higgs_decay2_from_decay2_m", "truth.Tth_MC_Higgs_decay2_from_decay2_pdgId"}
@@ -310,7 +352,7 @@ int main(){
 
 
 	// generate truth obj vector for each event for easier access
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"truth_lvecs",
 		GenerateTruthLvecs,
 		{"lvec_b_from_t", "lvec_b_from_tbar", "lvec_Wdecay1_from_t", "lvec_Wdecay2_from_t", "lvec_Wdecay1_from_tbar", "lvec_Wdecay2_from_tbar", "lvec_Wdecay1_from_H", "lvec_Wdecay2_from_H"}
@@ -318,35 +360,21 @@ int main(){
 
 
 
-	// lepton identification
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"classifier_lepton_flavour",
-		ClassifyLeptonFlavour,
-		{"pass_ejets_NOSYS","pass_mujets_NOSYS"}
-	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"lvec_lepton",
-		GenerateLorentzVectorLepton,
-		{"classifier_lepton_flavour", "el_pt_NOSYS", "el_eta", "el_phi", "el_e_NOSYS", "mu_pt_NOSYS", "mu_eta", "mu_phi", "mu_e_NOSYS"}
-	);
-
-
-
 	// match jets to objs
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"jet_potential_match_mask", 
 		GenerateJetPotentialMatchMasks, 
-		{"jet_lvecs", "truth_lvecs"}
+		{"lvecs_jets", "truth_lvecs"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"jet_final_match_mask", 
 		GenerateJetFinalMatchMasks, 
-		{"jet_lvecs", "jet_potential_match_mask", "truth_lvecs"}
+		{"lvecs_jets", "jet_potential_match_mask", "truth_lvecs"}
 	);
 	
 
 	// collect jet indicies for SPANet training
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"jet_to_object_indicies_fixed",
 		CollectJetToObjectIndiciesFixed,
 		{"jet_final_match_mask"}
@@ -354,208 +382,226 @@ int main(){
 
 	
 	// reconstruct objects from matched jets
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"reconstructed_t_lvec",
 		ReconstructT,
-		{"jet_lvecs", "jet_final_match_mask"}
+		{"lvecs_jets", "jet_final_match_mask"}
 	);
 	
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"reconstructed_tbar_lvec",
 		ReconstructTBar,
-		{"jet_lvecs", "jet_final_match_mask"}
+		{"lvecs_jets", "jet_final_match_mask"}
 	);
 	
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"reconstructed_W_from_t_lvec",
 		ReconstructWFromT,
-		{"jet_lvecs", "jet_final_match_mask"}
+		{"lvecs_jets", "jet_final_match_mask"}
 	);
 	
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"reconstructed_W_from_tbar_lvec",
 		ReconstructWFromTBar,
-		{"jet_lvecs", "jet_final_match_mask"}
+		{"lvecs_jets", "jet_final_match_mask"}
 	);
 
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"reconstructed_HW_lvec",
 		ReconstructHW,
-		{"jet_lvecs", "jet_final_match_mask"}
-	);
-
-	
-	// get mass from reconstructed objects
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_t_m",
-		GetMass,
-		{"reconstructed_t_lvec"}
-	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_tbar_m",
-		GetMass,
-		{"reconstructed_tbar_lvec"}
-	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_W_from_t_m",
-		GetMass,
-		{"reconstructed_W_from_t_lvec"}
-	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_W_from_tbar_m",
-		GetMass,
-		{"reconstructed_W_from_tbar_lvec"}
-	);
-
-	// get pt from reconstruced object
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_t_pt",
-		GetPt,
-		{"reconstructed_t_lvec"}
-	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_tbar_pt",
-		GetPt,
-		{"reconstructed_tbar_lvec"}
-	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_W_from_t_pt",
-		GetPt,
-		{"reconstructed_W_from_t_lvec"}
-	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reconstructed_W_from_tbar_pt",
-		GetPt,
-		{"reconstructed_W_from_tbar_lvec"}
-	);
-
-
-	 
+		{"lvecs_jets", "jet_final_match_mask"}
+	); 
 
 
 	// rename truth trees
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"truth_t_m",
 		RenameFloat,
 		{"truth.Tth_MC_t_afterFSR_m"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"truth_tbar_m",
 		RenameFloat,
 		{"truth.Tth_MC_tbar_afterFSR_m"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"truth_W_from_t_m",
 		RenameFloat,
 		{"truth.Tth_MC_W_from_t_m"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"truth_W_from_tbar_m",
 		RenameFloat,
 		{"truth.Tth_MC_W_from_tbar_m"}
 	);
 	
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"truth_t_pt",
 		RenameFloat,
 		{"truth.Tth_MC_t_afterFSR_pt"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"truth_tbar_pt",
 		RenameFloat,
 		{"truth.Tth_MC_tbar_afterFSR_pt"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"truth_W_from_t_pt",
 		RenameFloat,
 		{"truth.Tth_MC_W_from_t_pt"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"truth_W_from_tbar_pt",
 		RenameFloat,
 		{"truth.Tth_MC_W_from_tbar_pt"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+
+
+	rLoopManager = rLoopManager.Define(
 		"missing_energy_value",
 		RenameFloat,
 		{"met_met_NOSYS"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"missing_energy_phi",
 		RenameFloat,
 		{"met_phi_NOSYS"}
 	);
 
 
-	// save eventNumber
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reco_mc_channel_number",
-		RenameInt,
-		{"mcChannelNumber"}
-	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"truth_mc_channel_number",
-		RenameInt,
-		{"truth.mcChannelNumber"}
-	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"truth_event_number",
-		RenameInt2,
-		{"truth.eventNumber"}
-	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"reco_event_number",
-		RenameInt2,
-		{"truth.eventNumber"}
-	);
-
-
-	// check if event is fully reconstructed
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"successful_reconstruction",
-		CheckReconstruction,
-		{"reconstructed_t_lvec", "reconstructed_tbar_lvec", "reconstructed_HW_lvec"}
-	);
-
-
 	// get higgs information
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"higgs_decay_mode_custom",
 		GenerateHiggsDecayModeCustom,
 		{"truth.Tth_MC_Higgs_decay1_pdgId", "truth.Tth_MC_Higgs_decay2_pdgId"}
 	);
 	
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
+	rLoopManager = rLoopManager.Define(
 		"higgs_decay_decay_mode",
 		GenerateHiggsDecayDecayMode,
 		{"higgs_decay_mode_custom", "truth.Tth_MC_Higgs_decay1_from_decay1_pdgId", "truth.Tth_MC_Higgs_decay2_from_decay1_pdgId", "truth.Tth_MC_Higgs_decay1_from_decay2_pdgId", "truth.Tth_MC_Higgs_decay2_from_decay2_pdgId"}
 	);
 
 	
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"higgs_decay1_decay1_filtered_pdgid",
+	//>> filter pdgIds (exclude invalid ids and take absolute value)
+	rLoopManager = rLoopManager.Define(
+		"pdgid_Hdecay11_filtered",
 		GetFilteredPdgIDs,
 		{"truth.Tth_MC_Higgs_decay1_from_decay1_pdgId"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"higgs_decay1_decay2_filtered_pdgid",
+	rLoopManager = rLoopManager.Define(
+		"pdgid_Hdecay12_filtered",
 		GetFilteredPdgIDs,
 		{"truth.Tth_MC_Higgs_decay2_from_decay1_pdgId"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"higgs_decay2_decay1_filtered_pdgid",
+	rLoopManager = rLoopManager.Define(
+		"pdgid_Hdecay21_filtered",
 		GetFilteredPdgIDs,
 		{"truth.Tth_MC_Higgs_decay1_from_decay2_pdgId"}
 	);
-	rLoopManagerFiltered = rLoopManagerFiltered.Define(
-		"higgs_decay2_decay2_filtered_pdgid",
+	rLoopManager = rLoopManager.Define(
+		"pdgid_Hdecay22_filtered",
 		GetFilteredPdgIDs,
 		{"truth.Tth_MC_Higgs_decay2_from_decay2_pdgId"}
 	);
 
+	rLoopManager = rLoopManager.Define(
+		"pdgids_Hdecay_ordered_filtered",
+		CombineHiggsDecayPDGIDs,
+		{"pdgid_Hdecay11_filtered", "pdgid_Hdecay12_filtered", "pdgid_Hdecay21_filtered", "pdgid_Hdecay22_filtered"}
+	);
+
+	
+	rLoopManager = rLoopManager.Define(
+		"lvec_Hdecay11",
+		GenerateLorentzVectorM,
+		{"truth.Tth_MC_Higgs_decay1_from_decay1_pt", "truth.Tth_MC_Higgs_decay1_from_decay1_eta", "truth.Tth_MC_Higgs_decay1_from_decay1_phi", "truth.Tth_MC_Higgs_decay1_from_decay1_m"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"lvec_Hdecay12",
+		GenerateLorentzVectorM,
+		{"truth.Tth_MC_Higgs_decay2_from_decay1_pt", "truth.Tth_MC_Higgs_decay2_from_decay1_eta", "truth.Tth_MC_Higgs_decay2_from_decay1_phi", "truth.Tth_MC_Higgs_decay2_from_decay1_m"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"lvec_Hdecay21",
+		GenerateLorentzVectorM,
+		{"truth.Tth_MC_Higgs_decay1_from_decay2_pt", "truth.Tth_MC_Higgs_decay1_from_decay2_eta", "truth.Tth_MC_Higgs_decay1_from_decay2_phi", "truth.Tth_MC_Higgs_decay1_from_decay2_m"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"lvec_Hdecay22",
+		GenerateLorentzVectorM,
+		{"truth.Tth_MC_Higgs_decay2_from_decay2_pt", "truth.Tth_MC_Higgs_decay2_from_decay2_eta", "truth.Tth_MC_Higgs_decay2_from_decay2_phi", "truth.Tth_MC_Higgs_decay2_from_decay2_m"}
+	);
+
+	rLoopManager = rLoopManager.Define(
+		"lvecs_Hdecay_ordered",
+		CombineHiggsDecayLorentzVectors,
+		{"lvec_Hdecay11", "lvec_Hdecay12", "lvec_Hdecay21", "lvec_Hdecay22"}
+	);
+
+
+
+
+
+	//>> Generate Neutrino Information
+	rLoopManager = rLoopManager.Define(
+		"classifier_neutrino_flavour",
+		ClassifyNeutrinoFlavour,
+		{"pdgids_Hdecay_ordered_filtered"}
+	);
+
+	rLoopManager = rLoopManager.Define(
+		"lvec_neutrino",
+		GenerateLorentzVectorNeutrino,
+		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
+	);
+
+	//>> Generate Lepton Information
+	rLoopManager = rLoopManager.Define(
+		"classifier_lepton_flavour",
+		ClassifyLeptonFlavour,
+		{"pdgids_Hdecay_ordered_filtered"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"lvec_lepton",
+		GenerateLorentzVectorLepton,
+		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
+	);
+
+
+	
+
+	//>> Generate Lorentz Vector Whad1
+	rLoopManager = rLoopManager.Define(
+		"lvec_Whad1",
+		GenerateLorentzVectorWHad1,
+		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"lvec_Whad2",
+		GenerateLorentzVectorWHad2,
+		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
+	);
+
+	//>> Combine Higgs W-Bosons
+	rLoopManager = rLoopManager.Define(
+		"lvec_Wlep",
+		CombineTwoPtEtaPhiM,
+		{"lvec_lepton", "lvec_neutrino"}
+	);
+
+	rLoopManager = rLoopManager.Define(
+		"lvec_Whad",
+		CombineTwoPtEtaPhiM,
+		{"lvec_Whad1", "lvec_Whad2"}
+	);
+
+
+	// apply jet filter	
+	auto rLoopManagerFiltered = rLoopManager.Filter("number_of_jets>=8").Range(MAX_NUMBER_OF_EVENTS);
 
 	// save snapshot to disk
-	PLOG_DEBUG << "Start: saving snapshot";
+	cout << "Start: saving snapshot" << endl;
 	rLoopManagerFiltered.Snapshot(
 		"matched", 
 		OUTPUT_PATH+OUTPUT_FILE,
@@ -583,7 +629,6 @@ PtEtaPhiMVector GenerateLorentzVectorMHiggsDecision(Float_t pt1, Float_t eta1, F
 	}
 	
 	
-	//PLOG_WARNING << "Warning: found event with no hadronic H decay! (" << pdgId1 << "," << pdgId2 << ")";
 	return PtEtaPhiMVector(0,0,0,0);
 }
 
@@ -876,33 +921,6 @@ vector<int> CollectJetToObjectIndiciesFixed(vector<int> jetFinalMatchMasks){
 }
 
 
-
-// lepton identification
-int ClassifyLeptonFlavour(char passElectronChar, char passMuonChar){
-	bool passElectron = (bool)passElectronChar; //needed conversion because coloumns are saved as char
-	bool passMuon = (bool)passMuonChar;
-
-	if(passElectron && passMuon)
-		return CLASSIFIER_LEPTON_FLAVOUR::both;
-
-	if(passElectron)
-		return CLASSIFIER_LEPTON_FLAVOUR::electron;
-
-	if(passMuon)
-		return CLASSIFIER_LEPTON_FLAVOUR::muon;
-	
-	return CLASSIFIER_LEPTON_FLAVOUR::none;
-}
-
-PtEtaPhiEVector GenerateLorentzVectorLepton(int classifier, vector<float> el_pt, vector<float> el_eta, vector<float> el_phi, vector<float> el_e, vector<float> mu_pt, vector<float> mu_eta, vector<float> mu_phi, vector<float> mu_e){
-	if(classifier==CLASSIFIER_LEPTON_FLAVOUR::electron)
-		return PtEtaPhiEVector(el_pt[0], el_eta[0], el_phi[0], el_e[0]);
-
-	if(classifier==CLASSIFIER_LEPTON_FLAVOUR::muon)
-		return PtEtaPhiEVector(mu_pt[0], mu_eta[0], mu_phi[0], mu_e[0]);
-
-	return PtEtaPhiEVector(0,0,0,0);
-}
 
 
 
