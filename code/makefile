@@ -1,20 +1,19 @@
 match: match_jets_to_tth.cpp
-	g++ match_jets_to_tth.cpp -o executable -fPIC `root-config --glibs --cflags --libs`
-	./executable
+	g++ match_jets_to_tth.cpp -o execute_match -fPIC `root-config --glibs --cflags --libs`
+	./execute_match
+	rm ./execute_match
+
 
 convert: convert_root_to_h5.py
-	python3 convert_root_to_h5.py ~/git_repos/master/output/rdataframes_output.root ~/git_repos/master/output/output.h5
+	python3 convert_root_to_h5.py ~/git_repos/master/samples/matched/_matched.root ~/git_repos/master/samples/converted/_converted.h5
 
-plot: plot.py
-	python3 plot.py ~/git_repos/master/output/rdataframes_output.root
 
-match_convert: match_jets_to_tth.cpp convert_root_to_h5.py
-	g++ match_jets_to_tth.cpp -o executable -fPIC `root-config --glibs --cflags --libs`
-	./executable
-	python3 convert_root_to_h5.py ~/git_repos/master/output/rdataframes_output.root ~/git_repos/master/output/output.h5
+inject: inject_spanet_predictions.py
+	cp ~/git_repos/master/samples/matched/_matched.root ~/git_repos/master/samples/injected/_injection.root
+	python3 inject_spanet_predictions.py ~/git_repos/master/samples/injected/_injection.root ~/git_repos/master/samples/predicted/_prediction.h5
+	
 
-match_plot: match_jets_to_tth.cpp plot.py
-	g++ match_jets_to_tth.cpp -o executable -fPIC `root-config --glibs --cflags --libs`
-	./executable
-	python3 plot.py ~/git_repos/master/output/rdataframes_output.root
-
+neutrino_weighting: neutrino_weighting.cpp
+	g++ neutrino_weighting.cpp -o execute_neutrino_weighting -fPIC `root-config --glibs --cflags --libs`
+	./execute_neutrino_weighting
+	rm ./execute_neutrino_weighting
