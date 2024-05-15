@@ -46,6 +46,7 @@ def fill_h5_from_root(h5_file, root_file):
 	# get number of jets and events, apply limit on number of events
 	number_of_jets = root_file['matched/number_of_jets'].array()
 	number_of_events = len(number_of_jets)
+	max_number_of_jets = max(number_of_jets)
 
 	print("Using " +str(number_of_events)+ " events!")
 	print()
@@ -71,6 +72,7 @@ def fill_h5_from_root(h5_file, root_file):
 	jet_pt = source_group.create_dataset("pt", spanet_source_dimension, dtype=np.float32)
 	jet_eta = source_group.create_dataset("eta", spanet_source_dimension, dtype=np.float32)
 	jet_phi = source_group.create_dataset("phi", spanet_source_dimension, dtype=np.float32)
+	jet_btag = source_group.create_dataset("btag", spanet_source_dimension, dtype=bool)
 	
 	
 	# prepare root_files for fast access
@@ -78,6 +80,7 @@ def fill_h5_from_root(h5_file, root_file):
 	root_pt = root_file['matched/jet_pt_NOSYS'].array()
 	root_eta = root_file['matched/jet_eta'].array()
 	root_phi = root_file['matched/jet_phi'].array()
+	root_btag = root_file['matched/jet_GN2v00NewAliasWP_FixedCutBEff_85_select'].array()
 
 
 	# start timer for INPUT steps and prepare variables for printing
@@ -101,7 +104,7 @@ def fill_h5_from_root(h5_file, root_file):
 			jet_pt[i,j] = root_pt[i,j]
 			jet_eta[i,j] = root_eta[i,j]
 			jet_phi[i,j] = root_phi[i,j]
-			#jet_match_mask[i,j] = root_match_mask[i,j]
+			jet_btag[i,j] = root_btag[i,j]
 
 
 		# print progress every 10%

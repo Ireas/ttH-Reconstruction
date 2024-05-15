@@ -17,6 +17,7 @@ using namespace ROOT::Math::VectorUtil;
 #include<chrono> // for time measurements during the program
 
 
+
 // ==========  DELTA R MATCHING  ==========
 // ========================================
 // uses ROOTs modern RDataFrames to simplify the event loop and branchaddress allocation
@@ -28,12 +29,12 @@ using namespace ROOT::Math::VectorUtil;
 const float DELTA_R_THRESHOLD = 0.4;
 
 
-const int MAX_NUMBER_OF_EVENTS = 1e4;//1e6; // set to 0 for no limit
+const int MAX_NUMBER_OF_EVENTS = 1e6; // set to 0 for no limit
 
 
 const string INPUT_PATH = "/home/ireas/git_repos/master/samples/input/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
 const char* INPUT_FILE_NAMES[1] = { // put into array for easier access
-	"user.ravinab.35392295._000001.output.root"
+	"user.ravinab.35392295._000002.output.root",
 };
 
 
@@ -44,24 +45,30 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"eventNumber",
 	"number_of_jets",
 	"missing_energy_value", 
-	"missing_energy_phi",
+	"missing_energy_phi", 
+	"jet_GN2v00NewAliasWP_FixedCutBEff_85_select",
 	"lvec_Wlep",
-	"lvec_lepton",
-	"lvec_neutrino",
-	"lvec_Whad",
-	"lvec_Whad1",
-	"lvec_Whad2",
+	"lvec_lepton_true",
+	"lvec_neutrino_true",
+	"lvec_Whad_true",
+	"lvec_Whad_true1",
+	"lvec_Whad_true2",
 	"lvecs_jets",
 	"jet_e_NOSYS",
 	"jet_pt_NOSYS",
 	"jet_eta",
 	"jet_phi",
+	"classifier_event_status",
 	"classifier_lepton_flavour",
 	"classifier_neutrino_flavour",
 	"jet_final_match_mask",
 	"jet_to_object_indicies_fixed",
 	"higgs_decay_mode_custom",
 	"higgs_decay_decay_mode",
+	"lepton_pt",
+	"lepton_eta",
+	"lepton_phi",
+	"lepton_e",
 };
 
 
@@ -95,6 +102,11 @@ enum CLASSIFIER_LEPTON_FLAVOUR{
 	electron = 1,
 	muon = 2,
 	both = 3,
+};
+
+enum CLASSIFIER_EVENT_STATUS{
+	impossible = -1,
+	possible = 0,
 };
 
 
@@ -168,6 +180,17 @@ float GetMass(PtEtaPhiEVector lvec);
 float GetPt(PtEtaPhiEVector lvec);
 
 
+float ExtractLeptonInformation(int classifier, vector<float> info_electron, vector<float> info_muon){
+	
+	if( (classifier==CLASSIFIER_LEPTON_FLAVOUR::electron || classifier==CLASSIFIER_LEPTON_FLAVOUR::both) && info_electron.size()>0)
+		return info_electron[0];
+
+	if( (classifier==CLASSIFIER_LEPTON_FLAVOUR::muon || classifier==CLASSIFIER_LEPTON_FLAVOUR::both)  && info_muon.size()>0)
+		return info_muon[0];
+
+	return -999;
+}
+
 
 
 vector<int> CombineHiggsDecayPDGIDs(int pdgIdHDecay11, int pdgIdHDecay12, int pdgIdHDecay21, int pdgIdHDecay22){
@@ -217,7 +240,17 @@ int ClassifyNeutrinoFlavour(vector<int> pdgIdsHdecay){
 	return CLASSIFIER_LEPTON_FLAVOUR::invalid;
 }
 
-PtEtaPhiMVector GenerateLorentzVectorNeutrino(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
+int ClassifyEventStatus(vector<int> fixedAssignment){
+	for(int i=0; i<NUMBER_OF_TRUTH_OBJECTS; i++){
+		if(fixedAssignment[i]==-1){
+			return CLASSIFIER_EVENT_STATUS::impossible;
+		}
+	}
+
+	return CLASSIFIER_EVENT_STATUS::possible;
+}
+
+PtEtaPhiMVector GenerateLorentzVectorNeutrinoTrue(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
 	for(int i=0; i<pdgIdsHdecay.size(); i++){
 		if(pdgIdsHdecay[i]==12 || pdgIdsHdecay[i]==14){
 			return lvecsHdecay[i];
@@ -225,13 +258,32 @@ PtEtaPhiMVector GenerateLorentzVectorNeutrino(vector<PtEtaPhiMVector> lvecsHdeca
 	}
 	return PtEtaPhiMVector(0,0,0,0);
 }
-PtEtaPhiMVector GenerateLorentzVectorLepton(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
+
+PtEtaPhiMVector GenerateLorentzVectorLeptonTrue(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
 	for(int i=0; i<pdgIdsHdecay.size(); i++){
 		if(pdgIdsHdecay[i]==11 || pdgIdsHdecay[i]==13){
 			return lvecsHdecay[i];
 		}
 	}
 	return PtEtaPhiMVector(0,0,0,0);
+}
+
+PtEtaPhiEVector GenerateLorentzVectorLepton(
+	int classifier, 
+	vector<float> pt_el,
+	vector<float> eta_el,
+	vector<float> phi_el,
+	vector<float> e_el,
+	vector<float> pt_mu,
+	vector<float> eta_mu,
+	vector<float> phi_mu,
+	vector<float> e_mu
+){
+	if(classifier==CLASSIFIER_LEPTON_FLAVOUR::electron)
+		return GenerateLorentzVectorE(pt_el[0], eta_el[0], phi_el[0], e_el[0]);
+	if(classifier==CLASSIFIER_LEPTON_FLAVOUR::muon)
+		return GenerateLorentzVectorE(pt_mu[0], eta_mu[0], phi_mu[0], e_mu[0]);
+	return GenerateLorentzVectorE(0,0,0,0);
 }
 
 PtEtaPhiMVector CombineTwoPtEtaPhiM(PtEtaPhiMVector v1, PtEtaPhiMVector v2){return v1+v2;}
@@ -413,6 +465,10 @@ int main(){
 	); 
 
 
+
+	
+
+
 	// rename truth trees
 	rLoopManager = rLoopManager.Define(
 		"truth_t_m",
@@ -551,20 +607,27 @@ int main(){
 	);
 
 	rLoopManager = rLoopManager.Define(
-		"lvec_neutrino",
-		GenerateLorentzVectorNeutrino,
+		"lvec_neutrino_true",
+		GenerateLorentzVectorNeutrinoTrue,
 		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
 	);
 
 	//>> Generate Lepton Information
 	rLoopManager = rLoopManager.Define(
 		"classifier_lepton_flavour",
-		ClassifyLeptonFlavour,
-		{"pdgids_Hdecay_ordered_filtered"}
+		ClassifyLeptonFlavourReco,
+		{"pass_ejets_NOSYS", "pass_mujets_NOSYS"}
 	);
+
+
 	rLoopManager = rLoopManager.Define(
 		"lvec_lepton",
 		GenerateLorentzVectorLepton,
+		{"classifier_lepton_flavour", "el_pt_NOSYS", "el_eta", "el_phi", "el_e_NOSYS", "mu_pt_NOSYS", "mu_eta", "mu_phi", "mu_e_NOSYS"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"lvec_lepton_true",
+		GenerateLorentzVectorLeptonTrue,
 		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
 	);
 
@@ -573,12 +636,12 @@ int main(){
 
 	//>> Generate Lorentz Vector Whad1
 	rLoopManager = rLoopManager.Define(
-		"lvec_Whad1",
+		"lvec_Whad_true1",
 		GenerateLorentzVectorWHad1,
 		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"lvec_Whad2",
+		"lvec_Whad_true2",
 		GenerateLorentzVectorWHad2,
 		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
 	);
@@ -587,18 +650,59 @@ int main(){
 	rLoopManager = rLoopManager.Define(
 		"lvec_Wlep",
 		CombineTwoPtEtaPhiM,
-		{"lvec_lepton", "lvec_neutrino"}
+		{"lvec_lepton_true", "lvec_neutrino_true"}
 	);
 
 	rLoopManager = rLoopManager.Define(
-		"lvec_Whad",
+		"lvec_Whad_true",
 		CombineTwoPtEtaPhiM,
-		{"lvec_Whad1", "lvec_Whad2"}
+		{"lvec_Whad_true1", "lvec_Whad_true2"}
 	);
 
 
-	// apply jet filter	
-	auto rLoopManagerFiltered = rLoopManager.Filter("number_of_jets>=8").Range(MAX_NUMBER_OF_EVENTS);
+
+
+
+
+
+
+
+	//>> get correct lepton information
+	rLoopManager = rLoopManager.Define(
+		"lepton_pt",
+		ExtractLeptonInformation,
+		{"classifier_neutrino_flavour", "el_pt_NOSYS", "mu_pt_NOSYS"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"lepton_eta",
+		ExtractLeptonInformation,
+		{"classifier_neutrino_flavour", "el_eta", "mu_eta"}
+	);
+
+	rLoopManager = rLoopManager.Define(
+		"lepton_phi",
+		ExtractLeptonInformation,
+		{"classifier_neutrino_flavour", "el_phi", "mu_phi"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"lepton_e",
+		ExtractLeptonInformation,
+		{"classifier_neutrino_flavour", "el_e_NOSYS", "mu_e_NOSYS"}
+	);
+
+	rLoopManager = rLoopManager.Define(
+		"classifier_event_status",
+		ClassifyEventStatus,
+		{"jet_to_object_indicies_fixed"}
+	);
+
+
+
+
+	// apply filter	and limit if needed
+	auto rLoopManagerFiltered = rLoopManager.Filter( 
+		"(number_of_jets>=8)" 
+	).Range(MAX_NUMBER_OF_EVENTS);
 
 	// save snapshot to disk
 	cout << "Start: saving snapshot" << endl;
@@ -910,7 +1014,7 @@ vector<int> CollectJetToObjectIndiciesFixed(vector<int> jetFinalMatchMasks){
 	for(int i=0; i<NUMBER_OF_TRUTH_OBJECTS; i++){// i equals the corresponding TRUTH_PARTON value
 		jetToObjectIndicies[i] = -1;
 		for(int j=0; j<jetFinalMatchMasks.size(); j++){
-			if( (jetFinalMatchMasks[j] & 1<<i)!=0 ){
+			if( (jetFinalMatchMasks[j] & 1<<i)!=0 ){ //final match is 1 for current TRUTH_PARTON
 				jetToObjectIndicies[i] = j;
 				break;
 			}
