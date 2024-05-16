@@ -29,7 +29,7 @@ using namespace ROOT::Math::VectorUtil;
 const float DELTA_R_THRESHOLD = 0.4;
 
 
-const int MAX_NUMBER_OF_EVENTS = 1e6; // set to 0 for no limit
+const int MAX_NUMBER_OF_EVENTS = 1e4; // set to 0 for no limit
 
 
 const string INPUT_PATH = "/home/ireas/git_repos/master/samples/input/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
@@ -48,6 +48,7 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"missing_energy_phi", 
 	"jet_GN2v00NewAliasWP_FixedCutBEff_85_select",
 	"lvec_Wlep",
+	//"lvec_lepton", not working, send individual variavbles instead
 	"lvec_lepton_true",
 	"lvec_neutrino_true",
 	"lvec_Whad_true",

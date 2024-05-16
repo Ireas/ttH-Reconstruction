@@ -51,11 +51,15 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"neutrino_weight",
 	"estimated_eta_nu",
 	"estimated_mass_Wlep",
+	"val_px",
+	"val_py",
+	"missing_energy_value",
+	"missing_energy_phi",
 };
 
 
 PtEtaPhiEVector TempConv(PtEtaPhiMVector t){return PtEtaPhiEVector(t.Pt(), t.Eta(), t.Phi(), t.E());}
-
+PtEtaPhiEVector TempNu(float met_value, float met_eta, float met_phi){return PtEtaPhiEVector(met_value, met_eta, met_phi, met_value);}
 
 
 ///==========  DECLARATION  ==========///
@@ -78,7 +82,8 @@ PtEtaPhiEVector GenerateLorentzVectorWHad(vector<PtEtaPhiEVector> lvecs_jets, in
 vector<float> OLDWReconstruction(
 	PtEtaPhiEVector lepton,
 	PtEtaPhiEVector parton_w_had,
-	PtEtaPhiEVector nu
+	float met_value,
+	float met_phi
 );
 
 
@@ -90,6 +95,8 @@ PtEtaPhiMVector GenerateLorentzVectorM(Float_t pt, Float_t eta, Float_t phi, Flo
 float ExtractWeight(vector<float> neutrino_weight_output){return neutrino_weight_output[0];}
 float ExtractEstimatedEtaNu(vector<float> neutrino_weight_output){return neutrino_weight_output[1];}
 float ExtractEstimatedMassWLep(vector<float> neutrino_weight_output){return neutrino_weight_output[2];}
+float ExtractEstimatedPx(vector<float> neutrino_weight_output){return neutrino_weight_output[3];}
+float ExtractEstimatedPy(vector<float> neutrino_weight_output){return neutrino_weight_output[4];}
 
 
 
@@ -147,15 +154,11 @@ int main(){
 //
 
 
-	rLoopManager = rLoopManager.Define(
-		"lvec_neutrino", 
-		TempConv, 
-		{"lvec_neutrino_true"}
-	);
+
 	rLoopManager = rLoopManager.Define(
 		"lvec_lepton", 
-		TempConv, 
-		{"lvec_lepton_true"}
+		GenerateLorentzVectorE, 
+		{"lepton_pt", "lepton_eta", "lepton_phi", "lepton_e"}
 	);
 	rLoopManager = rLoopManager.Define(
 		"lvec_Whad", 
@@ -166,7 +169,7 @@ int main(){
 	rLoopManager = rLoopManager.Define(
 		"legacy_prediction", 
 		OLDWReconstruction, 
-		{"lvec_lepton", "lvec_Whad", "lvec_neutrino"}
+		{"lvec_lepton", "lvec_Whad", "missing_energy_value", "missing_energy_phi"}
 	);
 	//>> extract estimations
 	rLoopManager = rLoopManager.Define(
@@ -182,6 +185,17 @@ int main(){
 	rLoopManager = rLoopManager.Define(
 		"estimated_mass_Wlep", 
 		ExtractEstimatedMassWLep, 
+		{"legacy_prediction"}
+	);
+
+	rLoopManager = rLoopManager.Define(
+		"val_px", 
+		ExtractEstimatedPx, 
+		{"legacy_prediction"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"val_py", 
+		ExtractEstimatedPy, 
 		{"legacy_prediction"}
 	);
 
@@ -340,17 +354,6 @@ double CalculateNeutrinoWeight(PtEtaPhiEVector lvec_neutrino, double missing_ene
 
 
 
-double OLDCalculateNeutrinoWeight(
-	PtEtaPhiEVector lvec_neutrino,
-	double missing_energy_x, 
-	double missing_energy_y
-){
-	double weight_x = exp( -pow( (lvec_neutrino.Px()-missing_energy_x), 2) / pow(SIGMA_X, 2));
-	double weight_y = exp( -pow( (lvec_neutrino.Py()-missing_energy_y), 2) / pow(SIGMA_Y, 2));
-	return weight_x * weight_y;           
-}
-
-
 
 std::vector<TLorentzVector> solveForNeutrinoEta(
 	TLorentzVector* lepton, 
@@ -429,16 +432,27 @@ std::vector<TLorentzVector> solveForNeutrinoEta(
 vector<float> OLDWReconstruction(
 	PtEtaPhiEVector lepton,
 	PtEtaPhiEVector parton_w_had,
-	PtEtaPhiEVector nu
-){
-  float m_best_NW_weight = -1000;
+	float met_value,
+	float met_phi
+){   
+	if(lepton.pt()<-1){
+		return vector<float>{0,0,0,0,0};
+	}
+	std::cout << lepton.pt() << " | " << lepton.eta() << " | " << lepton.phi() << " | " << lepton.energy()  << std::endl;
+	           
+	float missing_energy_x = met_value * cos( met_phi );
+	float missing_energy_y = met_value * sin( met_phi );
+		float val_best_px = 0.0;
+		float val_best_py = 0.0;
+
+  float m_best_NW_weight = -999;
   TLorentzVector* particle_reco_w_lep = new TLorentzVector(0.,0.,0.,0.);
   TLorentzVector* particle_reco_nu= new TLorentzVector(0.,0.,0.,0.);
   //Implementing only the linear mass range variation, for now
   std::vector<double> wmass_points;
-  int wmass_linear_nbins = 50;
+  int wmass_linear_nbins = 100;
   double wmass_linear_min   = 0;
-  double wmass_linear_max   = 50;
+  double wmass_linear_max   = 50e3;
   double wmass_stepsize = (wmass_linear_max - wmass_linear_min)/wmass_linear_nbins;
   for (int i=0; i< wmass_linear_nbins; i++){
       wmass_points.push_back(wmass_linear_min + i*wmass_stepsize);
@@ -446,7 +460,7 @@ vector<float> OLDWReconstruction(
 
   // Nu eta linear
   std::vector<double> nueta_linear_points;
-  int nueta_linear_nbins = 50;
+  int nueta_linear_nbins = 100;
   double nueta_linear_min   = -3.0;
   double nueta_linear_max   = +3.0;
   double nueta_stepsize = (nueta_linear_max - nueta_linear_min)/nueta_linear_nbins;
@@ -457,7 +471,7 @@ vector<float> OLDWReconstruction(
 
   TLorentzVector* lepton_lv= new TLorentzVector();
   TLorentzVector* parton_w_had_lv= new TLorentzVector();
-  lepton_lv->SetPtEtaPhiM(lepton.pt(), lepton.eta(), lepton.phi(), lepton.mass());
+  lepton_lv->SetPtEtaPhiM(lepton.pt(), lepton.eta(), lepton.phi(), lepton.mass()*1e3);
   parton_w_had_lv->SetPtEtaPhiM(parton_w_had.pt(), parton_w_had.eta(), parton_w_had.phi(), parton_w_had.mass());   
 
   double weight = -99.;
@@ -469,28 +483,39 @@ vector<float> OLDWReconstruction(
   for(double w_mass : wmass_points){
       for (double nu_eta : nueta_linear_points){
           std::vector<TLorentzVector> neutrinos;
-          neutrinos = solveForNeutrinoEta(lepton_lv , parton_w_had_lv, nu_eta, 125., w_mass);
+			
+          neutrinos = solveForNeutrinoEta(lepton_lv , parton_w_had_lv, nu_eta, 125e3, w_mass);
           
           weight_for_hist = -99;
           temp_weight_ex = 0;
           temp_weight_ey = 0;
           temp_weight =0;
 
+
           for (auto neutrino : neutrinos){
 
               TLorentzVector temp_w_boson = *(lepton_lv) + neutrino;
               TLorentzVector* particle_nu = new TLorentzVector();
-              particle_nu->SetPtEtaPhiE(nu.pt(), nu.eta(), nu.phi(), nu.E());
-              temp_weight_ex = exp(-pow((neutrino.Px() - particle_nu->Px()),2) / 2*pow(0.5,2));
-              temp_weight_ey = exp(-pow((neutrino.Py() - particle_nu->Py()),2) / 2*pow(0.5,2));
+              //particle_nu->SetPtEtaPhiE(nu.pt(), nu.eta(), nu.phi(), nu.E());
+              temp_weight_ex = exp(-pow( (neutrino.Px() - missing_energy_y) ,2) / 2*pow(0.5e3, 2));
+              temp_weight_ey = exp(-pow( (neutrino.Py() - missing_energy_y) ,2) / 2*pow(0.5e3, 2));
 
-              temp_weight    = temp_weight_ex*temp_weight_ey;                 
+            
+              temp_weight    = temp_weight_ex*temp_weight_ey;     
+				std::cout << neutrino.Px() << " | " << missing_energy_x << std::endl;
+				std::cout << neutrino.Py() << " | " << missing_energy_y << std::endl;
+				std::cout << temp_weight << std::endl;
+				std::cout << parton_w_had_lv->E() << std::endl;
+				std::cout << std::endl;
+
                       
               if (temp_weight > weight){
-                weight = temp_weight;
+				weight = temp_weight;
+				val_best_px = neutrino.Px();
+				val_best_py = neutrino.Py();
                 particle_reco_w_lep->SetPtEtaPhiM(temp_w_boson.Pt(), temp_w_boson.Eta(), temp_w_boson.Phi(), temp_w_boson.M());
                 particle_reco_nu->SetPtEtaPhiM(neutrino.Pt(), neutrino.Eta(), neutrino.Phi(), neutrino.M()); 
-                m_best_NW_weight=weight;
+                m_best_NW_weight = weight;
               }  
 
               if (temp_weight > weight_for_hist){
@@ -502,12 +527,12 @@ vector<float> OLDWReconstruction(
                 weight_for_hist = 0.0;
               }
               
-              
+			  
           }
 
 }
-	float best_weight = m_best_NW_weight;
+	float best_weight = weight;
 	float best_eta_nu = particle_reco_nu->Eta();
 	float best_mass_Wlep = particle_reco_w_lep->M();
-return vector<float>{best_weight, best_eta_nu, best_mass_Wlep};
+return vector<float>{best_weight, best_eta_nu, best_mass_Wlep, val_best_px, val_best_py};
 }
