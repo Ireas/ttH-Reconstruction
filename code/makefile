@@ -10,7 +10,7 @@ convert: convert_root_to_h5.py
 
 inject: inject_spanet_predictions.py
 	cp ~/git_repos/master/samples/matched/_matched.root ~/git_repos/master/samples/injected/_injection.root
-	python3 inject_spanet_predictions.py ~/git_repos/master/samples/injected/_injection.root ~/git_repos/master/samples/predicted/_prediction.h5
+	python3 inject_spanet_predictions.py ~/git_repos/master/samples/injected/_injection.root ~/git_repos/master/samples/predicted/_prediction.h5 ~/git_repos/master/samples/converted/_converted.h5
 	
 
 neutrino_weighting: neutrino_weighting.cpp
@@ -27,9 +27,7 @@ everything_temp: match_jets_to_tth.cpp convert_root_to_h5.py inject_spanet_predi
 	python3 convert_root_to_h5.py ~/git_repos/master/samples/matched/_matched.root ~/git_repos/master/samples/converted/_converted.h5
 	cp ~/git_repos/master/samples/converted/_converted.h5 ~/git_repos/master/samples/predicted/_prediction.h5
 	cp ~/git_repos/master/samples/matched/_matched.root ~/git_repos/master/samples/injected/_injection.root
-	python3 inject_spanet_predictions.py ~/git_repos/master/samples/injected/_injection.root ~/git_repos/master/samples/predicted/_prediction.h5
+	python3 inject_spanet_predictions.py ~/git_repos/master/samples/injected/_injection.root ~/git_repos/master/samples/predicted/_prediction.h5 ~/git_repos/master/samples/converted/_converted.h5
 	g++ neutrino_weighting.cpp -o execute_neutrino_weighting -fPIC `root-config --glibs --cflags --libs`
 	./execute_neutrino_weighting
 	rm ./execute_neutrino_weighting
-	python3 validate_neutrino_weighting.py ~/git_repos/master/samples/output/_output.root
-	

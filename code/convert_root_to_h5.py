@@ -80,7 +80,7 @@ def fill_h5_from_root(h5_file, root_file):
 	root_pt = root_file['matched/jet_pt_NOSYS'].array()
 	root_eta = root_file['matched/jet_eta'].array()
 	root_phi = root_file['matched/jet_phi'].array()
-	root_btag = root_file['matched/jet_GN2v00NewAliasWP_FixedCutBEff_85_select'].array()
+	root_btag = root_file['matched/jet_DL1dv01_FixedCutBEff_85_select'].array()
 
 
 	# start timer for INPUT steps and prepare variables for printing

@@ -20,56 +20,117 @@ using namespace ROOT::Math::VectorUtil;
 
 // ==========  DELTA R MATCHING  ==========
 // ========================================
-// uses ROOTs modern RDataFrames to simplify the event loop and branchaddress allocation
+// uses ROOTs modern RDataFrames to simplify the event loop and branchaddress allocationso
 
 
 
 // ==========  CONSTANTS  ==========
-// =================================
-const float DELTA_R_THRESHOLD = 0.4;
-
-
+// ================================= 
 const int MAX_NUMBER_OF_EVENTS = 1e4; // set to 0 for no limit
 
+const float PDG_MASS_WBOSON = 80369.2; // mass in MeV
+const float THRESHOLD_ONSHELL_DEFINITION = 1e3; // maximum deviation from DPG mass in MeV to classify as onshell
 
-const string INPUT_PATH = "/home/ireas/git_repos/master/samples/input/v1/user.ravinab.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p5855.20231104-v0_output/";
-const char* INPUT_FILE_NAMES[1] = { // put into array for easier access
-	"user.ravinab.35392295._000002.output.root",
+const float THRESHOLD_DELTA_R = 0.4; // maximum reco jet deviation from the truth for matching
+
+
+
+
+
+const string INPUT_PATH = "/home/ireas/git_repos/master/samples/input/v3/";
+const char* INPUT_FILE_NAMES[] = { // put into array for easier access
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000001.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000002.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000003.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000004.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000001.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000002.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000003.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000004.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000005.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000006.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000007.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000008.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043366._000001.output.root",
+//	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043370._000001.output.root",
+//	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043373._000001.output.root",
+//	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043367._000001.output.root",
+//	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043367._000002.output.root",
+//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043371._000001.output.root",
+//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000001.output.root",
+//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000002.output.root",
+//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000003.output.root",
+//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000004.output.root",
+//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043368._000001.output.root",
+//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043368._000002.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000001.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000002.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000003.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000004.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000001.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000002.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000003.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000004.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000005.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000006.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000007.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000008.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000009.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000010.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000011.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000012.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000001.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000002.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000003.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000004.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000005.output.root",
+//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000006.output.root",
 };
-
 
 const string OUTPUT_PATH = "/home/ireas/git_repos/master/samples/matched/";
 const string OUTPUT_FILE = "_matched.root";
 const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
+	// logistics
 	"mcChannelNumber",
 	"eventNumber",
+	// event global information
 	"number_of_jets",
-	"missing_energy_value", 
-	"missing_energy_phi", 
-	"jet_GN2v00NewAliasWP_FixedCutBEff_85_select",
-	"lvec_Wlep",
-	//"lvec_lepton", not working, send individual variavbles instead
-	"lvec_lepton_true",
-	"lvec_neutrino_true",
-	"lvec_Whad_true",
-	"lvec_Whad_true1",
-	"lvec_Whad_true2",
+	"reco_met_value", 
+	"reco_met_phi",
+	// jet particle information
+	"jet_DL1dv01_FixedCutBEff_85_select",
 	"lvecs_jets",
 	"jet_e_NOSYS",
 	"jet_pt_NOSYS",
 	"jet_eta",
 	"jet_phi",
-	"classifier_event_status",
-	"classifier_lepton_flavour",
-	"classifier_neutrino_flavour",
 	"jet_final_match_mask",
 	"jet_to_object_indicies_fixed",
+	// true event signatures
+	"signature_higgs_decay",
+	"signature_onshell_whad",
+	"signature_abs_lepton_pdgid",
+	// reco event classifier
+	"classifier_event_status",
 	"higgs_decay_mode_custom",
 	"higgs_decay_decay_mode",
-	"lepton_pt",
-	"lepton_eta",
-	"lepton_phi",
-	"lepton_e",
+	// lepton particle information
+	"true_lepton_pt",
+	"true_lepton_eta",
+	"true_lepton_phi",
+	"true_lepton_m",
+	"true_lepton_lvec",
+	"reco_lepton_pt",
+	"reco_lepton_eta",
+	"reco_lepton_phi",
+	"reco_lepton_e",
+	"reco_lepton_lvec",
+	// neutrino particle information
+	"true_neutrino_lvec",
+	// whad particle information
+	"true_whad_lvec",
+	// wlep particle information
+	"true_wlep_lvec",
 };
 
 
@@ -98,12 +159,6 @@ enum HIGGS_DECAY_MODE{
 	other = 7,
 };
 
-enum CLASSIFIER_LEPTON_FLAVOUR{
-	invalid = 0,
-	electron = 1,
-	muon = 2,
-	both = 3,
-};
 
 enum CLASSIFIER_EVENT_STATUS{
 	impossible = -1,
@@ -181,15 +236,40 @@ float GetMass(PtEtaPhiEVector lvec);
 float GetPt(PtEtaPhiEVector lvec);
 
 
-float ExtractLeptonInformation(int classifier, vector<float> info_electron, vector<float> info_muon){
-	
-	if( (classifier==CLASSIFIER_LEPTON_FLAVOUR::electron || classifier==CLASSIFIER_LEPTON_FLAVOUR::both) && info_electron.size()>0)
-		return info_electron[0];
+float ExtractRecoInformationLepton(int classifierLeptonFlavour, vector<float> info_electron, vector<char> pass_electron_selection, vector<float> info_muon, vector<char> pass_muon_selection){
+	// lepton is electron
+	if(classifierLeptonFlavour==1)
+	{
+		for(int i=0; i<info_electron.size(); i++)
+		{
+			if( (bool)pass_electron_selection[i] )
+			{
+				return info_electron[i];
+			}
+		}
 
-	if( (classifier==CLASSIFIER_LEPTON_FLAVOUR::muon || classifier==CLASSIFIER_LEPTON_FLAVOUR::both)  && info_muon.size()>0)
-		return info_muon[0];
+		// no electron passes selection
+		return -2;
+	}
+		
 
-	return -999;
+	// lepton is muon
+	if(classifierLeptonFlavour==2)
+	{
+		for(int i=0; i<info_muon.size(); i++)
+		{
+			if( (bool)pass_muon_selection[i] )
+			{
+				return info_muon[i];
+			}
+		}
+		
+		// no muon passes selection
+		return -2;
+	}
+
+	// no lepton detected
+	return -1;
 }
 
 
@@ -203,42 +283,29 @@ vector<PtEtaPhiMVector> CombineHiggsDecayLorentzVectors(PtEtaPhiMVector lvecHdec
 
 
 
-int ClassifyLeptonFlavourReco(char passElectronChar, char passMuonChar){
-	bool passElectron = (bool)passElectronChar; //needed conversion because coloumns are saved as char
+int ClassifyRecoLeptonFlavour(char passElectronChar, char passMuonChar)
+{
+	bool passElectron = (bool)passElectronChar;
 	bool passMuon = (bool)passMuonChar;
 
-	if(passElectron && passMuon)
-		return CLASSIFIER_LEPTON_FLAVOUR::both;
-
+	// both
+	if( passElectron && passMuon )
+	{
+		std::cout << "?" << std::endl;
+		return 3;
+	}
+	// electron
 	if(passElectron)
-		return CLASSIFIER_LEPTON_FLAVOUR::electron;
-
+	{
+		return 1;
+	}
+	// muon
 	if(passMuon)
-		return CLASSIFIER_LEPTON_FLAVOUR::muon;
-	
-	return CLASSIFIER_LEPTON_FLAVOUR::invalid;
-}
-int ClassifyLeptonFlavour(vector<int> pdgIdsHdecay){
-	for(int i=0; i<pdgIdsHdecay.size(); i++){
-		if(pdgIdsHdecay[i]==11){
-			return CLASSIFIER_LEPTON_FLAVOUR::electron;
-		}
-		if(pdgIdsHdecay[i]==13){
-			return CLASSIFIER_LEPTON_FLAVOUR::muon;
-		}
+	{
+		return 2;
 	}
-	return CLASSIFIER_LEPTON_FLAVOUR::invalid;
-}
-int ClassifyNeutrinoFlavour(vector<int> pdgIdsHdecay){
-	for(int i=0; i<pdgIdsHdecay.size(); i++){
-		if(pdgIdsHdecay[i]==12){
-			return CLASSIFIER_LEPTON_FLAVOUR::electron;
-		}
-		if(pdgIdsHdecay[i]==14){
-			return CLASSIFIER_LEPTON_FLAVOUR::muon;
-		}
-	}
-	return CLASSIFIER_LEPTON_FLAVOUR::invalid;
+
+	return 0;
 }
 
 int ClassifyEventStatus(vector<int> fixedAssignment){
@@ -253,58 +320,265 @@ int ClassifyEventStatus(vector<int> fixedAssignment){
 
 PtEtaPhiMVector GenerateLorentzVectorNeutrinoTrue(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
 	for(int i=0; i<pdgIdsHdecay.size(); i++){
-		if(pdgIdsHdecay[i]==12 || pdgIdsHdecay[i]==14){
+		if(abs(pdgIdsHdecay[i])==12 || abs(pdgIdsHdecay[i])==14 || abs(pdgIdsHdecay[i])==16){
 			return lvecsHdecay[i];
 		}
 	}
-	return PtEtaPhiMVector(0,0,0,0);
+	std::cout << "IMPOSSIBLE: " << pdgIdsHdecay[0] << "," << pdgIdsHdecay[1] << "," << pdgIdsHdecay[2] << "," << pdgIdsHdecay[3] << std::endl;
+ 	return PtEtaPhiMVector(0,0,0,0);
 }
 
 PtEtaPhiMVector GenerateLorentzVectorLeptonTrue(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
 	for(int i=0; i<pdgIdsHdecay.size(); i++){
-		if(pdgIdsHdecay[i]==11 || pdgIdsHdecay[i]==13){
+		if(abs(pdgIdsHdecay[i])==11 || abs(pdgIdsHdecay[i])==13 || abs(pdgIdsHdecay[i])==15){
 			return lvecsHdecay[i];
 		}
 	}
 	return PtEtaPhiMVector(0,0,0,0);
-}
-
-PtEtaPhiEVector GenerateLorentzVectorLepton(
-	int classifier, 
-	vector<float> pt_el,
-	vector<float> eta_el,
-	vector<float> phi_el,
-	vector<float> e_el,
-	vector<float> pt_mu,
-	vector<float> eta_mu,
-	vector<float> phi_mu,
-	vector<float> e_mu
-){
-	if(classifier==CLASSIFIER_LEPTON_FLAVOUR::electron)
-		return GenerateLorentzVectorE(pt_el[0], eta_el[0], phi_el[0], e_el[0]);
-	if(classifier==CLASSIFIER_LEPTON_FLAVOUR::muon)
-		return GenerateLorentzVectorE(pt_mu[0], eta_mu[0], phi_mu[0], e_mu[0]);
-	return GenerateLorentzVectorE(0,0,0,0);
 }
 
 PtEtaPhiMVector CombineTwoPtEtaPhiM(PtEtaPhiMVector v1, PtEtaPhiMVector v2){return v1+v2;}
 
-PtEtaPhiMVector GenerateLorentzVectorWHad1(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
-	for(int i=0; i<pdgIdsHdecay.size(); i+=2){ //skip the second decay particle
-		if(pdgIdsHdecay[i]>0 && pdgIdsHdecay[i]<7){
-			return lvecsHdecay[i];
+
+
+
+int SignateAbsLeptonPdgid(int pdgid_11, int pdgid_12, int pdgid_21, int pdgid_22){
+	// electron
+	if( abs(pdgid_11)==11 || abs(pdgid_12)==11 || abs(pdgid_21)==11 || abs(pdgid_22)==11 )
+	{
+		if( abs(pdgid_11)==12 || abs(pdgid_12)==12 || abs(pdgid_21)==12 || abs(pdgid_22)==12 )
+		{
+			return 11;
+		}
+		return -1; //mismatched flavours lepton <-> neutrino 
+	}
+
+	// muon
+	if( abs(pdgid_11)==13 || abs(pdgid_12)==13 || abs(pdgid_21)==13 || abs(pdgid_22)==13 )
+	{
+		if( abs(pdgid_11)==14 || abs(pdgid_12)==14 || abs(pdgid_21)==14 || abs(pdgid_22)==14 )
+		{
+			return 13;
+		}
+		return -1; //mismatched flavours lepton <-> neutrino 
+	}
+
+	// tau
+	if( abs(pdgid_11)==15 || abs(pdgid_12)==15 || abs(pdgid_21)==15 || abs(pdgid_22)==15 )
+	{
+		if( abs(pdgid_11)==16 || abs(pdgid_12)==16 || abs(pdgid_21)==16 || abs(pdgid_22)==16 )
+		{
+			return 15;
+		}
+		return -1; //mismatched flavours lepton <-> neutrino 
+	}
+
+	return 0; // no lepton found	
+}
+
+
+
+int SignateHiggsDecay(int pdgid_h1, int pdgid_h2, int pdgid_w11, int pdgid_w12, int pdgid_w21, int pdgid_w22)
+{	
+	// check for H->WW signature
+	if( abs(pdgid_h1)!=24 || abs(pdgid_h2)!=24 )
+	{
+		return -3;
+	}
+
+	// check for H->WW->lvqq signature 
+	if( abs(pdgid_w11)==11 || abs(pdgid_w11)==13 || abs(pdgid_w11)==15 )
+	{
+		// condition: partner must be neutrino
+		if( abs(pdgid_w12)!=abs(pdgid_w11)+1 )
+		{
+			return -1; // mismatched lepton-neutrino flavours
+		}
+
+		// condition: other pair must be hadronic 
+		if( abs(pdgid_w21)<1 || abs(pdgid_w21)>6 )
+		{
+			return -2; // no hadronic decays found
+		}
+		if( abs(pdgid_w22)<1 || abs(pdgid_w22)>6 )
+		{
+			return -2; // no hadronic decays found
+		}
+
+		// all conditions fulfilled
+		return 1;
+	}
+
+	// check for H->WW->vlqq signature 
+	if( abs(pdgid_w12)==11 || abs(pdgid_w12)==13 || abs(pdgid_w12)==15 )
+	{
+		// condition: partner must be neutrino
+		if( abs(pdgid_w11)!=abs(pdgid_w12)+1 )
+		{
+			return -1; // mismatched lepton-neutrino flavours
+		}
+
+		// condition: other pair must be hadronic 
+		if( abs(pdgid_w21)<1 || abs(pdgid_w21)>6 )
+		{
+			return -2; // no hadronic decays found
+		}
+		if( abs(pdgid_w22)<1 || abs(pdgid_w22)>6 )
+		{
+			return -2; // no hadronic decays found
+		}
+
+		// all conditions fulfilled
+		return 2;
+	}
+
+	// check for H->WW->qqlv signature 
+	if( abs(pdgid_w21)==11 || abs(pdgid_w21)==13 || abs(pdgid_w21)==15 )
+	{
+		// condition: partner must be neutrino
+		if( abs(pdgid_w22)!=abs(pdgid_w21)+1 )
+		{
+			return -1; // mismatched lepton-neutrino flavours
+		}
+
+		// condition: other pair must be hadronic 
+		if( abs(pdgid_w11)<1 || abs(pdgid_w11)>6 )
+		{
+			return -2; // no hadronic decays found
+		}
+		if( abs(pdgid_w12)<1 || abs(pdgid_w12)>6 )
+		{
+			return -2; // no hadronic decays found
+		}
+
+		// all conditions fulfilled
+		return 3;
+	}
+
+	// check for H->WW->qqvl signature 
+	if( abs(pdgid_w22)==11 || abs(pdgid_w22)==13 || abs(pdgid_w22)==15 )
+	{
+		// condition: partner must be neutrino
+		if( abs(pdgid_w21)!=abs(pdgid_w22)+1 )
+		{
+			return -1; // mismatched lepton-neutrino flavours
+		}
+
+		// condition: other pair must be hadronic 
+		if( abs(pdgid_w11)<1 || abs(pdgid_w11)>6 )
+		{
+			return -2; // no hadronic decays found
+		}
+		if( abs(pdgid_w12)<1 || abs(pdgid_w12)>6 )
+		{
+			return -2; // no hadronic decays found
+		}
+
+		// all conditions fulfilled
+		return 4;
+	}
+
+	// H->WW->qqqq signature 
+	return 0;
+}
+
+
+int SignateOnshellHadronicWboson(int signature_higgs_decay, float m_true_w1, float m_true_w2){
+	// w1 decays hadronically
+	if(signature_higgs_decay==3 || signature_higgs_decay==4){
+		if( abs(m_true_w1-PDG_MASS_WBOSON)<THRESHOLD_ONSHELL_DEFINITION )
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
 		}
 	}
-	return PtEtaPhiMVector(0,0,0,0);
-}
-PtEtaPhiMVector GenerateLorentzVectorWHad2(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
-	for(int i=1; i<pdgIdsHdecay.size(); i+=2){ //skip the first decay particle
-		if(pdgIdsHdecay[i]>0 && pdgIdsHdecay[i]<7){
-			return lvecsHdecay[i];
+
+	// w2 decays hadronically
+	if(signature_higgs_decay==1 || signature_higgs_decay==2){
+		if( abs(m_true_w2-PDG_MASS_WBOSON)<THRESHOLD_ONSHELL_DEFINITION )
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
 		}
 	}
-	return PtEtaPhiMVector(0,0,0,0);
+
+	return -1;
 }
+
+
+float ExtractTrueInformationLeptonFromHiggs(int signatureHiggsDecay, float info_w11, float info_w12, float info_w21, float info_w22)
+{
+	// H->WW->lvqq signature
+	if(signatureHiggsDecay==1)
+	{
+		return info_w11;
+	}
+	
+	// H->WW->vlqq signature
+	if(signatureHiggsDecay==2)
+	{
+		return info_w12;
+	}
+	
+	// H->WW->qqlv signature
+	if(signatureHiggsDecay==3)
+	{
+		return info_w21;
+	}
+
+	// H->WW->qqvl signature
+	if(signatureHiggsDecay==4)
+	{
+		return info_w22;
+	}
+
+	// no lepton from Higgs decays
+	return -1;
+}
+
+
+PtEtaPhiMVector CombineTrueWHadFromHiggs(int signatureHiggsDecay, PtEtaPhiMVector lvec_w11, PtEtaPhiMVector lvec_w12, PtEtaPhiMVector lvec_w21, PtEtaPhiMVector lvec_w22)
+{
+	// H->WW->lvqq or H->WW->vlqq signature
+	if(signatureHiggsDecay==1 || signatureHiggsDecay==2)
+	{
+		return lvec_w21 + lvec_w22;
+	}
+
+	// H->WW->lvqq or H->WW->vlqq signature
+	if(signatureHiggsDecay==3 || signatureHiggsDecay==4)
+	{
+		return lvec_w11 + lvec_w12;
+	}
+
+	// no fully hadronic decay from Higgs decays
+	return PtEtaPhiMVector(-999,-999,-999,-999);
+}
+
+PtEtaPhiMVector CombineTrueWLepFromHiggs(int signatureHiggsDecay, PtEtaPhiMVector lvec_w11, PtEtaPhiMVector lvec_w12, PtEtaPhiMVector lvec_w21, PtEtaPhiMVector lvec_w22)
+{
+	// H->WW->lvqq or H->WW->vlqq signature
+	if(signatureHiggsDecay==1 || signatureHiggsDecay==2)
+	{
+		return lvec_w11 + lvec_w12;
+	}
+
+	// H->WW->lvqq or H->WW->vlqq signature
+	if(signatureHiggsDecay==3 || signatureHiggsDecay==4)
+	{
+		return lvec_w21 + lvec_w22;
+	}
+
+	// no fully hadronic decay from Higgs decays
+	return PtEtaPhiMVector(-999,-999,-999,-999);
+}
+
 
 
 
@@ -339,6 +613,7 @@ int main(){
 
 	// check if chains are matched properly
 	auto nTotalEvents = rLoopManager.Count();
+
 	auto nMismatchedEvents = rLoopManager.Filter("mcChannelNumber != truth.mcChannelNumber || eventNumber != truth.eventNumber").Count();
 	if(nMismatchedEvents.GetValue()>0){ 
 		cout << "There are " << nMismatchedEvents.GetValue() << " / " << nTotalEvents.GetValue() << " mismatched events!" << endl;
@@ -410,6 +685,85 @@ int main(){
 		GenerateTruthLvecs,
 		{"lvec_b_from_t", "lvec_b_from_tbar", "lvec_Wdecay1_from_t", "lvec_Wdecay2_from_t", "lvec_Wdecay1_from_tbar", "lvec_Wdecay2_from_tbar", "lvec_Wdecay1_from_H", "lvec_Wdecay2_from_H"}
 	);
+
+
+
+	// TRUTH 
+
+	// signatures
+	rLoopManager = rLoopManager.Define(
+		"signature_higgs_decay",
+		SignateHiggsDecay,
+		{"Tth_MC_Higgs_decay1_pdgId", "Tth_MC_Higgs_decay2_pdgId", "Tth_MC_Higgs_decay1_from_decay1_pdgId", "Tth_MC_Higgs_decay2_from_decay1_pdgId", "Tth_MC_Higgs_decay1_from_decay2_pdgId", "Tth_MC_Higgs_decay2_from_decay2_pdgId"}
+	);
+	
+	rLoopManager = rLoopManager.Define(
+		"signature_onshell_whad",
+		SignateOnshellHadronicWboson,
+		{"signature_higgs_decay", "Tth_MC_Higgs_decay1_m", "Tth_MC_Higgs_decay2_m"}
+	);
+	
+	// Higgs decays decay products
+	rLoopManager = rLoopManager.Define(
+		"true_w11_lvec",
+		GenerateLorentzVectorM,
+		{"Tth_MC_Higgs_decay1_from_decay1_pt", "Tth_MC_Higgs_decay1_from_decay1_eta", "Tth_MC_Higgs_decay1_from_decay1_phi", "Tth_MC_Higgs_decay1_from_decay1_m"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_w12_lvec",
+		GenerateLorentzVectorM,
+		{"Tth_MC_Higgs_decay2_from_decay1_pt", "Tth_MC_Higgs_decay2_from_decay1_eta", "Tth_MC_Higgs_decay2_from_decay1_phi", "Tth_MC_Higgs_decay2_from_decay1_m"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_w21_lvec",
+		GenerateLorentzVectorM,
+		{"Tth_MC_Higgs_decay1_from_decay2_pt", "Tth_MC_Higgs_decay1_from_decay2_eta", "Tth_MC_Higgs_decay1_from_decay2_phi", "Tth_MC_Higgs_decay1_from_decay2_m"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_w22_lvec",
+		GenerateLorentzVectorM,
+		{"Tth_MC_Higgs_decay2_from_decay2_pt", "Tth_MC_Higgs_decay2_from_decay2_eta", "Tth_MC_Higgs_decay2_from_decay2_phi", "Tth_MC_Higgs_decay2_from_decay2_m"}
+	);
+
+	// Lepton from Higgs decays
+	rLoopManager = rLoopManager.Define(
+		"true_lepton_pt",
+		ExtractTrueInformationLeptonFromHiggs,
+		{"signature_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_pt", "Tth_MC_Higgs_decay2_from_decay1_pt", "Tth_MC_Higgs_decay1_from_decay2_pt", "Tth_MC_Higgs_decay2_from_decay2_pt"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_lepton_eta",
+		ExtractTrueInformationLeptonFromHiggs,
+		{"signature_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_eta", "Tth_MC_Higgs_decay2_from_decay1_eta", "Tth_MC_Higgs_decay1_from_decay2_eta", "Tth_MC_Higgs_decay2_from_decay2_eta"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_lepton_phi",
+		ExtractTrueInformationLeptonFromHiggs,
+		{"signature_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_phi", "Tth_MC_Higgs_decay2_from_decay1_phi", "Tth_MC_Higgs_decay1_from_decay2_phi", "Tth_MC_Higgs_decay2_from_decay2_phi"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_lepton_m",
+		ExtractTrueInformationLeptonFromHiggs,
+		{"signature_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_m", "Tth_MC_Higgs_decay2_from_decay1_m", "Tth_MC_Higgs_decay1_from_decay2_m", "Tth_MC_Higgs_decay2_from_decay2_m"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_lepton_lvec",
+		GenerateLorentzVectorM,
+		{"true_lepton_pt", "true_lepton_eta", "true_lepton_phi", "true_lepton_m"}
+	);
+
+	// Combein true W decays from Higgs
+	rLoopManager = rLoopManager.Define(
+		"true_whad_lvec",
+		CombineTrueWHadFromHiggs,
+		{"signature_higgs_decay", "true_w11_lvec", "true_w12_lvec", "true_w21_lvec", "true_w22_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_wlep_lvec",
+		CombineTrueWLepFromHiggs,
+		{"signature_higgs_decay", "true_w11_lvec", "true_w12_lvec", "true_w21_lvec", "true_w22_lvec"}
+	);
+
 
 
 
@@ -515,12 +869,12 @@ int main(){
 
 
 	rLoopManager = rLoopManager.Define(
-		"missing_energy_value",
+		"reco_met_value",
 		RenameFloat,
 		{"met_met_NOSYS"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"missing_energy_phi",
+		"reco_met_phi",
 		RenameFloat,
 		{"met_phi_NOSYS"}
 	);
@@ -602,13 +956,7 @@ int main(){
 
 	//>> Generate Neutrino Information
 	rLoopManager = rLoopManager.Define(
-		"classifier_neutrino_flavour",
-		ClassifyNeutrinoFlavour,
-		{"pdgids_Hdecay_ordered_filtered"}
-	);
-
-	rLoopManager = rLoopManager.Define(
-		"lvec_neutrino_true",
+		"true_neutrino_lvec",
 		GenerateLorentzVectorNeutrinoTrue,
 		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
 	);
@@ -616,52 +964,22 @@ int main(){
 	//>> Generate Lepton Information
 	rLoopManager = rLoopManager.Define(
 		"classifier_lepton_flavour",
-		ClassifyLeptonFlavourReco,
+		ClassifyRecoLeptonFlavour,
 		{"pass_ejets_NOSYS", "pass_mujets_NOSYS"}
 	);
 
 
 	rLoopManager = rLoopManager.Define(
-		"lvec_lepton",
-		GenerateLorentzVectorLepton,
-		{"classifier_lepton_flavour", "el_pt_NOSYS", "el_eta", "el_phi", "el_e_NOSYS", "mu_pt_NOSYS", "mu_eta", "mu_phi", "mu_e_NOSYS"}
+		"signature_abs_lepton_pdgid",
+		SignateAbsLeptonPdgid,
+		{"Tth_MC_Higgs_decay1_from_decay1_pdgId", "Tth_MC_Higgs_decay2_from_decay1_pdgId", "Tth_MC_Higgs_decay1_from_decay2_pdgId", "Tth_MC_Higgs_decay2_from_decay2_pdgId"}
 	);
-	rLoopManager = rLoopManager.Define(
-		"lvec_lepton_true",
-		GenerateLorentzVectorLeptonTrue,
-		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
-	);
+
+
+
 
 
 	
-
-	//>> Generate Lorentz Vector Whad1
-	rLoopManager = rLoopManager.Define(
-		"lvec_Whad_true1",
-		GenerateLorentzVectorWHad1,
-		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"lvec_Whad_true2",
-		GenerateLorentzVectorWHad2,
-		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
-	);
-
-	//>> Combine Higgs W-Bosons
-	rLoopManager = rLoopManager.Define(
-		"lvec_Wlep",
-		CombineTwoPtEtaPhiM,
-		{"lvec_lepton_true", "lvec_neutrino_true"}
-	);
-
-	rLoopManager = rLoopManager.Define(
-		"lvec_Whad_true",
-		CombineTwoPtEtaPhiM,
-		{"lvec_Whad_true1", "lvec_Whad_true2"}
-	);
-
-
-
 
 
 
@@ -670,26 +988,36 @@ int main(){
 
 	//>> get correct lepton information
 	rLoopManager = rLoopManager.Define(
-		"lepton_pt",
-		ExtractLeptonInformation,
-		{"classifier_neutrino_flavour", "el_pt_NOSYS", "mu_pt_NOSYS"}
+		"reco_lepton_pt",
+		ExtractRecoInformationLepton,
+		{"classifier_lepton_flavour", "el_pt_NOSYS", "el_select_loose_NOSYS", "mu_pt_NOSYS", "mu_select_tight_NOSYS"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"lepton_eta",
-		ExtractLeptonInformation,
-		{"classifier_neutrino_flavour", "el_eta", "mu_eta"}
+		"reco_lepton_eta",
+		ExtractRecoInformationLepton,
+		{"classifier_lepton_flavour", "el_eta", "el_select_loose_NOSYS", "mu_eta", "mu_select_tight_NOSYS"}
 	);
 
 	rLoopManager = rLoopManager.Define(
-		"lepton_phi",
-		ExtractLeptonInformation,
-		{"classifier_neutrino_flavour", "el_phi", "mu_phi"}
+		"reco_lepton_phi",
+		ExtractRecoInformationLepton,
+		{"classifier_lepton_flavour", "el_phi", "el_select_loose_NOSYS", "mu_phi", "mu_select_tight_NOSYS"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"lepton_e",
-		ExtractLeptonInformation,
-		{"classifier_neutrino_flavour", "el_e_NOSYS", "mu_e_NOSYS"}
+		"reco_lepton_e",
+		ExtractRecoInformationLepton,
+		{"classifier_lepton_flavour", "el_e_NOSYS", "el_select_loose_NOSYS", "mu_e_NOSYS", "mu_select_tight_NOSYS"}
 	);
+	rLoopManager = rLoopManager.Define(
+		"reco_lepton_lvec",
+		GenerateLorentzVectorE,
+		{"reco_lepton_pt", "reco_lepton_eta", "reco_lepton_phi", "reco_lepton_e"}
+	);
+
+
+
+
+
 
 	rLoopManager = rLoopManager.Define(
 		"classifier_event_status",
@@ -702,8 +1030,10 @@ int main(){
 
 	// apply filter	and limit if needed
 	auto rLoopManagerFiltered = rLoopManager.Filter( 
-		"(number_of_jets>=8)" 
+		"(number_of_jets>=8) && (signature_higgs_decay>0) && (signature_onshell_whad==1) && (signature_abs_lepton_pdgid==11 || signature_abs_lepton_pdgid==13)" 
 	).Range(MAX_NUMBER_OF_EVENTS);
+
+	cout << rLoopManagerFiltered.Count().GetValue() << " events passed the selection!" << endl;
 
 	// save snapshot to disk
 	cout << "Start: saving snapshot" << endl;
@@ -797,7 +1127,7 @@ int GenerateJetPotentialMatchMask(PtEtaPhiEVector jetLvec, vector<PtEtaPhiMVecto
 	// iterate all truth objects
 	for(int i=0; i<truthLvecs.size(); i++){ // i equals the corresponding TRUTH_MATCH_VALUE
 		float currentDeltaR = DeltaR(jetLvec, truthLvecs[i]);
-		if(currentDeltaR<=DELTA_R_THRESHOLD)
+		if(currentDeltaR<=THRESHOLD_DELTA_R)
 			jetPotentialMatchMask+= 1<<i;
 	}
 
