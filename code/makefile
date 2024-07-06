@@ -31,3 +31,9 @@ everything_temp: match_jets_to_tth.cpp convert_root_to_h5.py inject_spanet_predi
 	g++ neutrino_weighting.cpp -o execute_neutrino_weighting -fPIC `root-config --glibs --cflags --libs`
 	./execute_neutrino_weighting
 	rm ./execute_neutrino_weighting
+
+
+cherry: cherry_pick_nw_weights.cpp
+	g++ cherry_pick_nw_weights.cpp -o execute_cherry -fPIC `root-config --glibs --cflags --libs`
+	./execute_cherry
+	rm ./execute_cherry

@@ -26,9 +26,9 @@ using namespace ROOT::Math::VectorUtil;
 
 // ==========  CONSTANTS  ==========
 // ================================= 
-const int MAX_NUMBER_OF_EVENTS = 1e4; // set to 0 for no limit
+const int MAX_NUMBER_OF_EVENTS = 0; // set to 0 for no limit
 
-const float PDG_MASS_WBOSON = 80369.2; // mass in MeV
+const float PDG_MASS_WBOSON = 80.3692e3; // mass in MeV
 const float THRESHOLD_ONSHELL_DEFINITION = 1e3; // maximum deviation from DPG mass in MeV to classify as onshell
 
 const float THRESHOLD_DELTA_R = 0.4; // maximum reco jet deviation from the truth for matching
@@ -37,12 +37,14 @@ const float THRESHOLD_DELTA_R = 0.4; // maximum reco jet deviation from the trut
 
 
 
-const string INPUT_PATH = "/home/ireas/git_repos/master/samples/input/v3/";
+//const string INPUT_PATH = "/home/ireas/git_repos/master/samples/input/v3/";
+const string INPUT_PATH = "/media/ireas/Data/";
+
 const char* INPUT_FILE_NAMES[] = { // put into array for easier access
-	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000001.output.root",
-	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000002.output.root",
-	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000003.output.root",
-	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000004.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000001.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000002.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000003.output.root",
+//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000004.output.root",
 //	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000001.output.root",
 //	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000002.output.root",
 //	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000003.output.root",
@@ -68,7 +70,6 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 //	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000003.output.root",
 //	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000004.output.root",
 //	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000001.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000002.output.root",
 //	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000003.output.root",
 //	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000004.output.root",
 //	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000005.output.root",
@@ -85,6 +86,185 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 //	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000004.output.root",
 //	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000005.output.root",
 //	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000006.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000001.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000004.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000005.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000006.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000008.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000009.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000010.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000013.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000014.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043341._000001.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043341._000002.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043341._000003.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000001.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000002.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000003.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000004.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000005.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000006.output.root",
+//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000007.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000001.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000002.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000003.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000004.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000005.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000006.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000008.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000001.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000002.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000004.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000005.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000006.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000013.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000015.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000016.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000017.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000018.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000019.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000020.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000021.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000022.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000024.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000025.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000026.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000027.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000028.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000029.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000030.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000031.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000032.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000033.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000034.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000035.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000036.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000038.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000040.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000042.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000043.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000044.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000045.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000046.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000047.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000048.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000049.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000001.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000002.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000003.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000004.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000005.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000007.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000008.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000009.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000010.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000011.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000012.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000013.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000014.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000015.output.root",
+//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000016.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000001.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000002.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000003.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000004.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000005.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000006.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000007.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000008.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000009.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000010.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000011.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000012.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000013.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000014.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000015.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000016.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000017.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000018.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000019.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000020.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000021.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000001.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000002.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000003.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000004.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000005.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000006.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000007.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000008.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000009.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000013.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000014.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000015.output.root",
+//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000016.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000002.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000003.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000004.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000005.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000006.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000007.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000008.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000009.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000010.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000011.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000001.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000002.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000003.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000004.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000005.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000006.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000007.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000008.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000009.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000010.output.root",
+//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000011.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000001.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000002.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000003.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000004.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000005.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000006.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000007.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000008.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000009.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000010.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000011.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000012.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000001.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000002.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000003.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000004.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000006.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000007.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000008.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000009.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000010.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000011.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000012.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000013.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000014.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000015.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000016.output.root",
+//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000021.output.root",
+//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000001.output.root",
+//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000002.output.root",
+//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000003.output.root",
+//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000004.output.root",
+//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000005.output.root",
+//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000006.output.root",
+//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000007.output.root",
+//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000008.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000004.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000005.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000006.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000007.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000008.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000009.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000011.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000012.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000013.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000014.output.root",
 };
 
 const string OUTPUT_PATH = "/home/ireas/git_repos/master/samples/matched/";
@@ -324,7 +504,6 @@ PtEtaPhiMVector GenerateLorentzVectorNeutrinoTrue(vector<PtEtaPhiMVector> lvecsH
 			return lvecsHdecay[i];
 		}
 	}
-	std::cout << "IMPOSSIBLE: " << pdgIdsHdecay[0] << "," << pdgIdsHdecay[1] << "," << pdgIdsHdecay[2] << "," << pdgIdsHdecay[3] << std::endl;
  	return PtEtaPhiMVector(0,0,0,0);
 }
 
@@ -1030,7 +1209,7 @@ int main(){
 
 	// apply filter	and limit if needed
 	auto rLoopManagerFiltered = rLoopManager.Filter( 
-		"(number_of_jets>=8) && (signature_higgs_decay>0) && (signature_onshell_whad==1) && (signature_abs_lepton_pdgid==11 || signature_abs_lepton_pdgid==13)" 
+		"(number_of_jets>=0) "//&& (signature_higgs_decay>0)  && (signature_onshell_whad==1) &&  (signature_abs_lepton_pdgid==11 || signature_abs_lepton_pdgid==13)" 
 	).Range(MAX_NUMBER_OF_EVENTS);
 
 	cout << rLoopManagerFiltered.Count().GetValue() << " events passed the selection!" << endl;
@@ -1431,7 +1610,7 @@ vector<int> GenerateHiggsDecayDecayMode(int higgsDecayMode, Int_t higgsDecay11, 
 int GetFilteredPdgIDs(Int_t pdgId){
 	int newPdgId = abs(pdgId);
 	
-	if(abs(newPdgId)>1000 || newPdgId==0){
+	if(abs(newPdgId)>100 || newPdgId==0){
 		return -1;
 	}
 

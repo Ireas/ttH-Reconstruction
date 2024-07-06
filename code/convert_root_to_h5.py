@@ -176,6 +176,7 @@ def fill_h5_from_root(h5_file, root_file):
 	
 
 	# create OTHER group for validation
+	print()
 	print("creating group 'OTHER'")
 	other_group = h5_file.create_group("OTHER")
 	spanet_other_dimension = (number_of_events)

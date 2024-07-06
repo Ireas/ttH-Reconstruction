@@ -20,6 +20,8 @@ def create_dictionary(root_file_directory):
 	# fill dictionary
 	root_dictionary["NW_on_true_weights"] = root_file["neutrino_weighting/NW_on_true_weight"].array()
 	root_dictionary["NW_on_reco_weights"] = root_file["neutrino_weighting/NW_on_reco_weight"].array()
+	root_dictionary["NW_on_true_H_smear"] = root_file["neutrino_weighting/NW_on_true_H_smear"].array()
+	root_dictionary["NW_on_reco_H_smear"] = root_file["neutrino_weighting/NW_on_reco_H_smear"].array()
 	
 	root_dictionary["NW_on_true_wlep_masses"] = root_file["neutrino_weighting/NW_on_true_wlep_mass"].array()
 	root_dictionary["NW_on_reco_wlep_masses"] = root_file["neutrino_weighting/NW_on_reco_wlep_mass"].array()
@@ -390,6 +392,7 @@ def val_weights(root_dictionary):
 	# access
 	weights_on_true = root_dictionary["NW_on_true_weights"]
 	weights_on_reco = root_dictionary["NW_on_reco_weights"]
+	smears_on_reco = root_dictionary["NW_on_reco_H_smear"]
 	true_abs_lepton_pdgids = root_dictionary["event_abs_lepton_pdgids"]
 
 
@@ -430,6 +433,85 @@ def val_weights(root_dictionary):
 	plt.xlim([-1,1])
 	plt.savefig("out_weights_reco_flavour.png")
 	plt.clf()
+
+
+
+
+	n_0_s = 0
+	n_1_s = 0
+	n_2_s = 0
+	n_3_s = 0
+	n_4_s = 0
+	n_5_s = 0
+	n_6_s = 0
+	n_7_s = 0
+	n_8_s = 0
+	n_9_s = 0
+	n_10_s = 0
+	n_x_s = 0
+	n_0_f = 0
+	n_1_f = 0
+	n_2_f = 0
+	n_3_f = 0
+	n_4_f = 0
+	n_5_f = 0
+	n_6_f = 0
+	n_7_f = 0
+	n_8_f = 0
+	n_9_f = 0
+	n_10_f = 0
+	n_x_f = 0
+
+	for (smear, weight) in zip(smears_on_reco, weights_on_reco):
+		smear = smear/1e3 # convert to GeV
+		
+		if(smear==0 and weight>=0): n_0_s+=1 
+		elif(smear==-1.0 and weight>=0): n_1_s+=1 
+		elif(smear==-0.8 and weight>=0): n_2_s+=1 
+		elif(smear==-0.6 and weight>=0): n_3_s+=1 
+		elif(smear==-0.4 and weight>=0): n_4_s+=1 
+		elif(smear==-0.2 and weight>=0): n_5_s+=1 
+		elif(smear==+0.2 and weight>=0): n_6_s+=1 
+		elif(smear==+0.4 and weight>=0): n_7_s+=1 
+		elif(smear==+0.6 and weight>=0): n_8_s+=1 
+		elif(smear==+0.8 and weight>=0): n_9_s+=1 
+		elif(smear==+1.0 and weight>=0): n_10_s+=1 
+		else: n_x_f+= 1 
+
+
+	smear_labels = [
+		"no smear",
+		"-1.0",
+		"-0.8",
+		"-0.6",
+		"-0.4",
+		"-0.2",
+		"+0.2",
+		"+0.4",
+		"+0.6",
+		"+0.8",
+		"+1.0",
+		"fail",
+	]
+
+	smear_values = [
+		np.array([n_0_s, n_1_s, n_2_s, n_3_s, n_4_s, n_5_s, n_6_s, n_7_s, n_8_s, n_9_s, n_10_s, n_x_s]),
+		np.array([n_0_f, n_1_f, n_2_f, n_3_f, n_4_f, n_5_f, n_6_f, n_7_f, n_8_f, n_9_f, n_10_f, n_x_f])
+	]
+	
+	plt.xlabel(r"Higgs Smears")
+	plt.ylabel(r"Number of Events")
+	plt.bar(smear_labels, smear_values[1], label=f"Failed", bottom=0)
+	plt.bar(smear_labels, smear_values[0], label=f"Successful", bottom=smear_values[1])
+	plt.xticks(rotation=40, ha='right')
+	plt.ylim([1,2*max(smear_values[0]+smear_values[1])])
+	plt.yscale("log")	
+	plt.legend()
+	plt.savefig("out_higgs_smear.png")
+	plt.clf()
+
+
+
 
 
 
