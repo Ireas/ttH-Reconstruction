@@ -18,12 +18,6 @@ using namespace ROOT::Math::VectorUtil;
 
 
 
-// ==========  DELTA R MATCHING  ==========
-// ========================================
-// uses ROOTs modern RDataFrames to simplify the event loop and branchaddress allocationso
-
-
-
 // ==========  CONSTANTS  ==========
 // ================================= 
 const int MAX_NUMBER_OF_EVENTS = 0; // set to 0 for no limit
@@ -35,226 +29,225 @@ const float THRESHOLD_DELTA_R = 0.4; // maximum reco jet deviation from the trut
 
 
 
-
-
-//const string INPUT_PATH = "/home/ireas/git_repos/master/samples/input/v3/";
-const string INPUT_PATH = "/media/ireas/Data/";
+// Paths
+const string INPUT_PATH = "/media/ireas/Data/v3/raw/"; //"/home/ireas/git_repos/master/samples/input/v3/";
+const string OUTPUT_PATH = "/media/ireas/Data/v3/matched/onshell_whad_tau_excluded/";//"/home/ireas/git_repos/master/samples/matched/tau_excluded/";
 
 const char* INPUT_FILE_NAMES[] = { // put into array for easier access
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000001.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000002.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000003.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000004.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000001.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000002.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000003.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000004.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000005.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000006.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000007.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000008.output.root",
-//	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043366._000001.output.root",
-//	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043370._000001.output.root",
-//	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043373._000001.output.root",
-//	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043367._000001.output.root",
-//	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043367._000002.output.root",
-//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043371._000001.output.root",
-//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000001.output.root",
-//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000002.output.root",
-//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000003.output.root",
-//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000004.output.root",
-//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043368._000001.output.root",
-//	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043368._000002.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000001.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000002.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000003.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000004.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000001.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000003.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000004.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000005.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000006.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000007.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000008.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000009.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000010.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000011.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000012.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000001.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000002.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000003.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000004.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000005.output.root",
-//	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000006.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000001.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000004.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000005.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000006.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000008.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000009.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000010.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000013.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000014.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043341._000001.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043341._000002.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043341._000003.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000001.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000002.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000003.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000004.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000005.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000006.output.root",
-//	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000007.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000001.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000002.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000003.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000004.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000005.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000006.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000008.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000001.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000002.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000004.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000005.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000006.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000013.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000015.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000016.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000017.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000018.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000019.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000020.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000021.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000022.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000024.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000025.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000026.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000027.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000028.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000029.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000030.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000031.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000032.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000033.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000034.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000035.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000036.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000038.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000040.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000042.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000043.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000044.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000045.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000046.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000047.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000048.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000049.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000001.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000002.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000003.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000004.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000005.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000007.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000008.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000009.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000010.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000011.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000012.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000013.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000014.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000015.output.root",
-//	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000016.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000001.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000002.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000003.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000004.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000005.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000006.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000007.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000008.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000009.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000010.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000011.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000012.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000013.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000014.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000015.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000016.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000017.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000018.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000019.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000020.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000021.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000001.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000002.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000003.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000004.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000005.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000006.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000007.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000008.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000009.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000013.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000014.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000015.output.root",
-//	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000016.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000002.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000003.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000004.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000005.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000006.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000007.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000008.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000009.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000010.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000011.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000001.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000002.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000003.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000004.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000005.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000006.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000007.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000008.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000009.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000010.output.root",
-//	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000011.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000001.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000002.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000003.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000004.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000005.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000006.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000007.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000008.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000009.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000010.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000011.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000012.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000001.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000002.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000003.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000004.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000006.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000007.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000008.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000009.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000010.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000011.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000012.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000013.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000014.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000015.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000016.output.root",
-//	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000021.output.root",
-//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000001.output.root",
-//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000002.output.root",
-//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000003.output.root",
-//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000004.output.root",
-//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000005.output.root",
-//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000006.output.root",
-//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000007.output.root",
-//	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000008.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000001.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000002.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000003.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000004.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000001.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000002.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000003.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000004.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000005.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000006.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000007.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000008.output.root",
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043366._000001.output.root",
+	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043370._000001.output.root",
+	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043373._000001.output.root",
+	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043367._000001.output.root",
+	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043367._000002.output.root",
+	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043371._000001.output.root",
+	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000001.output.root",
+	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000002.output.root",
+	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000003.output.root",
+	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000004.output.root",
+	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043368._000001.output.root",
+	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043368._000002.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000001.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000002.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000003.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000004.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000001.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000003.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000004.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000005.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000006.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000007.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000008.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000009.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000010.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000011.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043340._000012.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000001.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000002.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000003.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000004.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000005.output.root",
+	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000006.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000001.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000004.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000005.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000006.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000008.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000009.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000010.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000013.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000014.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043341._000001.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043341._000002.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043341._000003.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000001.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000002.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000003.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000004.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000005.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000006.output.root",
+	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000007.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000001.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000002.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000003.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000004.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000005.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000006.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000008.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000001.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000002.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000004.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000005.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000006.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000013.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000015.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000016.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000017.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000018.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000019.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000020.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000021.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000022.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000024.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000025.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000026.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000027.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000028.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000029.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000030.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000031.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000032.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000033.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000034.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000035.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000036.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000038.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000040.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000042.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000043.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000044.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000045.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000046.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000047.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000048.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043342._000049.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000001.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000002.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000003.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000004.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000005.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000007.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000008.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000009.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000010.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000011.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000012.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000013.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000014.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000015.output.root",
+	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000016.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000001.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000002.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000003.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000004.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000005.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000006.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000007.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000008.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000009.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000010.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000011.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000012.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000013.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000014.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000015.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000016.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000017.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000018.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000019.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000020.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000021.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000001.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000002.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000003.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000004.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000005.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000006.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000007.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000008.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000009.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000013.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000014.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000015.output.root",
+	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000016.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000002.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000003.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000004.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000005.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000006.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000007.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000008.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000009.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000010.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000011.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000001.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000002.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000003.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000004.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000005.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000006.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000007.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000008.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000009.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000010.output.root",
+	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000011.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000001.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000002.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000003.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000004.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000005.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000006.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000007.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000008.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000009.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000010.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000011.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000012.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000001.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000002.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000003.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000004.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000006.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000007.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000008.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000009.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000010.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000011.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000012.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000013.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000014.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000015.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000016.output.root",
+	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000021.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000001.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000002.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000003.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000004.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000005.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000006.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000007.output.root",
+	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000008.output.root",
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000004.output.root",
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000005.output.root",
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000006.output.root",
@@ -265,10 +258,40 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000012.output.root",
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000013.output.root",
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000014.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000001.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000002.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000003.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000004.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000005.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000006.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000007.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000008.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000009.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000010.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000011.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000012.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000002.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000003.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000004.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000005.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000006.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000007.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000009.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000010.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000011.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000012.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000013.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000014.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000015.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000016.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000017.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000018.output.root",
+	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000019.output.root",
 };
 
-const string OUTPUT_PATH = "/home/ireas/git_repos/master/samples/matched/";
-const string OUTPUT_FILE = "_matched.root";
+
+
+
 const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	// logistics
 	"mcChannelNumber",
@@ -699,7 +722,7 @@ float ExtractTrueInformationLeptonFromHiggs(int signatureHiggsDecay, float info_
 		return info_w11;
 	}
 	
-	// H->WW->vlqq signature
+	// H->WW->vlqq signature	
 	if(signatureHiggsDecay==2)
 	{
 		return info_w12;
@@ -762,21 +785,45 @@ PtEtaPhiMVector CombineTrueWLepFromHiggs(int signatureHiggsDecay, PtEtaPhiMVecto
 
 
 // ==========  MAIN  ==========
-// ============================
-int main(){
+// ===========================
+int match(string input_file);
+
+int main(int argc, char** argv)
+{
+	for(int i=0; i<sizeof(INPUT_FILE_NAMES)/sizeof(char*); i++)
+	{
+		std::cout << "(" << i+1 << "/" << sizeof(INPUT_FILE_NAMES)/sizeof(char*) << ") - Processing: " << INPUT_FILE_NAMES[i] << std::endl;
+		match(INPUT_FILE_NAMES[i]);
+		std::cout << std::endl;
+	}
+
+	return 0;
+}
+
+int match(string input_file)
+{
 	// ==========  SETUP
 	// =================	
 	// setup TChain
-	cout << "Start: setup TChain" << endl;
+	cout << " > setup TChain" << endl;
 	TChain rRecoChain("reco");
 	TChain rTruthChain("truth");
 
-	for(auto input_file_name:INPUT_FILE_NAMES){
-		auto file_path = std::string();
-		file_path.append(INPUT_PATH).append(input_file_name);
-		rRecoChain.Add(file_path.c_str());
-		rTruthChain.Add(file_path.c_str());
-	}
+
+	// link input file
+	auto file_path = std::string();
+	file_path.append(INPUT_PATH).append(input_file);
+	rRecoChain.Add(file_path.c_str());
+	rTruthChain.Add(file_path.c_str());
+	
+	// link multiple input files
+	//	for(auto input_file_name:INPUT_FILE_NAMES){
+	//		auto file_path = std::string();	
+	//		file_path.append(INPUT_PATH).append(input_file_name);
+	//		rRecoChain.Add(file_path.c_str());
+	//		rTruthChain.Add(file_path.c_str());
+	//		std::cout << file_path << std::endl;
+	//	}
 
 
 	// index TruthChain to kick out un-matched events - then declare friends
@@ -785,18 +832,17 @@ int main(){
 
 
 	// setup RDataFrame
-	cout << "Start: setup RDataFrame" << endl;
+	cout << " > setup RDataFrame" << endl;
 	auto rDataFrame = RDataFrame(rRecoChain);
-	auto rLoopManager = rDataFrame.Range(0); // limit input for testing
+	auto rLoopManager = rDataFrame.Range(0); // no limit on input
 
 
 	// check if chains are matched properly
 	auto nTotalEvents = rLoopManager.Count();
-
 	auto nMismatchedEvents = rLoopManager.Filter("mcChannelNumber != truth.mcChannelNumber || eventNumber != truth.eventNumber").Count();
 	if(nMismatchedEvents.GetValue()>0){ 
-		cout << "There are " << nMismatchedEvents.GetValue() << " / " << nTotalEvents.GetValue() << " mismatched events!" << endl;
-		exit(1);
+		cout << " > Warning: there are " << nMismatchedEvents.GetValue() << " / " << nTotalEvents.GetValue() << " mismatched events! skipping..." << endl;
+		return -1;
 	}
 
 
@@ -1208,17 +1254,21 @@ int main(){
 
 
 	// apply filter	and limit if needed
-	auto rLoopManagerFiltered = rLoopManager.Filter( 
-		"(number_of_jets>=0) "//&& (signature_higgs_decay>0)  && (signature_onshell_whad==1) &&  (signature_abs_lepton_pdgid==11 || signature_abs_lepton_pdgid==13)" 
+	auto rLoopManagerFiltered = rLoopManager.Filter(
+		// jet multiplcity
+		// if ttH semileptonic, only electron or muon flavour
+		// other events are no filtered by lepton flavour
+		"(signature_onshell_whad==1) && (number_of_jets>=0) && ( (signature_higgs_decay<0) || (signature_abs_lepton_pdgid==11 || signature_abs_lepton_pdgid==13) ) " //  && (signature_onshell_whad==1) 
 	).Range(MAX_NUMBER_OF_EVENTS);
+	cout << " > " << rLoopManagerFiltered.Count().GetValue() << " events passed the selection!" << endl;
 
-	cout << rLoopManagerFiltered.Count().GetValue() << " events passed the selection!" << endl;
 
 	// save snapshot to disk
-	cout << "Start: saving snapshot" << endl;
+	cout << " > saving snapshot" << endl;
+	string output_file_name = OUTPUT_PATH + "matched_" + input_file.substr(14,6) +  "_" + input_file.substr(input_file.find("r13"),6) + "_" + input_file.substr(input_file.size()-18,6) + "_" + std::to_string( rLoopManagerFiltered.Count().GetValue() ) + "e.root";
 	rLoopManagerFiltered.Snapshot(
 		"matched", 
-		OUTPUT_PATH+OUTPUT_FILE,
+		output_file_name,
 		OUTPUT_COLOUMN_NAMES
 	);
 		

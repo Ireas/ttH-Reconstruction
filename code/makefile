@@ -5,7 +5,7 @@ match: match_jets_to_tth.cpp
 
 
 convert: convert_root_to_h5.py
-	python3 convert_root_to_h5.py ~/git_repos/master/samples/matched/_matched.root ~/git_repos/master/samples/converted/_converted.h5
+	python3 convert_root_to_h5.py
 
 
 inject: inject_spanet_predictions.py
@@ -31,9 +31,3 @@ everything_temp: match_jets_to_tth.cpp convert_root_to_h5.py inject_spanet_predi
 	g++ neutrino_weighting.cpp -o execute_neutrino_weighting -fPIC `root-config --glibs --cflags --libs`
 	./execute_neutrino_weighting
 	rm ./execute_neutrino_weighting
-
-
-cherry: cherry_pick_nw_weights.cpp
-	g++ cherry_pick_nw_weights.cpp -o execute_cherry -fPIC `root-config --glibs --cflags --libs`
-	./execute_cherry
-	rm ./execute_cherry

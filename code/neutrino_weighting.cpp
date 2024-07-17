@@ -24,17 +24,27 @@ const double SIGMA = 10e3; //resolutions missing transverse energy in MeV
 //>> sampling neutrino eta
 const double SAMPLE_ETA_NU_MIN = -3;
 const double SAMPLE_ETA_NU_MAX = 3;
-const double SAMPLE_ETA_NU_STEP	= 0.1;
+const double SAMPLE_ETA_NU_STEP	= 2e-2; //300 bins
 
 //>> sampling mass leptonic W-boson in MeV
 const double SAMPLE_MASS_WLEP_MIN = 0;
 const double SAMPLE_MASS_WLEP_MAX = 50e3;
-const double SAMPLE_MASS_WLEP_STEP = 2e2; 
+const double SAMPLE_MASS_WLEP_STEP = 2e2; //250 bins
 
 //>> sampling mass higgs boson for smearing in MeV
 const double SAMPLE_MASS_HIGGS_SMEAR_MIN = -1e3;
 const double SAMPLE_MASS_HIGGS_SMEAR_MAX = 1e3;
 const double SAMPLE_MASS_HIGGS_SMEAR_STEP = 1e2; 
+
+//>> fine sampling neutrino eta in roi
+const double SAMPLE_FINE_ETA_NU_MIN = -0.02;
+const double SAMPLE_FINE_ETA_NU_MAX = 0.02;
+const double SAMPLE_FINE_ETA_NU_STEP	= 0.0005; //80 bins
+
+//>> sampling mass higgs boson for smearing in MeV
+const double SAMPLE_FINE_MASS_WLEP_MIN = -200;
+const double SAMPLE_FINE_MASS_WLEP_MAX = 200;
+const double SAMPLE_FINE_MASS_WLEP_STEP = 5; //80 bins
 
 
 //>> input/output directories/files
@@ -77,30 +87,28 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"reco_whad_lvec",
 	// wlep particle information
 	"true_wlep_lvec",
-	// neutrino weighting output
-	"NW_on_true_weight",
-	"NW_on_true_H_smear",
-	"NW_on_true_nu_eta",
-	"NW_on_true_nu_phi",
-	"NW_on_true_nu_px",
-	"NW_on_true_nu_py",
-	"NW_on_true_wlep_mass",
-	"NW_on_reco_weight",
-	"NW_on_reco_H_smear",
-	"NW_on_reco_nu_eta",
-	"NW_on_reco_nu_phi",
-	"NW_on_reco_nu_px",
-	"NW_on_reco_nu_py",
-	"NW_on_reco_wlep_mass",
+	// NW results
+	"NW_weight",
+	"NW_H_smear",
+	"NW_nu_eta",
+	"NW_nu_phi",
+	"NW_nu_px",
+	"NW_nu_py",
+	"NW_wlep_mass",
+	// NW results full
+	"NW_full_weight",
+	"NW_full_nu_eta",
+	"NW_full_wlep_mass",
 };
 
 
 
 
 ///==========  FUNCTIONS  ==========///    
+// convert truth to reco lorentzvector
 PtEtaPhiEVector ConvertLorentzVectorMToE(PtEtaPhiMVector lvec){return PtEtaPhiEVector{lvec.Pt(), lvec.Eta(), lvec.Phi(), lvec.E()};}
 
-
+// classify if hadronic W is possible to combine
 int ClassifyWhadPossible(vector<PtEtaPhiEVector> lvec_jets, int index1, int index2)
 {
 	if(index1==-1 || index2==-1)
@@ -115,6 +123,7 @@ int ClassifyWhadPossible(vector<PtEtaPhiEVector> lvec_jets, int index1, int inde
 	return 0;
 }
 
+// combine jets from given indicies
 PtEtaPhiEVector CombineJetsFromIndicies(vector<PtEtaPhiEVector> lvec_jets, int index1, int index2)
 {
 	// check for invalid indicies
@@ -127,20 +136,23 @@ PtEtaPhiEVector CombineJetsFromIndicies(vector<PtEtaPhiEVector> lvec_jets, int i
 }
 
 
-// extract truth information from neutrino
-float ExtractEnergy(PtEtaPhiMVector lvec){return lvec.E();}
+// extract information from lvec
+float ExtractPT(PtEtaPhiMVector lvec){return lvec.Pt();}
 float ExtractPhi(PtEtaPhiMVector lvec){return lvec.Phi();}
 
 
-// temporary extraction from output float of NW algorithm
-float ExtractWeight(vector<float> neutrino_weight_output){return neutrino_weight_output[0];}
-float ExtractHiggsSmear(vector<float> neutrino_weight_output){return neutrino_weight_output[1];}
-float ExtractEstimatedEtaNu(vector<float> neutrino_weight_output){return neutrino_weight_output[2];}
-float ExtractEstimatedMassWLep(vector<float> neutrino_weight_output){return neutrino_weight_output[3];}
-float ExtractEstimatedPx(vector<float> neutrino_weight_output){return neutrino_weight_output[4];}
-float ExtractEstimatedPy(vector<float> neutrino_weight_output){return neutrino_weight_output[5];}
-float ExtractEstimatedPhiNu(vector<float> neutrino_weight_output){return neutrino_weight_output[6];}
+// extraction from output float of NW algorithm
+float ExtractWeight(vector<float> NWOutput){return NWOutput[0];}
+float ExtractHiggsSmear(vector<float> NWOutput){return NWOutput[1];}
+float ExtractEstimatedEtaNu(vector<float> NWOutput){return NWOutput[2];}
+float ExtractEstimatedMassWLep(vector<float> NWOutput){return NWOutput[3];}
+float ExtractEstimatedPx(vector<float> NWOutput){return NWOutput[4];}
+float ExtractEstimatedPy(vector<float> NWOutput){return NWOutput[5];}
+float ExtractEstimatedPhiNu(vector<float> NWOutput){return NWOutput[6];}
 
+vector<float> ExtractWeightFull(vector<vector<float>> NWOutputFull){return NWOutputFull[0];}
+vector<float> ExtractWlepMassesFull(vector<vector<float>> NWOutputFull){return NWOutputFull[1];}
+vector<float> ExtractNuEtaFull(vector<vector<float>> NWOutputFull){return NWOutputFull[2];}
 
 
 ///==========  NEUTRINO WEIGHTING  ==========///    
@@ -231,7 +243,6 @@ vector<float> NeutrinoWeighting(
 
 	// define weights
 	float best_weight = -1;
-	float sum_weight = -1;
 
 
 	float missing_energy_x = met_value * cos(met_phi);
@@ -264,8 +275,8 @@ vector<float> NeutrinoWeighting(
           	double temp_weight = 0;
 
 			// check all possible neutrino solutions for best 
-          	for(auto neutrino : neutrinos){
-	
+          	for(auto neutrino : neutrinos)
+			{
             	TLorentzVector temp_w_boson = *(legacy_lvec_lepton) + neutrino;
 
               	//TLorentzVector* particle_nu = new TLorentzVector();
@@ -293,6 +304,93 @@ vector<float> NeutrinoWeighting(
 }
 
 
+vector<float> SampleROI(
+	PtEtaPhiEVector lvec_lepton,
+	PtEtaPhiEVector lvec_whad,
+	float met_value,
+	float met_phi,
+	float higgs_mass_smear,
+	vector<float> neutrino_weighting_output
+){ 
+	// check if no solution has been found before, then no finetuning needed
+	if( ExtractWeight(neutrino_weighting_output)>=0 )
+	{
+		return neutrino_weighting_output;
+	}
+
+
+	// extract information
+	float best_weight = ExtractWeight(neutrino_weighting_output);
+	float estimated_eta_nu = ExtractEstimatedEtaNu(neutrino_weighting_output);
+	float estimated_mass_wlep = ExtractEstimatedMassWLep(neutrino_weighting_output);
+
+
+	// new containers for neutrino weighting outputs
+	float best_eta_nu = ExtractEstimatedEtaNu(neutrino_weighting_output);
+	float best_mass_Wlep = ExtractEstimatedMassWLep(neutrino_weighting_output);
+	float val_best_px = ExtractEstimatedPx(neutrino_weighting_output);
+	float val_best_py = ExtractEstimatedPy(neutrino_weighting_output);
+	float best_phi_nu = ExtractEstimatedPhiNu(neutrino_weighting_output);
+
+	// empty objects to fill in neutrino weighting
+	TLorentzVector* particle_reco_w_lep = new TLorentzVector(0.,0.,0.,0.);
+  	TLorentzVector* particle_reco_nu = new TLorentzVector(0.,0.,0.,0.);
+	float missing_energy_x = met_value * cos(met_phi);
+	float missing_energy_y = met_value * sin(met_phi);
+
+	// convert PtEtaPhiEVector to legacy TLorentzVector
+	TLorentzVector* legacy_lvec_lepton = new TLorentzVector();
+  	TLorentzVector* legacy_lvec_whad = new TLorentzVector();
+  	legacy_lvec_lepton->SetPtEtaPhiM(lvec_lepton.pt(), lvec_lepton.eta(), lvec_lepton.phi(), lvec_lepton.mass());
+  	legacy_lvec_whad->SetPtEtaPhiM(lvec_whad.pt(), lvec_whad.eta(), lvec_whad.phi(), lvec_whad.mass());   
+
+
+	// recheck ROI with fine sampling steps
+	for(double wlep_sampled_mass=estimated_mass_wlep+SAMPLE_FINE_MASS_WLEP_MIN; wlep_sampled_mass<=estimated_mass_wlep+SAMPLE_FINE_MASS_WLEP_MAX; wlep_sampled_mass+=SAMPLE_FINE_MASS_WLEP_STEP)
+	{
+    	for(double nu_sampled_eta=estimated_eta_nu+SAMPLE_FINE_ETA_NU_MIN; nu_sampled_eta<=estimated_eta_nu+SAMPLE_FINE_ETA_NU_MAX; nu_sampled_eta+=SAMPLE_FINE_ETA_NU_STEP)
+		{
+			// solve for neutrinos
+			std::vector<TLorentzVector> neutrinos;
+          	neutrinos = solveForNeutrinoEta(legacy_lvec_lepton , legacy_lvec_whad, nu_sampled_eta, MASS_HIGGS+higgs_mass_smear, wlep_sampled_mass);
+          
+          	double temp_weight_ex = 0;
+          	double temp_weight_ey = 0;
+          	double temp_weight = 0;
+
+			// check all possible neutrino solutions for best 
+          	for(auto neutrino : neutrinos)
+			{
+            	TLorentzVector temp_w_boson = *(legacy_lvec_lepton) + neutrino;
+
+              	//TLorentzVector* particle_nu = new TLorentzVector();
+              	temp_weight_ex = exp( -1 * pow( (neutrino.Px() - missing_energy_x) ,2) / pow(SIGMA,2) );
+              	temp_weight_ey = exp( -1 * pow( (neutrino.Py() - missing_energy_y) ,2) / pow(SIGMA,2) );
+				temp_weight = temp_weight_ex*temp_weight_ey;     
+				
+				if(temp_weight>best_weight){
+					best_weight = temp_weight;
+					val_best_px = neutrino.Px();
+					val_best_py = neutrino.Py();
+
+                	particle_reco_w_lep->SetPtEtaPhiM(temp_w_boson.Pt(), temp_w_boson.Eta(), temp_w_boson.Phi(), temp_w_boson.M());
+                	particle_reco_nu->SetPtEtaPhiM(neutrino.Pt(), neutrino.Eta(), neutrino.Phi(), neutrino.M()); 
+              	}
+			}
+		}
+	}
+
+
+	// get best values for output
+	best_phi_nu = particle_reco_nu->Phi();
+	best_eta_nu = particle_reco_nu->Eta();
+	best_mass_Wlep = particle_reco_w_lep->M();
+	
+
+	return vector<float>{best_weight, higgs_mass_smear, best_eta_nu, best_mass_Wlep, val_best_px, val_best_py, best_phi_nu};
+}
+
+
 vector<float> NeutrinoWeightingWrapper(
 	PtEtaPhiEVector lvec_lepton,
 	PtEtaPhiEVector lvec_whad,
@@ -301,10 +399,12 @@ vector<float> NeutrinoWeightingWrapper(
 ){ 
 	// NW without any Higgs Smearing
 	vector<float> neutrino_weighting_output = NeutrinoWeighting(lvec_lepton, lvec_whad, met_value, met_phi, 0);
-	
+
 	if( ExtractWeight(neutrino_weighting_output)>=0 )
 	{
-		return neutrino_weighting_output;
+		// sample ROI for better results
+		vector<float> finetuned_neutrino_weighting_output = SampleROI(lvec_lepton, lvec_whad, met_value, met_phi, 0, neutrino_weighting_output);
+		return finetuned_neutrino_weighting_output;
 	}
 
 	// if no valid solution has been found, try with smearing higgs mass
@@ -314,14 +414,106 @@ vector<float> NeutrinoWeightingWrapper(
 
 		if( ExtractWeight(neutrino_weighting_output)>=0 )
 		{
-			return neutrino_weighting_output;
+			// sample ROI for better results
+			vector<float> finetuned_neutrino_weighting_output = SampleROI(lvec_lepton, lvec_whad, met_value, met_phi, 0, neutrino_weighting_output);
+			return finetuned_neutrino_weighting_output;
 		}
 	}
 
-	// no solution found
+	// no solution found, no need for sample roi
 	return neutrino_weighting_output;
 }
 
+
+
+
+
+
+vector<vector<float>> NeutrinoWeightingFull(
+	PtEtaPhiEVector lvec_lepton,
+	PtEtaPhiEVector lvec_whad,
+	float met_value,
+	float met_phi,
+	float higgs_mass_smear
+){ 
+
+	// define weights
+	float best_weight = -1;
+
+
+	float missing_energy_x = met_value * cos(met_phi);
+	float missing_energy_y = met_value * sin(met_phi);
+	
+	TLorentzVector* particle_reco_w_lep = new TLorentzVector(0.,0.,0.,0.);
+  	TLorentzVector* particle_reco_nu = new TLorentzVector(0.,0.,0.,0.);
+
+
+
+
+
+	// convert PtEtaPhiEVector to legacy TLorentzVector
+	TLorentzVector* legacy_lvec_lepton = new TLorentzVector();
+  	TLorentzVector* legacy_lvec_whad = new TLorentzVector();
+  	legacy_lvec_lepton->SetPtEtaPhiM(lvec_lepton.pt(), lvec_lepton.eta(), lvec_lepton.phi(), lvec_lepton.mass());
+  	legacy_lvec_whad->SetPtEtaPhiM(lvec_whad.pt(), lvec_whad.eta(), lvec_whad.phi(), lvec_whad.mass());   
+
+
+	// vectors for plotting cherry-picked	
+	vector<float> vec_weights;	
+	vector<float> vec_wlep_mass;	
+	vector<float> vec_nu_eta;	
+
+
+	// loop trough sampled points (wlep_m, nu_eta)
+	for(double wlep_sampled_mass=SAMPLE_MASS_WLEP_MIN; wlep_sampled_mass<=SAMPLE_MASS_WLEP_MAX; wlep_sampled_mass+=SAMPLE_MASS_WLEP_STEP)
+	{
+    	for(double nu_sampled_eta=SAMPLE_ETA_NU_MIN; nu_sampled_eta<=SAMPLE_ETA_NU_MAX; nu_sampled_eta+=SAMPLE_ETA_NU_STEP)
+		{
+			// solve for neutrinos
+			std::vector<TLorentzVector> neutrinos;
+          	neutrinos = solveForNeutrinoEta(legacy_lvec_lepton , legacy_lvec_whad, nu_sampled_eta, MASS_HIGGS+higgs_mass_smear, wlep_sampled_mass);
+          
+          	double temp_weight_ex = 0;
+          	double temp_weight_ey = 0;
+          	double temp_weight = 0;
+			double best_weight = -1;
+
+			// check all possible neutrino solutions for best 
+          	for(auto neutrino : neutrinos){
+	
+            	TLorentzVector temp_w_boson = *(legacy_lvec_lepton) + neutrino;
+
+              	//TLorentzVector* particle_nu = new TLorentzVector();
+              	temp_weight_ex = exp( -1 * pow( (neutrino.Px() - missing_energy_x) ,2) / pow(SIGMA,2) );
+              	temp_weight_ey = exp( -1 * pow( (neutrino.Py() - missing_energy_y) ,2) / pow(SIGMA,2) );
+				temp_weight = temp_weight_ex*temp_weight_ey;
+
+				if(temp_weight>best_weight)
+				{
+					best_weight = temp_weight;
+				}
+			}
+			
+			vec_weights.push_back(best_weight);	
+			vec_wlep_mass.push_back(wlep_sampled_mass);	
+			vec_nu_eta.push_back(nu_sampled_eta);
+		}
+	}
+	
+	return vector<vector<float>>{vec_weights, vec_wlep_mass, vec_nu_eta};
+}
+
+
+vector<vector<float>> NeutrinoWeightingWrapperFull(
+	PtEtaPhiEVector lvec_lepton,
+	PtEtaPhiEVector lvec_whad,
+	float met_value,
+	float met_phi
+){ 
+	// NW without any Higgs Smearing
+	vector<vector<float>> neutrino_weighting_output = NeutrinoWeightingFull(lvec_lepton, lvec_whad, met_value, met_phi, 0);
+	return neutrino_weighting_output;
+}
 
 
 
@@ -357,75 +549,31 @@ int main(){
 
 	///----------  Calculation  ----------///
 
-	//>> prepare reco information
+	//>> truth conversions
 	rLoopManager = rLoopManager.Define(
-		"true_met_value", 
-		ExtractEnergy, 
+		"met_value_for_truth", 
+		ExtractPT, 
 		{"true_neutrino_lvec"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"true_met_phi", 
+		"met_phi_for_truth", 
 		ExtractPhi, 
 		{"true_neutrino_lvec"}
 	);
 
 	rLoopManager = rLoopManager.Define(
-		"true_lepton_lvec_converted", 
+		"lepton_lvec_for_truth", 
 		ConvertLorentzVectorMToE, 
 		{"true_lepton_lvec"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"true_whad_lvec_converted", 
+		"whad_lvec_for_truth", 
 		ConvertLorentzVectorMToE, 
 		{"true_whad_lvec"}
 	);
-	
-
-	//>> estimate using truth information 
-	rLoopManager = rLoopManager.Define(
-		"prediction_on_true", 
-		NeutrinoWeightingWrapper, 
-		{"true_lepton_lvec_converted", "true_whad_lvec_converted", "true_met_value", "true_met_phi"}
-	);
-
-	rLoopManager = rLoopManager.Define(
-		"NW_on_true_weight", 
-		ExtractWeight, 
-		{"prediction_on_true"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_on_true_H_smear", 
-		ExtractHiggsSmear, 
-		{"prediction_on_true"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_on_true_nu_eta", 
-		ExtractEstimatedEtaNu, 
-		{"prediction_on_true"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_on_true_wlep_mass", 
-		ExtractEstimatedMassWLep, 
-		{"prediction_on_true"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_on_true_nu_px", 
-		ExtractEstimatedPx, 
-		{"prediction_on_true"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_on_true_nu_py", 
-		ExtractEstimatedPy, 
-		{"prediction_on_true"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_on_true_nu_phi", 
-		ExtractEstimatedPhiNu, 
-		{"prediction_on_true"}
-	);
 
 
-	//>> prepare reco information
+	// temporary
 	rLoopManager = rLoopManager.Define(
 		"classifier_whad_possible", 
 		ClassifyWhadPossible, 
@@ -439,48 +587,77 @@ int main(){
 	);
 
 
-	//>> estimate using reco information 
+	
+
+	//>> NW information
 	rLoopManager = rLoopManager.Define(
-		"prediction_on_reco", 
+		"prediction", 
 		NeutrinoWeightingWrapper, 
 		{"reco_lepton_lvec", "reco_whad_lvec", "reco_met_value", "reco_met_phi"}
 	);
 
 	rLoopManager = rLoopManager.Define(
-		"NW_on_reco_weight", 
+		"NW_weight", 
 		ExtractWeight, 
-		{"prediction_on_reco"}
+		{"prediction"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"NW_on_reco_H_smear", 
+		"NW_H_smear", 
 		ExtractHiggsSmear, 
-		{"prediction_on_reco"}
+		{"prediction"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"NW_on_reco_nu_eta", 
+		"NW_nu_eta", 
 		ExtractEstimatedEtaNu, 
-		{"prediction_on_reco"}
+		{"prediction"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"NW_on_reco_wlep_mass", 
+		"NW_wlep_mass", 
 		ExtractEstimatedMassWLep, 
-		{"prediction_on_reco"}
+		{"prediction"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"NW_on_reco_nu_px", 
+		"NW_nu_px", 
 		ExtractEstimatedPx, 
-		{"prediction_on_reco"}
+		{"prediction"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"NW_on_reco_nu_py", 
+		"NW_nu_py", 
 		ExtractEstimatedPy, 
-		{"prediction_on_reco"}
+		{"prediction"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"NW_on_reco_nu_phi", 
+		"NW_nu_phi", 
 		ExtractEstimatedPhiNu, 
-		{"prediction_on_reco"}
+		{"prediction"}
 	);
+
+
+
+
+	//>> full NW information for 2D plots
+	rLoopManager = rLoopManager.Define(
+		"prediction_full",
+		NeutrinoWeightingWrapperFull,
+		{"reco_lepton_lvec", "reco_whad_lvec", "reco_met_value", "reco_met_phi"}
+	);
+
+	rLoopManager = rLoopManager.Define(
+		"NW_full_weight",
+		ExtractWeightFull,
+		{"prediction_full"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"NW_full_wlep_mass",
+		ExtractWlepMassesFull,
+		{"prediction_full"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"NW_full_nu_eta",
+		ExtractNuEtaFull,
+		{"prediction_full"}
+	);
+	
 	
 
 

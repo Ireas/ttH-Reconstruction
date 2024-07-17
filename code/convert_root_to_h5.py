@@ -1,3 +1,5 @@
+import os
+import os.path
 import sys
 import uproot # root in python
 import h5py # h5 in python
@@ -7,35 +9,52 @@ from timeit import default_timer as timer
 
 # ==========  CONVERT .root TO .h5 FILES  ==========
 # ==================================================
-# converts given .root file to a .h5 file
+# converts .root files to .h5 files
 # needs manually tweaking of the branches
-#
-# usage: python3 convert_root_to_h5.py [INPUT_ROOT_FILE] [OUTPUT_H5_DESTINATION]
 
+
+CURRENT_FOLDER = "tau_excluded/"
+
+INPUT_PATH = "/media/ireas/Data/v3/matched/"
+OUTPUT_PATH = "/media/ireas/Data/v3/converted/"
 
 
 # main method 
 def main():
-	# validate arguments
-	if(len(sys.argv)<2):
-		print("Error: no .root file for conversion was given, exiting")
-		exit()
-	if(len(sys.argv)<3):
-		print("Error: no .h5 file destination was given, exiting")
-		exit()
+	directory = os.fsencode(INPUT_PATH+CURRENT_FOLDER)
+    
+	for file in os.listdir(directory):
+		filename = os.fsdecode(file)
 
-	# open .root file
-	root_file = uproot.open(sys.argv[1])
-	
-	# create .h5 file
-	h5_file = h5py.File(sys.argv[2], 'w')
-	
-	# fill .h5 file with .root information
-	fill_h5_from_root(h5_file, root_file)
-	
-	# close .h5 file, .root cannot be closed
-	h5_file.close()
+		target_file = OUTPUT_PATH+CURRENT_FOLDER+"converted"+filename[7:-5]+".h5"
 
+		print("converting " + INPUT_PATH+CURRENT_FOLDER+filename + " -> " + "converted"+filename[7:-5]+".h5")
+		if os.path.exists(target_file):
+			print(" > target file exits already, skipping...")
+			print()
+			continue
+		
+
+		# fill h5 file with root file 
+		with uproot.open(INPUT_PATH+CURRENT_FOLDER+filename) as root_file:			
+			# check if root_file has any entries
+			if not check_root_integrety(root_file):
+				print(" > no entries, exiting....")
+				print()
+				continue
+			
+			# create new h5 file
+			h5_file = h5py.File(target_file, 'w')
+			fill_h5_from_root(h5_file, root_file)
+			h5_file.close()
+			print()
+
+
+def check_root_integrety(root_file):
+	if (len(root_file["matched"].keys())==0):
+		return False
+
+	return True
 
 
 def fill_h5_from_root(h5_file, root_file):
@@ -48,12 +67,12 @@ def fill_h5_from_root(h5_file, root_file):
 	number_of_events = len(number_of_jets)
 	max_number_of_jets = max(number_of_jets)
 
-	print("Using " +str(number_of_events)+ " events!")
+	print(" > using " +str(number_of_events)+ " events!")
 	print()
 
 
 	# create INPUTS group for SPANet (reconstruction information e.g. jets, missing transverse energy, btagging, mask,...)
-	print("creating group 'INPUTS'")
+	print(" > creating 'INPUTS'")
 	input_group = h5_file.create_group("INPUTS")
 
 
@@ -113,13 +132,13 @@ def fill_h5_from_root(h5_file, root_file):
 			displayed_ratio+= 1
 			ratio-= 0.1
 			timer_partial = timer()
-			print("  >", 10*displayed_ratio, "% (estimated remaining time: ", round((timer_partial-timer_start_input)/displayed_ratio*(10-displayed_ratio)), "s)")
+			print(" >>", 10*displayed_ratio, "% (estimated remaining time: ", round((timer_partial-timer_start_input)/displayed_ratio*(10-displayed_ratio)), "s)")
 	print()	
 	
 	
 	# create TARGET group for SPANET (truth information about matching e.g. jet indicies of truth object)
 	# here different outputs can be defined, if desired
-	print("creating group 'TARGET'")
+	print(" > creating 'TARGET'")
 	target_group = h5_file.create_group("TARGETS")
 
 	# set fixed out array length with one entry per event
@@ -172,12 +191,12 @@ def fill_h5_from_root(h5_file, root_file):
 			displayed_ratio+= 1
 			ratio-= 0.1
 			partial = timer()
-			print("  >", 10*displayed_ratio, "% (estimated remaining time: ", round((partial-start_group)/displayed_ratio*(10-displayed_ratio)), "s)")
+			print("  >>", 10*displayed_ratio, "% (estimated remaining time: ", round((partial-start_group)/displayed_ratio*(10-displayed_ratio)), "s)")
 	
 
 	# create OTHER group for validation
 	print()
-	print("creating group 'OTHER'")
+	print(" > creating 'OTHER'")
 	other_group = h5_file.create_group("OTHER")
 	spanet_other_dimension = (number_of_events)
 
@@ -211,14 +230,14 @@ def fill_h5_from_root(h5_file, root_file):
 			displayed_ratio+= 1
 			ratio-= 0.1
 			partial = timer()
-			print("  >", 10*displayed_ratio, "% (estimated remaining time: ", round((partial-start_group)/displayed_ratio*(10-displayed_ratio)), "s)")
+			print("  >>", 10*displayed_ratio, "% (estimated remaining time: ", round((partial-start_group)/displayed_ratio*(10-displayed_ratio)), "s)")
 	print()	
 	
 
 	# print time for conversion
-	timer_end_conversion = timer()
-	print()
-	print("Time needed: ", round(timer_end_conversion-timer_start_conversion), "s for ", number_of_events, "events")
+	#timer_end_conversion = timer()
+	#print()
+	#print("Time needed: ", round(timer_end_conversion-timer_start_conversion), "s for ", number_of_events, "events")
 
 
 
