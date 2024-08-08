@@ -4,14 +4,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-# ==========  VALIDATE NEUTRINO WEIGHTING  =========
-# ==================================================
-WHAD_MASS_PDG = 80.4335
-WHAD_MASS_MAX_DEVIATION = 10 # maximum valid diviation from PDG mass for on-shell definition
+# CONSTATNTS
+CHERRY_INDICIES = np.arange(0,50)#[13,26]
 
-CHERRY_INDICIES = [13]
-
+ROOT_INPUT_FILE = "/home/ireas/git_repos/master/samples/output/nw-on-true_eta150_m250.root"
 PLOT_DESTINATION = "/home/ireas/git_repos/master/plots/"
+
+NW_MASS_RANGE = [0,50] # Mass in GeV
+NW_ETA_RANGE = [-3,3]
+CHERRY_ETA_BINS = 150
+CHERRY_MASS_BINS = 250
+
+
+plt.rc('axes', titlesize=12) # fontsize of the axes title
+plt.rc('axes', labelsize=12) # fontsize of the x and y labels
+plt.rc('xtick', labelsize=12) # fontsize of the tick labels
+plt.rc('ytick', labelsize=12) # fontsize of the tick labels
+
+COLORMAP = 'magma'
+HIGHLIGHT_COLOR = 'green'
+
 
 def create_dictionary(root_file_directory):	
 	# create empty dictionary
@@ -30,8 +42,7 @@ def create_dictionary(root_file_directory):
 
 	root_dictionary["NW_weights"] = root_file["neutrino_weighting/NW_weight"].array()
 	root_dictionary["NW_nu_pxs"] = root_file["neutrino_weighting/NW_nu_px"].array()
-	root_dictionary["NW_nu_pys"] = root_file["neutrino_weighting/NW_nu_py"].array()	
-
+	root_dictionary["NW_nu_pys"] = root_file["neutrino_weighting/NW_nu_py"].array()
 
 	# close .root file afterwards
 	root_file.close()
@@ -41,45 +52,53 @@ def create_dictionary(root_file_directory):
 
 
 def plot_cherry(root_dictionary, index):
-	# access
+	global roi_delta_wlep_mass, roi_delta_nu_eta, delta_wlep_mass, delta_nu_eta
+	# access values
+	# neutrino weighting output
 	weights = np.array(root_dictionary["NW_vec_weights"][index])
 	wlep_masses = np.array(root_dictionary["NW_vec_wlep_masses"][index])
 	nu_etas = np.array(root_dictionary["NW_vec_nu_etas"][index])
 
+	# true values
 	true_nu_eta = root_dictionary["true_nu_lvecs"][index].fCoordinates.tolist().get("fCoordinates.fEta")
 	true_wlep_mass= root_dictionary["true_wlep_lvecs"][index].fCoordinates.tolist().get("fCoordinates.fM")
 
-
-	# get highest values
+	# highest rated values
 	highest_nw_weight_wlep_mass = wlep_masses[weights==max(weights)][0]
 	highest_nw_weight_nu_eta = nu_etas[weights==max(weights)][0]
 	
-
+	# skip cherry if no solution is found anywhere
+	if max(weights)<0:
+		return
 
 
 	# replace invalid solutions (plot them as white)
 	weights[weights<=0] = np.nan
+	
 
-
-	# plot
+	# create plot
 	plt.figure()
-	hb = plt.hist2d(wlep_masses/1e3, nu_etas, bins=[501,601], weights=weights, range=[[0,50],[-3,3]])
-	
-	cb = plt.colorbar(hb[3])
-	cb.set_label('Weight')
 
+	# plot 2d cherry distribution
+	hb = plt.hist2d(wlep_masses/1e3, nu_etas, bins=[CHERRY_MASS_BINS+1,CHERRY_ETA_BINS+1], weights=weights, range=[NW_MASS_RANGE,NW_ETA_RANGE], cmap=COLORMAP)
+	cb = plt.colorbar(hb[3])
+	cb.set_label('NW Weight')
+
+	# mark best and true solution
+	plt.scatter(highest_nw_weight_wlep_mass/1e3, highest_nw_weight_nu_eta, color=HIGHLIGHT_COLOR, label='Best Solution RoI', marker='*', s=90)
+	plt.scatter(true_wlep_mass/1e3, true_nu_eta, color=HIGHLIGHT_COLOR, label='True Values', marker='X', s=90)
 	
-	plt.scatter(highest_nw_weight_wlep_mass/1e3, highest_nw_weight_nu_eta, color='red', label='Best Solution', marker='*', s=90)
-	plt.scatter(true_wlep_mass/1e3, true_nu_eta, color='red', label='True Values', marker='X', s=90)
-	
+	# customise
 	plt.xlabel("Sampled $W_{lep}$ mass M")
 	plt.ylabel("Sampled $\\eta_{\\nu}$")
-
 	plt.legend()
+
+	# save file, dont show
 	plt.savefig(PLOT_DESTINATION+"cherries/cherry_" + str(index) + ".png")
+	plt.close()
 
 
-def heatmap(root_dictionary):
+def heatmap_nw(root_dictionary):
 	# access
 	weights_vecs = np.array(root_dictionary["NW_vec_weights"])
 	wlep_masses_vecs = np.array(root_dictionary["NW_vec_wlep_masses"])
@@ -115,12 +134,12 @@ def heatmap(root_dictionary):
 
 	# plot
 	plt.figure(figsize=(7,5))
-	hb = plt.hist2d(heat_delta_wlep_mass/1e3, heat_delta_nu_eta , bins=[np.linspace(-50,50,25), np.linspace(-6,3,10)])
+	hb = plt.hist2d(heat_delta_wlep_mass/1e3, heat_delta_nu_eta, bins=[np.linspace(-30,30,20), np.linspace(-2,2,20)], cmap=COLORMAP)
 	cb = plt.colorbar(hb[3])
 	cb.set_label('Number of Events')
 	plt.xlabel("Difference $\\Delta(M_\\text{est} - M_\\text{true}$) for leptonic $W$-boson GeV")
 	plt.ylabel("Difference $\\Delta(\\eta_\\text{est} - \\eta_\\text{true}$) for $\\nu$")
-	plt.savefig(PLOT_DESTINATION+"heatmap.png")
+	plt.savefig(PLOT_DESTINATION+"heatmap-nw.png")
 
 
 
@@ -157,32 +176,24 @@ def heatmap_nu(root_dictionary):
 
 	# plot
 	plt.figure(figsize=(7,5))
-	hb = plt.hist2d(heat_delta_px, heat_delta_py , bins=[np.linspace(-300,300,25), np.linspace(-300,300,25)])
+	hb = plt.hist2d(heat_delta_px/1e3, heat_delta_py/1e3, bins=[np.linspace(-50,50,20), np.linspace(-50,50,20)], cmap=COLORMAP)
 	cb = plt.colorbar(hb[3])
 	cb.set_label('Number of Events')
-	plt.xlabel("Difference $\\Delta(p_\\text{x,est} - p_\\text{x,true}$) for neutrino in Mev")
-	plt.ylabel("Difference $\\Delta(p_\\text{y,est} - p_\\text{y,true}$) for neutrino in Mev")
-	plt.savefig(PLOT_DESTINATION+"heatmap_nu.png")
+	plt.xlabel("Difference $\\Delta(p_\\text{est} - p_\\text{true})_x$ for $\\nu$ in GeV")
+	plt.ylabel("Difference $\\Delta(p_\\text{est} - p_\\text{true})_y$ for $\\nu$ in GeV")
+	plt.savefig(PLOT_DESTINATION+"heatmap-nu-pt.png")
 
 
 
 if __name__ == '__main__':
-	## INPUT 
-	# validate arguments
-	if(len(sys.argv)<2):
-		print("Error: no .root file for validation was given, exiting")
-		exit()
-	
-
 	# create dictionary
-	root_dictionary = create_dictionary(sys.argv[1])
+	root_dictionary = create_dictionary(ROOT_INPUT_FILE)
 	
 	# generate Delta Heatmap
-	#heatmap(root_dictionary)
-
+	#heatmap_nw(root_dictionary)
 	#heatmap_nu(root_dictionary)
 
 	# generate 2D distribution cherries
 	for cherry_index in CHERRY_INDICIES:
 		plot_cherry(root_dictionary, cherry_index)
-	
+

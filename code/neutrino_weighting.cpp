@@ -18,13 +18,13 @@ using namespace ROOT::Math::VectorUtil;
 
 ///==========  CONSTANTS  ==========///
 //>> assumptions
-const double MASS_HIGGS = 125e3; //SM Higgs mass in MeV
+const double MASS_HIGGS = 125e3; //SM Higgs mass in MeV -> switch to pdg mass on data
 const double SIGMA = 10e3; //resolutions missing transverse energy in MeV
 
 //>> sampling neutrino eta
 const double SAMPLE_ETA_NU_MIN = -3;
 const double SAMPLE_ETA_NU_MAX = 3;
-const double SAMPLE_ETA_NU_STEP	= 2e-2; //300 bins
+const double SAMPLE_ETA_NU_STEP	= 4e-2; //150 bins
 
 //>> sampling mass leptonic W-boson in MeV
 const double SAMPLE_MASS_WLEP_MIN = 0;
@@ -37,21 +37,22 @@ const double SAMPLE_MASS_HIGGS_SMEAR_MAX = 1e3;
 const double SAMPLE_MASS_HIGGS_SMEAR_STEP = 1e2; 
 
 //>> fine sampling neutrino eta in roi
-const double SAMPLE_FINE_ETA_NU_MIN = -0.02;
-const double SAMPLE_FINE_ETA_NU_MAX = 0.02;
-const double SAMPLE_FINE_ETA_NU_STEP	= 0.0005; //80 bins
+const double SAMPLE_FINE_ETA_NU_MIN = -0.8;
+const double SAMPLE_FINE_ETA_NU_MAX = +0.8;
+const double SAMPLE_FINE_ETA_NU_STEP = 1e-2; //160 bins
 
 //>> sampling mass higgs boson for smearing in MeV
-const double SAMPLE_FINE_MASS_WLEP_MIN = -200;
-const double SAMPLE_FINE_MASS_WLEP_MAX = 200;
-const double SAMPLE_FINE_MASS_WLEP_STEP = 5; //80 bins
+const double SAMPLE_FINE_MASS_WLEP_MIN = -4000;
+const double SAMPLE_FINE_MASS_WLEP_MAX = 4000;
+const double SAMPLE_FINE_MASS_WLEP_STEP = 50; //160 bins
 
 
 //>> input/output directories/files
-const string INPUT_PATH = "/home/ireas/git_repos/master/samples/injected/";
-const char* INPUT_FILE_NAMES[1] = { // put into array for easier access
-	"_injection.root"
-};
+const string INPUT_FILE = "/home/ireas/git_repos/master/samples/injected/_injection.root";
+//const string INPUT_PATH = "/home/ireas/git_repos/master/samples/injected/";
+//const char* INPUT_FILE_NAMES[1] = { // put into array for easier access
+//	"_injection.root"
+//};
 
 const string OUTPUT_PATH = "/home/ireas/git_repos/master/samples/output/";
 const string OUTPUT_FILE = "_output.root";
@@ -63,6 +64,7 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"number_of_jets",
 	"reco_met_value", 
 	"reco_met_phi",
+	"classifier_event_status",
 	// true event signatures
 	"signature_higgs_decay",
 	"signature_onshell_whad",
@@ -156,7 +158,7 @@ vector<float> ExtractNuEtaFull(vector<vector<float>> NWOutputFull){return NWOutp
 
 
 ///==========  NEUTRINO WEIGHTING  ==========///    
-std::vector<TLorentzVector> solveForNeutrinoEta(
+std::vector<TLorentzVector> solveForNeutrinos(
 	TLorentzVector* lvec_lepton, 
     TLorentzVector* lvec_whad, 
     double nu_eta, 
@@ -268,7 +270,7 @@ vector<float> NeutrinoWeighting(
 		{
 			// solve for neutrinos
 			std::vector<TLorentzVector> neutrinos;
-          	neutrinos = solveForNeutrinoEta(legacy_lvec_lepton , legacy_lvec_whad, nu_sampled_eta, MASS_HIGGS+higgs_mass_smear, wlep_sampled_mass);
+          	neutrinos = solveForNeutrinos(legacy_lvec_lepton , legacy_lvec_whad, nu_sampled_eta, MASS_HIGGS+higgs_mass_smear, wlep_sampled_mass);
           
           	double temp_weight_ex = 0;
           	double temp_weight_ey = 0;
@@ -352,7 +354,7 @@ vector<float> SampleROI(
 		{
 			// solve for neutrinos
 			std::vector<TLorentzVector> neutrinos;
-          	neutrinos = solveForNeutrinoEta(legacy_lvec_lepton , legacy_lvec_whad, nu_sampled_eta, MASS_HIGGS+higgs_mass_smear, wlep_sampled_mass);
+          	neutrinos = solveForNeutrinos(legacy_lvec_lepton , legacy_lvec_whad, nu_sampled_eta, MASS_HIGGS+higgs_mass_smear, wlep_sampled_mass);
           
           	double temp_weight_ex = 0;
           	double temp_weight_ey = 0;
@@ -426,9 +428,6 @@ vector<float> NeutrinoWeightingWrapper(
 
 
 
-
-
-
 vector<vector<float>> NeutrinoWeightingFull(
 	PtEtaPhiEVector lvec_lepton,
 	PtEtaPhiEVector lvec_whad,
@@ -438,27 +437,22 @@ vector<vector<float>> NeutrinoWeightingFull(
 ){ 
 
 	// define weights
-	float best_weight = -1;
-
-
 	float missing_energy_x = met_value * cos(met_phi);
 	float missing_energy_y = met_value * sin(met_phi);
 	
-	TLorentzVector* particle_reco_w_lep = new TLorentzVector(0.,0.,0.,0.);
-  	TLorentzVector* particle_reco_nu = new TLorentzVector(0.,0.,0.,0.);
-
-
-
 
 
 	// convert PtEtaPhiEVector to legacy TLorentzVector
+	TLorentzVector* particle_reco_w_lep = new TLorentzVector();
+  	TLorentzVector* particle_reco_nu = new TLorentzVector();
+
 	TLorentzVector* legacy_lvec_lepton = new TLorentzVector();
   	TLorentzVector* legacy_lvec_whad = new TLorentzVector();
   	legacy_lvec_lepton->SetPtEtaPhiM(lvec_lepton.pt(), lvec_lepton.eta(), lvec_lepton.phi(), lvec_lepton.mass());
   	legacy_lvec_whad->SetPtEtaPhiM(lvec_whad.pt(), lvec_whad.eta(), lvec_whad.phi(), lvec_whad.mass());   
 
 
-	// vectors for plotting cherry-picked	
+	// vectors for plotting cherries	
 	vector<float> vec_weights;	
 	vector<float> vec_wlep_mass;	
 	vector<float> vec_nu_eta;	
@@ -470,13 +464,12 @@ vector<vector<float>> NeutrinoWeightingFull(
     	for(double nu_sampled_eta=SAMPLE_ETA_NU_MIN; nu_sampled_eta<=SAMPLE_ETA_NU_MAX; nu_sampled_eta+=SAMPLE_ETA_NU_STEP)
 		{
 			// solve for neutrinos
-			std::vector<TLorentzVector> neutrinos;
-          	neutrinos = solveForNeutrinoEta(legacy_lvec_lepton , legacy_lvec_whad, nu_sampled_eta, MASS_HIGGS+higgs_mass_smear, wlep_sampled_mass);
+			std::vector<TLorentzVector> neutrinos = solveForNeutrinos(legacy_lvec_lepton , legacy_lvec_whad, nu_sampled_eta, MASS_HIGGS+higgs_mass_smear, wlep_sampled_mass);
           
+			double best_weight = -1;
+          	double temp_weight = 0;
           	double temp_weight_ex = 0;
           	double temp_weight_ey = 0;
-          	double temp_weight = 0;
-			double best_weight = -1;
 
 			// check all possible neutrino solutions for best 
           	for(auto neutrino : neutrinos){
@@ -524,12 +517,10 @@ int main(){
 	TChain rMatchedChain("matched");
 	TChain rPredictionChain("prediction");
 
-	for(auto input_file_name:INPUT_FILE_NAMES){
-		auto file_path = std::string();
-		file_path.append(INPUT_PATH).append(input_file_name);
-		rMatchedChain.Add(file_path.c_str());
-		rPredictionChain.Add(file_path.c_str());
-	}
+	// append input file to chains
+	rMatchedChain.Add(INPUT_FILE.c_str());
+	rPredictionChain.Add(INPUT_FILE.c_str());
+
 
 	//>> build befriended rDataFrames
 	rPredictionChain.BuildIndex("mcChannelNumber", "eventNumber");  // just for security, use DSID too
@@ -593,6 +584,7 @@ int main(){
 	rLoopManager = rLoopManager.Define(
 		"prediction", 
 		NeutrinoWeightingWrapper, 
+	//	{"lepton_lvec_for_truth", "whad_lvec_for_truth", "met_value_for_truth", "met_phi_for_truth"}
 		{"reco_lepton_lvec", "reco_whad_lvec", "reco_met_value", "reco_met_phi"}
 	);
 
@@ -639,6 +631,7 @@ int main(){
 	rLoopManager = rLoopManager.Define(
 		"prediction_full",
 		NeutrinoWeightingWrapperFull,
+	//	{"lepton_lvec_for_truth", "whad_lvec_for_truth", "met_value_for_truth", "met_phi_for_truth"}
 		{"reco_lepton_lvec", "reco_whad_lvec", "reco_met_value", "reco_met_phi"}
 	);
 

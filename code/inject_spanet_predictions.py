@@ -8,55 +8,52 @@ import numpy as np
 # ==================================================
 # injects SPANet prediction into root file as new prediction tree 
 #
-# arguments [ROOT FILE] [H5 SPANET PREDICTION] [h5 ORIGINAL TRUTH MATCHED FILE]
+# arguments [H5 SPANET PREDICTION] [h5 ORIGINAL TRUTH MATCHED FILE]
 
 
+ROOT_OUTPUT_DESTINATION = "/media/ireas/Data/v4/injected/injection.root"
 
 def main():
 	# validate arguments
-	if(len(sys.argv)<2):
-		print("Error: no .root file for injection was given, exiting")
-		exit()
-	if(len(sys.argv)<3):
+	if(len(sys.argv)<1):
 		print("Error: no .h5 SPANet prediction was given, exiting")
 		exit()
-	if(len(sys.argv)<3):
-		print("Error: no .h5 matched file was given, exiting")
-		exit()
 
 
-	# open files
-	root_file = uproot.update(sys.argv[1])
-	spanet_prediction = h5py.File(sys.argv[2], 'r')
-	truth_matched = h5py.File(sys.argv[3], 'r')
-	
+	# open spanet prediction file
+	spanet_prediction = h5py.File(sys.argv[1], 'r')
 
 	# fill .h5 file with .root information
-	inject_prediction(root_file, spanet_prediction, truth_matched)
+	with uproot.update(ROOT_OUTPUT_DESTINATION) as root_file:
+		inject_prediction(root_file, spanet_prediction)
 
-	
-	# close .h5 file, .root cannot be closed
-	truth_matched.close()
+
+	# close .h5 file
 	spanet_prediction.close()
-	root_file.close()
 
 
 
-def inject_prediction(root_file, spanet_prediction, truth_matched):
+def inject_prediction(root_file, spanet_prediction):
 	
-	root_file["prediction"] = {
+	root_file["spanet"] = {
 		"t1_q1": np.array(spanet_prediction['TARGETS']['t1']['q1'][()], dtype=np.intc),
 		"t1_q2": np.array(spanet_prediction['TARGETS']['t1']['q2'][()], dtype=np.intc),
 		"t1_b" : np.array(spanet_prediction['TARGETS']['t1']['b'][()] , dtype=np.intc),
+		"t1_assignment_probability" : np.array(spanet_prediction['TARGETS']['t1']['assignment_probability'][()] , dtype=np.float32),
+		"t1_detection_probability" : np.array(spanet_prediction['TARGETS']['t1']['detection_probability'][()] , dtype=np.float32),
+		"t1_marginal_probability" : np.array(spanet_prediction['TARGETS']['t1']['marginal_probability'][()] , dtype=np.float32),
 		"t2_q1": np.array(spanet_prediction['TARGETS']['t2']['q1'][()], dtype=np.intc),
 		"t2_q2": np.array(spanet_prediction['TARGETS']['t2']['q2'][()], dtype=np.intc),
 		"t2_b" : np.array(spanet_prediction['TARGETS']['t2']['b'][()] , dtype=np.intc),
+		"t2_assignment_probability" : np.array(spanet_prediction['TARGETS']['t2']['assignment_probability'][()] , dtype=np.float32),
+		"t2_detection_probability" : np.array(spanet_prediction['TARGETS']['t2']['detection_probability'][()] , dtype=np.float32),
+		"t2_marginal_probability" : np.array(spanet_prediction['TARGETS']['t2']['marginal_probability'][()] , dtype=np.float32),
 		"HW_q1": np.array(spanet_prediction['TARGETS']['HW']['q1'][()], dtype=np.intc),
 		"HW_q2": np.array(spanet_prediction['TARGETS']['HW']['q2'][()], dtype=np.intc),
-		"eventNumber": np.array(truth_matched['OTHER']['eventNumber'][()], dtype=np.uint),
-		"mcChannelNumber": np.array(truth_matched['OTHER']['mcChannelNumber'][()], dtype=np.uintc)
+		"HW_assignment_probability" : np.array(spanet_prediction['TARGETS']['HW']['assignment_probability'][()] , dtype=np.float32),
+		"HW_detection_probability" : np.array(spanet_prediction['TARGETS']['HW']['detection_probability'][()] , dtype=np.float32),
+		"HW_marginal_probability" : np.array(spanet_prediction['TARGETS']['HW']['marginal_probability'][()] , dtype=np.float32),
 	}
-
 	
 
 if __name__ == '__main__':

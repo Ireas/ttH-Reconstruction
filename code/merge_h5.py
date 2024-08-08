@@ -7,25 +7,15 @@ from timeit import default_timer as timer
 
 # constants
 MAX_EVENTS_PER_FILE = -1 #-1 to use all events
+SUCCESSFUL_ONLY = False
+
+INPUT_FOLDER = "all_8+j/"
+
+INPUT_PATH = "/media/ireas/Data/v4/converted/"
+OUTPUT_PATH = "/media/ireas/Data/v4/merged/"
 
 
-INPUT_PATH = "/media/ireas/Data/v3/converted/"
-INPUT_FOLDER = "tau_excluded_8+j/"
-OUTPUT_PATH = "/media/ireas/Data/v3/merged/"
-
-#INPUT_FILES = [
-#	"346343_ttH125_allhad_onshellwhad_geq8jets_tauexcluded_8016e.h5",
-#	"346344_ttH125_semilep_onshellwhad_geq8jets_tauexcluded_3883e.h5",
-#	"346345_ttH125_dilep_onshellwhad_geq8jets_tauexcluded_3883e.h5",
-#	"410470_ttbar_nonallhad_3732344e.h5",
-#	"410471_ttbar_allhad_4030e.h5",
-#	"410472_ttbar_dilep_846514e_part44.h5",
-#	"700122_ttbar_singleLepton_1850885e_part44.h5",
-#	"700124_ttbar_dilepton_1104421e_part44.h5",
-#]
-
-
-
+successful_event_history = {}
 
 # main method 
 def main():
@@ -58,9 +48,40 @@ def main():
 	for input_file in input_files:
 		input_file.close()
 
-	os.rename(output_destination, output_destination[:-3]+"_"+str(number_of_events)+"e.h5")
+	if(SUCCESSFUL_ONLY):
+		os.rename(output_destination, output_destination[:-3]+"_"+str(number_of_events)+"e+_SuccessfulOnly.h5")
+	else:
+		os.rename(output_destination, output_destination[:-3]+"_"+str(number_of_events)+"e.h5")
+
+def get_success_history(input_file):
+	# access input file 
+	events_in_input_file = input_file['INPUTS']['Source']['MASK'][()].shape[0] 
+	history = np.array([])
+
+	ind_t1q1 = input_file['TARGETS']['t1']['q1'][()]
+	ind_t1q2 = input_file['TARGETS']['t1']['q2'][()]
+	ind_t1b = input_file['TARGETS']['t1']['b'][()]
+	ind_t2q1 = input_file['TARGETS']['t2']['q1'][()]
+	ind_t2q2 = input_file['TARGETS']['t2']['q2'][()]
+	ind_t2b = input_file['TARGETS']['t2']['b'][()]
+	ind_HWq1 = input_file['TARGETS']['HW']['q1'][()]
+	ind_HWq2 = input_file['TARGETS']['HW']['q2'][()]
+
+	for i in range(events_in_input_file):
+		# empty event
+		if ( ind_t1q1[i]==0 and ind_t1q2[i]==0 and ind_t1b[i]==0 and ind_t2q1[i]==0 and ind_t2q2[i]==0 and ind_t2b[i]==0 and ind_HWq1[i]==0 and ind_HWq2[i]==0): 
+			history = np.append(history, [False])
+			continue
+	
+		# and invalid assignments
+		if ( ind_t1q1[i]==-1 or ind_t1q2[i]==-1 or ind_t1b[i]==-1 or ind_t2q1[i]==-1 or ind_t2q2[i]==-1 or ind_t2b[i]==-1 or ind_HWq1[i]==-1 or ind_HWq2[i]==-1): 
+			history = np.append(history, [False])
+			continue
+
+		history = np.append(history, [True])
 
 
+	return history
 
 
 def fill_output(output_file, input_files):
@@ -76,6 +97,11 @@ def fill_output(output_file, input_files):
 		
 		# trim if needed
 		number_of_events = events_in_input_file
+		if(SUCCESSFUL_ONLY):
+			successful_event_history[str(input_file)] = get_success_history(input_file)
+			number_of_events = int(successful_event_history[str(input_file)].sum())
+
+
 		if MAX_EVENTS_PER_FILE>0 and number_of_events>MAX_EVENTS_PER_FILE:
 			number_of_events = MAX_EVENTS_PER_FILE
 		
@@ -97,11 +123,13 @@ def fill_output(output_file, input_files):
 	
 	# Create INPUTS group
 	output_inputs_dimension = (events_in_output_file, max_njets_in_output_file)
+	output_met_dimension = (events_in_output_file)
 
 	print()		
 	print("Fill group INPUTS")
 	input_group = output_file.create_group("INPUTS")
 	source_group = input_group.create_group("Source")
+	met_group = input_group.create_group("Met")
 	
 	mask = source_group.create_dataset("MASK", output_inputs_dimension, dtype=bool)	
 	jet_e = source_group.create_dataset("energy", output_inputs_dimension, dtype=np.float32)	
@@ -109,13 +137,21 @@ def fill_output(output_file, input_files):
 	jet_eta = source_group.create_dataset("eta", output_inputs_dimension, dtype=np.float32)	
 	jet_phi = source_group.create_dataset("phi", output_inputs_dimension, dtype=np.float32)	
 	jet_btag = source_group.create_dataset("btag", output_inputs_dimension, dtype=bool)	
+	
+	met_value = met_group.create_dataset("value", output_met_dimension, dtype=np.float32)	
+	met_phi = met_group.create_dataset("phi", output_met_dimension, dtype=np.float32)	
 
 	
 	# move start index when using multiple files	
 	start_index = 0
 
 	for input_file in input_files:
+		number_of_events = input_file['INPUTS']['Source']['MASK'][()].shape[0]
 		event_limit = input_file['INPUTS']['Source']['MASK'][()].shape[0]
+
+		if(SUCCESSFUL_ONLY):
+			event_limit = int(successful_event_history[str(input_file)].sum())
+		
 		event_limit = MAX_EVENTS_PER_FILE if (MAX_EVENTS_PER_FILE>0 and event_limit>MAX_EVENTS_PER_FILE) else event_limit
 		jet_limit = input_file['INPUTS']['Source']['MASK'][()].shape[1] 
 
@@ -133,18 +169,43 @@ def fill_output(output_file, input_files):
 		input_eta = input_file['INPUTS']['Source']['eta'][()]
 		input_phi = input_file['INPUTS']['Source']['phi'][()]
 		input_btag = input_file['INPUTS']['Source']['btag'][()]
+		input_met_value = input_file['INPUTS']['Met']['value'][()]
+		input_met_phi = input_file['INPUTS']['Met']['phi'][()]
+
+		if(SUCCESSFUL_ONLY):
+			success_history = successful_event_history[str(input_file)]
+		success_events = 0
+
 
 		# fill
-		for i in range(event_limit):
-			for j in range(jet_limit):
-				mask[start_index+i,j] = input_mask[i,j] 
-				jet_e[start_index+i,j] = input_energy[i,j] 
-				jet_pt[start_index+i,j] = input_pt[i,j] 
-				jet_eta[start_index+i,j] = input_eta[i,j] 
-				jet_phi[start_index+i,j] = input_phi[i,j] 
-				jet_btag[start_index+i,j] = input_btag[i,j]
+		for i in range(number_of_events):
 			
-		start_index+= event_limit
+			for j in range(jet_limit):
+				mask[start_index+success_events,j] = input_mask[i,j] 
+				jet_e[start_index+success_events,j] = input_energy[i,j] 
+				jet_pt[start_index+success_events,j] = input_pt[i,j] 
+				jet_eta[start_index+success_events,j] = input_eta[i,j] 
+				jet_phi[start_index+success_events,j] = input_phi[i,j] 
+				jet_btag[start_index+success_events,j] = input_btag[i,j]
+			
+			# global variabls
+			met_value[start_index+success_events] = input_met_value[i]
+			met_phi[start_index+success_events] = input_met_phi[i]
+
+			# count success event
+			if(SUCCESSFUL_ONLY):
+				if(success_history[i]):
+					success_events+= 1	
+				else:
+					continue
+			else:
+				success_events+= 1
+			
+			# manual break
+			if(success_events>=event_limit):
+				break
+				
+		start_index+= success_events
 
 
 
@@ -176,7 +237,12 @@ def fill_output(output_file, input_files):
 	start_index = 0
 		
 	for input_file in input_files:
+		number_of_events = input_file['INPUTS']['Source']['MASK'][()].shape[0]
 		event_limit = input_file['INPUTS']['Source']['MASK'][()].shape[0]
+		
+		if(SUCCESSFUL_ONLY):
+			event_limit = int(successful_event_history[str(input_file)].sum())
+		
 		event_limit = MAX_EVENTS_PER_FILE if (MAX_EVENTS_PER_FILE>0 and event_limit>MAX_EVENTS_PER_FILE) else event_limit
 		
 		t_new = timer()
@@ -196,18 +262,35 @@ def fill_output(output_file, input_files):
 		input_HW_q1 = input_file['TARGETS']['HW']['q1'][()]
 		input_HW_q2 = input_file['TARGETS']['HW']['q2'][()]
 		
+		if(SUCCESSFUL_ONLY):
+			success_history = successful_event_history[str(input_file)]
+		success_events = 0
+
 		# fill
-		for i in range(event_limit):
-			b1[start_index+i] = input_t1_b[i] 
-			q1_1[start_index+i] = input_t1_q1[i] 
-			q1_2[start_index+i] = input_t1_q2[i] 
-			b2[start_index+i] = input_t2_b[i] 
-			q2_1[start_index+i] = input_t2_q1[i] 
-			q2_2[start_index+i] = input_t2_q2[i] 
-			HW_1[start_index+i] = input_HW_q1[i] 
-			HW_2[start_index+i] = input_HW_q2[i] 
+		for i in range(number_of_events):
+			b1[start_index+success_events] = input_t1_b[i] 
+			q1_1[start_index+success_events] = input_t1_q1[i] 
+			q1_2[start_index+success_events] = input_t1_q2[i] 
+			b2[start_index+success_events] = input_t2_b[i] 
+			q2_1[start_index+success_events] = input_t2_q1[i] 
+			q2_2[start_index+success_events] = input_t2_q2[i] 
+			HW_1[start_index+success_events] = input_HW_q1[i] 
+			HW_2[start_index+success_events] = input_HW_q2[i] 
 			
-		start_index+= event_limit
+
+			
+			if(SUCCESSFUL_ONLY):
+				if(success_history[i]):
+					success_events+= 1	
+				else:
+					continue
+			else:
+				success_events+= 1
+
+			if(success_events>=event_limit):
+				break
+			
+		start_index+= success_events
 		
 	# reset timer
 	t_start = timer()
@@ -226,7 +309,12 @@ def fill_output(output_file, input_files):
 	start_index = 0
 	
 	for input_file in input_files:
+		number_of_events = input_file['INPUTS']['Source']['MASK'][()].shape[0]
 		event_limit = input_file['INPUTS']['Source']['MASK'][()].shape[0]
+
+		if(SUCCESSFUL_ONLY):
+			event_limit = int(successful_event_history[str(input_file)].sum())
+		
 		event_limit = MAX_EVENTS_PER_FILE if (MAX_EVENTS_PER_FILE>0 and event_limit>MAX_EVENTS_PER_FILE) else event_limit
 		
 		t_new = timer()
@@ -239,16 +327,31 @@ def fill_output(output_file, input_files):
 		# access
 		input_event_number = input_file['OTHER']['eventNumber'][()]
 		input_mc_channel_number = input_file['OTHER']['mcChannelNumber'][()]
-		
+				
+		if(SUCCESSFUL_ONLY):
+			success_history = successful_event_history[str(input_file)]
+		success_events = 0
+
 		# fill
-		for i in range(event_limit):
-			event_number[start_index+i] = input_event_number[i] 
-			mc_channel_number[start_index+i] = input_mc_channel_number[i] 
+		for i in range(number_of_events):
+			event_number[start_index+success_events] = input_event_number[i] 
+			mc_channel_number[start_index+success_events] = input_mc_channel_number[i] 
+						
+			if(SUCCESSFUL_ONLY):
+				if(success_history[i]):
+					success_events+= 1	
+				else:
+					continue
+			else:
+				success_events+= 1
 
-		start_index+= event_limit
+			if(success_events>=event_limit):
+				break
+
+		start_index+= success_events
 
 
-	return 	events_in_output_file
+	return events_in_output_file
 
 
 

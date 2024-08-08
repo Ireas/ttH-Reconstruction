@@ -31,10 +31,13 @@ const float THRESHOLD_DELTA_R = 0.4; // maximum reco jet deviation from the trut
 
 // Paths
 const string INPUT_PATH = "/media/ireas/Data/v3/raw/"; //"/home/ireas/git_repos/master/samples/input/v3/";
-const string OUTPUT_PATH = "/media/ireas/Data/v3/matched/onshell_whad_tau_excluded/";//"/home/ireas/git_repos/master/samples/matched/tau_excluded/";
+const string OUTPUT_PATH = "/media/ireas/Data/v4/matched/all_8+j/";//"/home/ireas/git_repos/master/samples/matched/tau_excluded/";
+const string FILTER = "(number_of_jets>=8)";// && signature_higgs_decay>=0";
+//&& ( signature_higgs_decay<0 || signature_onshell_whad==1 )
 
-const char* INPUT_FILE_NAMES[] = { // put into array for easier access
-	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000001.output.root",
+const char* INPUT_FILE_NAMES[] = { // put into array for easier access	
+	// PowhegPythia-ttH (125 GeV, allhad) 
+	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000001.output.root", 
 	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000002.output.root",
 	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000003.output.root",
 	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043369._000004.output.root",
@@ -47,10 +50,12 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000007.output.root",
 	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043372._000008.output.root",
 	"user.chscheul.346343.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043366._000001.output.root",
+	// PowhegPythia-ttH (125 GeV, semilep) 
 	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043370._000001.output.root",
 	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043373._000001.output.root",
 	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043367._000001.output.root",
 	"user.chscheul.346344.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043367._000002.output.root",
+	// PowhegPythia-ttH (125 GeV, dilep) 
 	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043371._000001.output.root",
 	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000001.output.root",
 	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000002.output.root",
@@ -58,6 +63,7 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043374._000004.output.root",
 	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043368._000001.output.root",
 	"user.chscheul.346345.PhPy8EG.DAOD_PHYS.e7148_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043368._000002.output.root",
+	// PowhegPythia-ttbar (nonallhad) 
 	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000001.output.root",
 	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000002.output.root",
 	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043337._000003.output.root",
@@ -79,6 +85,7 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000004.output.root",
 	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000005.output.root",
 	"user.chscheul.410470.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043334._000006.output.root",
+	// PowhegPythia-ttbar (allhad) 
 	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000001.output.root",
 	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000004.output.root",
 	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043338._000005.output.root",
@@ -98,6 +105,7 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000005.output.root",
 	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000006.output.root",
 	"user.chscheul.410471.PhPy8EG.DAOD_PHYS.e6337_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043335._000007.output.root",
+	// PowhegPythia-ttbar (dilep) 
 	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000001.output.root",
 	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000002.output.root",
 	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043339._000003.output.root",
@@ -288,8 +296,6 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000018.output.root",
 	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043365._000019.output.root",
 };
-
-
 
 
 const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
@@ -1254,12 +1260,7 @@ int match(string input_file)
 
 
 	// apply filter	and limit if needed
-	auto rLoopManagerFiltered = rLoopManager.Filter(
-		// jet multiplcity
-		// if ttH semileptonic, only electron or muon flavour
-		// other events are no filtered by lepton flavour
-		"(signature_onshell_whad==1) && (number_of_jets>=0) && ( (signature_higgs_decay<0) || (signature_abs_lepton_pdgid==11 || signature_abs_lepton_pdgid==13) ) " //  && (signature_onshell_whad==1) 
-	).Range(MAX_NUMBER_OF_EVENTS);
+	auto rLoopManagerFiltered = rLoopManager.Filter(FILTER).Range(MAX_NUMBER_OF_EVENTS);
 	cout << " > " << rLoopManagerFiltered.Count().GetValue() << " events passed the selection!" << endl;
 
 

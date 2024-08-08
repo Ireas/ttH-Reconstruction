@@ -13,10 +13,10 @@ from timeit import default_timer as timer
 # needs manually tweaking of the branches
 
 
-CURRENT_FOLDER = "tau_excluded/"
+CURRENT_FOLDER = "all_8+j/"
 
-INPUT_PATH = "/media/ireas/Data/v3/matched/"
-OUTPUT_PATH = "/media/ireas/Data/v3/converted/"
+INPUT_PATH = "/media/ireas/Data/v4/matched/"
+OUTPUT_PATH = "/media/ireas/Data/v4/converted/"
 
 
 # main method 
@@ -78,10 +78,12 @@ def fill_h5_from_root(h5_file, root_file):
 
 	# create SOURCE subgroup for SPANet (source information per event)
 	source_group = input_group.create_group("Source")
+	met_group = input_group.create_group("Met")
 
 
 	# set fixed out array length, use MASK to mask which jets are actually in an event
 	spanet_source_dimension = (number_of_events, max_number_of_jets)
+	spanet_met_dimension = (number_of_events)
 	mask = source_group.create_dataset("MASK", spanet_source_dimension, dtype=bool)
 	
 	
@@ -93,6 +95,11 @@ def fill_h5_from_root(h5_file, root_file):
 	jet_phi = source_group.create_dataset("phi", spanet_source_dimension, dtype=np.float32)
 	jet_btag = source_group.create_dataset("btag", spanet_source_dimension, dtype=bool)
 	
+	# global
+	global_met_value = met_group.create_dataset("value", spanet_met_dimension, dtype=np.float32)
+	global_met_phi = met_group.create_dataset("phi", spanet_met_dimension, dtype=np.float32)
+
+	
 	
 	# prepare root_files for fast access
 	root_energy = root_file['matched/jet_e_NOSYS'].array()
@@ -100,6 +107,9 @@ def fill_h5_from_root(h5_file, root_file):
 	root_eta = root_file['matched/jet_eta'].array()
 	root_phi = root_file['matched/jet_phi'].array()
 	root_btag = root_file['matched/jet_DL1dv01_FixedCutBEff_85_select'].array()
+
+	root_met_value = root_file['matched/reco_met_value'].array()
+	root_met_phi = root_file['matched/reco_met_phi'].array()
 
 
 	# start timer for INPUT steps and prepare variables for printing
@@ -117,13 +127,17 @@ def fill_h5_from_root(h5_file, root_file):
 			# otherwise data is set in copied array and is discarded!
 			mask[i,j] = True # mask is true for every jet that is filled
 
-
 			# here custom branches must be filled
 			jet_e[i,j] = root_energy[i,j]
 			jet_pt[i,j] = root_pt[i,j]
 			jet_eta[i,j] = root_eta[i,j]
 			jet_phi[i,j] = root_phi[i,j]
 			jet_btag[i,j] = root_btag[i,j]
+		
+		# add gloabl met variables
+		global_met_value[i] = root_met_value[i]
+		global_met_phi[i] = root_met_phi[i]
+		
 
 
 		# print progress every 10%
