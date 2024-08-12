@@ -7,10 +7,10 @@ from timeit import default_timer as timer
 
 
 # constants
-INPUT_FOLDER = "all_8+j/"
+INPUT_FOLDER = "ttbar_6+j/"
 
-INPUT_PATH = "/media/ireas/Data/v4/matched/"
-OUTPUT_PATH = "/media/ireas/Data/v4/merged_root/"
+INPUT_PATH = "/media/ireas/Data/v5/matched/"
+OUTPUT_PATH = "/media/ireas/Data/v5/merged_root/"
 
 
 # main method 
@@ -34,9 +34,12 @@ def main():
 	for (i, file) in enumerate(input_files):
 		with uproot.open(INPUT_PATH+INPUT_FOLDER+file) as root_file:
 			new_data_dict = root_file["matched"].arrays(library="np")
-			number_of_events = len(new_data_dict["eventNumber"])
 			
-
+			# check for empty files
+			if(len(new_data_dict.keys())==0):
+				continue
+			
+			number_of_events = len(new_data_dict["eventNumber"])
 			print(f" ({i+1}/{len(input_files)})> {file}: including {number_of_events} events")
 
     		# Combine keys from both dictionaries
@@ -52,8 +55,9 @@ def main():
 					all_data_dict[key] = all_data_dict[key]
 				
 				# If key is only in dict_b
-				else:
+				elif key in new_data_dict:
 					all_data_dict[key] = new_data_dict[key]
+				
 
 	number_of_events = len(all_data_dict["eventNumber"])
 	
@@ -62,24 +66,6 @@ def main():
 	print(f"Recreating Output File {input_directory} with {number_of_events} events")
 	with uproot.recreate(f"{OUTPUT_PATH}{INPUT_FOLDER[:-1]}_{number_of_events}e_merged.root") as merged_root_file:
 		merged_root_file["matched"] = all_data_dict
-
-	exit()
-
-
-	# create output
-	print("Create Output")
-
-	number_of_events = 0
-	output_destination = OUTPUT_PATH + INPUT_FOLDER[:-1] + ".root"
-	with uproot.recreate(input_file) as master_root_file:
-		for input_file in input_files:
-			print(f" > {input_file}")
-			with uproot.read(input_file) as origin_root_file:
-				master_root_file["matched/"]
-				number_of_events+= len( origin_root_file["matched/eventNumber"].array(library="np") ) 
-
-	# rename output
-	os.rename(output_destination, output_destination[:-3]+"_"+str(number_of_events)+"e.root")
 
 
 if __name__ == '__main__':

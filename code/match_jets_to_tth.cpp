@@ -21,19 +21,19 @@ using namespace ROOT::Math::VectorUtil;
 // ==========  CONSTANTS  ==========
 // ================================= 
 const int MAX_NUMBER_OF_EVENTS = 0; // set to 0 for no limit
-
 const float PDG_MASS_WBOSON = 80.3692e3; // mass in MeV
+const float THRESHOLD_DELTA_R = 0.4; // maximum reco jet deviation from the truth for matching
 const float THRESHOLD_ONSHELL_DEFINITION = 1e3; // maximum deviation from DPG mass in MeV to classify as onshell
 
-const float THRESHOLD_DELTA_R = 0.4; // maximum reco jet deviation from the truth for matching
-
+// Event Filter String
+const string FILTER = "(number_of_jets>=6) && classification_true_higgs_decay==-1 && classification_true_t1_decay==1 && classification_true_t2_decay==1";
+//&& ( signature_higgs_decay<0 || classification_onshell_whad==1 )
 
 
 // Paths
-const string INPUT_PATH = "/media/ireas/Data/v3/raw/"; //"/home/ireas/git_repos/master/samples/input/v3/";
-const string OUTPUT_PATH = "/media/ireas/Data/v4/matched/all_8+j/";//"/home/ireas/git_repos/master/samples/matched/tau_excluded/";
-const string FILTER = "(number_of_jets>=8)";// && signature_higgs_decay>=0";
-//&& ( signature_higgs_decay<0 || signature_onshell_whad==1 )
+const string INPUT_PATH = "/media/ireas/Data/download/"; //"/home/ireas/git_repos/master/samples/input/v3/";
+const string OUTPUT_PATH = "/media/ireas/Data/v5/matched/ttbar_6+j/";//"/home/ireas/git_repos/master/samples/matched/tau_excluded/";
+
 
 const char* INPUT_FILE_NAMES[] = { // put into array for easier access	
 	// PowhegPythia-ttH (125 GeV, allhad) 
@@ -302,11 +302,9 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	// logistics
 	"mcChannelNumber",
 	"eventNumber",
-	// event global information
+	// global event information
 	"number_of_jets",
-	"reco_met_value", 
-	"reco_met_phi",
-	// jet particle information
+	// jet information
 	"jet_DL1dv01_FixedCutBEff_85_select",
 	"lvecs_jets",
 	"jet_e_NOSYS",
@@ -315,31 +313,34 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"jet_phi",
 	"jet_final_match_mask",
 	"jet_to_object_indicies_fixed",
-	// true event signatures
-	"signature_higgs_decay",
-	"signature_onshell_whad",
-	"signature_abs_lepton_pdgid",
-	// reco event classifier
-	"classifier_event_status",
-	"higgs_decay_mode_custom",
-	"higgs_decay_decay_mode",
-	// lepton particle information
-	"true_lepton_pt",
-	"true_lepton_eta",
-	"true_lepton_phi",
-	"true_lepton_m",
-	"true_lepton_lvec",
+	// reco values
+	"reco_lepton_lvec",
 	"reco_lepton_pt",
 	"reco_lepton_eta",
 	"reco_lepton_phi",
 	"reco_lepton_e",
-	"reco_lepton_lvec",
-	// neutrino particle information
+	"reco_met_value", 
+	"reco_met_phi",
+	// true values
 	"true_neutrino_lvec",
-	// whad particle information
 	"true_whad_lvec",
-	// wlep particle information
 	"true_wlep_lvec",
+	"true_lepton_lvec",
+	"true_lepton_pt",
+	"true_lepton_eta",
+	"true_lepton_phi",
+	"true_lepton_m",
+	// classificiation
+	"classification_true_t1_decay",
+	"classification_true_t2_decay",
+	"classification_true_higgs_decay",
+	"classification_event_completion",
+	"classification_onshell_whad",
+	// true event signatures
+	"signature_abs_lepton_pdgid",
+	// reco event classifier
+	"higgs_decay_mode_custom",
+	"higgs_decay_decay_mode",
 };
 
 
@@ -369,22 +370,23 @@ enum HIGGS_DECAY_MODE{
 };
 
 
-enum CLASSIFIER_EVENT_STATUS{
-	impossible = -1,
-	possible = 0,
-};
-
-
-
-
 
 // ==========  FUNCTION DECLARATION  ==========
 // ============================================
+
+
+// Utilities
+
+// get number of jets
+int GetNumberOfJets(vector<PtEtaPhiEVector> jetLvecs){return jetLvecs.size();}
+
+// rename variables for new tree
+float RenameFloat(float target){return target;}
+
 // generate lorentz vector for truth object
 PtEtaPhiMVector GenerateLorentzVectorM(Float_t pt, Float_t eta, Float_t phi, Float_t mass);
 PtEtaPhiMVector GenerateLorentzVectorMHiggsDecision(Float_t pt1, Float_t eta1, Float_t phi1, Float_t mass1, Int_t pdgId1, Float_t pt2, Float_t eta2, Float_t phi2, Float_t mass2, Int_t pdgId2);
 PtEtaPhiEVector GenerateLorentzVectorE(Float_t pt, Float_t eta, Float_t phi, Float_t energy);
-
 
 // generate vectors of lorentz vectors for easier access
 vector<PtEtaPhiMVector> GenerateTruthLvecs(
@@ -396,14 +398,34 @@ vector<PtEtaPhiMVector> GenerateTruthLvecs(
 	PtEtaPhiMVector truthLvecWdecay2FromTbar, 
 	PtEtaPhiMVector truthLvecWdecay1FromH, 
 	PtEtaPhiMVector truthLvecWdecay2FromH 
-);
+){
+	vector<PtEtaPhiMVector> truthLvecs(NUMBER_OF_TRUTH_OBJECTS);
+	
+	truthLvecs[TRUTH_PARTONS::b_from_t] = truthLvecBFromT;
+	truthLvecs[TRUTH_PARTONS::b_from_tbar] = truthLvecBFromTbar;
+	truthLvecs[TRUTH_PARTONS::Wdecay1_from_t] = truthLvecWdecay1FromT;
+	truthLvecs[TRUTH_PARTONS::Wdecay2_from_t] = truthLvecWdecay2FromT;
+	truthLvecs[TRUTH_PARTONS::Wdecay1_from_tbar] = truthLvecWdecay1FromTbar;
+	truthLvecs[TRUTH_PARTONS::Wdecay2_from_tbar] = truthLvecWdecay2FromTbar;
+	truthLvecs[TRUTH_PARTONS::Wdecay1_from_H] = truthLvecWdecay1FromH;
+	truthLvecs[TRUTH_PARTONS::Wdecay2_from_H] = truthLvecWdecay2FromH;
+
+	return truthLvecs;
+}
 
 vector<PtEtaPhiEVector> GenerateJetLvecs(
 	vector<Float_t> pts, 
 	vector<Float_t> etas, 
 	vector<Float_t> phis, 
 	vector<Float_t> energies
-);
+){
+	vector<PtEtaPhiEVector> jetLvecs;
+	for(int i=0; i<pts.size(); i++){
+		PtEtaPhiEVector jetLvec(pts[i], etas[i], phis[i], energies[i]);
+		jetLvecs.push_back(jetLvec);
+	}
+	return jetLvecs;
+}
 
 
 // generate jet potential match masks (all truth objects within delta R range)
@@ -435,14 +457,7 @@ vector<int> GenerateHiggsDecayDecayMode(int higgsDecayMode, int higgsDecay11, in
 int GetFilteredPdgIDs(Int_t pdgId);
 
 
-int GetNumberOfJets(vector<PtEtaPhiEVector> jetLvecs);
-bool CheckReconstruction(PtEtaPhiEVector tLvec, PtEtaPhiEVector tBarLvev, PtEtaPhiEVector HLvec);
 
-float RenameFloat(float target);
-int RenameInt(unsigned int target);
-int RenameInt2(unsigned long long target);
-float GetMass(PtEtaPhiEVector lvec);
-float GetPt(PtEtaPhiEVector lvec);
 
 
 float ExtractRecoInformationLepton(int classifierLeptonFlavour, vector<float> info_electron, vector<char> pass_electron_selection, vector<float> info_muon, vector<char> pass_muon_selection){
@@ -483,13 +498,117 @@ float ExtractRecoInformationLepton(int classifierLeptonFlavour, vector<float> in
 
 
 
-vector<int> CombineHiggsDecayPDGIDs(int pdgIdHDecay11, int pdgIdHDecay12, int pdgIdHDecay21, int pdgIdHDecay22){
-	return vector<int>{pdgIdHDecay11, pdgIdHDecay12, pdgIdHDecay21, pdgIdHDecay22};
-}
-vector<PtEtaPhiMVector> CombineHiggsDecayLorentzVectors(PtEtaPhiMVector lvecHdecay11, PtEtaPhiMVector lvecHdecay12, PtEtaPhiMVector lvecHdecay21, PtEtaPhiMVector lvecHdecay22){
-	return vector<PtEtaPhiMVector>{lvecHdecay11, lvecHdecay12, lvecHdecay21, lvecHdecay22};
+vector<int> CombineHiggsDecayPDGIDs(int pdgIdHDecay11, int pdgIdHDecay12, int pdgIdHDecay21, int pdgIdHDecay22){return vector<int>{pdgIdHDecay11, pdgIdHDecay12, pdgIdHDecay21, pdgIdHDecay22};}
+vector<PtEtaPhiMVector> CombineHiggsDecayLorentzVectors(PtEtaPhiMVector lvecHdecay11, PtEtaPhiMVector lvecHdecay12, PtEtaPhiMVector lvecHdecay21, PtEtaPhiMVector lvecHdecay22){return vector<PtEtaPhiMVector>{lvecHdecay11, lvecHdecay12, lvecHdecay21, lvecHdecay22};}
+
+
+int ClassifyTrueTopDecay(int pdgID_Wq1, int pdgID_Wq2)
+{
+	// check if any particle is invalid
+	if(abs(pdgID_Wq1)==0 || abs(pdgID_Wq2)==0)
+	{
+		return -1;
+	}
+
+	// check for hadronic decay qq
+	if( (abs(pdgID_Wq1)>0 && abs(pdgID_Wq1)<7) && (abs(pdgID_Wq2)>0 && abs(pdgID_Wq2)<7) )
+	{
+		return 1;
+	}
+	
+	// check for leptonic decay lv
+	if( (abs(pdgID_Wq1)==11 && abs(pdgID_Wq2)==12) || (abs(pdgID_Wq1)==13 && abs(pdgID_Wq2)==14) || (abs(pdgID_Wq1)==15 && abs(pdgID_Wq2)==16) )
+	{
+		return 2;
+	}
+	// check for leptonic decay vl
+	if( (abs(pdgID_Wq1)==12 && abs(pdgID_Wq2)==11) || (abs(pdgID_Wq1)==14 && abs(pdgID_Wq2)==13) || (abs(pdgID_Wq1)==16 && abs(pdgID_Wq2)==15) )
+	{
+		return 3;
+	}
+
+	// default case, should never reach this point
+	return 0;
 }
 
+int ClassifyTrueHiggsDecay(int pdgID_H1, int pdgID_H2, int pdgID_H11, int pdgID_H12, int pdgID_H21, int pdgID_H22)
+{
+	// check if Higgs doesnt exists
+	if(abs(pdgID_H1)==0 || abs(pdgID_H2)==0 || abs(pdgID_H2)>100 || abs(pdgID_H1)>100)
+	{
+		return -1;
+	}
+
+	// check for bb
+	if(abs(pdgID_H1)==5 || abs(pdgID_H2)==5)
+	{
+		return 2;
+	}
+	// check for tautau
+	if(abs(pdgID_H1)==15 || abs(pdgID_H2)==15)
+	{
+		return 3;
+	}
+
+	// check for WW
+	if(abs(pdgID_H1)==24 || abs(pdgID_H2)==24)
+	{
+		// check if all particles are valid objects
+		if( abs(pdgID_H11)==0 || abs(pdgID_H12)==0 || abs(pdgID_H21)==0 || abs(pdgID_H2)==0)
+		{
+			return -2;
+		}
+
+		// check for qqqq
+		if( (abs(pdgID_H11)>0 && abs(pdgID_H11)<7) && (abs(pdgID_H12)>0 && abs(pdgID_H12)<6) && (abs(pdgID_H21)>0 && abs(pdgID_H21)<6) && (abs(pdgID_H22)>0 && abs(pdgID_H22)<6) )
+		{
+			return 10;
+		}
+
+		// check for qqlv
+		if( (abs(pdgID_H11)>0 && abs(pdgID_H11)<7) && (abs(pdgID_H12)>0 && abs(pdgID_H12)<6) && ( (abs(pdgID_H21)==11 && abs(pdgID_H22)==12) || (abs(pdgID_H21)==13 && abs(pdgID_H22)==14) || (abs(pdgID_H21)==15 && abs(pdgID_H22)==16) ) )
+		{
+			return 11;
+		}
+		// check for qqvl
+		if( (abs(pdgID_H11)>0 && abs(pdgID_H11)<7) && (abs(pdgID_H12)>0 && abs(pdgID_H12)<6) && ( (abs(pdgID_H21)==12 && abs(pdgID_H22)==11) || (abs(pdgID_H21)==14 && abs(pdgID_H22)==13) || (abs(pdgID_H21)==16 && abs(pdgID_H22)==15) ) )
+		{
+			return 12;
+		}
+		// check for lvqq
+		if( ( (abs(pdgID_H11)==11 && abs(pdgID_H12)==12) || (abs(pdgID_H11)==13 && abs(pdgID_H12)==14) || (abs(pdgID_H11)==15 && abs(pdgID_H12)==16) ) && (abs(pdgID_H21)>0 && abs(pdgID_H21)<7) && (abs(pdgID_H22)>0 && abs(pdgID_H22)<6) )
+		{
+			return 13;
+		}
+		// check for vlqq
+		if( ( (abs(pdgID_H11)==12 && abs(pdgID_H12)==11) || (abs(pdgID_H11)==14 && abs(pdgID_H12)==13) || (abs(pdgID_H11)==16 && abs(pdgID_H12)==15) ) && (abs(pdgID_H21)>0 && abs(pdgID_H21)<7) && (abs(pdgID_H22)>0 && abs(pdgID_H22)<6) )
+		{
+			return 14;
+		}
+	}
+
+	// default case for stuff like H->gammagamma, H->cc
+	return 0;
+}
+
+int ClassifyEventCompletion(int classifier_true_t1_decay, int classifier_true_t2_decay, int classifier_true_higgs_decay, vector<int> jet_to_object_indicies_fixed){
+	// check for allhad ttbar and semileptonic H->WW
+	if(classifier_true_t1_decay!=1 || classifier_true_t2_decay!=1 || (classifier_true_higgs_decay!=11 && classifier_true_higgs_decay!=12 && classifier_true_higgs_decay!=13 && classifier_true_higgs_decay!=14) )
+	{
+		return -1;
+	}
+
+	// check if any object has no jet
+	for(int index:jet_to_object_indicies_fixed)
+	{
+		if(index==-1)
+		{
+			return -2;
+		}
+	}
+
+	return 1;
+}
 
 
 int ClassifyRecoLeptonFlavour(char passElectronChar, char passMuonChar)
@@ -500,7 +619,7 @@ int ClassifyRecoLeptonFlavour(char passElectronChar, char passMuonChar)
 	// both
 	if( passElectron && passMuon )
 	{
-		std::cout << "?" << std::endl;
+		std::cout << "help me ?" << std::endl;
 		return 3;
 	}
 	// electron
@@ -515,16 +634,6 @@ int ClassifyRecoLeptonFlavour(char passElectronChar, char passMuonChar)
 	}
 
 	return 0;
-}
-
-int ClassifyEventStatus(vector<int> fixedAssignment){
-	for(int i=0; i<NUMBER_OF_TRUTH_OBJECTS; i++){
-		if(fixedAssignment[i]==-1){
-			return CLASSIFIER_EVENT_STATUS::impossible;
-		}
-	}
-
-	return CLASSIFIER_EVENT_STATUS::possible;
 }
 
 PtEtaPhiMVector GenerateLorentzVectorNeutrinoTrue(vector<PtEtaPhiMVector> lvecsHdecay, vector<int> pdgIdsHdecay){
@@ -585,165 +694,57 @@ int SignateAbsLeptonPdgid(int pdgid_11, int pdgid_12, int pdgid_21, int pdgid_22
 }
 
 
-
-int SignateHiggsDecay(int pdgid_h1, int pdgid_h2, int pdgid_w11, int pdgid_w12, int pdgid_w21, int pdgid_w22)
-{	
-	// check for H->WW signature
-	if( abs(pdgid_h1)!=24 || abs(pdgid_h2)!=24 )
-	{
-		return -3;
-	}
-
-	// check for H->WW->lvqq signature 
-	if( abs(pdgid_w11)==11 || abs(pdgid_w11)==13 || abs(pdgid_w11)==15 )
-	{
-		// condition: partner must be neutrino
-		if( abs(pdgid_w12)!=abs(pdgid_w11)+1 )
-		{
-			return -1; // mismatched lepton-neutrino flavours
-		}
-
-		// condition: other pair must be hadronic 
-		if( abs(pdgid_w21)<1 || abs(pdgid_w21)>6 )
-		{
-			return -2; // no hadronic decays found
-		}
-		if( abs(pdgid_w22)<1 || abs(pdgid_w22)>6 )
-		{
-			return -2; // no hadronic decays found
-		}
-
-		// all conditions fulfilled
-		return 1;
-	}
-
-	// check for H->WW->vlqq signature 
-	if( abs(pdgid_w12)==11 || abs(pdgid_w12)==13 || abs(pdgid_w12)==15 )
-	{
-		// condition: partner must be neutrino
-		if( abs(pdgid_w11)!=abs(pdgid_w12)+1 )
-		{
-			return -1; // mismatched lepton-neutrino flavours
-		}
-
-		// condition: other pair must be hadronic 
-		if( abs(pdgid_w21)<1 || abs(pdgid_w21)>6 )
-		{
-			return -2; // no hadronic decays found
-		}
-		if( abs(pdgid_w22)<1 || abs(pdgid_w22)>6 )
-		{
-			return -2; // no hadronic decays found
-		}
-
-		// all conditions fulfilled
-		return 2;
-	}
-
-	// check for H->WW->qqlv signature 
-	if( abs(pdgid_w21)==11 || abs(pdgid_w21)==13 || abs(pdgid_w21)==15 )
-	{
-		// condition: partner must be neutrino
-		if( abs(pdgid_w22)!=abs(pdgid_w21)+1 )
-		{
-			return -1; // mismatched lepton-neutrino flavours
-		}
-
-		// condition: other pair must be hadronic 
-		if( abs(pdgid_w11)<1 || abs(pdgid_w11)>6 )
-		{
-			return -2; // no hadronic decays found
-		}
-		if( abs(pdgid_w12)<1 || abs(pdgid_w12)>6 )
-		{
-			return -2; // no hadronic decays found
-		}
-
-		// all conditions fulfilled
-		return 3;
-	}
-
-	// check for H->WW->qqvl signature 
-	if( abs(pdgid_w22)==11 || abs(pdgid_w22)==13 || abs(pdgid_w22)==15 )
-	{
-		// condition: partner must be neutrino
-		if( abs(pdgid_w21)!=abs(pdgid_w22)+1 )
-		{
-			return -1; // mismatched lepton-neutrino flavours
-		}
-
-		// condition: other pair must be hadronic 
-		if( abs(pdgid_w11)<1 || abs(pdgid_w11)>6 )
-		{
-			return -2; // no hadronic decays found
-		}
-		if( abs(pdgid_w12)<1 || abs(pdgid_w12)>6 )
-		{
-			return -2; // no hadronic decays found
-		}
-
-		// all conditions fulfilled
-		return 4;
-	}
-
-	// H->WW->qqqq signature 
-	return 0;
-}
-
-
-int SignateOnshellHadronicWboson(int signature_higgs_decay, float m_true_w1, float m_true_w2){
+int ClassifyTrueOnshellWHad(int classification_true_higgs_decay, float m_true_w1, float m_true_w2){
 	// w1 decays hadronically
-	if(signature_higgs_decay==3 || signature_higgs_decay==4){
+	if(classification_true_higgs_decay==11 || classification_true_higgs_decay==12){
 		if( abs(m_true_w1-PDG_MASS_WBOSON)<THRESHOLD_ONSHELL_DEFINITION )
 		{
 			return 1;
 		}
 		else
 		{
-			return 0;
+			return -1;
 		}
 	}
 
 	// w2 decays hadronically
-	if(signature_higgs_decay==1 || signature_higgs_decay==2){
+	if(classification_true_higgs_decay==13 || classification_true_higgs_decay==14){
 		if( abs(m_true_w2-PDG_MASS_WBOSON)<THRESHOLD_ONSHELL_DEFINITION )
 		{
-			return 1;
+			return 2;
 		}
 		else
 		{
-			return 0;
+			return -2;
 		}
 	}
 
-	return -1;
+	return 0;
 }
 
 
-float ExtractTrueInformationLeptonFromHiggs(int signatureHiggsDecay, float info_w11, float info_w12, float info_w21, float info_w22)
+float ExtractTrueInformationLeptonFromHiggs(int classification_true_higgs_decay, float info_w11, float info_w12, float info_w21, float info_w22)
 {
-	// H->WW->lvqq signature
-	if(signatureHiggsDecay==1)
-	{
-		return info_w11;
-	}
-	
-	// H->WW->vlqq signature	
-	if(signatureHiggsDecay==2)
-	{
-		return info_w12;
-	}
 	
 	// H->WW->qqlv signature
-	if(signatureHiggsDecay==3)
+	if(classification_true_higgs_decay==11)
 	{
 		return info_w21;
 	}
-
 	// H->WW->qqvl signature
-	if(signatureHiggsDecay==4)
+	if(classification_true_higgs_decay==12)
 	{
 		return info_w22;
+	}
+	// H->WW->lvqq signature
+	if(classification_true_higgs_decay==13)
+	{
+		return info_w11;
+	}
+	// H->WW->vlqq signature	
+	if(classification_true_higgs_decay==14)
+	{
+		return info_w12;
 	}
 
 	// no lepton from Higgs decays
@@ -751,36 +752,36 @@ float ExtractTrueInformationLeptonFromHiggs(int signatureHiggsDecay, float info_
 }
 
 
-PtEtaPhiMVector CombineTrueWHadFromHiggs(int signatureHiggsDecay, PtEtaPhiMVector lvec_w11, PtEtaPhiMVector lvec_w12, PtEtaPhiMVector lvec_w21, PtEtaPhiMVector lvec_w22)
+PtEtaPhiMVector CombineTrueWHadFromHiggs(int classification_true_higgs_decay, PtEtaPhiMVector lvec_w11, PtEtaPhiMVector lvec_w12, PtEtaPhiMVector lvec_w21, PtEtaPhiMVector lvec_w22)
 {
-	// H->WW->lvqq or H->WW->vlqq signature
-	if(signatureHiggsDecay==1 || signatureHiggsDecay==2)
+	// H->WW->qqlv or H->WW->qqvl signature
+	if(classification_true_higgs_decay==11 || classification_true_higgs_decay==12)
 	{
-		return lvec_w21 + lvec_w22;
+		return lvec_w11 + lvec_w12;
 	}
 
 	// H->WW->lvqq or H->WW->vlqq signature
-	if(signatureHiggsDecay==3 || signatureHiggsDecay==4)
+	if(classification_true_higgs_decay==13 || classification_true_higgs_decay==14)
 	{
-		return lvec_w11 + lvec_w12;
+		return lvec_w21 + lvec_w22;
 	}
 
 	// no fully hadronic decay from Higgs decays
 	return PtEtaPhiMVector(-999,-999,-999,-999);
 }
 
-PtEtaPhiMVector CombineTrueWLepFromHiggs(int signatureHiggsDecay, PtEtaPhiMVector lvec_w11, PtEtaPhiMVector lvec_w12, PtEtaPhiMVector lvec_w21, PtEtaPhiMVector lvec_w22)
+PtEtaPhiMVector CombineTrueWLepFromHiggs(int classification_true_higgs_decay, PtEtaPhiMVector lvec_w11, PtEtaPhiMVector lvec_w12, PtEtaPhiMVector lvec_w21, PtEtaPhiMVector lvec_w22)
 {
-	// H->WW->lvqq or H->WW->vlqq signature
-	if(signatureHiggsDecay==1 || signatureHiggsDecay==2)
+	// H->WW->qqlv or H->WW->qqvl signature
+	if(classification_true_higgs_decay==11 || classification_true_higgs_decay==12)
 	{
-		return lvec_w11 + lvec_w12;
+		return lvec_w21 + lvec_w22;
 	}
 
 	// H->WW->lvqq or H->WW->vlqq signature
-	if(signatureHiggsDecay==3 || signatureHiggsDecay==4)
+	if(classification_true_higgs_decay==13 || classification_true_higgs_decay==14)
 	{
-		return lvec_w21 + lvec_w22;
+		return lvec_w11 + lvec_w12;
 	}
 
 	// no fully hadronic decay from Higgs decays
@@ -794,6 +795,7 @@ PtEtaPhiMVector CombineTrueWLepFromHiggs(int signatureHiggsDecay, PtEtaPhiMVecto
 // ===========================
 int match(string input_file);
 
+
 int main(int argc, char** argv)
 {
 	for(int i=0; i<sizeof(INPUT_FILE_NAMES)/sizeof(char*); i++)
@@ -805,6 +807,7 @@ int main(int argc, char** argv)
 
 	return 0;
 }
+
 
 int match(string input_file)
 {
@@ -921,19 +924,52 @@ int match(string input_file)
 
 	// TRUTH 
 
-	// signatures
+	// match jets to objs
 	rLoopManager = rLoopManager.Define(
-		"signature_higgs_decay",
-		SignateHiggsDecay,
+		"jet_potential_match_mask", 
+		GenerateJetPotentialMatchMasks, 
+		{"lvecs_jets", "truth_lvecs"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"jet_final_match_mask", 
+		GenerateJetFinalMatchMasks, 
+		{"lvecs_jets", "jet_potential_match_mask", "truth_lvecs"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"jet_to_object_indicies_fixed",
+		CollectJetToObjectIndiciesFixed,
+		{"jet_final_match_mask"}
+	);
+
+	// classification
+	rLoopManager = rLoopManager.Define(
+		"classification_true_t1_decay",
+		ClassifyTrueTopDecay,
+		{"Tth_MC_Wdecay1_from_t_pdgId", "Tth_MC_Wdecay2_from_t_pdgId"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"classification_true_t2_decay",
+		ClassifyTrueTopDecay,
+		{"Tth_MC_Wdecay1_from_tbar_pdgId", "Tth_MC_Wdecay2_from_tbar_pdgId"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"classification_true_higgs_decay",
+		ClassifyTrueHiggsDecay,
 		{"Tth_MC_Higgs_decay1_pdgId", "Tth_MC_Higgs_decay2_pdgId", "Tth_MC_Higgs_decay1_from_decay1_pdgId", "Tth_MC_Higgs_decay2_from_decay1_pdgId", "Tth_MC_Higgs_decay1_from_decay2_pdgId", "Tth_MC_Higgs_decay2_from_decay2_pdgId"}
 	);
-	
 	rLoopManager = rLoopManager.Define(
-		"signature_onshell_whad",
-		SignateOnshellHadronicWboson,
-		{"signature_higgs_decay", "Tth_MC_Higgs_decay1_m", "Tth_MC_Higgs_decay2_m"}
+		"classification_event_completion",
+		ClassifyEventCompletion,
+		{"classification_true_t1_decay", "classification_true_t2_decay", "classification_true_higgs_decay", "jet_to_object_indicies_fixed"}
 	);
-	
+
+
+	rLoopManager = rLoopManager.Define(
+		"classification_onshell_whad",
+		ClassifyTrueOnshellWHad,
+		{"classification_true_higgs_decay", "Tth_MC_Higgs_decay1_m", "Tth_MC_Higgs_decay2_m"}
+	);
+
 	// Higgs decays decay products
 	rLoopManager = rLoopManager.Define(
 		"true_w11_lvec",
@@ -960,22 +996,22 @@ int match(string input_file)
 	rLoopManager = rLoopManager.Define(
 		"true_lepton_pt",
 		ExtractTrueInformationLeptonFromHiggs,
-		{"signature_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_pt", "Tth_MC_Higgs_decay2_from_decay1_pt", "Tth_MC_Higgs_decay1_from_decay2_pt", "Tth_MC_Higgs_decay2_from_decay2_pt"}
+		{"classification_true_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_pt", "Tth_MC_Higgs_decay2_from_decay1_pt", "Tth_MC_Higgs_decay1_from_decay2_pt", "Tth_MC_Higgs_decay2_from_decay2_pt"}
 	);
 	rLoopManager = rLoopManager.Define(
 		"true_lepton_eta",
 		ExtractTrueInformationLeptonFromHiggs,
-		{"signature_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_eta", "Tth_MC_Higgs_decay2_from_decay1_eta", "Tth_MC_Higgs_decay1_from_decay2_eta", "Tth_MC_Higgs_decay2_from_decay2_eta"}
+		{"classification_true_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_eta", "Tth_MC_Higgs_decay2_from_decay1_eta", "Tth_MC_Higgs_decay1_from_decay2_eta", "Tth_MC_Higgs_decay2_from_decay2_eta"}
 	);
 	rLoopManager = rLoopManager.Define(
 		"true_lepton_phi",
 		ExtractTrueInformationLeptonFromHiggs,
-		{"signature_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_phi", "Tth_MC_Higgs_decay2_from_decay1_phi", "Tth_MC_Higgs_decay1_from_decay2_phi", "Tth_MC_Higgs_decay2_from_decay2_phi"}
+		{"classification_true_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_phi", "Tth_MC_Higgs_decay2_from_decay1_phi", "Tth_MC_Higgs_decay1_from_decay2_phi", "Tth_MC_Higgs_decay2_from_decay2_phi"}
 	);
 	rLoopManager = rLoopManager.Define(
 		"true_lepton_m",
 		ExtractTrueInformationLeptonFromHiggs,
-		{"signature_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_m", "Tth_MC_Higgs_decay2_from_decay1_m", "Tth_MC_Higgs_decay1_from_decay2_m", "Tth_MC_Higgs_decay2_from_decay2_m"}
+		{"classification_true_higgs_decay", "Tth_MC_Higgs_decay1_from_decay1_m", "Tth_MC_Higgs_decay2_from_decay1_m", "Tth_MC_Higgs_decay1_from_decay2_m", "Tth_MC_Higgs_decay2_from_decay2_m"}
 	);
 	rLoopManager = rLoopManager.Define(
 		"true_lepton_lvec",
@@ -987,36 +1023,20 @@ int match(string input_file)
 	rLoopManager = rLoopManager.Define(
 		"true_whad_lvec",
 		CombineTrueWHadFromHiggs,
-		{"signature_higgs_decay", "true_w11_lvec", "true_w12_lvec", "true_w21_lvec", "true_w22_lvec"}
+		{"classification_true_higgs_decay", "true_w11_lvec", "true_w12_lvec", "true_w21_lvec", "true_w22_lvec"}
 	);
 	rLoopManager = rLoopManager.Define(
 		"true_wlep_lvec",
 		CombineTrueWLepFromHiggs,
-		{"signature_higgs_decay", "true_w11_lvec", "true_w12_lvec", "true_w21_lvec", "true_w22_lvec"}
+		{"classification_true_higgs_decay", "true_w11_lvec", "true_w12_lvec", "true_w21_lvec", "true_w22_lvec"}
 	);
 
 
 
 
-	// match jets to objs
-	rLoopManager = rLoopManager.Define(
-		"jet_potential_match_mask", 
-		GenerateJetPotentialMatchMasks, 
-		{"lvecs_jets", "truth_lvecs"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"jet_final_match_mask", 
-		GenerateJetFinalMatchMasks, 
-		{"lvecs_jets", "jet_potential_match_mask", "truth_lvecs"}
-	);
+
 	
 
-	// collect jet indicies for SPANet training
-	rLoopManager = rLoopManager.Define(
-		"jet_to_object_indicies_fixed",
-		CollectJetToObjectIndiciesFixed,
-		{"jet_final_match_mask"}
-	);
 
 	
 	// reconstruct objects from matched jets
@@ -1247,17 +1267,7 @@ int match(string input_file)
 
 
 
-
-
-
-	rLoopManager = rLoopManager.Define(
-		"classifier_event_status",
-		ClassifyEventStatus,
-		{"jet_to_object_indicies_fixed"}
-	);
-
-
-
+	
 
 	// apply filter	and limit if needed
 	auto rLoopManagerFiltered = rLoopManager.Filter(FILTER).Range(MAX_NUMBER_OF_EVENTS);
@@ -1296,48 +1306,6 @@ PtEtaPhiMVector GenerateLorentzVectorMHiggsDecision(Float_t pt1, Float_t eta1, F
 	
 	return PtEtaPhiMVector(0,0,0,0);
 }
-
-
-
-vector<PtEtaPhiMVector> GenerateTruthLvecs(
-	PtEtaPhiMVector truthLvecBFromT, 
-	PtEtaPhiMVector truthLvecBFromTbar, 
-	PtEtaPhiMVector truthLvecWdecay1FromT, 
-	PtEtaPhiMVector truthLvecWdecay2FromT, 
-	PtEtaPhiMVector truthLvecWdecay1FromTbar, 
-	PtEtaPhiMVector truthLvecWdecay2FromTbar, 
-	PtEtaPhiMVector truthLvecWdecay1FromH, 
-	PtEtaPhiMVector truthLvecWdecay2FromH 
-){
-	vector<PtEtaPhiMVector> truthLvecs(NUMBER_OF_TRUTH_OBJECTS);
-	
-	truthLvecs[TRUTH_PARTONS::b_from_t] = truthLvecBFromT;
-	truthLvecs[TRUTH_PARTONS::b_from_tbar] = truthLvecBFromTbar;
-	truthLvecs[TRUTH_PARTONS::Wdecay1_from_t] = truthLvecWdecay1FromT;
-	truthLvecs[TRUTH_PARTONS::Wdecay2_from_t] = truthLvecWdecay2FromT;
-	truthLvecs[TRUTH_PARTONS::Wdecay1_from_tbar] = truthLvecWdecay1FromTbar;
-	truthLvecs[TRUTH_PARTONS::Wdecay2_from_tbar] = truthLvecWdecay2FromTbar;
-	truthLvecs[TRUTH_PARTONS::Wdecay1_from_H] = truthLvecWdecay1FromH;
-	truthLvecs[TRUTH_PARTONS::Wdecay2_from_H] = truthLvecWdecay2FromH;
-
-	return truthLvecs;
-}
-
-
-vector<PtEtaPhiEVector> GenerateJetLvecs(
-	vector<Float_t> pts,
-	vector<Float_t> etas, 
-	vector<Float_t> phis, 
-	vector<Float_t> energies
-){
-	vector<PtEtaPhiEVector> jetLvecs;
-	for(int i=0; i<pts.size(); i++){
-		PtEtaPhiEVector jetLvec(pts[i], etas[i], phis[i], energies[i]);
-		jetLvecs.push_back(jetLvec);
-	}
-	return jetLvecs;
-}
-
 
 
 // ==========  GENERATE POTENTIAL MATCH MASKS AND FINAL MATCH MASKS
@@ -1668,21 +1636,3 @@ int GetFilteredPdgIDs(Int_t pdgId){
 	return abs(newPdgId);
 }
 
-
-
-// ==========  HELPER FUNCTONS
-int GetNumberOfJets(vector<PtEtaPhiEVector> jetLvecs){return jetLvecs.size();}
-
-bool CheckReconstruction(PtEtaPhiEVector tLvec, PtEtaPhiEVector tBarLvec, PtEtaPhiEVector HLvec){
-	if(tLvec.M()>0 && tBarLvec.M()>0 && HLvec.M()>0){
-		return true;
-	}
-	return false;
-}
-
-float RenameFloat(float target){return target;}
-int RenameInt(unsigned int target){return target;}
-int RenameInt2(unsigned long long target){return target;}
-
-float GetMass(PtEtaPhiEVector lvec){return lvec.M();}
-float GetPt(PtEtaPhiEVector lvec){return lvec.Pt();}

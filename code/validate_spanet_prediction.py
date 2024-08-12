@@ -8,19 +8,17 @@ import matplotlib.pyplot as plt
 CONFIDENCE_PROBABILITY = "assignment"
 CONFIDENCE_THRESHOLD = 0.0
 
-FULL_VALID_EVENTS_ONLY = True
+FULL_VALID_EVENTS_ONLY = False
 SHOW_PLOTS = False
 
-def main():
-    if(len(sys.argv)<3):
-        print("ERROR: Wrong Format")
-        print("use \"python validate.py PREDICTION TRUTH\"")
-        print("Exiting...")
-        return
+PREDICTION_FILE = "/media/ireas/Data/v5/predicted/prediction_all_8+j_1530766e.h5"
+TRUTH_FILE = "/media/ireas/Data/v5/merged_h5/all_8+j_1530766e.h5"
 
+
+def main():
 	# open files
-    file_pred = h5py.File(sys.argv[1], 'r')
-    file_true = h5py.File(sys.argv[2], 'r')
+    file_pred = h5py.File(PREDICTION_FILE, 'r')
+    file_true = h5py.File(TRUTH_FILE, 'r')
 	
 	# transform to dictionaries for easy access
     dict_pred, dict_true = files_to_dictionaries(file_pred, file_true)

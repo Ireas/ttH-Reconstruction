@@ -13,10 +13,10 @@ from timeit import default_timer as timer
 # needs manually tweaking of the branches
 
 
-CURRENT_FOLDER = "all_8+j/"
+CURRENT_FOLDER = "ttbar_6+j/"
 
-INPUT_PATH = "/media/ireas/Data/v4/matched/"
-OUTPUT_PATH = "/media/ireas/Data/v4/converted/"
+INPUT_PATH = "/media/ireas/Data/v5/matched/"
+OUTPUT_PATH = "/media/ireas/Data/v5/converted/"
 
 
 # main method 
@@ -218,11 +218,21 @@ def fill_h5_from_root(h5_file, root_file):
 	# here branches can be customized if desired
 	event_number = other_group.create_dataset("eventNumber", spanet_other_dimension, dtype=np.intc)
 	mc_channel_number = other_group.create_dataset("mcChannelNumber", spanet_other_dimension, dtype=np.intc)
+	classification_event_completion = other_group.create_dataset("classification_event_completion", spanet_other_dimension, dtype=np.intc)
+	classification_true_higgs_decay = other_group.create_dataset("classification_true_higgs_decay", spanet_other_dimension, dtype=np.intc)
+	classification_true_t1_decay = other_group.create_dataset("classification_true_t1_decay", spanet_other_dimension, dtype=np.intc)
+	classification_true_t2_decay = other_group.create_dataset("classification_true_t2_decay", spanet_other_dimension, dtype=np.intc)
+	classification_onshell_whad = other_group.create_dataset("classification_onshell_whad", spanet_other_dimension, dtype=np.intc)
 	
 	
 	# prepare root_files for fast access
 	root_event_number = root_file['matched/eventNumber'].array()
-	root_mc_channel_number= root_file['matched/mcChannelNumber'].array()
+	root_mc_channel_number = root_file['matched/mcChannelNumber'].array()
+	root_classification_event_completion = root_file['matched/classification_event_completion'].array()
+	root_classification_true_higgs_decay = root_file['matched/classification_true_higgs_decay'].array()
+	root_classification_true_t1_decay = root_file['matched/classification_true_t1_decay'].array()
+	root_classification_true_t2_decay = root_file['matched/classification_true_t2_decay'].array()
+	root_cclassification_onshell_whad = root_file['matched/classification_onshell_whad'].array()
 
 
 
@@ -237,6 +247,11 @@ def fill_h5_from_root(h5_file, root_file):
 		# important is fixed order within root file structured set in c++ code
 		event_number[i] = root_event_number[i]
 		mc_channel_number[i] = root_mc_channel_number[i]
+		classification_event_completion[i] = root_classification_event_completion[i]
+		classification_true_higgs_decay[i] = root_classification_true_higgs_decay[i]
+		classification_true_t1_decay[i] = root_classification_true_t1_decay[i]
+		classification_true_t2_decay[i] = root_classification_true_t2_decay[i]
+		classification_onshell_whad[i] = root_cclassification_onshell_whad[i]
 
 		# print progress
 		ratio+= step
@@ -245,13 +260,7 @@ def fill_h5_from_root(h5_file, root_file):
 			ratio-= 0.1
 			partial = timer()
 			print("  >>", 10*displayed_ratio, "% (estimated remaining time: ", round((partial-start_group)/displayed_ratio*(10-displayed_ratio)), "s)")
-	print()	
-	
-
-	# print time for conversion
-	#timer_end_conversion = timer()
-	#print()
-	#print("Time needed: ", round(timer_end_conversion-timer_start_conversion), "s for ", number_of_events, "events")
+	print()
 
 
 

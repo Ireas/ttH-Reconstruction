@@ -9,10 +9,10 @@ from timeit import default_timer as timer
 MAX_EVENTS_PER_FILE = -1 #-1 to use all events
 SUCCESSFUL_ONLY = False
 
-INPUT_FOLDER = "all_8+j/"
+INPUT_FOLDER = "ttbar_6+j/"
 
-INPUT_PATH = "/media/ireas/Data/v4/converted/"
-OUTPUT_PATH = "/media/ireas/Data/v4/merged/"
+INPUT_PATH = "/media/ireas/Data/v5/converted/"
+OUTPUT_PATH = "/media/ireas/Data/v5/merged_h5/"
 
 
 successful_event_history = {}
@@ -303,7 +303,12 @@ def fill_output(output_file, input_files):
 
 	other_group = output_file.create_group("OTHER")
 	event_number = other_group.create_dataset("eventNumber", output_other_dimension, dtype=np.intc)
-	mc_channel_number = other_group.create_dataset("mc_ChannelNumber", output_other_dimension, dtype=np.intc)
+	mc_channel_number = other_group.create_dataset("mcChannelNumber", output_other_dimension, dtype=np.intc)
+	classification_event_completion = other_group.create_dataset("classification_event_completion", output_other_dimension, dtype=np.intc)
+	classification_true_higgs_decay = other_group.create_dataset("classification_true_higgs_decay", output_other_dimension, dtype=np.intc)
+	classification_true_t1_decay = other_group.create_dataset("classification_true_t1_decay", output_other_dimension, dtype=np.intc)
+	classification_true_t2_decay = other_group.create_dataset("classification_true_t2_decay", output_other_dimension, dtype=np.intc)
+	classification_onshell_whad = other_group.create_dataset("classification_onshell_whad", output_other_dimension, dtype=np.intc)
 	
 	# move start index when using multiple files	
 	start_index = 0
@@ -327,6 +332,11 @@ def fill_output(output_file, input_files):
 		# access
 		input_event_number = input_file['OTHER']['eventNumber'][()]
 		input_mc_channel_number = input_file['OTHER']['mcChannelNumber'][()]
+		input_classification_event_completion = input_file['OTHER']['classification_event_completion'][()]
+		input_classification_true_higgs_decay = input_file['OTHER']['classification_true_higgs_decay'][()]
+		input_classification_true_t1_decay = input_file['OTHER']['classification_true_t1_decay'][()]
+		input_classification_true_t2_decay = input_file['OTHER']['classification_true_t2_decay'][()]
+		input_classification_onshell_whad = input_file['OTHER']['classification_onshell_whad'][()]
 				
 		if(SUCCESSFUL_ONLY):
 			success_history = successful_event_history[str(input_file)]
@@ -336,6 +346,11 @@ def fill_output(output_file, input_files):
 		for i in range(number_of_events):
 			event_number[start_index+success_events] = input_event_number[i] 
 			mc_channel_number[start_index+success_events] = input_mc_channel_number[i] 
+			classification_event_completion[start_index+success_events] = input_classification_event_completion[i] 
+			classification_true_higgs_decay[start_index+success_events] = input_classification_true_higgs_decay[i] 
+			classification_true_t1_decay[start_index+success_events] = input_classification_true_t1_decay[i] 
+			classification_true_t2_decay[start_index+success_events] = input_classification_true_t2_decay[i] 
+			classification_onshell_whad[start_index+success_events] = input_classification_onshell_whad[i] 
 						
 			if(SUCCESSFUL_ONLY):
 				if(success_history[i]):

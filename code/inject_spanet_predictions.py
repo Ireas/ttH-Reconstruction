@@ -11,17 +11,12 @@ import numpy as np
 # arguments [H5 SPANET PREDICTION] [h5 ORIGINAL TRUTH MATCHED FILE]
 
 
-ROOT_OUTPUT_DESTINATION = "/media/ireas/Data/v4/injected/injection.root"
+ROOT_OUTPUT_DESTINATION = "/media/ireas/Data/v5/injected/all_8+j_1530766e_injected.root"
+SPANET_PREDICTION_DESTINATION = "/media/ireas/Data/v5/predicted/prediction_all_8+j_1530766e.h5"
 
 def main():
-	# validate arguments
-	if(len(sys.argv)<1):
-		print("Error: no .h5 SPANet prediction was given, exiting")
-		exit()
-
-
 	# open spanet prediction file
-	spanet_prediction = h5py.File(sys.argv[1], 'r')
+	spanet_prediction = h5py.File(SPANET_PREDICTION_DESTINATION, 'r')
 
 	# fill .h5 file with .root information
 	with uproot.update(ROOT_OUTPUT_DESTINATION) as root_file:

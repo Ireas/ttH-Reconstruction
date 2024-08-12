@@ -121,9 +121,10 @@ def calculate_row(pred_indicies, true_t1q1, true_t1q2, true_t1b, true_t2q1, true
         # event is invalid
         if (t1q1==0 and t1q2==0 and t1b==0 and t2q1==0 and t2q2==0 and t2b==0 and HWq1==0 and HWq2==0):
             continue
+        
         # ignore incomplete events?
-        if (t1q1==-1 or t1q2==-1 or t1b==-1 or t2q1==-1 or t2q2==-1 or t2b==-1 or HWq1==-1 or HWq2==-1):
-            continue
+        #if (t1q1==-1 or t1q2==-1 or t1b==-1 or t2q1==-1 or t2q2==-1 or t2b==-1 or HWq1==-1 or HWq2==-1):
+        #    continue
         
         # predicted particle is t1q1
         elif pred_index==t1q1:
