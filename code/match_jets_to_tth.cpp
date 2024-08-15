@@ -26,13 +26,13 @@ const float THRESHOLD_DELTA_R = 0.4; // maximum reco jet deviation from the trut
 const float THRESHOLD_ONSHELL_DEFINITION = 1e3; // maximum deviation from DPG mass in MeV to classify as onshell
 
 // Event Filter String
-const string FILTER = "(number_of_jets>=6) && classification_true_higgs_decay==-1 && classification_true_t1_decay==1 && classification_true_t2_decay==1";
+const string FILTER = "(number_of_jets>=8)";// && classification_true_higgs_decay==-1 && classification_true_t1_decay==1 && classification_true_t2_decay==1";
 //&& ( signature_higgs_decay<0 || classification_onshell_whad==1 )
 
 
 // Paths
-const string INPUT_PATH = "/media/ireas/Data/download/"; //"/home/ireas/git_repos/master/samples/input/v3/";
-const string OUTPUT_PATH = "/media/ireas/Data/v5/matched/ttbar_6+j/";//"/home/ireas/git_repos/master/samples/matched/tau_excluded/";
+const string INPUT_PATH = "/media/ireas/Data/download/";
+const string OUTPUT_PATH = "/media/ireas/Data/v5/matched/all_8+j/";
 
 
 const char* INPUT_FILE_NAMES[] = { // put into array for easier access	
@@ -302,42 +302,57 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	// logistics
 	"mcChannelNumber",
 	"eventNumber",
+
 	// global event information
 	"number_of_jets",
-	// jet information
-	"jet_DL1dv01_FixedCutBEff_85_select",
-	"lvecs_jets",
-	"jet_e_NOSYS",
-	"jet_pt_NOSYS",
+	"number_of_bjets",
+	"number_of_leptons",
+
+	// reco values
+	"jet_pt_NOSYS", // jets
 	"jet_eta",
 	"jet_phi",
+	"jet_e_NOSYS",
+	"jet_DL1dv01_FixedCutBEff_85_select",
 	"jet_final_match_mask",
-	"jet_to_object_indicies_fixed",
-	// reco values
-	"reco_lepton_lvec",
-	"reco_lepton_pt",
+	"reco_lepton_pt", // lepton
 	"reco_lepton_eta",
 	"reco_lepton_phi",
 	"reco_lepton_e",
-	"reco_met_value", 
+	"reco_met_value", // met
 	"reco_met_phi",
+
 	// true values
-	"true_neutrino_lvec",
-	"true_whad_lvec",
-	"true_wlep_lvec",
-	"true_lepton_lvec",
-	"true_lepton_pt",
+	"true_lepton_pt", // lepton
 	"true_lepton_eta",
 	"true_lepton_phi",
 	"true_lepton_m",
+	"true_neutrino_pt", // neutrino
+	"true_neutrino_eta",
+	"true_neutrino_phi",
+	"true_neutrino_m",
+	"true_whad_pt", // hadronic w from H
+	"true_whad_eta",
+	"true_whad_phi",
+	"true_whad_m",
+	"true_wlep_pt", // leptonic W from H
+	"true_wlep_eta",
+	"true_wlep_phi",
+	"true_wlep_m",
+
+	// stuff
+	"jet_to_object_indicies_fixed",
+
 	// classificiation
 	"classification_true_t1_decay",
 	"classification_true_t2_decay",
 	"classification_true_higgs_decay",
 	"classification_event_completion",
 	"classification_onshell_whad",
+
 	// true event signatures
 	"signature_abs_lepton_pdgid",
+
 	// reco event classifier
 	"higgs_decay_mode_custom",
 	"higgs_decay_decay_mode",
@@ -376,17 +391,51 @@ enum HIGGS_DECAY_MODE{
 
 
 // Utilities
-
 // get number of jets
 int GetNumberOfJets(vector<PtEtaPhiEVector> jetLvecs){return jetLvecs.size();}
+int GetNumberOfBJets(vector<char> jet_btagging)
+{
+	int btags = 0;
+	for(char tag:jet_btagging)
+	{
+		if((int)tag==1)
+		{
+			btags++;
+		}
+	}
+
+	return btags;
+}
+int GetNumberOfLeptons(char el_select_loose_NOSYS, char muon_select_loose_NOSYS)
+{
+	int leptons = 0;
+
+	// check for electron 
+	if((int)el_select_loose_NOSYS==1)
+	{
+		leptons++;
+	}
+
+	// check for muons 
+	if((int)muon_select_loose_NOSYS==1)
+	{
+		leptons++;
+	}
+
+	return leptons;
+}
 
 // rename variables for new tree
 float RenameFloat(float target){return target;}
 
 // generate lorentz vector for truth object
-PtEtaPhiMVector GenerateLorentzVectorM(Float_t pt, Float_t eta, Float_t phi, Float_t mass);
+PtEtaPhiMVector GenerateLorentzVectorM(Float_t pt, Float_t eta, Float_t phi, Float_t mass){return PtEtaPhiMVector(pt,eta,phi,mass);}
+PtEtaPhiEVector GenerateLorentzVectorE(Float_t pt, Float_t eta, Float_t phi, Float_t energy){return PtEtaPhiEVector(pt,eta,phi,energy);}
 PtEtaPhiMVector GenerateLorentzVectorMHiggsDecision(Float_t pt1, Float_t eta1, Float_t phi1, Float_t mass1, Int_t pdgId1, Float_t pt2, Float_t eta2, Float_t phi2, Float_t mass2, Int_t pdgId2);
-PtEtaPhiEVector GenerateLorentzVectorE(Float_t pt, Float_t eta, Float_t phi, Float_t energy);
+float ExtractPt(PtEtaPhiMVector lvec){return lvec.Pt();}
+float ExtractEta(PtEtaPhiMVector lvec){return lvec.Eta();}
+float ExtractPhi(PtEtaPhiMVector lvec){return lvec.Phi();}
+float ExtractM(PtEtaPhiMVector lvec){return lvec.M();}
 
 // generate vectors of lorentz vectors for easier access
 vector<PtEtaPhiMVector> GenerateTruthLvecs(
@@ -866,6 +915,16 @@ int match(string input_file)
 		GetNumberOfJets, 
 		{"lvecs_jets"}
 	);
+	rLoopManager = rLoopManager.Define(
+		"number_of_bjets",
+		GetNumberOfBJets, 
+		{"jet_DL1dv01_FixedCutBEff_85_select"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"number_of_leptons",
+		GetNumberOfLeptons, 
+		{"pass_ejets_NOSYS", "pass_mujets_NOSYS"}
+	);
 
 
 	// generate truth obj lorentz vectors
@@ -1025,11 +1084,54 @@ int match(string input_file)
 		CombineTrueWHadFromHiggs,
 		{"classification_true_higgs_decay", "true_w11_lvec", "true_w12_lvec", "true_w21_lvec", "true_w22_lvec"}
 	);
+	
+	rLoopManager = rLoopManager.Define(
+		"true_whad_pt",
+		ExtractPt,
+		{"true_whad_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_whad_eta",
+		ExtractEta,
+		{"true_whad_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_whad_phi",
+		ExtractPhi,
+		{"true_whad_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_whad_m",
+		ExtractM,
+		{"true_whad_lvec"}
+	);
+	
 	rLoopManager = rLoopManager.Define(
 		"true_wlep_lvec",
 		CombineTrueWLepFromHiggs,
 		{"classification_true_higgs_decay", "true_w11_lvec", "true_w12_lvec", "true_w21_lvec", "true_w22_lvec"}
 	);
+	rLoopManager = rLoopManager.Define(
+		"true_wlep_pt",
+		ExtractPt,
+		{"true_wlep_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_wlep_eta",
+		ExtractEta,
+		{"true_wlep_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_wlep_phi",
+		ExtractPhi,
+		{"true_wlep_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_wlep_m",
+		ExtractM,
+		{"true_wlep_lvec"}
+	);
+
 
 
 
@@ -1210,6 +1312,26 @@ int match(string input_file)
 		"true_neutrino_lvec",
 		GenerateLorentzVectorNeutrinoTrue,
 		{"lvecs_Hdecay_ordered", "pdgids_Hdecay_ordered_filtered"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_neutrino_pt",
+		ExtractPt,
+		{"true_neutrino_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_neutrino_eta",
+		ExtractEta,
+		{"true_neutrino_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_neutrino_phi",
+		ExtractPhi,
+		{"true_neutrino_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"true_neutrino_m",
+		ExtractM,
+		{"true_neutrino_lvec"}
 	);
 
 	//>> Generate Lepton Information

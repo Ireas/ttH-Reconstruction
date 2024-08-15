@@ -7,7 +7,7 @@ from timeit import default_timer as timer
 
 
 # constants
-INPUT_FOLDER = "ttbar_6+j/"
+INPUT_FOLDER = "all_8+j/"
 
 INPUT_PATH = "/media/ireas/Data/v5/matched/"
 OUTPUT_PATH = "/media/ireas/Data/v5/merged_root/"

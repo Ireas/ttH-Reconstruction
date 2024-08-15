@@ -13,7 +13,7 @@ from timeit import default_timer as timer
 # needs manually tweaking of the branches
 
 
-CURRENT_FOLDER = "ttbar_6+j/"
+CURRENT_FOLDER = "all_6+j/"
 
 INPUT_PATH = "/media/ireas/Data/v5/matched/"
 OUTPUT_PATH = "/media/ireas/Data/v5/converted/"
@@ -58,10 +58,6 @@ def check_root_integrety(root_file):
 
 
 def fill_h5_from_root(h5_file, root_file):
-	# start conversion timer 
-	timer_start_conversion = timer()
-
-
 	# get number of jets and events, apply limit on number of events
 	number_of_jets = root_file['matched/number_of_jets'].array()
 	number_of_events = len(number_of_jets)
