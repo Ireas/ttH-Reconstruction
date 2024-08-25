@@ -12,10 +12,10 @@ import numpy as np
 
 
 # CONSTANTS
-MATCHED_ROOT_FILE = "/media/ireas/Data/v5/merged_root/all_8+j_1530766e_merged.root"
+MATCHED_ROOT_FILE = "/media/ireas/Data/v6/merged_root/all_8+j_1530766e_merged.root"
 CONVERTED_H5_FILE = "/media/ireas/Data/v5/merged_h5/all_8+j_1530766e.h5"
 SPANET_PREDICTION_H5_FILE = "/media/ireas/Data/v5/predicted/prediction_all_8+j_1530766e.h5"
-INJECTED_OUTPUT_ROOT_FILE = "/media/ireas/Data/v5/injected/all_8+j_1530766e_injected.root"
+INJECTED_OUTPUT_ROOT_FILE = "/media/ireas/Data/v6/injected/all_8+j_1530766e_injected.root"
 
 
 def main():

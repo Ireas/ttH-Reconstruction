@@ -13,10 +13,10 @@ from timeit import default_timer as timer
 # needs manually tweaking of the branches
 
 
-CURRENT_FOLDER = "all_6+j/"
+CURRENT_FOLDER = "all_8+j/"
 
-INPUT_PATH = "/media/ireas/Data/v5/matched/"
-OUTPUT_PATH = "/media/ireas/Data/v5/converted/"
+INPUT_PATH = "/media/ireas/Data/v6/matched/"
+OUTPUT_PATH = "/media/ireas/Data/v6/converted/"
 
 
 # main method 

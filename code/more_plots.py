@@ -10,17 +10,17 @@ import matplotlib.pyplot as plt
 plt.rc('axes', labelsize=14)    # fontsize of the x and y labels
 plt.rc('xtick', labelsize=13)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=13)    # fontsize of the tick labels
-plt.rc('legend', fontsize=11)    # legend fontsize
+plt.rc('legend', fontsize=14)    # legend fontsize
 plt.rc('figure', titlesize=16)  # fontsize of the figure title
 
 
 # CONSTANTS
 INJECTED_ROOT_FILE = "/media/ireas/Data/v5/weighted/all_8+j_1530766e_weighted.root"
-PLOT_DESTINATION = "/home/ireas/git_repos/master/plots/separation_power/"
+PLOT_DESTINATION = "/home/ireas/git_repos/master/plots/more_plots/"
 
 CLASSIFIER_VARIABLE_NAME = "neutrino_weighting/classification_event_completion"
 
-SHOW_PLOTS = False
+
 SKIP_AUGMENTING = False
 
 
@@ -139,55 +139,242 @@ PLOT_TUPLES = [
 #    ),
 ]
 
+def plot_2d_hist(name, dist1, bin1, dist2, bin2, normalize="not", plot_options=None):
+    # Compute the 2D histogram
+    hist, xedges, yedges = np.histogram2d(dist1, dist2, bins=[bin1, bin2])
+        
+    # Normalize the histogram based on the provided option
+    if normalize == "hist":
+        hist = hist / np.sum(hist)
+    elif normalize == "row":
+        hist = hist / hist.sum(axis=1, keepdims=True)
+    elif normalize == "col":
+        hist = hist / hist.sum(axis=0, keepdims=True)
+    elif normalize == "not":
+        pass  # Do nothing, no normalization
+    else:
+        print("Warning: Invalid normalization option. No normalization applied.")
+    
+    # Create the plot
+    fig, ax = plt.subplots()
+    
+    # Plot the 2D histogram
+    im = ax.imshow(hist.T, origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]], aspect='auto')
+    
+    # Check bin size condition
+    if len(bin1) < 10 and len(bin2) < 10:
+        # Add labels to each bin
+        for i in range(len(xedges) - 1):
+            for j in range(len(yedges) - 1):
+                text = ax.text((xedges[i] + xedges[i + 1]) / 2, 
+                               (yedges[j] + yedges[j + 1]) / 2, 
+                               f'{hist[i, j]:.2f}', 
+                               ha='center', va='center', color='white')
+    else:
+        # Plot colorbar if bin count is large
+        plt.colorbar(im, ax=ax)
+    
+    # Apply plot options
+    if plot_options:
+        if 'title' in plot_options:
+            ax.set_title(plot_options['title'])
+        if 'xlabel' in plot_options:
+            ax.set_xlabel(plot_options['xlabel'])
+        if 'ylabel' in plot_options:
+            ax.set_ylabel(plot_options['ylabel'])
+    
+    # Set limits
+    ax.set_xlim([xedges[0], xedges[-1]])
+    ax.set_ylim([yedges[0], yedges[-1]])
+    
+    plt.savefig(f"{PLOT_DESTINATION}{name}.png")
+    plt.clf()
+
 
 def main():
-    # augment the dataset with custom variables
-    augmentations = {}
-    if not SKIP_AUGMENTING:
-        print(f"augmenting {INJECTED_ROOT_FILE}")
-        augmentations = augment_variables()
+
+
+    with uproot.open(INJECTED_ROOT_FILE) as root_file:			
+        nw_weights = np.array( root_file["neutrino_weighting/NW_weight"].array() )
+        met_values = np.array( root_file["neutrino_weighting/reco_met_value"].array() )/1e3
+        lepton_energies = np.array( root_file["neutrino_weighting/reco_lepton_e"].array() )/1e3
+        lepton_pts = np.array( root_file["neutrino_weighting/reco_lepton_pt"].array() )/1e3
+        classification_event = np.array( root_file["neutrino_weighting/classification_event_completion"].array() )
+        classification_t1 = np.array( root_file["neutrino_weighting/classification_true_t1_decay"].array() )
+        classification_t2 = np.array( root_file["neutrino_weighting/classification_true_t2_decay"].array() )
+        classification_higgs = np.array( root_file["neutrino_weighting/classification_true_higgs_decay"].array() )
+        classification_onshell = np.array( root_file["neutrino_weighting/classification_onshell_whad"].array() )
+
+
+        spanet_probabilities_t1_assignment = np.array( root_file["neutrino_weighting/spanet_t1_assignment_probability"].array() )
+        spanet_probabilities_t1_detection = np.array( root_file["neutrino_weighting/spanet_t1_detection_probability"].array() )
+        spanet_probabilities_t1_marginal = np.array( root_file["neutrino_weighting/spanet_t1_marginal_probability"].array() )
+        spanet_probabilities_t2_assignment = np.array( root_file["neutrino_weighting/spanet_t2_assignment_probability"].array() )
+        spanet_probabilities_t2_detection = np.array( root_file["neutrino_weighting/spanet_t2_detection_probability"].array() )
+        spanet_probabilities_t2_marginal = np.array( root_file["neutrino_weighting/spanet_t2_marginal_probability"].array() )
+        spanet_probabilities_HW_assignment = np.array( root_file["neutrino_weighting/spanet_HW_assignment_probability"].array() )
+        spanet_probabilities_HW_detection = np.array( root_file["neutrino_weighting/spanet_HW_detection_probability"].array() )
+        spanet_probabilities_HW_marginal = np.array( root_file["neutrino_weighting/spanet_HW_marginal_probability"].array() )
+
+
+        short_t1_ass = np.array([])
+        short_met = np.array([])
+        #short_t1 = np.array([])
+        #short_t2 = np.array([])
+        #short_HW = np.array([])
+            
+        for (event, met, assignment) in zip(classification_event, met_values, spanet_probabilities_t1_assignment):
+            if event!=-2:
+                continue
+            
+            short_t1_ass = np.append(short_t1_ass, assignment)
+            short_met = np.append(short_met, met)
+            #short_t1 = np.append(short_t1, t1)
+            #short_t2 = np.append(short_t2, t2)
+            #short_HW = np.append(short_HW, higgs)
+
+
+        # test plot
+        plot_2d_hist(
+            "t1_assignment_vs_met_incomplete", 
+            short_t1_ass,
+            np.linspace(0,1,11),
+            short_met,
+            np.linspace(0,200,11),
+            normalize = "hist",
+            plot_options = {
+                "title" : r"$t\bar{t}(H\rightarrow WW\rightarrow qql\nu)$ + not all jets found only",
+                "xlabel" : r"$t_1$ Assignment Probability",
+                "ylabel" : r"Missing Transverse Energy [GeV]",
+            }
+        )
+        #plot_2d_hist(
+        #    "t1_assignment_vs_t2_decay", 
+        #    short_t1_ass,
+        #    np.linspace(0,1,6),
+        #    short_t2,
+        #    np.linspace(-1,4,6),
+        #    normalize = True,
+        #    plot_options = {
+        #        "title" : r"$t\bar{t}(H\rightarrow WW)$ only",
+        #        "xlabel" : r"$t_1$ Assignment Probability",
+        #        "ylabel" : r"Classifier t1 Decay",
+        #    }
+        #)
+        #plot_2d_hist(
+        #    "t1_assignment_vs_H_decay", 
+        #    short_t1_ass,
+        #    np.linspace(0,1,6),
+        #    short_HW,
+        #    np.linspace(10,15,7),
+        #    normalize = True,
+        #    plot_options = {
+        #        "title" : r"$t\bar{t}(H\rightarrow WW)$ only",
+        #        "xlabel" : r"$t_1$ Assignment Probability",
+        #        "ylabel" : r"Classifier Higgs Decay",
+        #    }
+        #)        
+
+        # test plot
+#        plot_2d_hist(
+#            "nw_weight_vs_met_value", 
+#            nw_weights,
+#            np.linspace(0,1,5),
+#            met_values,
+#            np.linspace(0,100,10),
+#            normalize = True,
+#            plot_options = {
+#                "xlabel" : "NW Weight",
+#                "ylabel" : r"Missing $E_T$ [GeV]",
+#            }
+#        )
+#        plot_2d_hist(
+#            "nw_weight_vs_lepton_energies", 
+#            nw_weights,
+#            np.linspace(0,1,5),
+#            lepton_energies,
+#            np.linspace(0,100,10),
+#            normalize = True,
+#            plot_options = {
+#                "xlabel" : "NW Weight",
+#                "ylabel" : r"Lepton $E$ [GeV]",
+#            }
+#        )
+#        plot_2d_hist(
+#            "nw_weight_vs_lepton_pts", 
+#            nw_weights,
+#            np.linspace(0,1,5),
+#            lepton_pts,
+#            np.linspace(0,100,10),
+#            normalize = True,
+#            plot_options = {
+#                "xlabel" : "NW Weight",
+#                "ylabel" : r"Lepton $p_t$ [GeV]",
+#            }
+#        )
+#        plot_2d_hist(
+#            "t1_vs_t2", 
+#            classification_t1,
+#            np.linspace(-1,4,6),
+#            classification_t2,
+#            np.linspace(-1,4,6),
+#            normalize = True,
+#            plot_options = {
+#                "xlabel" : r"classifier $t_1$",
+#                "ylabel" : r"classifier $t_2$",
+#            }
+#        )
+#        plot_2d_hist(
+#            "spanet_detection_t1_vs_t2", 
+#            spanet_probabilities_t1_detection,
+#            np.linspace(0,1,20),
+#            spanet_probabilities_t2_detection,
+#            np.linspace(0,1,20),
+#            normalize = True,
+#            plot_options = {
+#                "xlabel" : r"SPA-Net $t_1$ Detection Probabiity",
+#                "ylabel" : r"SPA-Net $t_2$ Detection Probabiity",
+#            }
+#        )
+#        plot_2d_hist(
+#            "spanet_detection_t1_vs_HW", 
+#            spanet_probabilities_t1_detection,
+#            np.linspace(0,1,20),
+#            spanet_probabilities_HW_detection,
+#            np.linspace(0,1,20),
+#            normalize = True,
+#            plot_options = {
+#                "xlabel" : r"SPA-Net $t_1$ Detection Probabiity",
+#                "ylabel" : r"SPA-Net $W_\text{had}$ Detection Probabiity",
+#            }
+#        )
+#        plot_2d_hist(
+#            "spanet_assignment_t1_vs_t2", 
+#            spanet_probabilities_t1_assignment,
+#            np.linspace(0,1,20),
+#            spanet_probabilities_t2_assignment,
+#            np.linspace(0,1,20),
+#            normalize = True,
+#            plot_options = {
+#                "xlabel" : r"SPA-Net $t_1$ Assignment Probabiity",
+#                "ylabel" : r"SPA-Net $t_2$ Assignment Probabiity",
+#            }
+#        )
+#        plot_2d_hist(
+#            "spanet_assignment_t1_vs_HW", 
+#            spanet_probabilities_t1_assignment,
+#            np.linspace(0,1,20),
+#            spanet_probabilities_HW_assignment,
+#            np.linspace(0,1,20),
+#            normalize = True,
+#            plot_options = {
+#                "xlabel" : r"SPA-Net $t_1$ Assignment Probabiity",
+#                "ylabel" : r"SPA-Net $W_\text{had}$ Assignment Probabiity",
+#            }
+#        )
     
-
-    print(f"calculating and plotting")
-    # loop over all targeted variables
-    for target_tuple in PLOT_TUPLES:
-        # access truple
-        variable = target_tuple[0]
-        bins = target_tuple[1]
-        
-        print(f" > {variable}")
-        
-
-        # ity check
-        if len(bins-1)==0:
-            print(f" >> Error: bins are empty, skipping")
-            continue
+    exit()
     
-
-        # access root file
-        print(f" >> binning split into {len(bins)-1} bins from {np.round(min(bins),3)} to {np.round(max(bins),3)}")
-        
-        # get signal and background
-        signal, background = get_distributions(variable, augmentations)
-
-        if (len(signal)==0 or len(background)==0 ):
-            print(" >> signal", len(signal), signal)
-            print(" >> background", len(background), background)
-            print(" >> empty entries, skipping")
-            continue
-        
-
-        # print true distribution
-        print(f" >> distributed reaches from {np.round(min(min(signal),min(background)),3)} to {np.round(max(max(signal),max(background)),3)}")
-        
-        # print separation power value
-        print(f" >> separation power equals {np.round(calculate_separation_power(signal, background, bins), 5)}")
-
-
-        # show separation plot
-        plot_separation(signal, background, target_tuple)
-        print(f" >> plots produced")
-        print()
 
 
 def augment_variables():
@@ -382,6 +569,10 @@ def plot_separation(signal, background, target_tuple):
         plt.show()
     else:
         plt.close()
+
+
+
+
 
 if __name__=="__main__":
     main()

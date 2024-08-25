@@ -15,6 +15,15 @@ PREDICTION_FILE = "/media/ireas/Data/v5/predicted/prediction_all_8+j_1530766e.h5
 TRUTH_FILE = "/media/ireas/Data/v5/merged_h5/all_8+j_1530766e.h5"
 
 
+#plt.rc('font', size=20)          # controls default text sizes
+#plt.rc('axes', titlesize=14)     # fontsize of the axes title
+plt.rc('axes', labelsize=14)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=13)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=13)    # fontsize of the tick labels
+plt.rc('legend', fontsize=14)    # legend fontsize
+plt.rc('figure', titlesize=16)  # fontsize of the figure title
+
+
 def main():
 	# open files
     file_pred = h5py.File(PREDICTION_FILE, 'r')
@@ -23,15 +32,12 @@ def main():
 	# transform to dictionaries for easy access
     dict_pred, dict_true = files_to_dictionaries(file_pred, file_true)
     
-    validate_all_events(dict_pred, dict_true, FULL_VALID_EVENTS_ONLY)
+    #validate_all_events(dict_pred, dict_true, FULL_VALID_EVENTS_ONLY)
     
     # plot as baptiste 
-    #plot_t1(dict_pred, dict_true, "assignment", FULL_VALID_EVENTS_ONLY, True)
-    #plot_t1(dict_pred, dict_true, "assignment", FULL_VALID_EVENTS_ONLY, False)
-    #plot_t1(dict_pred, dict_true, "detection", FULL_VALID_EVENTS_ONLY, True)
-    #plot_t1(dict_pred, dict_true, "detection", FULL_VALID_EVENTS_ONLY, False)
-    #plot_t1(dict_pred, dict_true, "marginal", FULL_VALID_EVENTS_ONLY, True)
-    #plot_t1(dict_pred, dict_true, "marginal", FULL_VALID_EVENTS_ONLY, False)
+    plot_t1(dict_pred, dict_true, "assignment", FULL_VALID_EVENTS_ONLY, True)
+    plot_t1(dict_pred, dict_true, "detection", FULL_VALID_EVENTS_ONLY, True)
+    plot_t1(dict_pred, dict_true, "marginal", FULL_VALID_EVENTS_ONLY, True)
 
 
     # close files
@@ -53,11 +59,11 @@ def plot_t1(dict_pred, dict_true, variable_name, use_full_valid_events_only, nor
     for (
             pred_t1_q1, pred_t1_q2, pred_t1_b, pred_t2_q1, pred_t2_q2, pred_t2_b, pred_HW_q1, pred_HW_q2,
             true_t1_q1, true_t1_q2, true_t1_b, true_t2_q1, true_t2_q2, true_t2_b, true_HW_q1, true_HW_q2,
-            pred_confidence_t1, pred_confidence_t2, pred_confidence_HW
+            pred_confidence_t1, pred_confidence_t2, pred_confidence_HW, event_status
         ) in zip(
             dict_pred["t1_q1"], dict_pred["t1_q2"], dict_pred["t1_b"], dict_pred["t2_q1"], dict_pred["t2_q2"], dict_pred["t2_b"], dict_pred["HW_q1"], dict_pred["HW_q2"],
             dict_true["t1_q1"], dict_true["t1_q2"], dict_true["t1_b"], dict_true["t2_q1"], dict_true["t2_q2"], dict_true["t2_b"], dict_true["HW_q1"], dict_true["HW_q2"],
-            dict_pred["t1_prediction_"+variable_name], dict_pred["t2_prediction_"+variable_name], dict_pred["HW_prediction_"+variable_name]
+            dict_pred["t1_prediction_"+variable_name], dict_pred["t2_prediction_"+variable_name], dict_pred["HW_prediction_"+variable_name], dict_true["classification_event_completion"]
         ):
             # confidence threshold
             if pred_confidence_t1<CONFIDENCE_THRESHOLD:
@@ -65,6 +71,9 @@ def plot_t1(dict_pred, dict_true, variable_name, use_full_valid_events_only, nor
             if pred_confidence_t2<CONFIDENCE_THRESHOLD:
                 continue
             if pred_confidence_HW<CONFIDENCE_THRESHOLD:
+                continue
+            
+            if event_status!=1:
                 continue
 
             # check which resonance are possible
@@ -110,13 +119,14 @@ def plot_t1(dict_pred, dict_true, variable_name, use_full_valid_events_only, nor
         plt.hist(confidence_impossible, bins, label="impossible", fill=False, histtype="step", weights=weights_impossible)
 
 	    # labels
-        plt.xlabel(f"SPANet Probability ({variable_name})")
-        plt.ylabel("Events Normalized")
+        plt.title("SPANet Prediction")
+        plt.xlabel(f"{variable_name[0].upper() + variable_name[1:]} Probability")
+        plt.ylabel("Relative Event Yield")
         plt.xlim([0,1])
         plt.legend()
 
         # output
-        plt.savefig(f"spanet_probability_{variable_name}_normed.png")
+        plt.savefig(f"/home/ireas/git_repos/master/plots/baptiste_plot/spanet_probability_{variable_name}_complete_normed.png")
     else:
         # plot histogram
         plt.figure()
@@ -128,14 +138,15 @@ def plot_t1(dict_pred, dict_true, variable_name, use_full_valid_events_only, nor
         plt.hist(confidence_impossible, bins, label="impossible", fill=False, histtype="step")
 
 	    # labels
-        plt.xlabel(f"SPANet Probability ({variable_name})")
-        plt.ylabel("Events")
+        plt.title("SPANet Prediction")
+        plt.xlabel(f"{variable_name[0].upper() + variable_name[1:]} Probability")
+        plt.ylabel("Event Yield")
         plt.xlim([0,1])
         plt.yscale("log")
         plt.legend()
 
         # output
-        plt.savefig(f"spanet_probability_{variable_name}.png")
+        plt.savefig(f"/home/ireas/git_repos/master/plots/baptiste_plot/spanet_probability_{variable_name}_complete.png")
 
     if SHOW_PLOTS:
         plt.show()
@@ -334,6 +345,7 @@ def files_to_dictionaries(file_pred, file_true):
     dict_true["HW_q1"] = file_true["TARGETS"]["HW"]["q1"]
     dict_true["HW_q2"] = file_true["TARGETS"]["HW"]["q2"]
     
+    dict_true["classification_event_completion"] = file_true["OTHER"]["classification_event_completion"]
     
     return dict_pred, dict_true
 	

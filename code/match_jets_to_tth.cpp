@@ -1,5 +1,8 @@
 #include<string>
 #include<iostream>
+#include<fstream>
+#include<sstream>
+#include<map>
 #include<vector>
 using namespace std;
 #include"TROOT.h"
@@ -7,6 +10,9 @@ using namespace std;
 #include"TLorentzVector.h"
 #include"TChain.h"
 #include"TTree.h"
+#include"TH1.h"
+#include"TKey.h"
+#include"TClass.h"
 #include"ROOT/RDataFrame.hxx"
 #include<Math/VectorUtil.h> // for DeltaR
 #include<Math/Vector4D.h> // for PtEtaPhiEVector and PtEtaPhiMVector
@@ -25,6 +31,8 @@ const float PDG_MASS_WBOSON = 80.3692e3; // mass in MeV
 const float THRESHOLD_DELTA_R = 0.4; // maximum reco jet deviation from the truth for matching
 const float THRESHOLD_ONSHELL_DEFINITION = 1e3; // maximum deviation from DPG mass in MeV to classify as onshell
 
+const float LUMINOSITY = 300 * 1e3; //convert fm⁻1 to pb^-1 
+
 // Event Filter String
 const string FILTER = "(number_of_jets>=8)";// && classification_true_higgs_decay==-1 && classification_true_t1_decay==1 && classification_true_t2_decay==1";
 //&& ( signature_higgs_decay<0 || classification_onshell_whad==1 )
@@ -32,7 +40,11 @@ const string FILTER = "(number_of_jets>=8)";// && classification_true_higgs_deca
 
 // Paths
 const string INPUT_PATH = "/media/ireas/Data/download/";
-const string OUTPUT_PATH = "/media/ireas/Data/v5/matched/all_8+j/";
+const string OUTPUT_PATH = "/media/ireas/Data/v6/matched/all_8+j/";
+
+// File path
+std::string XSEC_PATH = "/media/ireas/Data/PMGxsecDB_mc16.txt";
+	
 
 
 const char* INPUT_FILE_NAMES[] = { // put into array for easier access	
@@ -303,6 +315,10 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"mcChannelNumber",
 	"eventNumber",
 
+	// weights
+	"SM_event_xsecs",
+	"SM_event_weight",
+	
 	// global event information
 	"number_of_jets",
 	"number_of_bjets",
@@ -357,6 +373,13 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"higgs_decay_mode_custom",
 	"higgs_decay_decay_mode",
 };
+
+// Dictionaries to store dataset_number: crossSection_pb and dataset_number: kFactor
+int currentDSID = -1;
+std::map<int, double> xSecs;
+std::map<int, double> kFactors;
+std::map<int, double> genFiltersEff;
+std::map<int, double> sumOfWeights;
 
 
 // indicies and bit-shift amounts for different truth objects
@@ -839,6 +862,143 @@ PtEtaPhiMVector CombineTrueWLepFromHiggs(int classification_true_higgs_decay, Pt
 
 
 
+// Function to split a string by a delimiter and return the parts as a vector
+std::vector<std::string> split(const std::string &str, char delimiter) {
+    std::vector<std::string> tokens;
+    std::string token;
+    std::istringstream tokenStream(str);
+    while (std::getline(tokenStream, token, delimiter)) {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
+
+// Function to extract DSID
+std::string extractDSID(const std::string &filename) {
+    std::vector<std::string> parts = split(filename, '.');
+    if (parts.size() > 2) {
+        return parts[2]; // DSID is the third element (index 2)
+    } else {
+        return ""; // Return an empty string if the format is not as expected
+    }
+}
+
+
+int FillXsecMaps()
+{
+    // Open file
+    std::ifstream file(XSEC_PATH);
+    if (!file.is_open())
+	{
+        std::cerr << "Unable to open file: " << XSEC_PATH << std::endl;
+        return 1;
+    }
+
+
+	// Fill File
+    std::string line;
+    while (std::getline(file, line)) {
+        std::istringstream iss(line);
+        int dataset_number;
+        double crossSection_pb, kFactor, genFiltEff;
+
+        // Columns we are interested in: (1) dataset_number, (3) crossSection_pb, (5) kFactor
+        std::string dataset_str, physics_short, genFiltEff_str, kFactor_str, relUncertUP, relUncertDOWN, generator_name, etag;
+
+        if (!(iss >> dataset_number >> physics_short >> crossSection_pb >> genFiltEff >> kFactor >> relUncertUP >> relUncertDOWN >> generator_name >> etag)) {
+            continue; // Skip the line if it can't be parsed
+        }
+
+        // Fill the dictionaries
+        xSecs[dataset_number] = crossSection_pb;
+		genFiltersEff[dataset_number] = genFiltEff;
+        kFactors[dataset_number] = kFactor;
+    }
+
+
+    // Close the file
+    file.close();
+
+    return 0;
+}
+
+int FillSumOfWeights(string fileName, int DSID)
+{
+	string filePath = INPUT_PATH + fileName;
+
+    // Open the ROOT file
+    TFile *file = TFile::Open(filePath.c_str(), "READ");
+    if (!file || file->IsZombie()) {
+        std::cerr << "Error: Could not open file " << filePath << std::endl;
+        return 1;
+    }
+
+	// Variables to store the histogram once found
+    TH1 *hist = nullptr;
+    std::string histName;
+
+    // Iterate over the keys in the ROOT file to find the matching histogram
+    TIter next(file->GetListOfKeys());
+    TKey *key;
+    
+	while((key = (TKey*)next()))
+	{
+        // Check if the object is a histogram (TH1F)
+        if(key->GetClassName() == std::string("TH1F"))
+		{
+            histName = key->GetName();
+
+            // Check if the histogram name matches the desired pattern
+            if(histName.find("CutBookkeeper_") == 0)
+			{
+                //std::cout << "Found matching histogram: " << histName << std::endl;
+
+                // Get the histogram
+                hist = (TH1*)file->Get(histName.c_str());
+                break;
+            }
+        }
+    }
+
+    // If a matching histogram was found, retrieve and print the content of bin 2
+    if(hist) 
+	{
+		// get correct content
+        double binContent = hist->GetBinContent(2);
+
+		// save sum of weights of same DSID
+		if(sumOfWeights.find(DSID) != sumOfWeights.end())
+		{
+			// DSID already exists
+        	sumOfWeights[DSID] += binContent;
+    	}
+		else
+		{
+        	// Key does not exist, create it with value 'x'
+        	sumOfWeights[DSID] = binContent;
+    	}
+    } 
+	else {
+        std::cerr << "No matching histogram found in " << fileName << std::endl;
+		exit(1);
+    }
+
+
+    // Clean up
+    file->Close();
+	return 0;
+}
+
+
+double GenerateSMxSec()
+{
+	return xSecs[currentDSID] * genFiltersEff[currentDSID] * kFactors[currentDSID];
+}
+double GenerateSMWeights(float mc_weight)
+{
+	return mc_weight * LUMINOSITY * xSecs[currentDSID] * genFiltersEff[currentDSID] * kFactors[currentDSID] / sumOfWeights[currentDSID];
+}
+
 
 // ==========  MAIN  ==========
 // ===========================
@@ -847,8 +1007,33 @@ int match(string input_file);
 
 int main(int argc, char** argv)
 {
+	// fill dictionaries beforehand for properly weighted MC events
+	std::cout << "Prepare proper SM weights" << std::endl;
+	FillXsecMaps();
+
+
+	// loop all samples for sum of weights 
 	for(int i=0; i<sizeof(INPUT_FILE_NAMES)/sizeof(char*); i++)
 	{
+    	// gets DSID and estimates weights 
+		currentDSID = std::stoi( extractDSID(INPUT_FILE_NAMES[i]) );	
+		FillSumOfWeights(INPUT_FILE_NAMES[i], currentDSID);
+	}
+
+	for(const auto& entry : sumOfWeights)
+	{
+        std::cout << "  Weights summed " << entry.first << ": " << entry.second << std::endl;
+    }
+
+
+	std::cout << std::endl << "Loop trough all input files" << std::endl;
+	// loop all samples for matching
+	for(int i=0; i<sizeof(INPUT_FILE_NAMES)/sizeof(char*); i++)
+	{
+    	// get current DSID    
+		currentDSID = std::stoi( extractDSID(INPUT_FILE_NAMES[i]) );		
+		std::cout << INPUT_FILE_NAMES[i] << " -> "  << currentDSID  << std::endl;
+
 		std::cout << "(" << i+1 << "/" << sizeof(INPUT_FILE_NAMES)/sizeof(char*) << ") - Processing: " << INPUT_FILE_NAMES[i] << std::endl;
 		match(INPUT_FILE_NAMES[i]);
 		std::cout << std::endl;
@@ -902,6 +1087,19 @@ int match(string input_file)
 		cout << " > Warning: there are " << nMismatchedEvents.GetValue() << " / " << nTotalEvents.GetValue() << " mismatched events! skipping..." << endl;
 		return -1;
 	}
+
+
+	// get proper SM weights
+	rLoopManager = rLoopManager.Define(
+		"SM_event_xsecs", 
+		GenerateSMxSec, 
+		{}
+	);
+	rLoopManager = rLoopManager.Define(
+		"SM_event_weight", 
+		GenerateSMWeights, 
+		{"weight_mc_NOSYS"}
+	);
 
 
 	// generate jet lorentz vectors
@@ -1414,8 +1612,6 @@ int match(string input_file)
 // ===========================================
 
 // ==========  GENERATE LORENTZ VECTORS
-PtEtaPhiMVector GenerateLorentzVectorM(Float_t pt, Float_t eta, Float_t phi, Float_t mass){return PtEtaPhiMVector(pt,eta,phi,mass);}
-PtEtaPhiEVector GenerateLorentzVectorE(Float_t pt, Float_t eta, Float_t phi, Float_t energy){return PtEtaPhiEVector(pt,eta,phi,energy);}
 PtEtaPhiMVector GenerateLorentzVectorMHiggsDecision(Float_t pt1, Float_t eta1, Float_t phi1, Float_t mass1, Int_t pdgId1, Float_t pt2, Float_t eta2, Float_t phi2, Float_t mass2, Int_t pdgId2){
 	if(abs(pdgId1)>=1 && abs(pdgId1)<=8){
 		return PtEtaPhiMVector(pt1,eta1,phi1,mass1);

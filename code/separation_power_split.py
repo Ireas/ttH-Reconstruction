@@ -39,90 +39,90 @@ PLOT_TUPLES = [
         r"Mass $m_{W,\text{lep}}$ [GeV]", #x-axis
         False,
     ),
-#    (
-#        "neutrino_weighting/spanet_t1_assignment_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Assignment Probability $t_1$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_t1_detection_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Detection Probability $t_1$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_t1_marginal_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Margin Probability $t_1$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_t2_assignment_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Assignment Probability $t_2$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_t2_detection_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Detection Probability $t_2$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_t2_marginal_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Margin Probability $t_2$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_HW_assignment_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Assignment Probability $W_H$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_HW_detection_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Detection Probability $W_H$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_HW_marginal_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Margin Probability $W_H$", #x-axis
-#        False,
-#    ),
-#    (
-#        "t1_energy", # variable name
-#        np.linspace(0,2e3,21), # binning
-#        "SPANet Prediction", #title
-#        r"Energy $t_1$ [GeV]", #x-axis
-#        False,
-#    ),
-#    (
-#        "t2_energy", # variable name
-#        np.linspace(0,2e3,21), # binning
-#        "SPANet Prediction", #title
-#        r"Energy $t_2$ [GeV]", #x-axis
-#        False,
-#    ),
-#    (
-#        "HW_energy", # variable name
-#        np.linspace(0,1e3,21), # binning
-#        "SPANet Prediction", #title
-#        r"Energy $H_W$ [GeV]", #x-axis
-#        False,
-#    ),
+    (
+        "neutrino_weighting/spanet_t1_assignment_probability", # variable name
+        np.linspace(0,1,11), # binning
+        "SPANet Prediction", #title
+        r"Assignment Probability $t_1$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_t1_detection_probability", # variable name
+        np.linspace(0,1,11), # binning
+        "SPANet Prediction", #title
+        r"Detection Probability $t_1$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_t1_marginal_probability", # variable name
+        np.linspace(0,1,11), # binning
+        "SPANet Prediction", #title
+        r"Margin Probability $t_1$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_t2_assignment_probability", # variable name
+        np.linspace(0,1,11), # binning
+        "SPANet Prediction", #title
+        r"Assignment Probability $t_2$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_t2_detection_probability", # variable name
+        np.linspace(0,1,11), # binning
+        "SPANet Prediction", #title
+        r"Detection Probability $t_2$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_t2_marginal_probability", # variable name
+        np.linspace(0,1,11), # binning
+        "SPANet Prediction", #title
+        r"Margin Probability $t_2$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_HW_assignment_probability", # variable name
+        np.linspace(0,1,11), # binning
+        "SPANet Prediction", #title
+        r"Assignment Probability $W_H$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_HW_detection_probability", # variable name
+        np.linspace(0,1,11), # binning
+        "SPANet Prediction", #title
+        r"Detection Probability $W_H$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_HW_marginal_probability", # variable name
+        np.linspace(0,1,11), # binning
+        "SPANet Prediction", #title
+        r"Margin Probability $W_H$", #x-axis
+        False,
+    ),
+    (
+        "t1_energy", # variable name
+        np.linspace(0,2e3,21), # binning
+        "SPANet Prediction", #title
+        r"Energy $t_1$ [GeV]", #x-axis
+        False,
+    ),
+    (
+        "t2_energy", # variable name
+        np.linspace(0,2e3,21), # binning
+        "SPANet Prediction", #title
+        r"Energy $t_2$ [GeV]", #x-axis
+        False,
+    ),
+    (
+        "HW_energy", # variable name
+        np.linspace(0,1e3,21), # binning
+        "SPANet Prediction", #title
+        r"Energy $H_W$ [GeV]", #x-axis
+        False,
+    ),
 #    (
 #        "neutrino_weighting/number_of_jets", # variable name
 #        np.arange(8,14,1), # binning
@@ -168,11 +168,18 @@ def main():
         print(f" >> binning split into {len(bins)-1} bins from {np.round(min(bins),3)} to {np.round(max(bins),3)}")
         
         # get signal and background
-        signal, background = get_distributions(variable, augmentations)
+        signal, split_background = get_distributions(variable, augmentations)
 
-        if (len(signal)==0 or len(background)==0 ):
+        background = np.array([])
+        background = np.append(background, split_background[0])
+        background = np.append(background, split_background[1])
+        background = np.append(background, split_background[2])
+        background = np.append(background, split_background[3])
+        background = np.append(background, split_background[4])
+
+
+        if (len(signal)==0 ):
             print(" >> signal", len(signal), signal)
-            print(" >> background", len(background), background)
             print(" >> empty entries, skipping")
             continue
         
@@ -180,12 +187,9 @@ def main():
         # print true distribution
         print(f" >> distributed reaches from {np.round(min(min(signal),min(background)),3)} to {np.round(max(max(signal),max(background)),3)}")
         
-        # print separation power value
-        print(f" >> separation power equals {np.round(calculate_separation_power(signal, background, bins), 5)}")
-
 
         # show separation plot
-        plot_separation(signal, background, target_tuple)
+        plot_separation(signal, split_background, target_tuple)
         print(f" >> plots produced")
         print()
 
@@ -266,26 +270,43 @@ def augment_variables():
 
 def get_distributions(variable, augmentations):
     signal = np.array([])
-    background = np.array([])
-
+    background_ttbar = np.array([])
+    background_ttHbb = np.array([])
+    background_ttHtautau = np.array([])
+    background_ttHWWqqqq = np.array([])
+    background_other = np.array([])
+    
+    
     with uproot.open(INJECTED_ROOT_FILE) as root_file:			
         classifier = np.array( root_file[CLASSIFIER_VARIABLE_NAME].array() )
+        higgs_decays = np.array( root_file["neutrino_weighting/classification_true_higgs_decay"].array() )
         
         # get distribution from augments or rootfile directly 
         distribution = np.array([])
+        
         if variable in augmentations:
             distribution = augmentations[variable]
         else:
             distribution = np.array( root_file[variable].array() )
 
         # filter by event type
-        for (classification, value) in zip(classifier, distribution):
+        for (classification, value, higgs_decay) in zip(classifier, distribution, higgs_decays):
             if classification==1 or classification==-2:
                 signal = np.append(signal, value)
             else:
-                background = np.append(background, value)
+                if higgs_decay==-1:
+                    background_ttbar = np.append(background_ttbar, value)
+                elif higgs_decay==2:
+                    background_ttHbb = np.append(background_ttHbb, value)
+                elif higgs_decay==3:
+                    background_ttHtautau = np.append(background_ttHtautau, value)
+                elif higgs_decay==10:
+                    background_ttHWWqqqq = np.append(background_ttHWWqqqq, value)
+                else:
+                    background_other = np.append(background_other, value)
 
-    return signal, background
+    return signal, [background_ttbar, background_ttHbb, background_ttHtautau, background_ttHWWqqqq, background_other]
+
 
 
 def transform_to_histogram(signal, background, bins, normalize=False):
@@ -325,7 +346,15 @@ def calculate_separation_power(signal, background, bins):
     return separation_power
 
 
-def plot_separation(signal, background, target_tuple):
+def plot_separation(signal, split_background, target_tuple):
+    # access backgrounds
+    ttbar_background = split_background[0]
+    ttHbb_background = split_background[1]
+    ttHtautau_background = split_background[2]
+    ttHWWqqqq_background = split_background[3]
+    other_background = split_background[4]
+    
+
     # access target tuple
     variable = target_tuple[0]
     bins = target_tuple[1]
@@ -340,7 +369,11 @@ def plot_separation(signal, background, target_tuple):
     
     # needed weights to scale histogram to 1
     weights_signal = np.ones_like(signal)/float(len(signal))
-    weights_background = np.ones_like(background)/float(len(background))
+    weights_ttbar_background = np.ones_like(ttbar_background)/float(len(ttbar_background))
+    weights_ttHbb_background = np.ones_like(ttHbb_background)/float(len(ttHbb_background))
+    weights_ttHtautau_background = np.ones_like(ttHtautau_background)/float(len(ttHtautau_background))
+    weights_ttHWWqqqq_background = np.ones_like(ttHWWqqqq_background)/float(len(ttHWWqqqq_background))
+    weights_other_background = np.ones_like(other_background)/float(len(other_background))
 
     
     # create plot
@@ -353,10 +386,31 @@ def plot_separation(signal, background, target_tuple):
 
     # create histogram
     plt.hist(
-        [signal, background],
-        bins,
-        weights=[weights_signal, weights_background], # normalize
-        label=["Signal","Background"],
+        [# splt samples
+            other_background,
+            ttHWWqqqq_background,
+            ttHtautau_background,
+            ttHbb_background,
+            ttbar_background,
+            signal, 
+        ],
+        bins, # same bins for everyone
+        weights=[# normalize
+            weights_other_background,
+            weights_ttHWWqqqq_background,
+            weights_ttHtautau_background,
+            weights_ttHbb_background,
+            weights_ttbar_background,
+            weights_signal, 
+        ],
+        label=[ # legend
+            r"other",
+            r"$t\bar{t}(H\rightarrow WW)_\text{hadronic}$",
+            r"$t\bar{t}(H\rightarrow\tau\tau)$",
+            r"$t\bar{t}(H\rightarrow bb)$",
+            r"$t\bar{t}$",
+            r"$t\bar{t}(H\rightarrow WW)_\text{semilep.}$",
+        ],
         histtype='step',
         stacked=False,
         fill=False
@@ -377,7 +431,7 @@ def plot_separation(signal, background, target_tuple):
         plt.xticks(range(int(min_value), int(max_value)))
 
     # save figure
-    plt.savefig(PLOT_DESTINATION+f"separation_{variable.split('/')[-1]}.png")
+    plt.savefig(PLOT_DESTINATION+f"separation_split_{variable.split('/')[-1]}.png")
     if SHOW_PLOTS:
         plt.show()
     else:

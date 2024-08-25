@@ -4,13 +4,22 @@ import h5py
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+#plt.rc('font', size=20)          # controls default text sizes
+#plt.rc('axes', titlesize=14)     # fontsize of the axes title
+plt.rc('axes', labelsize=14)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=13)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=13)    # fontsize of the tick labels
+#plt.rc('legend', fontsize=14)    # legend fontsize
+#plt.rc('figure', titlesize=14)  # fontsize of the figure title
+
+FILE_PREDICTION = "/media/ireas/Data/v5/predicted/prediction_all_8+j_1530766e.h5"
+FILE_TRUTH = "/media/ireas/Data/v5/merged_h5/all_8+j_1530766e.h5"
+
 def main():
-    # check if input is correct
-    assert len(sys.argv)>=3, "Error: prediction and truth file needed! exiting"
-    
     # open files
-    pred_file = h5py.File(sys.argv[1], 'r')
-    true_file = h5py.File(sys.argv[2], 'r')
+    pred_file = h5py.File(FILE_PREDICTION, 'r')
+    true_file = h5py.File(FILE_TRUTH, 'r')
     
     # access predicted assignments
     pred_t1q1 = np.array( pred_file['TARGETS']['t1']['q1'][()] )
@@ -32,16 +41,21 @@ def main():
     true_HWq1 = np.array( true_file['TARGETS']['HW']['q1'][()] )
     true_HWq2 = np.array( true_file['TARGETS']['HW']['q2'][()] )
 
+    event_status = np.array( true_file["OTHER"]["classification_event_completion"][()])
+    t1_decays = np.array( true_file["OTHER"]["classification_true_t1_decay"][()])
+    t2_decays = np.array( true_file["OTHER"]["classification_true_t2_decay"][()])
+    higgs_decays = np.array( true_file["OTHER"]["classification_true_higgs_decay"][()])
+
 
     # create arrays with fixed positions (t1q1, t1q2, t1b, t2q1, t2q2, t2b, HWq1, HWq2, invalid)
-    row_t1q1 = calculate_row(pred_t1q1, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2)
-    row_t1q2 = calculate_row(pred_t1q2, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2)
-    row_t1b = calculate_row(pred_t1b, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2)
-    row_t2q1 = calculate_row(pred_t2q1, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2)
-    row_t2q2 = calculate_row(pred_t2q2, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2)
-    row_t2b = calculate_row(pred_t2b, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2)
-    row_HWq1 = calculate_row(pred_HWq1, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2)
-    row_HWq2 = calculate_row(pred_HWq2, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2)
+    row_t1q1 = calculate_row(pred_t1q1, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2, event_status, t1_decays, t2_decays, higgs_decays)
+    row_t1q2 = calculate_row(pred_t1q2, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2, event_status, t1_decays, t2_decays, higgs_decays)
+    row_t1b = calculate_row(pred_t1b, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2, event_status, t1_decays, t2_decays, higgs_decays)
+    row_t2q1 = calculate_row(pred_t2q1, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2, event_status, t1_decays, t2_decays, higgs_decays)
+    row_t2q2 = calculate_row(pred_t2q2, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2, event_status, t1_decays, t2_decays, higgs_decays)
+    row_t2b = calculate_row(pred_t2b, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2, event_status, t1_decays, t2_decays, higgs_decays)
+    row_HWq1 = calculate_row(pred_HWq1, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2, event_status, t1_decays, t2_decays, higgs_decays)
+    row_HWq2 = calculate_row(pred_HWq2, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2, event_status, t1_decays, t2_decays, higgs_decays)
 
 
     # print output
@@ -81,10 +95,10 @@ def main():
         row_t2q2[:-1]/row_t2q2[:-1].sum(), 
         row_t2b[:-1]/row_t2b[:-1].sum(),
         row_HWq1[:-1]/row_HWq1[:-1].sum(),
-        row_HWq2[:-1]/row_HWq2[:-1].sum()]
-    )
+        row_HWq2[:-1]/row_HWq2[:-1].sum()
+    ])
 
-    plt.figure()
+    plt.figure(figsize=(8,5))
     plt.pcolormesh(
         np.arange(-0.5, matrix_norm_row.shape[1]),
         np.arange(-0.5, matrix_norm_row.shape[0]),
@@ -99,29 +113,38 @@ def main():
     plt.xlabel("true labels")
     plt.xticks(
         [0,1,2,3,4,5,6,7],
-        labels=[r"$t_{1q1}$",r"$t_{1q2}$",r"$t_{1b}$",r"$t_{2q1}$",r"$t_{2q2}$",r"$t_{2b}$",r"$HW_{q1}$",r"$HW_{q2}$"]
+        labels=[r"$t_{1,q1}$",r"$t_{1,q2}$",r"$t_{1,b}$",r"$t_{2,q1}$",r"$t_{2,q2}$",r"$t_{2,b}$",r"$W_{\text{had},q1}$",r"$W_{\text{had},q2}$"]
     )
     plt.ylabel("predicted labels")
     plt.yticks(
         [0,1,2,3,4,5,6,7],
-        labels=[r"$t_{1q1}$",r"$t_{1q2}$",r"$t_{1b}$",r"$t_{2q1}$",r"$t_{2q2}$",r"$t_{2b}$",r"$HW_{q1}$",r"$HW_{q2}$"]
+        labels=[r"$t_{1,q1}$",r"$t_{1,q2}$",r"$t_{1,b}$",r"$t_{2,q1}$",r"$t_{2,q2}$",r"$t_{2,b}$",r"$W_{\text{had},q1}$",r"$W_{\text{had},q2}$"]
     )
 
-    plt.savefig("assignment.png")
+    plt.savefig("/home/ireas/git_repos/master/plots/assignment_matrix/assignment_ttbar_only.png")
     #plt.show()
 
 
 
-def calculate_row(pred_indicies, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2):
+def calculate_row(pred_indicies, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2, event_status, t1_decays, t2_decays, higgs_decays):
     # create array with fixed positions (t1q1, t1q2, t1b, t2q1, t2q2, t2b, HWq1, HWq2, invalid)
     fixed_row = np.array([0,0,0,0,0,0,0,0,0], dtype=np.intc)
 
     # fill array
-    for (pred_index, t1q1, t1q2, t1b, t2q1, t2q2, t2b, HWq1, HWq2) in zip(pred_indicies, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2):
+    for (pred_index, t1q1, t1q2, t1b, t2q1, t2q2, t2b, HWq1, HWq2, status, t1_decay, t2_decay, HW_decay) in zip(pred_indicies, true_t1q1, true_t1q2, true_t1b, true_t2q1, true_t2q2, true_t2b, true_HWq1, true_HWq2, event_status, t1_decays, t2_decays, higgs_decays):
         # event is invalid
         if (t1q1==0 and t1q2==0 and t1b==0 and t2q1==0 and t2q2==0 and t2b==0 and HWq1==0 and HWq2==0):
             continue
         
+        # skip everything with H for ttbar matrix
+        if (HW_decay!=-1):
+            continue
+
+
+        # only ttH->WW->qqlv?0
+        #if status!=1:
+        #    continue
+
         # ignore incomplete events?
         #if (t1q1==-1 or t1q2==-1 or t1b==-1 or t2q1==-1 or t2q2==-1 or t2b==-1 or HWq1==-1 or HWq2==-1):
         #    continue

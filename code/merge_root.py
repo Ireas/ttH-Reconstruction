@@ -9,8 +9,8 @@ from timeit import default_timer as timer
 # constants
 INPUT_FOLDER = "all_8+j/"
 
-INPUT_PATH = "/media/ireas/Data/v5/matched/"
-OUTPUT_PATH = "/media/ireas/Data/v5/merged_root/"
+INPUT_PATH = "/media/ireas/Data/v6/matched/"
+OUTPUT_PATH = "/media/ireas/Data/v6/merged_root/"
 
 
 # main method 
