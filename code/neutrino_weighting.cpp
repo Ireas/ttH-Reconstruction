@@ -24,12 +24,12 @@ const double SIGMA = 10e3; //resolutions missing transverse energy in MeV
 //>> sampling neutrino eta
 const double SAMPLE_ETA_NU_MIN = -3;
 const double SAMPLE_ETA_NU_MAX = 3;
-const double SAMPLE_ETA_NU_STEP	= 3e-2; //200 bins
+const double SAMPLE_ETA_NU_STEP	= 6e-2; //100 bins
 
 //>> sampling mass leptonic W-boson in MeV
 const double SAMPLE_MASS_WLEP_MIN = 0;
 const double SAMPLE_MASS_WLEP_MAX = 50e3;
-const double SAMPLE_MASS_WLEP_STEP = 25e1; //200 bins
+const double SAMPLE_MASS_WLEP_STEP = 50e1; //100 bins
 
 //>> sampling mass higgs boson for smearing in MeV
 const double SAMPLE_MASS_HIGGS_SMEAR_MIN = -1e3;
@@ -48,13 +48,17 @@ const double SAMPLE_FINE_MASS_WLEP_STEP = 200; //40 bins
 
 
 //>> input/output directories/files
-const string INPUT_FILE = "/media/ireas/Data/v6/injected/all_8+j_1530766e_injected.root";
-const string OUTPUT_FILE = "/media/ireas/Data/v6/weighted/all_8+j_1530766e_weighted.root";
+const string INPUT_FILE = "/media/ireas/Data/v6/injected/all_8+j_1530557e_injected.root";
+const string OUTPUT_FILE = "/media/ireas/Data/v6/weighted/all_8+j_1530557e_merged.root";
 
 const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	// logistics
 	"mcChannelNumber",
 	"eventNumber",
+
+	// weights
+	"SM_event_xsecs",
+	"SM_event_weight",
 
 	// global event information
 	"number_of_jets",
@@ -66,7 +70,11 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"jet_eta",
 	"jet_phi",
 	"jet_e_NOSYS",
-	"jet_DL1dv01_FixedCutBEff_85_select",
+	"jet_btag_60wp", // btags
+	"jet_btag_70wp",
+	"jet_btag_77wp",
+	"jet_btag_85wp",
+	"jet_btag_continous",
 	"jet_final_match_mask",
 	"reco_lepton_pt", // lepton
 	"reco_lepton_eta",

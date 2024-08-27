@@ -9,10 +9,10 @@ from timeit import default_timer as timer
 MAX_EVENTS_PER_FILE = -1 #-1 to use all events
 SUCCESSFUL_ONLY = False
 
-INPUT_FOLDER = "ttbar_6+j/"
+INPUT_FOLDER = "all_8+j/"
 
-INPUT_PATH = "/media/ireas/Data/v5/converted/"
-OUTPUT_PATH = "/media/ireas/Data/v5/merged_h5/"
+INPUT_PATH = "/media/ireas/Data/v6/converted/"
+OUTPUT_PATH = "/media/ireas/Data/v6/merged_h5/"
 
 
 successful_event_history = {}

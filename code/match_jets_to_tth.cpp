@@ -34,7 +34,8 @@ const float THRESHOLD_ONSHELL_DEFINITION = 1e3; // maximum deviation from DPG ma
 const float LUMINOSITY = 300 * 1e3; //convert fm⁻1 to pb^-1 
 
 // Event Filter String
-const string FILTER = "(number_of_jets>=8)";// && classification_true_higgs_decay==-1 && classification_true_t1_decay==1 && classification_true_t2_decay==1";
+const string FILTER = "(number_of_jets>=8) && (classification_event_channel>=0) && (number_of_matches>0)";// && classification_true_higgs_decay==-1 && classification_true_t1_decay==1 && classification_true_t2_decay==1";
+const bool BREAK_AFTER_FIRST_FILE = false;
 //&& ( signature_higgs_decay<0 || classification_onshell_whad==1 )
 
 
@@ -177,6 +178,7 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000014.output.root",
 	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000015.output.root",
 	"user.chscheul.410472.PhPy8EG.DAOD_PHYS.e6348_s3681_r13167_p6026.ttHWW-240620-v1_output/user.chscheul.40043336._000016.output.root",
+	// ??? 
 	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000001.output.root",
 	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000002.output.root",
 	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043352._000003.output.root",
@@ -211,6 +213,7 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000014.output.root",
 	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000015.output.root",
 	"user.chscheul.411316.PowhegHerwig7EvtGen.DAOD_PHYS.e7765_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043355._000016.output.root",
+	// ??? 
 	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000002.output.root",
 	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000003.output.root",
 	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043358._000004.output.root",
@@ -232,6 +235,7 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000009.output.root",
 	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000010.output.root",
 	"user.chscheul.700121.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043362._000011.output.root",
+	// ??? 
 	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000001.output.root",
 	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000002.output.root",
 	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043359._000003.output.root",
@@ -260,6 +264,7 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000015.output.root",
 	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000016.output.root",
 	"user.chscheul.700122.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043363._000021.output.root",
+	// ??? 
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000001.output.root",
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000002.output.root",
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043360._000003.output.root",
@@ -278,6 +283,7 @@ const char* INPUT_FILE_NAMES[] = { // put into array for easier access
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000012.output.root",
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000013.output.root",
 	"user.chscheul.700123.Sh.DAOD_PHYS.e8253_s3681_r13145_p6026.ttHWW-240620-v1_output/user.chscheul.40043364._000014.output.root",
+	// ??? 
 	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000001.output.root",
 	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000002.output.root",
 	"user.chscheul.700124.Sh.DAOD_PHYS.e8253_s3681_r13144_p6026.ttHWW-240620-v1_output/user.chscheul.40043361._000003.output.root",
@@ -329,7 +335,11 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"jet_eta",
 	"jet_phi",
 	"jet_e_NOSYS",
-	"jet_DL1dv01_FixedCutBEff_85_select",
+	"jet_btag_continous", // b-tagging
+	"jet_btag_85wp",
+	"jet_btag_77wp",
+	"jet_btag_70wp",
+	"jet_btag_60wp",
 	"jet_final_match_mask",
 	"reco_lepton_pt", // lepton
 	"reco_lepton_eta",
@@ -360,6 +370,7 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"jet_to_object_indicies_fixed",
 
 	// classificiation
+	"classification_event_channel",
 	"classification_true_t1_decay",
 	"classification_true_t2_decay",
 	"classification_true_higgs_decay",
@@ -372,6 +383,9 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	// reco event classifier
 	"higgs_decay_mode_custom",
 	"higgs_decay_decay_mode",
+
+	// evaluation
+	"successful_matches",
 };
 
 // Dictionaries to store dataset_number: crossSection_pb and dataset_number: kFactor
@@ -380,6 +394,11 @@ std::map<int, double> xSecs;
 std::map<int, double> kFactors;
 std::map<int, double> genFiltersEff;
 std::map<int, double> sumOfWeights;
+
+std::map<int, int> successfulMatchHistory;
+std::map<int, int> successfulPossibleMatchHistory;
+std::map<int, int> successfulMatchHistorySignal;
+std::map<int, int> successfulPossibleMatchHistorySignal;
 
 
 // indicies and bit-shift amounts for different truth objects
@@ -450,6 +469,19 @@ int GetNumberOfLeptons(char el_select_loose_NOSYS, char muon_select_loose_NOSYS)
 
 // rename variables for new tree
 float RenameFloat(float target){return target;}
+int RenameInt(int target){return target;}
+vector<int> RenameVectorInt(vector<int> target){return target;}
+
+// convert char to int
+int ConvertCharToInt(char target){return (int)target;}
+vector<int> ConvertVectorCharToVectorInt(vector<char> target){
+	vector<int> new_target;
+	for(char element:target)
+	{
+		new_target.push_back((int)element);
+	}
+	return new_target;
+}
 
 // generate lorentz vector for truth object
 PtEtaPhiMVector GenerateLorentzVectorM(Float_t pt, Float_t eta, Float_t phi, Float_t mass){return PtEtaPhiMVector(pt,eta,phi,mass);}
@@ -681,6 +713,115 @@ int ClassifyEventCompletion(int classifier_true_t1_decay, int classifier_true_t2
 
 	return 1;
 }
+
+int ClassifyEventChannel(
+	int pgdid_t1_W_q1, int pgdid_t1_W_q2, int pgdid_t2_W_q1, int pgdid_t2_W_q2, // decay partcles from W from t 
+	int pgdid_H_d1, int pgdid_H_d2, // decay particles from H
+	int pgdid_H_d1_d1, int pgdid_H_d1_d2, int pgdid_H_d2_d1, int pgdid_H_d2_d2 // decay particles from decay from H
+)
+{
+	// check proper t decay
+	if( abs(pgdid_t1_W_q1)>100 || abs(pgdid_t1_W_q2)>100 || abs(pgdid_t2_W_q1)>100 || abs(pgdid_t2_W_q2)>100 )
+	{
+		return -1; // invalid
+	}
+
+	// check if H does not exits
+	if( abs(pgdid_H_d1)>100 || abs(pgdid_H_d2)>100 )
+	{
+		return 1; // ttbar
+	}
+
+	// check for H->bb
+	if( abs(pgdid_H_d1)==5 && abs(pgdid_H_d2)==5 )
+	{
+		return 2; // tt(H->bb)
+	}
+	// check for H->cc
+	if( abs(pgdid_H_d1)==4 && abs(pgdid_H_d2)==4 )
+	{
+		return 3; // tt(H->cc)
+	}
+	// check for H->tautau
+	if( abs(pgdid_H_d1)==15 && abs(pgdid_H_d2)==15 )
+	{
+		return 4; // tt(H->tautau)
+	}
+	// check for H->ZZ
+	if( abs(pgdid_H_d1)==23 && abs(pgdid_H_d2)==23 )
+	{
+		return 5; // tt(H->ZZ)
+	}
+	// check for H->yy
+	if( abs(pgdid_H_d1)==22 && abs(pgdid_H_d2)==22 )
+	{
+		return 6; // tt(H->yy)
+	}
+
+	// check for others not H->WW decays
+	if( !(abs(pgdid_H_d1)==24 && abs(pgdid_H_d2)==24) )
+	{
+		return 4; // tt(H->OTHER)
+	}
+
+
+	// check for H->WW
+	if( abs(pgdid_H_d1)==24 && abs(pgdid_H_d2)==24 )
+	{
+		//check for full hadronic decays
+		if( 
+			(abs(pgdid_H_d1_d1)>0 && abs(pgdid_H_d1_d1)<7) && 
+			(abs(pgdid_H_d1_d2)>0 && abs(pgdid_H_d1_d2)<7) && 
+			(abs(pgdid_H_d2_d1)>0 && abs(pgdid_H_d2_d1)<7) && 
+			(abs(pgdid_H_d2_d2)>0 && abs(pgdid_H_d2_d2)<7) 
+		)
+		{
+			return 10; // tt(H->qqqq)
+		}
+		
+		//check for semileptonic decays
+		if( 
+			(abs(pgdid_H_d1_d1)>10 && abs(pgdid_H_d1_d1)<17) && 
+			(abs(pgdid_H_d1_d2)>10 && abs(pgdid_H_d1_d2)<17) &&
+			(abs(pgdid_H_d2_d1)>0 && abs(pgdid_H_d2_d1)<7) && 
+			(abs(pgdid_H_d2_d2)>0 && abs(pgdid_H_d2_d2)<7)
+		)
+		{
+			return 11; // tt(H->lvqq) including tau as l
+		}
+		if( 
+			(abs(pgdid_H_d1_d1)>0 && abs(pgdid_H_d1_d1)<7) && 
+			(abs(pgdid_H_d1_d2)>0 && abs(pgdid_H_d1_d2)<7) &&
+			(abs(pgdid_H_d2_d1)>10 && abs(pgdid_H_d2_d1)<17) && 
+			(abs(pgdid_H_d2_d2)>10 && abs(pgdid_H_d2_d2)<17)
+		)
+		{
+			return 11; // tt(H->qqlv) including tau as l
+		}
+
+		// check for dileptonic decays
+		if( 
+			(abs(pgdid_H_d1_d1)>10 && abs(pgdid_H_d1_d1)<17) && 
+			(abs(pgdid_H_d1_d2)>10 && abs(pgdid_H_d1_d2)<17) && 
+			(abs(pgdid_H_d2_d1)>10 && abs(pgdid_H_d2_d1)<17) && 
+			(abs(pgdid_H_d2_d2)>10 && abs(pgdid_H_d2_d2)<17) 
+		)
+		{
+			return 12; // tt(H->lvlv)
+		}
+
+		// sanity check, should never reach this place
+		else
+		{
+			return -2; // invalid
+		}
+		
+	}
+
+	// default, should never reach this place
+	return 0;
+}
+
 
 
 int ClassifyRecoLeptonFlavour(char passElectronChar, char passMuonChar)
@@ -989,6 +1130,19 @@ int FillSumOfWeights(string fileName, int DSID)
 	return 0;
 }
 
+int CountMatches(vector<int> jetToObjectIndiciesFixed)
+{
+	int counter = 0;
+	for(int i=0; i<jetToObjectIndiciesFixed.size(); i++)
+	{
+		if(jetToObjectIndiciesFixed[i]!=-1)
+		{
+			counter++;
+		}
+	}
+	return counter;
+}
+
 
 double GenerateSMxSec()
 {
@@ -1000,6 +1154,157 @@ double GenerateSMWeights(float mc_weight)
 }
 
 
+int EvalutateMatching(
+	int pgdid_t1_W_q1, int pgdid_t1_W_q2, int pgdid_t2_W_q1, int pgdid_t2_W_q2, 
+	int pgdid_H_d1, int pgdid_H_d2, 
+	int pgdid_H_d1_d1, int pgdid_H_d1_d2, int pgdid_H_d2_d1, int pgdid_H_d2_d2,
+	vector<int> final_match_mask, int event_channel
+){
+	if(event_channel<0)
+	{
+		return -2;
+	}
+
+	vector<int> successful_matches = {-1,-1,-1,-1,-1};
+
+	// check t1
+	if( !( abs(pgdid_t1_W_q1)>100 || abs(pgdid_t1_W_q2)>100 ) )
+	{
+		if(
+			final_match_mask[TRUTH_PARTONS::b_from_t]!=-1 &&
+			final_match_mask[TRUTH_PARTONS::Wdecay1_from_t]!=-1 &&
+			final_match_mask[TRUTH_PARTONS::Wdecay2_from_t]!=-1
+		)
+		{
+			successful_matches[3] = 1;
+		}
+		else
+		{
+			successful_matches[3] = 0;
+		}
+	}
+
+	// check t2
+	if( !( abs(pgdid_t2_W_q1)>100 || abs(pgdid_t2_W_q2)>100 ) )
+	{
+		if(
+			final_match_mask[TRUTH_PARTONS::b_from_tbar]!=-1 &&
+			final_match_mask[TRUTH_PARTONS::Wdecay1_from_tbar]!=-1 &&
+			final_match_mask[TRUTH_PARTONS::Wdecay2_from_tbar]!=-1
+		)
+		{
+			successful_matches[4] = 1;
+		}
+		else
+		{
+			successful_matches[4] = 0;
+		}
+	}
+
+
+	// check ttbar
+	if(( successful_matches[3]!=-1 || successful_matches[4]!=-1 ) )
+	{
+		if(successful_matches[3]==1 && successful_matches[4]==1)
+		{
+			successful_matches[2] = 1;
+		}
+		else
+		{
+			successful_matches[2] = 0;
+		}
+	}
+
+	if( !( abs(pgdid_H_d1)>100 || abs(pgdid_t2_W_q2)>100 || abs(pgdid_H_d1_d1)>100 || abs(pgdid_H_d2_d1)>100 || abs(pgdid_H_d1_d2)>100 || abs(pgdid_H_d2_d2)>100 ) )
+	{
+		if(
+			final_match_mask[TRUTH_PARTONS::Wdecay1_from_H]!=-1 &&
+			final_match_mask[TRUTH_PARTONS::Wdecay2_from_H]!=-1
+		)
+		{
+			successful_matches[1] = 1;
+		}
+		else
+		{
+			successful_matches[1] = 0;
+		}
+	}
+
+	// check event
+	if( successful_matches[1]!=-1 && successful_matches[2]!=-1 )
+	{
+		if(successful_matches[1]==1 && successful_matches[2]==1)
+		{
+			successful_matches[0] = 1;
+		}
+		else
+		{
+			successful_matches[0] = 0;
+		}
+	}
+
+	// save entries for later, only which are possible
+	if(successful_matches[0]!=-1) // ttH full event
+	{
+		successfulMatchHistory[0]+= successful_matches[0];
+		successfulPossibleMatchHistory[0]+= 1;
+	}
+	if(successful_matches[1]!=-1) // H hadronic W
+	{
+		successfulMatchHistory[1]+= successful_matches[1];
+		successfulPossibleMatchHistory[1]+= 1;
+	}
+	if(successful_matches[2]!=-1) // ttbar
+	{
+		successfulMatchHistory[2]+= successful_matches[2];
+		successfulPossibleMatchHistory[2]+= 1;
+	}
+	if(successful_matches[3]!=-1) // t1
+	{
+		successfulMatchHistory[3]+= successful_matches[3];
+		successfulPossibleMatchHistory[3]+= 1;
+	}
+	if(successful_matches[4]!=-1) // t2
+	{
+		successfulMatchHistory[4]+= successful_matches[4];
+		successfulPossibleMatchHistory[4]+= 1;
+	}
+
+	// second signal only check
+	if(event_channel==11)
+	{	
+		if(successful_matches[0]!=-1) // ttH full event
+		{
+			successfulMatchHistorySignal[0]+= successful_matches[0];
+			successfulPossibleMatchHistorySignal[0]+= 1;
+		}
+		if(successful_matches[1]!=-1) // H hadronic W
+		{
+			successfulMatchHistorySignal[1]+= successful_matches[1];
+			successfulPossibleMatchHistorySignal[1]+= 1;
+		}
+		if(successful_matches[2]!=-1) // ttbar
+		{
+			successfulMatchHistorySignal[2]+= successful_matches[2];
+			successfulPossibleMatchHistorySignal[2]+= 1;
+		}
+		if(successful_matches[3]!=-1) // t1
+		{
+			successfulMatchHistorySignal[3]+= successful_matches[3];
+			successfulPossibleMatchHistorySignal[3]+= 1;
+		}
+		if(successful_matches[4]!=-1) // t2
+		{
+			successfulMatchHistorySignal[4]+= successful_matches[4];
+			successfulPossibleMatchHistorySignal[4]+= 1;
+		}
+	}
+
+
+	return successful_matches[0];
+}
+
+
 // ==========  MAIN  ==========
 // ===========================
 int match(string input_file);
@@ -1007,8 +1312,31 @@ int match(string input_file);
 
 int main(int argc, char** argv)
 {
+	// prepare evaluation
+	successfulMatchHistory[0] = 0;
+	successfulMatchHistory[1] = 0;
+	successfulMatchHistory[2] = 0;
+	successfulMatchHistory[3] = 0;
+	successfulMatchHistory[4] = 0;
+	successfulPossibleMatchHistory[0] = 0;
+	successfulPossibleMatchHistory[1] = 0;
+	successfulPossibleMatchHistory[2] = 0;
+	successfulPossibleMatchHistory[3] = 0;
+	successfulPossibleMatchHistory[4] = 0;
+	successfulMatchHistorySignal[0] = 0;
+	successfulMatchHistorySignal[1] = 0;
+	successfulMatchHistorySignal[2] = 0;
+	successfulMatchHistorySignal[3] = 0;
+	successfulMatchHistorySignal[4] = 0;
+	successfulPossibleMatchHistorySignal[0] = 0;
+	successfulPossibleMatchHistorySignal[1] = 0;
+	successfulPossibleMatchHistorySignal[2] = 0;
+	successfulPossibleMatchHistorySignal[3] = 0;
+	successfulPossibleMatchHistorySignal[4] = 0;
+
+
 	// fill dictionaries beforehand for properly weighted MC events
-	std::cout << "Prepare proper SM weights" << std::endl;
+	std::cout << "Calculate proper SM weights" << std::endl;
 	FillXsecMaps();
 
 
@@ -1022,11 +1350,11 @@ int main(int argc, char** argv)
 
 	for(const auto& entry : sumOfWeights)
 	{
-        std::cout << "  Weights summed " << entry.first << ": " << entry.second << std::endl;
+        std::cout << " > summed SM weights for " << entry.first << ": " << entry.second << std::endl;
     }
 
 
-	std::cout << std::endl << "Loop trough all input files" << std::endl;
+	std::cout << std::endl << "Loop trough all input files..." << std::endl << std::endl;
 	// loop all samples for matching
 	for(int i=0; i<sizeof(INPUT_FILE_NAMES)/sizeof(char*); i++)
 	{
@@ -1037,6 +1365,39 @@ int main(int argc, char** argv)
 		std::cout << "(" << i+1 << "/" << sizeof(INPUT_FILE_NAMES)/sizeof(char*) << ") - Processing: " << INPUT_FILE_NAMES[i] << std::endl;
 		match(INPUT_FILE_NAMES[i]);
 		std::cout << std::endl;
+
+		if(i==0 && BREAK_AFTER_FIRST_FILE){
+			break;
+		}
+	}
+
+
+	// print matching evaluation
+	std::cout << std::endl << "Overall Truth-Matching Evaluation" << std::endl;
+	std::cout << " > all valid events" << std::endl;
+	for(int i=0; i<5; i++)
+	{
+		if(successfulPossibleMatchHistory[i]>0)
+		{
+			std::cout << "   " << i << ": " << successfulMatchHistory[i] << "/" << successfulPossibleMatchHistory[i] << " = " << (float)successfulMatchHistory[i]/successfulPossibleMatchHistory[i] << std::endl;
+		}
+		else
+		{
+			std::cout << "   " <<  i << ": " << successfulMatchHistory[i] << "/" << successfulPossibleMatchHistory[i] << std::endl; 
+		}
+	}
+
+	std::cout << std::endl << " > valid signal events only" << std::endl;
+	for(int i=0; i<5; i++)
+	{
+		if(successfulPossibleMatchHistory[i]>0)
+		{
+			std::cout << "   " << i << ": " << successfulMatchHistorySignal[i] << "/" << successfulPossibleMatchHistorySignal[i] << " = " << (float)successfulMatchHistorySignal[i]/successfulPossibleMatchHistorySignal[i] << std::endl;
+		}
+		else
+		{
+			std::cout << "   " <<  i << ": " << successfulMatchHistorySignal[i] << "/" << successfulPossibleMatchHistorySignal[i] << std::endl; 
+		}
 	}
 
 	return 0;
@@ -1045,40 +1406,27 @@ int main(int argc, char** argv)
 
 int match(string input_file)
 {
-	// ==========  SETUP
-	// =================	
+	// SETUP
+	// ==============================	
 	// setup TChain
 	cout << " > setup TChain" << endl;
 	TChain rRecoChain("reco");
 	TChain rTruthChain("truth");
-
 
 	// link input file
 	auto file_path = std::string();
 	file_path.append(INPUT_PATH).append(input_file);
 	rRecoChain.Add(file_path.c_str());
 	rTruthChain.Add(file_path.c_str());
-	
-	// link multiple input files
-	//	for(auto input_file_name:INPUT_FILE_NAMES){
-	//		auto file_path = std::string();	
-	//		file_path.append(INPUT_PATH).append(input_file_name);
-	//		rRecoChain.Add(file_path.c_str());
-	//		rTruthChain.Add(file_path.c_str());
-	//		std::cout << file_path << std::endl;
-	//	}
-
 
 	// index TruthChain to kick out un-matched events - then declare friends
 	rTruthChain.BuildIndex("mcChannelNumber", "eventNumber");  // just for security, use DSID too
 	rRecoChain.AddFriend(&rTruthChain);
 
-
 	// setup RDataFrame
 	cout << " > setup RDataFrame" << endl;
 	auto rDataFrame = RDataFrame(rRecoChain);
 	auto rLoopManager = rDataFrame.Range(0); // no limit on input
-
 
 	// check if chains are matched properly
 	auto nTotalEvents = rLoopManager.Count();
@@ -1089,6 +1437,8 @@ int match(string input_file)
 	}
 
 
+	// GENERATE SM WEIGHTS
+	// ==============================
 	// get proper SM weights
 	rLoopManager = rLoopManager.Define(
 		"SM_event_xsecs", 
@@ -1102,6 +1452,8 @@ int match(string input_file)
 	);
 
 
+	// JETS
+	// ==============================
 	// generate jet lorentz vectors
 	rLoopManager = rLoopManager.Define(
 		"lvecs_jets", 
@@ -1219,6 +1571,16 @@ int match(string input_file)
 		ClassifyEventCompletion,
 		{"classification_true_t1_decay", "classification_true_t2_decay", "classification_true_higgs_decay", "jet_to_object_indicies_fixed"}
 	);
+	rLoopManager = rLoopManager.Define(
+		"classification_event_channel",
+		ClassifyEventChannel,
+		{
+			"Tth_MC_Wdecay1_from_t_pdgId", "Tth_MC_Wdecay2_from_t_pdgId", "Tth_MC_Wdecay1_from_tbar_pdgId", "Tth_MC_Wdecay2_from_tbar_pdgId",
+			"Tth_MC_Higgs_decay1_pdgId", "Tth_MC_Higgs_decay2_pdgId", 
+			"Tth_MC_Higgs_decay1_from_decay1_pdgId", "Tth_MC_Higgs_decay2_from_decay1_pdgId", "Tth_MC_Higgs_decay1_from_decay2_pdgId", "Tth_MC_Higgs_decay2_from_decay2_pdgId"
+		}
+	);
+
 
 
 	rLoopManager = rLoopManager.Define(
@@ -1332,13 +1694,6 @@ int match(string input_file)
 
 
 
-
-
-
-	
-
-
-	
 	// reconstruct objects from matched jets
 	rLoopManager = rLoopManager.Define(
 		"reconstructed_t_lvec",
@@ -1369,67 +1724,6 @@ int match(string input_file)
 		ReconstructHW,
 		{"lvecs_jets", "jet_final_match_mask"}
 	); 
-
-
-
-	
-
-
-	// rename truth trees
-	rLoopManager = rLoopManager.Define(
-		"truth_t_m",
-		RenameFloat,
-		{"truth.Tth_MC_t_afterFSR_m"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"truth_tbar_m",
-		RenameFloat,
-		{"truth.Tth_MC_tbar_afterFSR_m"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"truth_W_from_t_m",
-		RenameFloat,
-		{"truth.Tth_MC_W_from_t_m"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"truth_W_from_tbar_m",
-		RenameFloat,
-		{"truth.Tth_MC_W_from_tbar_m"}
-	);
-	
-	rLoopManager = rLoopManager.Define(
-		"truth_t_pt",
-		RenameFloat,
-		{"truth.Tth_MC_t_afterFSR_pt"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"truth_tbar_pt",
-		RenameFloat,
-		{"truth.Tth_MC_tbar_afterFSR_pt"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"truth_W_from_t_pt",
-		RenameFloat,
-		{"truth.Tth_MC_W_from_t_pt"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"truth_W_from_tbar_pt",
-		RenameFloat,
-		{"truth.Tth_MC_W_from_tbar_pt"}
-	);
-
-
-	rLoopManager = rLoopManager.Define(
-		"reco_met_value",
-		RenameFloat,
-		{"met_met_NOSYS"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"reco_met_phi",
-		RenameFloat,
-		{"met_phi_NOSYS"}
-	);
-
 
 	// get higgs information
 	rLoopManager = rLoopManager.Define(
@@ -1546,17 +1840,6 @@ int match(string input_file)
 		{"Tth_MC_Higgs_decay1_from_decay1_pdgId", "Tth_MC_Higgs_decay2_from_decay1_pdgId", "Tth_MC_Higgs_decay1_from_decay2_pdgId", "Tth_MC_Higgs_decay2_from_decay2_pdgId"}
 	);
 
-
-
-
-
-	
-
-
-
-
-
-
 	//>> get correct lepton information
 	rLoopManager = rLoopManager.Define(
 		"reco_lepton_pt",
@@ -1586,12 +1869,119 @@ int match(string input_file)
 	);
 
 
+	rLoopManager = rLoopManager.Define(
+		"number_of_matches",
+		CountMatches,
+		{"jet_to_object_indicies_fixed"}
+	);
 
+
+
+	// RENAMING
+	// ==============================
+	// b-tagging
+	rLoopManager = rLoopManager.Define(
+		"jet_btag_continous",
+		RenameVectorInt,
+		{"jet_DL1dv01_Continuous_quantile"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"jet_btag_60wp",
+		ConvertVectorCharToVectorInt,
+		{"jet_DL1dv01_FixedCutBEff_60_select"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"jet_btag_70wp",
+		ConvertVectorCharToVectorInt,
+		{"jet_DL1dv01_FixedCutBEff_70_select"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"jet_btag_77wp",
+		ConvertVectorCharToVectorInt,
+		{"jet_DL1dv01_FixedCutBEff_77_select"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"jet_btag_85wp",
+		ConvertVectorCharToVectorInt,
+		{"jet_DL1dv01_FixedCutBEff_85_select"}
+	);
+
+	// truth top kinematics
+	rLoopManager = rLoopManager.Define(
+		"truth_t_m",
+		RenameFloat,
+		{"truth.Tth_MC_t_afterFSR_m"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"truth_tbar_m",
+		RenameFloat,
+		{"truth.Tth_MC_tbar_afterFSR_m"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"truth_W_from_t_m",
+		RenameFloat,
+		{"truth.Tth_MC_W_from_t_m"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"truth_W_from_tbar_m",
+		RenameFloat,
+		{"truth.Tth_MC_W_from_tbar_m"}
+	);
+	
+	rLoopManager = rLoopManager.Define(
+		"truth_t_pt",
+		RenameFloat,
+		{"truth.Tth_MC_t_afterFSR_pt"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"truth_tbar_pt",
+		RenameFloat,
+		{"truth.Tth_MC_tbar_afterFSR_pt"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"truth_W_from_t_pt",
+		RenameFloat,
+		{"truth.Tth_MC_W_from_t_pt"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"truth_W_from_tbar_pt",
+		RenameFloat,
+		{"truth.Tth_MC_W_from_tbar_pt"}
+	);
+
+	// reco met values
+	rLoopManager = rLoopManager.Define(
+		"reco_met_value",
+		RenameFloat,
+		{"met_met_NOSYS"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"reco_met_phi",
+		RenameFloat,
+		{"met_phi_NOSYS"}
+	);
 	
 
+	// EVALUATION
+	// ==============================
+	// count successful matches
+	rLoopManager = rLoopManager.Define(
+		"successful_matches",
+		EvalutateMatching,
+		{
+			"Tth_MC_Wdecay1_from_t_pdgId", "Tth_MC_Wdecay2_from_t_pdgId", "Tth_MC_Wdecay1_from_tbar_pdgId", "Tth_MC_Wdecay2_from_tbar_pdgId",
+			"Tth_MC_Higgs_decay1_pdgId", "Tth_MC_Higgs_decay2_pdgId", 
+			"Tth_MC_Higgs_decay1_from_decay1_pdgId", "Tth_MC_Higgs_decay2_from_decay1_pdgId", "Tth_MC_Higgs_decay1_from_decay2_pdgId", "Tth_MC_Higgs_decay2_from_decay2_pdgId",
+			"jet_final_match_mask", "classification_event_channel"
+		}
+	);
+
+
+	// FINALISE
+	// ==============================
 	// apply filter	and limit if needed
 	auto rLoopManagerFiltered = rLoopManager.Filter(FILTER).Range(MAX_NUMBER_OF_EVENTS);
-	cout << " > " << rLoopManagerFiltered.Count().GetValue() << " events passed the selection!" << endl;
+	cout << " > " << rLoopManagerFiltered.Count().GetValue() << " events passed the following selection: " << FILTER << endl;
 
 
 	// save snapshot to disk
@@ -1658,12 +2048,13 @@ vector<int> GenerateJetFinalMatchMasks(vector<PtEtaPhiEVector> jetLvecs, vector<
 	for(int i=0; i<jetFinalMatchMasks.size(); i++){
 		int closestTruthMatchValue = ClosestTruthMatchValueToJet(jetLvecs[i], jetPotentialMatchMasks[i], truthLvecs, unavailableTruthValues);
 
-		if(closestTruthMatchValue!=-1){ // closest available truth object is matched
+		if(closestTruthMatchValue!=-1)
+		{ // closest available truth object is matched
 			jetFinalMatchMasks[i] = 1<<closestTruthMatchValue;
 			unavailableTruthValues.push_back(closestTruthMatchValue);
 		}	
 		else{
-			jetFinalMatchMasks[i] = 0; // no truth object has been matched successfully, unmatched jet
+			jetFinalMatchMasks[i] = -1; // no truth object has been matched successfully, unmatched jet
 		}	
 
 	}
@@ -1860,14 +2251,21 @@ vector<int> CollectJetToObjectIndiciesFixed(vector<int> jetFinalMatchMasks){
 	
 	for(int i=0; i<NUMBER_OF_TRUTH_OBJECTS; i++){// i equals the corresponding TRUTH_PARTON value
 		jetToObjectIndicies[i] = -1;
+
 		for(int j=0; j<jetFinalMatchMasks.size(); j++){
+			// skip invalid entries
+			if(jetFinalMatchMasks[j]<0)
+			{
+				continue;
+			}
+
 			if( (jetFinalMatchMasks[j] & 1<<i)!=0 ){ //final match is 1 for current TRUTH_PARTON
 				jetToObjectIndicies[i] = j;
 				break;
 			}
 		}
 	}
-	
+
 	return jetToObjectIndicies;
 }
 

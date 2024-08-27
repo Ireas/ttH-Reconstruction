@@ -9,10 +9,6 @@ from timeit import default_timer as timer
 
 # ==========  CONVERT .root TO .h5 FILES  ==========
 # ==================================================
-# converts .root files to .h5 files
-# needs manually tweaking of the branches
-
-
 CURRENT_FOLDER = "all_8+j/"
 
 INPUT_PATH = "/media/ireas/Data/v6/matched/"
@@ -23,12 +19,12 @@ OUTPUT_PATH = "/media/ireas/Data/v6/converted/"
 def main():
 	directory = os.fsencode(INPUT_PATH+CURRENT_FOLDER)
     
-	for file in os.listdir(directory):
+	for (i,file) in enumerate(os.listdir(directory)):
 		filename = os.fsdecode(file)
 
 		target_file = OUTPUT_PATH+CURRENT_FOLDER+"converted"+filename[7:-5]+".h5"
 
-		print("converting " + INPUT_PATH+CURRENT_FOLDER+filename + " -> " + "converted"+filename[7:-5]+".h5")
+		print(f" ({i+1}/{len(os.listdir(directory))}) - converting {INPUT_PATH+CURRENT_FOLDER+filename} -> converted{filename[7:-5]}.h5")
 		if os.path.exists(target_file):
 			print(" > target file exits already, skipping...")
 			print()
@@ -102,7 +98,7 @@ def fill_h5_from_root(h5_file, root_file):
 	root_pt = root_file['matched/jet_pt_NOSYS'].array()
 	root_eta = root_file['matched/jet_eta'].array()
 	root_phi = root_file['matched/jet_phi'].array()
-	root_btag = root_file['matched/jet_DL1dv01_FixedCutBEff_85_select'].array()
+	root_btag = root_file['matched/jet_btag_85wp'].array()
 
 	root_met_value = root_file['matched/reco_met_value'].array()
 	root_met_phi = root_file['matched/reco_met_phi'].array()

@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 
 
 # constants
-PREDICTION_FILE = "/media/ireas/Data/v5/predicted/prediction_all_8+j_1530766e.h5"
-TRUTH_FILE = "/media/ireas/Data/v5/merged_h5/all_8+j_1530766e.h5"
+PREDICTION_FILE = "/media/ireas/Data/v6/predicted/all_8+j_1573904e_predicted.h5"
+TRUTH_FILE = "/media/ireas/Data/v6/merged_h5/all_8+j_1573904e.h5"
 
 FULL_VALID_EVENTS_ONLY = False
 

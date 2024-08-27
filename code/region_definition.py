@@ -3,14 +3,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # CONSTANTS
-INJECTED_ROOT_FILE = "/media/ireas/Data/v5/weighted/all_8+j_1530766e_weighted.root"
+#INJECTED_ROOT_FILE = "/media/ireas/Data/v6/weighted/all_8+j_1530766e_weighted.root"
+#TREE = "neutrino_weighting"
 
+INJECTED_ROOT_FILE = "/media/ireas/Data/v6/injected/all_8+j_1530766e_injected.root"
 
 def main():
     # define region
-    signal_region = np.array([], dtype=np.intc)
-    control_region_Hbb = np.array([], dtype=np.intc)
-    rest_region = np.array([], dtype=np.intc)
+    signal_region = []
+    control_region_Hbb = []
+    rest_region = []
 
     n_events = 0
     n_events_signal = 0
@@ -19,78 +21,163 @@ def main():
     # fill regions
     with uproot.open(INJECTED_ROOT_FILE) as root_file:			
         # classifications
-        classifications_event_completion = np.array( root_file["neutrino_weighting/classification_event_completion"].array() )
-        classifications_true_t1_decay = np.array( root_file["neutrino_weighting/classification_true_t1_decay"].array() )
-        classifications_true_t2_decay = np.array( root_file["neutrino_weighting/classification_true_t2_decay"].array() )
-        classifications_true_higgs_decay = np.array( root_file["neutrino_weighting/classification_true_higgs_decay"].array() )
+        classifications_event_channel = np.array( root_file["matched/classification_event_channel"].array() )
     
         # spanet prediction
-        probabilities_t1_marginal = np.array( root_file["neutrino_weighting/spanet_t1_marginal_probability"].array() )
-        probabilities_t2_marginal = np.array( root_file["neutrino_weighting/spanet_t2_marginal_probability"].array() )
-        probabilities_HW_marginal = np.array( root_file["neutrino_weighting/spanet_HW_marginal_probability"].array() )
+        probabilities_t1_marginal = np.array( root_file["spanet/t1_marginal_probability"].array() )
+        probabilities_t2_marginal = np.array( root_file["spanet/t2_marginal_probability"].array() )
+        probabilities_HW_marginal = np.array( root_file["spanet/HW_marginal_probability"].array() )
 
         # jet multiplicities
-        b_jet_multiplicities = np.array( root_file["neutrino_weighting/number_of_bjets"].array() )
+        b_jet_multiplicities = np.array( root_file["matched/number_of_bjets"].array() )
 
         # kinematics
-        met_values_gev = np.array( root_file["neutrino_weighting/reco_met_value"].array() )/1e3
+        met_values_gev = np.array( root_file["matched/reco_met_value"].array() )/1e3
+        
+        sm_weights = np.array( root_file["matched/SM_event_weight"].array() )
     
 
         # loop and count
         for(
-            classification_event_completion, classification_true_t1_decay, classification_true_t2_decay, classification_true_higgs_decay,
+            sm_weight,
+            channel,
             probability_t1_marginal, probability_t2_marginal, probability_HW_marginal,
             b_jet_multiplicity, met_value_gev
         ) in zip(
-            classifications_event_completion, classifications_true_t1_decay, classifications_true_t2_decay, classifications_true_higgs_decay,
+            sm_weights,
+            classifications_event_channel,
             probabilities_t1_marginal, probabilities_t2_marginal, probabilities_HW_marginal,
             b_jet_multiplicities, met_values_gev,
         ):
             # transform to uniform event_var
-            event_var = transform_to_event_var(classification_event_completion, classification_true_t1_decay, classification_true_t2_decay, classification_true_higgs_decay)
             
             # signal region selection
-            if (probability_t1_marginal>0.6) and (probability_t2_marginal>0.6) and (probability_HW_marginal>0.6):
-                signal_region = np.append(signal_region, event_var)
+            if (probability_t1_marginal>0.3) and (probability_t2_marginal>0.3) and (probability_HW_marginal>0.3):
+                signal_region.append( (channel, sm_weight) )
             # control region for tt(H->bb)
-            elif (b_jet_multiplicity>2) and (met_value_gev<30):
-                control_region_Hbb = np.append(control_region_Hbb, event_var)
+            elif (b_jet_multiplicity>2) and (met_value_gev<20):
+                control_region_Hbb.append( (channel, sm_weight) )
             # rest region dump
             else:
-                rest_region = np.append(rest_region, event_var)
+                rest_region.append( (channel, sm_weight) )
             
             
             # counters
-            n_events+= 1
-            if event_var==1:
-                n_events_signal+= 1
+            n_events+= sm_weight
+            if channel==11:
+                n_events_signal+= sm_weight
+
+
+    # calculate sm weighted events
+    sr_ttHWWlvqq = 0
+    sr_ttHWWqqqq = 0
+    sr_ttHWWlvlv = 0
+    sr_ttHbb = 0
+    sr_ttHtautau = 0
+    sr_ttbar = 0
+    sr_other = 0
+    sr_all = 0
+    cr_ttHWWlvqq = 0
+    cr_ttHWWqqqq = 0
+    cr_ttHWWlvlv = 0
+    cr_ttHbb = 0
+    cr_ttHtautau = 0
+    cr_ttbar = 0
+    cr_other = 0
+    cr_all = 0
+    rr_ttHWWlvqq = 0
+    rr_ttHWWqqqq = 0
+    rr_ttHWWlvlv = 0
+    rr_ttHbb = 0
+    rr_ttHtautau = 0
+    rr_ttbar = 0
+    rr_other = 0
+    rr_all = 0
+
+    for (channel, sm_weight) in signal_region:
+        sr_all+= sm_weight
+        
+        if channel==11:
+            sr_ttHWWlvqq+= sm_weight
+        elif channel==10:
+            sr_ttHWWqqqq+= sm_weight
+        elif channel==12:
+            sr_ttHWWlvlv+= sm_weight
+        elif channel==2:
+            sr_ttHbb+= sm_weight
+        elif channel==4:
+            sr_ttHtautau+= sm_weight
+        elif channel==1:
+            sr_ttbar+= sm_weight
+        else:
+            sr_other+= sm_weight
+
+    for (channel, sm_weight) in control_region_Hbb:
+        cr_all+= sm_weight
+
+        if channel==11:
+            cr_ttHWWlvqq+= sm_weight
+        elif channel==10:
+            cr_ttHWWqqqq+= sm_weight
+        elif channel==12:
+            cr_ttHWWlvlv+= sm_weight
+        elif channel==2:
+            cr_ttHbb+= sm_weight
+        elif channel==4:
+            cr_ttHtautau+= sm_weight
+        elif channel==1:
+            cr_ttbar+= sm_weight
+        else:
+            cr_other+= sm_weight
+
+    for (channel, sm_weight) in rest_region:
+        rr_all+= sm_weight
+        
+        if channel==11:
+            rr_ttHWWlvqq+= sm_weight
+        elif channel==10:
+            rr_ttHWWqqqq+= sm_weight
+        elif channel==12:
+            rr_ttHWWlvlv+= sm_weight
+        elif channel==2:
+            rr_ttHbb+= sm_weight
+        elif channel==4:
+            rr_ttHtautau+= sm_weight
+        elif channel==1:
+            rr_ttbar+= sm_weight
+        else:
+            rr_other+= sm_weight
 
 
 
     # print regions
-    print(f"Signal Region: {len(signal_region)} ({np.round( 100*len(signal_region)/n_events ,2)}%) events")    
-    print(f" > tt(H->WW->qqlv): {np.sum(signal_region==1)} ({np.round( 100*np.sum(signal_region==1)/len(signal_region), 2)}%) ==> ({np.round( 100*np.sum(signal_region==1)/n_events_signal, 2)}%) of all signal")
-    print(f" > tt(H->WW->qqqq): {np.sum(signal_region==2)} ({np.round( 100*np.sum(signal_region==2)/len(signal_region), 2)}%)")
-    print(f" > tt(H->bb):       {np.sum(signal_region==3)} ({np.round( 100*np.sum(signal_region==3)/len(signal_region), 2)}%)")
-    print(f" > other:           {np.sum(signal_region==0)} ({np.round( 100*np.sum(signal_region==0)/len(signal_region), 2)}%)")
+    print(f"Signal Region: {np.round(sr_all, 2)} ({np.round( 100*sr_all/n_events ,2)}%) events")    
+    print(f" > tt(H->WW->qqlv): {np.round(sr_ttHWWlvqq, 2)} ({np.round( 100*sr_ttHWWlvqq/sr_all, 2)}%) ==> ({np.round( 100*sr_ttHWWlvqq/n_events_signal, 2)}%) of all signal")
+    print(f" > tt(H->WW->qqqq): {np.round(sr_ttHWWqqqq, 2)} ({np.round( 100*sr_ttHWWqqqq/sr_all, 2)}%)")
+    print(f" > tt(H->WW->lvlv): {np.round(sr_ttHWWlvlv, 2)} ({np.round( 100*sr_ttHWWlvlv/sr_all, 2)}%)")
+    print(f" > tt(H->bb):       {np.round(sr_ttHbb, 2)} ({np.round( 100*sr_ttHbb/sr_all, 2)}%)")
+    print(f" > tt(H->tautau):   {np.round(sr_ttHtautau, 2)} ({np.round( 100*sr_ttHtautau/sr_all, 2)}%)")
+    print(f" > ttbar:           {np.round(sr_ttbar, 2)} ({np.round( 100*sr_ttbar/sr_all, 2)}%)")
+    print(f" > other:           {np.round(sr_other, 2)} ({np.round( 100*sr_other/sr_all, 2)}%)")
     print(f"")
-    print(f"Control Region: {len(control_region_Hbb)} ({np.round( 100*len(control_region_Hbb)/n_events ,2)}%) events")
-    print(f" > tt(H->WW->qqlv): {np.sum(control_region_Hbb==1)} ({np.round( 100*np.sum(control_region_Hbb==1)/len(control_region_Hbb), 2)}%) ==> ({np.round( 100*np.sum(control_region_Hbb==1)/n_events_signal, 2)}%) of all signal")
-    print(f" > tt(H->WW->qqqq): {np.sum(control_region_Hbb==2)} ({np.round( 100*np.sum(control_region_Hbb==2)/len(control_region_Hbb), 2)}%)")
-    print(f" > tt(H->bb):       {np.sum(control_region_Hbb==3)} ({np.round( 100*np.sum(control_region_Hbb==3)/len(control_region_Hbb), 2)}%)")
-    print(f" > other:           {np.sum(control_region_Hbb==0)} ({np.round( 100*np.sum(control_region_Hbb==0)/len(control_region_Hbb), 2)}%)")
+    print(f"Control Region tt(H->bb): {np.round(cr_all, 2)} ({np.round( 100*cr_all/n_events ,2)}%) events")    
+    print(f" > tt(H->WW->qqlv): {np.round(cr_ttHWWlvqq, 2)} ({np.round( 100*cr_ttHWWlvqq/cr_all, 2)}%) ==> ({np.round( 100*cr_ttHWWlvqq/n_events_signal, 2)}%) of all signal")
+    print(f" > tt(H->WW->qqqq): {np.round(cr_ttHWWqqqq, 2)} ({np.round( 100*cr_ttHWWqqqq/cr_all, 2)}%)")
+    print(f" > tt(H->WW->lvlv): {np.round(cr_ttHWWlvlv, 2)} ({np.round( 100*cr_ttHWWlvlv/cr_all, 2)}%)")
+    print(f" > tt(H->bb):       {np.round(cr_ttHbb, 2)} ({np.round( 100*cr_ttHbb/cr_all, 2)}%)")
+    print(f" > tt(H->tautau):   {np.round(cr_ttHtautau, 2)} ({np.round( 100*cr_ttHtautau/cr_all, 2)}%)")
+    print(f" > ttbar:           {np.round(cr_ttbar, 2)} ({np.round( 100*cr_ttbar/cr_all, 2)}%)")
+    print(f" > other:           {np.round(cr_other, 2)} ({np.round( 100*cr_other/cr_all, 2)}%)")
     print(f"")
-    print(f"Rest Region: {len(rest_region)} ({np.round( 100*len(rest_region)/n_events ,2)}%) events")
-    print(f" > tt(H->WW->qqlv): {np.sum(rest_region==1)} ({np.round( 100*np.sum(rest_region==1)/len(rest_region), 2)}%) ==> ({np.round( 100*np.sum(rest_region==1)/n_events_signal, 2)}%) of all signal")
-    print(f" > tt(H->WW->qqqq): {np.sum(rest_region==2)} ({np.round( 100*np.sum(rest_region==2)/len(rest_region), 2)}%)")
-    print(f" > tt(H->bb):       {np.sum(rest_region==3)} ({np.round( 100*np.sum(rest_region==3)/len(rest_region), 2)}%)")
-    print(f" > other:           {np.sum(rest_region==0)} ({np.round( 100*np.sum(rest_region==0)/len(rest_region), 2)}%)")
+    print(f"Rest Region: {np.round(rr_all, 2)} ({np.round( 100*rr_all/n_events ,2)}%) events")    
+    print(f" > tt(H->WW->qqlv): {np.round(rr_ttHWWlvqq, 2)} ({np.round( 100*rr_ttHWWlvqq/rr_all, 2)}%) ==> ({np.round( 100*rr_ttHWWlvqq/n_events_signal, 2)}%) of all signal")
+    print(f" > tt(H->WW->qqqq): {np.round(rr_ttHWWqqqq, 2)} ({np.round( 100*rr_ttHWWqqqq/rr_all, 2)}%)")
+    print(f" > tt(H->WW->lvlv): {np.round(rr_ttHWWlvlv, 2)} ({np.round( 100*rr_ttHWWlvlv/rr_all, 2)}%)")
+    print(f" > tt(H->bb):       {np.round(rr_ttHbb, 2)} ({np.round( 100*rr_ttHbb/rr_all, 2)}%)")
+    print(f" > tt(H->tautau):   {np.round(rr_ttHtautau, 2)} ({np.round( 100*rr_ttHtautau/rr_all, 2)}%)")
+    print(f" > ttbar:           {np.round(rr_ttbar, 2)} ({np.round( 100*rr_ttbar/rr_all, 2)}%)")
+    print(f" > other:           {np.round(rr_other, 2)} ({np.round( 100*rr_other/rr_all, 2)}%)")
 
-
-    
-    
-    
-    # access variables
 
 
 def transform_to_event_var(event_completion, true_t1_decay, true_t2_decay, true_higgs_decay):
