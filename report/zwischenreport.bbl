@@ -4,7 +4,7 @@
 \providecommand{\eprint}[2][]{\url{#2}}
 
 \bibitem{theory:general_sm}
-{M. K. Gaillard et al.}, \emph{The standard model of particle physics}, Rev. Mod. Phys. \textbf{71(2)} (1999)
+{M. K. Gaillard, P. D. Grannis and F. J. Sciulli}, \emph{The standard model of particle physics}, Rev. Mod. Phys. \textbf{71(2)} (1999)
 
 \bibitem{theory:quantum_fields}
 {F. Wilczek}, \emph{Quantum field theory}, Rev. Mod. Phys. \textbf{71(2)} (1999)
@@ -141,15 +141,6 @@
 \bibitem{lhc_02}
 {L. R. Evans}, \emph{The Large Hadron Collider (LHC)}, New J. Phys. \textbf{9(9)} (2007)
 
-\bibitem{lhc_run1}
-{R. Alemany-Fernandez et. al}, \emph{Operation and Configuration of the LHC in Run 1}  (2013), \urlprefix\url{https://cds.cern.ch/record/1631030}
-
-\bibitem{lhc_run2}
-{J. Wenninger}, \emph{Operation and Configuration of the LHC in Run 2}  (2019), \urlprefix\url{https://cds.cern.ch/record/2668326}
-
-\bibitem{lhc_run3}
-S.~F. et. al, \emph{{LHC Configuration and Operational Scenario for Run 3}}  (2021), \urlprefix\url{https://cds.cern.ch/record/2790409}
-
 \bibitem{atlas}
 {ATLAS Collaboration}, \emph{The ATLAS experiment at the CERN large hadron collider}, J. Sci. Instrum. \textbf{3(8)} (2008)
 
@@ -186,11 +177,8 @@ S.~F. et. al, \emph{{LHC Configuration and Operational Scenario for Run 3}}  (20
 \bibitem{atlas:new_small_wheel}
 {ATLAS Collaboration}, \emph{New Small Wheel Technical Design Report}, CERN-LHCC-2013-006, ATLAS-TDR-020  (2013)
 
-\bibitem{atlas:trigger_lvl_1}
-{ATLAS Collaboration}, \emph{ATLAS high-level trigger, data acquisition and controls: Technical design report}, CERN-LHCC-2003-022, ATLAS-TRD-016  (2003)
-
-\bibitem{atlas:trigger_lvl_high}
-{ATLAS Collaboration}, \emph{ATLAS level-1 trigger: Technical Design Report}, ATLAS-TDR-12, CERN-LHCC-98-014, CERN-LHCC-98-14, ATLAS-TDR-12  (1998)
+\bibitem{atlas:trigger_run2}
+{ATLAS Collaboration}, \emph{Operation of the ATLAS trigger system in Run 2}, JINST \textbf{15(10)} (2020)
 
 \bibitem{other:cms}
 {CMS Collaboration}, \emph{The CMS Experiment at the CERN LHC}, J. Sci. Instrum. \textbf{3(8)} (2008)
@@ -201,26 +189,14 @@ S.~F. et. al, \emph{{LHC Configuration and Operational Scenario for Run 3}}  (20
 \bibitem{other:lhcb}
 {LHCb Collaboration}, \emph{The LHCb Detector at the LHC}, J. Sci. Instrum. \textbf{3(8)} (2008)
 
-\bibitem{nn:perceptron}
-{F. Rosenblatt}, \emph{The perceptron: a probabilistic model for information storage and organization in the brain}, Psychol. Rev. \textbf{65(6)} (1958)
-
-\bibitem{nn:node_calculation}
-{H. Larochelle et al.}, \emph{Exploring strategies for training deep neural networks}, J. Mach. Learn. Res. \textbf{10(1)} (2009)
-
-\bibitem{nn:overfitting}
-{D. Nitish et al.}, \emph{A simple way to prevent neural networks from overfitting}, J. Mach. Learn. Res. \textbf{15(1)} (2014)
-
-\bibitem{nn:chi_squared}
-{S. Baker and R. D. Cousins}, \emph{Clarification of the use of chi-square and likelihood functions in fits to histograms}, Nucl. Instr. Meth. Phys. Res. \textbf{221(2)} (1984)
-
-\bibitem{nn:kl_fitter}
-{J. Erdmann et al.}, \emph{A likelihood-based reconstruction algorithm for top-quark pairs and the KLFitter framework}, Nucl. Instr. Meth. Phys. Res. A \textbf{748(6)} (2014)
-
 \bibitem{spanet_01}
 {A. Shmakov et a.}, \emph{{SPANet: Generalized permutationless set assignment for particle physics using symmetry preserving attention}}, SciPost Phys. \textbf{12(5)} (2022)
 
 \bibitem{spanet_02}
 {M. J.Fenton et al.}, \emph{Reconstruction of Unstable Heavy Particles Using Deep Symmetry-Preserving Attention Networks}, arXiv pre-print  (2023)
+
+\bibitem{nn:chi_squared}
+{S. Baker and R. D. Cousins}, \emph{Clarification of the use of chi-square and likelihood functions in fits to histograms}, Nucl. Instr. Meth. Phys. Res. \textbf{221(2)} (1984)
 
 \bibitem{spanet_03}
 {M. J. Fenton et al.}, \emph{Permutationless many-jet event reconstruction with symmetry preserving attention networks}, Phys. Rev. D \textbf{105(11)} (2022)

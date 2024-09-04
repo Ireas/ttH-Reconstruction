@@ -1,50 +1,46 @@
-This is BibTeX, Version 0.99d (TeX Live 2023)
+This is BibTeX, Version 0.99d (TeX Live 2024)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: zwischenreport.aux
 The style file: datenbank.bst
 Database file #1: datenbank.bib
-Warning--empty journal in lhc_run1
-Warning--empty journal in lhc_run2
-Warning--empty journal in lhc_run3
-You've used 76 entries,
+You've used 68 entries,
             2352 wiz_defined-function locations,
-            859 strings with 11962 characters,
-and the built_in function-call counts, 18355 in all, are:
-= -- 791
-> -- 304
+            823 strings with 10953 characters,
+and the built_in function-call counts, 16512 in all, are:
+= -- 718
+> -- 272
 < -- 0
-+ -- 152
-- -- 76
-* -- 1017
-:= -- 1957
++ -- 136
+- -- 68
+* -- 910
+:= -- 1759
 add.period$ -- 0
-call.type$ -- 76
+call.type$ -- 68
 change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 79
-duplicate$ -- 2745
-empty$ -- 2457
-format.name$ -- 76
-if$ -- 3993
+cite$ -- 68
+duplicate$ -- 2472
+empty$ -- 2211
+format.name$ -- 68
+if$ -- 3599
 int.to.chr$ -- 0
-int.to.str$ -- 76
-missing$ -- 593
-newline$ -- 234
-num.names$ -- 76
-pop$ -- 962
+int.to.str$ -- 68
+missing$ -- 534
+newline$ -- 210
+num.names$ -- 68
+pop$ -- 848
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 455
+skip$ -- 407
 stack$ -- 0
 substring$ -- 0
-swap$ -- 1404
+swap$ -- 1282
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 3
-while$ -- 76
-width$ -- 78
-write$ -- 674
-(There were 3 warnings)
+warning$ -- 0
+while$ -- 68
+width$ -- 70
+write$ -- 607

@@ -8,11 +8,12 @@
 \contentsline {chapter}{\numberline {3}Experimental Setup}{13}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Large Hadron Collider}{13}{section.3.1}%
 \contentsline {section}{\numberline {3.2}The ATLAS Experiment}{14}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Detector}{15}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Coordinate System}{19}{subsection.3.2.2}%
-\contentsline {section}{\numberline {3.3}Other Experiments}{19}{section.3.3}%
-\contentsline {chapter}{\numberline {4}Deep Neural Networks}{23}{chapter.4}%
-\contentsline {section}{\numberline {4.1}SPA-Net}{24}{section.4.1}%
+\contentsline {subsection}{\numberline {3.2.1}Coordinate System for ATLAS}{14}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Components of the ATLAS Detector}{15}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Other Experiments}{20}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Symmetry Preserving Attention Networks}{23}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Classical Chi Squared Method}{23}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Modern DNN Method}{23}{section.4.2}%
 \contentsline {chapter}{\numberline {5}Neutrino Weighting}{27}{chapter.5}%
 \contentsline {chapter}{\numberline {6}Truth Matching}{29}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Algorithm}{29}{section.6.1}%
