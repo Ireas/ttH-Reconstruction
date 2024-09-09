@@ -135,6 +135,15 @@
 \bibitem{bsm_mond}
 {T. Clifton et. al}, \emph{Modified gravity and cosmology}, Phys. Rep. \textbf{513(1-3)} (2012)
 
+\bibitem{theory:cross_sections}
+{ATLAS Collaboration}, \emph{Top cross section summary plots - April 2024}, Technical report (2024)
+
+\bibitem{theory:higgs_branching_ratio}
+{ATLAS Collaboration}, \emph{A detailed map of Higgs boson interactions by the ATLAS experiment ten years after the discovery}, Nature \textbf{607(7917)} (2022)
+
+\bibitem{theory:w_branching_ratio}
+{CMS Collaboration}, \emph{Precision measurement of the W boson decay branching fractions in proton-proton collisions at $\sqrt{s}$ = 13 TeV}, Phys. Rev. D \textbf{105(7)} (2022)
+
 \bibitem{lhc_01}
 {L. Evans and P. Bryant}, \emph{{LHC Machine}}, J. Sci. Instrum. \textbf{3(8)} (2008)
 
