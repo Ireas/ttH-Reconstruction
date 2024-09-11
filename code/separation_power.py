@@ -15,128 +15,155 @@ plt.rc('figure', titlesize=16)  # fontsize of the figure title
 
 
 # CONSTANTS
-INJECTED_ROOT_FILE = "/media/ireas/Data/v5/weighted/all_8+j_1530766e_weighted.root"
+INPUT_ROOT_FILE = "/media/ireas/Data/v6/weighted/all_5+j_truncated_20-1436656e_weighted.root"
 PLOT_DESTINATION = "/home/ireas/git_repos/master/plots/separation_power/"
-
 CLASSIFIER_VARIABLE_NAME = "neutrino_weighting/classification_event_completion"
 
 SHOW_PLOTS = False
-SKIP_AUGMENTING = False
+SKIP_AUGMENTING = True
 
 
 PLOT_TUPLES = [
     (
-        "short_NW_weight", # variable name
-        np.linspace(0,1,11), # binning
-        "NW Weights (no solution excluded)", #title
-        r"Weight", #x-axis
+        "neutrino_weighting/reco_met_value", # variable name
+        np.linspace(0,120e3,13), # binning
+        "Event Property", # title
+        r"Missing Transverse Energy in [MeV]", #x-axis
         False,
     ),
     (
-        "short_NW_wlep_mass", # variable name
-        np.linspace(0,50,11), # binning
-        "NW Prediction (no solution excluded)", #title
-        r"Mass $m_{W,\text{lep}}$ [GeV]", #x-axis
+        "neutrino_weighting/reco_lepton_e", # variable name
+        np.linspace(0,160e3,17), # binning
+        "Lepton Property", # title
+        r"Lepton Energy [MeV]", #x-axis
         False,
     ),
 #    (
-#        "neutrino_weighting/spanet_t1_assignment_probability", # variable name
+#        "short_NW_weight", # variable name
 #        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Assignment Probability $t_1$", #x-axis
+#        "NW Weights (no solution excluded)", # title
+#        r"NW Weight", #x-axis
+#        False,
+#    ),
+    (
+        "neutrino_weighting/NW_weight", # variable name
+        np.linspace(-1,1,21), # binning
+        "NW Weights ", # title
+        r"NW Weight", #x-axis
+        False,
+    ),
+#    (
+#        "short_NW_weight_sum", # variable name
+#        np.linspace(0,1000,11), # binning
+#        "Sum of NW Weights (no solution excluded)", # title
+#        r"Sum of NW Weight", #x-axis
 #        False,
 #    ),
 #    (
-#        "neutrino_weighting/spanet_t1_detection_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Detection Probability $t_1$", #x-axis
+#        "short_NW_wlep_mass", # variable name
+#        np.linspace(0,50,11), # binning
+#        "NW Prediction (no solution excluded)", # title
+#        r"Mass $m_{W,\text{lep}}$ [GeV]", #x-axis
 #        False,
 #    ),
-#    (
-#        "neutrino_weighting/spanet_t1_marginal_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Margin Probability $t_1$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_t2_assignment_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Assignment Probability $t_2$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_t2_detection_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Detection Probability $t_2$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_t2_marginal_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Margin Probability $t_2$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_HW_assignment_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Assignment Probability $W_H$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_HW_detection_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Detection Probability $W_H$", #x-axis
-#        False,
-#    ),
-#    (
-#        "neutrino_weighting/spanet_HW_marginal_probability", # variable name
-#        np.linspace(0,1,11), # binning
-#        "SPANet Prediction", #title
-#        r"Margin Probability $W_H$", #x-axis
-#        False,
-#    ),
+    (
+        "neutrino_weighting/spanet_t1_assignment_probability", # variable name
+        np.linspace(0,1,21), # binning
+        "SPANet Prediction", # title
+        r"Assignment Probability $t_1$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_t1_detection_probability", # variable name
+        np.linspace(0,1,21), # binning
+        "SPANet Prediction", # title
+        r"Detection Probability $t_1$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_t1_marginal_probability", # variable name
+        np.linspace(0,1,21), # binning
+        "SPANet Prediction", # title
+        r"Margin Probability $t_1$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_t2_assignment_probability", # variable name
+        np.linspace(0,1,21), # binning
+        "SPANet Prediction", # title
+        r"Assignment Probability $t_2$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_t2_detection_probability", # variable name
+        np.linspace(0,1,21), # binning
+        "SPANet Prediction", # title
+        r"Detection Probability $t_2$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_t2_marginal_probability", # variable name
+        np.linspace(0,1,21), # binning
+        "SPANet Prediction", # title
+        r"Margin Probability $t_2$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_HW_assignment_probability", # variable name
+        np.linspace(0,1,21), # binning
+        "SPANet Prediction", # title
+        r"Assignment Probability $W_H$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_HW_detection_probability", # variable name
+        np.linspace(0,1,21), # binning
+        "SPANet Prediction", # title
+        r"Detection Probability $W_H$", #x-axis
+        False,
+    ),
+    (
+        "neutrino_weighting/spanet_HW_marginal_probability", # variable name
+        np.linspace(0,1,21), # binning
+        "SPANet Prediction", # title
+        r"Margin Probability $W_H$", #x-axis
+        False,
+    ),
 #    (
 #        "t1_energy", # variable name
 #        np.linspace(0,2e3,21), # binning
-#        "SPANet Prediction", #title
-#        r"Energy $t_1$ [GeV]", #x-axis
+#        "SPANet Prediction", # title
+#        r"Sum of Jet Energies $t_1$ [GeV]", #x-axis
 #        False,
 #    ),
 #    (
 #        "t2_energy", # variable name
 #        np.linspace(0,2e3,21), # binning
-#        "SPANet Prediction", #title
-#        r"Energy $t_2$ [GeV]", #x-axis
+#        "SPANet Prediction", # title
+#        r"Sum of Jet Energies $t_2$ [GeV]", #x-axis
 #        False,
 #    ),
 #    (
 #        "HW_energy", # variable name
 #        np.linspace(0,1e3,21), # binning
-#        "SPANet Prediction", #title
-#        r"Energy $H_W$ [GeV]", #x-axis
+#        "SPANet Prediction", # title
+#        r"Sum of Jet Energies $W_\text{had.}$ [GeV]", #x-axis
 #        False,
 #    ),
-#    (
-#        "neutrino_weighting/number_of_jets", # variable name
-#        np.arange(8,14,1), # binning
-#        "Event Property", #title
-#        r"Number of Jets", #x-axis
-#        True,
-#    ),
-#    (
-#        "neutrino_weighting/number_of_bjets", # variable name
-#        np.arange(2,7,1), # binning
-#        "Event Property", #title
-#        r"Number of $b$-Jets", #x-axis
-#        True,
-#    ),
+    (
+        "neutrino_weighting/number_of_jets", # variable name
+        np.arange(5,12,1), # binning
+        "Event Property", # title
+        r"Number of Jets", #x-axis
+        True,
+    ),
+    (
+        "neutrino_weighting/number_of_bjets", # variable name
+        np.arange(2,7,1), # binning
+        "Event Property", # title
+        r"Number of $b$-Jets", #x-axis
+        True,
+    ),
 ]
 
 
@@ -144,7 +171,7 @@ def main():
     # augment the dataset with custom variables
     augmentations = {}
     if not SKIP_AUGMENTING:
-        print(f"augmenting {INJECTED_ROOT_FILE}")
+        print(f"augmenting {INPUT_ROOT_FILE}")
         augmentations = augment_variables()
     
 
@@ -192,13 +219,13 @@ def main():
 
 def augment_variables():
     # open root file
-    with uproot.open(INJECTED_ROOT_FILE) as root_file:     
+    with uproot.open(INPUT_ROOT_FILE) as root_file:     
         #### NW shortend
         # define dict and keys
-        short_NW_weight = np.array([], dtype=np.float32)
-        short_NW_nu_eta = np.array([], dtype=np.float32)
-        short_NW_nu_phi = np.array([], dtype=np.float32)
-        short_NW_wlep_mass = np.array([], dtype=np.float32)
+        short_NW_weight = []
+        short_NW_nu_eta = []
+        short_NW_nu_phi = []
+        short_NW_wlep_mass = []
 
         # get needed varaiables
         NW_weight = np.array( root_file["neutrino_weighting/NW_weight"].array() )
@@ -213,17 +240,21 @@ def augment_variables():
                 continue
             
             # fill shorted stuff
-            short_NW_weight = np.append(short_NW_weight, weight)
-            short_NW_nu_eta = np.append(short_NW_nu_eta, nu_eta)
-            short_NW_nu_phi = np.append(short_NW_nu_phi, nu_phi)
-            short_NW_wlep_mass = np.append(short_NW_wlep_mass, wlep_mass) 
+            short_NW_weight.append(weight)
+            short_NW_nu_eta.append(nu_eta)
+            short_NW_nu_phi.append(nu_phi)
+            short_NW_wlep_mass.append(wlep_mass) 
 
+        short_NW_weight = np.array(short_NW_weight)
+        short_NW_nu_eta = np.array(short_NW_nu_eta)
+        short_NW_nu_phi = np.array(short_NW_nu_phi)
+        short_NW_wlep_mass = np.array(short_NW_wlep_mass)
 
         ### t1,t2,HW energies
         # define dict and keys
-        t1_energies = np.array([], dtype=np.float32)
-        t2_energies = np.array([], dtype=np.float32)
-        HW_energies = np.array([], dtype=np.float32)
+        t1_energies = []
+        t2_energies = []
+        HW_energies = []
         
 
         # get needed varaiables
@@ -245,10 +276,14 @@ def augment_variables():
                 continue
             
             # combine jets to resonance particle
-            t1_energies = np.append(t1_energies, jet_energies[t1_q1] + jet_energies[t1_q2] + jet_energies[t1_b])
-            t2_energies = np.append(t2_energies, jet_energies[t2_q1] + jet_energies[t2_q2] + jet_energies[t2_b])
-            HW_energies = np.append(HW_energies, jet_energies[HW_q1] + jet_energies[HW_q2])
+            t1_energies.append( jet_energies[t1_q1] + jet_energies[t1_q2] + jet_energies[t1_b] )
+            t2_energies.append( jet_energies[t2_q1] + jet_energies[t2_q2] + jet_energies[t2_b] )
+            HW_energies.append( jet_energies[HW_q1] + jet_energies[HW_q2] )
 
+
+    t1_energies = np.array(t1_energies)
+    t2_energies = np.array(t2_energies)
+    HW_energies = np.array(HW_energies)
 
     # return augmentations and close root file
     augmentation = {
@@ -265,10 +300,10 @@ def augment_variables():
 
 
 def get_distributions(variable, augmentations):
-    signal = np.array([])
-    background = np.array([])
+    signal = []
+    background = []
 
-    with uproot.open(INJECTED_ROOT_FILE) as root_file:			
+    with uproot.open(INPUT_ROOT_FILE) as root_file:			
         classifier = np.array( root_file[CLASSIFIER_VARIABLE_NAME].array() )
         
         # get distribution from augments or rootfile directly 
@@ -281,9 +316,12 @@ def get_distributions(variable, augmentations):
         # filter by event type
         for (classification, value) in zip(classifier, distribution):
             if classification==1 or classification==-2:
-                signal = np.append(signal, value)
+                signal.append(value)
             else:
-                background = np.append(background, value)
+                background.append(value)
+
+    signal = np.array(signal)
+    background = np.array(background)
 
     return signal, background
 

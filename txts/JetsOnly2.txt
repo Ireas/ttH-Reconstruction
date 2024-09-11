@@ -1,0 +1,30 @@
+Signal Region: njet<=8, nbjet<=3
+Control Region: njet>8, nbjet>3
+
+Number of Events: 616690.29 
+Number of Signal Events: 357.25 (0.0006)
+
+Signal Region
+  (11) tt(H->WW->qqlv): 202.09 (0.0005)  ->  overall: 0.5657 | purity: 0.0005
+  (10) tt(H->WW->qqqq): 147.51 (0.0004)
+  (12) tt(H->WW->lvlv): 37.79 (0.0001)
+  (2)  tt(H->bb):       510.67 (0.0013)
+  (3)  tt(H->cc):       34.34 (0.0001)
+  (4)  tt(H->tautau):   184.62 (0.0005)
+  (1)  ttbar:           404990.17 (0.9972)
+Control Region tt(H->bb)
+  (11) tt(H->WW->qqlv): 15.17 (0.0009)  ->  overall: 0.0425 | purity: 0.0009
+  (10) tt(H->WW->qqqq): 10.45 (0.0006)
+  (12) tt(H->WW->lvlv): 2.65 (0.0002)
+  (2)  tt(H->bb):       239.8 (0.0144)
+  (3)  tt(H->cc):       4.57 (0.0003)
+  (4)  tt(H->tautau):   13.69 (0.0008)
+  (1)  ttbar:           16344.83 (0.9825)
+Rest Region
+  (11) tt(H->WW->qqlv): 139.99 (0.0007)  ->  overall: 0.3919 | purity: 0.0007
+  (10) tt(H->WW->qqqq): 103.55 (0.0005)
+  (12) tt(H->WW->lvlv): 23.7 (0.0001)
+  (2)  tt(H->bb):       643.31 (0.0033)
+  (3)  tt(H->cc):       25.03 (0.0001)
+  (4)  tt(H->tautau):   120.51 (0.0006)
+  (1)  ttbar:           192827.9 (0.9944)

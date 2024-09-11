@@ -24,12 +24,12 @@ const double SIGMA = 10e3; //resolutions missing transverse energy in MeV
 //>> sampling neutrino eta
 const double SAMPLE_ETA_NU_MIN = -3;
 const double SAMPLE_ETA_NU_MAX = 3;
-const double SAMPLE_ETA_NU_STEP	= 6e-2; //100 bins
+const double SAMPLE_ETA_NU_STEP	= 3e-3; //2000 bins
 
 //>> sampling mass leptonic W-boson in MeV
 const double SAMPLE_MASS_WLEP_MIN = 0;
 const double SAMPLE_MASS_WLEP_MAX = 50e3;
-const double SAMPLE_MASS_WLEP_STEP = 50e1; //100 bins
+const double SAMPLE_MASS_WLEP_STEP = 2.5e1; //2000 bins
 
 //>> sampling mass higgs boson for smearing in MeV
 const double SAMPLE_MASS_HIGGS_SMEAR_MIN = -1e3;
@@ -48,8 +48,11 @@ const double SAMPLE_FINE_MASS_WLEP_STEP = 200; //40 bins
 
 
 //>> input/output directories/files
-const string INPUT_FILE = "/media/ireas/Data/v6/injected/all_8+j_1530557e_injected.root";
-const string OUTPUT_FILE = "/media/ireas/Data/v6/weighted/all_8+j_1530557e_merged.root";
+const string INPUT_FILE = "/media/ireas/Data/v6/injected/all_5+j_truncated_50_ttHWW_amplified_1675331e_injected.root";
+const string OUTPUT_FILE = "/media/ireas/Data/v6/weighted/all_5+j_truncated_50_ttHWW_amplified_1675331e_weighted.root";
+const string FILTER = "(classification_event_channel>10)";
+const int MAX_NUMBER_OF_EVENTS = 50;// 0 for no limit
+
 
 const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	// logistics
@@ -106,29 +109,26 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"classification_true_t2_decay",
 	"classification_true_higgs_decay",
 	"classification_event_completion",
+	"classification_event_channel",
 	"classification_onshell_whad",
 
 	// true event signatures
 	"signature_abs_lepton_pdgid",
 
-	// reco event classifier
-	"higgs_decay_mode_custom",
-	"higgs_decay_decay_mode",
-
 	// NW results
-	"NW_weight",
-	"NW_weight_sum",
-	"NW_H_smear",
-	"NW_nu_eta",
-	"NW_nu_phi",
-	"NW_nu_px",
-	"NW_nu_py",
-	"NW_wlep_mass",
+	//"NW_weight",
+	//"NW_H_smear",
+	//"NW_nu_eta",
+	//"NW_nu_phi",
+	//"NW_nu_px",
+	//"NW_nu_py",
+	//"NW_wlep_mass",
+	//"NW_H_mass",
 
 	// NW results full
-	//"NW_full_weight",
-	//"NW_full_nu_eta",
-	//"NW_full_wlep_mass",
+	"NW_full_weight",
+	"NW_full_nu_eta",
+	"NW_full_wlep_mass",
 
 	// SPANet stuff
 	"spanet.t1_q1",
@@ -157,7 +157,7 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 // convert truth to reco lorentzvector
 PtEtaPhiEVector ConvertLorentzVectorMToE(PtEtaPhiMVector lvec){return PtEtaPhiEVector(lvec.Pt(), lvec.Eta(), lvec.Phi(), lvec.E());}
 
-PtEtaPhiMVector GenerateLorentzVectorM(Double_t pt, Float_t eta, Float_t phi, Float_t mass){return PtEtaPhiMVector(pt,eta,phi,mass);}
+PtEtaPhiMVector GenerateLorentzVectorM(Float_t pt, Float_t eta, Float_t phi, Float_t mass){return PtEtaPhiMVector(pt,eta,phi,mass);}
 PtEtaPhiEVector GeneratePtEtaPhiEVector(Float_t pt, Float_t eta, Float_t phi, Float_t e){return PtEtaPhiEVector(pt,eta,phi,e);}
 
 
@@ -177,13 +177,15 @@ vector<PtEtaPhiEVector> GenerateJetLvecs(int number_of_jets, ROOT::RVec<Double_t
 PtEtaPhiEVector CombineJetsFromIndicies(vector<PtEtaPhiEVector> lvec_jets, int index1, int index2)
 {
 	// check for invalid indicies
-	if(index1==-1 || index2==-1 || index1>lvec_jets.size() || index2>lvec_jets.size() || index1==index2)
+	if(index1==-1 || index2==-1 || index1>=lvec_jets.size() || index2>=lvec_jets.size() || index1==index2)
 	{
 		return PtEtaPhiEVector{-999,-999,-999,-999};
 	}
 
 	return lvec_jets[index1] + lvec_jets[index2];
 }
+
+
 
 
 // extract information from lvec
@@ -193,13 +195,13 @@ float ExtractPhi(PtEtaPhiMVector lvec){return lvec.Phi();}
 
 // extraction from output float of NW algorithm
 float ExtractWeight(vector<float> NWOutput){return NWOutput[0];}
-float ExtractWeightSum(vector<float> NWOutput){return NWOutput[7];}
 float ExtractHiggsSmear(vector<float> NWOutput){return NWOutput[1];}
 float ExtractEstimatedEtaNu(vector<float> NWOutput){return NWOutput[2];}
 float ExtractEstimatedMassWLep(vector<float> NWOutput){return NWOutput[3];}
 float ExtractEstimatedPx(vector<float> NWOutput){return NWOutput[4];}
 float ExtractEstimatedPy(vector<float> NWOutput){return NWOutput[5];}
 float ExtractEstimatedPhiNu(vector<float> NWOutput){return NWOutput[6];}
+float ExtractEstimatedHiggsMass(vector<float> NWOutput){return NWOutput[7];}
 
 vector<float> ExtractWeightFull(vector<vector<float>> NWOutputFull){return NWOutputFull[0];}
 vector<float> ExtractWlepMassesFull(vector<vector<float>> NWOutputFull){return NWOutputFull[1];}
@@ -357,7 +359,13 @@ vector<float> NeutrinoWeighting(
 	float best_eta_nu = particle_reco_nu->Eta();
 	float best_mass_Wlep = particle_reco_w_lep->M();
 
-	return vector<float>{best_weight, higgs_mass_smear, best_eta_nu, best_mass_Wlep, val_best_px, val_best_py, best_phi_nu, sum_all_weights};
+	// reconstruct H
+	PtEtaPhiEVector lvec_neutrino = PtEtaPhiEVector( particle_reco_nu->Pt(), particle_reco_nu->Eta(), particle_reco_nu->Phi(), particle_reco_nu->E() );
+	PtEtaPhiEVector lvec_wlep = lvec_neutrino + lvec_lepton;
+	PtEtaPhiEVector lvec_higgs = lvec_wlep + lvec_whad;
+	float higgs_mass = lvec_higgs.M();
+
+	return vector<float>{best_weight, higgs_mass_smear, best_eta_nu, best_mass_Wlep, val_best_px, val_best_py, best_phi_nu, higgs_mass};
 }
 
 
@@ -443,8 +451,13 @@ vector<float> SampleROI(
 	best_eta_nu = particle_reco_nu->Eta();
 	best_mass_Wlep = particle_reco_w_lep->M();
 	
+	// reconstruct H
+	PtEtaPhiEVector lvec_neutrino = PtEtaPhiEVector( particle_reco_nu->Pt(), particle_reco_nu->Eta(), particle_reco_nu->Phi(), particle_reco_nu->E() );
+	PtEtaPhiEVector lvec_wlep = lvec_neutrino + lvec_lepton;
+	PtEtaPhiEVector lvec_higgs = lvec_wlep + lvec_whad;
+	float higgs_mass = lvec_higgs.M();
 
-	return vector<float>{best_weight, higgs_mass_smear, best_eta_nu, best_mass_Wlep, val_best_px, val_best_py, best_phi_nu};
+	return vector<float>{best_weight, higgs_mass_smear, best_eta_nu, best_mass_Wlep, val_best_px, val_best_py, best_phi_nu, higgs_mass};
 }
 
 int current_event_index = 0;
@@ -571,6 +584,8 @@ vector<vector<float>> NeutrinoWeightingWrapperFull(
 ){ 
 	// NW without any Higgs Smearing
 	vector<vector<float>> neutrino_weighting_output = NeutrinoWeightingFull(lvec_lepton, lvec_whad, met_value, met_phi, 0);
+	cout << " > current_event_index = " << current_event_index << endl;
+	current_event_index++;
 	return neutrino_weighting_output;
 }
 
@@ -612,7 +627,8 @@ int main(){
 	///----------  Calculation  ----------///
 
 	cout << " > define branches" << endl;
-	//>> truth conversions
+
+//	//>> truth conversions
 	rLoopManager = rLoopManager.Define(
 		"met_value_for_truth", 
 		RenameFloat, 
@@ -621,122 +637,140 @@ int main(){
 	rLoopManager = rLoopManager.Define(
 		"met_phi_for_truth", 
 		RenameFloat, 
-		{"true_neutrino_pt"}
+		{"true_neutrino_phi"}
 	);
 
-//	rLoopManager = rLoopManager.Define(
-//		"lepton_lvec_for_truth", 
-//		ConvertLorentzVectorMToE, 
-//		{"true_lepton_lvec"}
-//	);
-//	rLoopManager = rLoopManager.Define(
-//		"whad_lvec_for_truth", 
-//		ConvertLorentzVectorMToE, 
-//		{"true_whad_lvec"}
-//	);
 
 	rLoopManager = rLoopManager.Define(
-		"lvecs_jets", 
-		GenerateJetLvecs, 
-		{"number_of_jets", "jet_pt_NOSYS", "jet_eta", "jet_phi", "jet_e_NOSYS"}
+		"lvec_lepton_truth", 
+		GenerateLorentzVectorM, 
+		{"true_lepton_pt", "true_lepton_eta", "true_lepton_phi", "true_lepton_m"}
 	);
 	rLoopManager = rLoopManager.Define(
-		"reco_whad_lvec", 
-		CombineJetsFromIndicies, 
-		{"lvecs_jets", "spanet.HW_q1", "spanet.HW_q2"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"reco_lepton_lvec", 
-		GeneratePtEtaPhiEVector, 
-		{"reco_lepton_pt", "reco_lepton_eta", "reco_lepton_phi", "reco_lepton_e"}
+		"lvec_whad_truth", 
+		GenerateLorentzVectorM, 
+		{"true_whad_pt", "true_whad_eta", "true_whad_phi", "true_whad_m"}
 	);
 
+	rLoopManager = rLoopManager.Define(
+		"lepton_lvec_for_truth", 
+		ConvertLorentzVectorMToE, 
+		{"lvec_lepton_truth"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"whad_lvec_for_truth", 
+		ConvertLorentzVectorMToE, 
+		{"lvec_whad_truth"}
+	);
 
 	
+	// reco conversion
+	//rLoopManager = rLoopManager.Define(
+	//	"lvecs_jets", 
+	//	GenerateJetLvecs, 
+	//	{"number_of_jets", "jet_pt_NOSYS", "jet_eta", "jet_phi", "jet_e_NOSYS"}
+	//);
+	//rLoopManager = rLoopManager.Define(
+	//	"reco_lepton_lvec", 
+	//	GeneratePtEtaPhiEVector, 
+	//	{"reco_lepton_pt", "reco_lepton_eta", "reco_lepton_phi", "reco_lepton_e"}
+	//);
+//
+	//rLoopManager = rLoopManager.Define(
+	//	"reco_whad_lvec", 
+	//	CombineJetsFromIndicies, 
+	//	{"lvecs_jets", "spanet.HW_q1", "spanet.HW_q2"}
+	//);
+	//rLoopManager = rLoopManager.Define(
+	//	"reco_whad_lvec_without_spanet", 
+	//	GeneratePtEtaPhiEVector, 
+	//	{"reco_whad_pt", "reco_whad_eta", "reco_whad_phi", "reco_whad_e"}
+	//);
+		
 
-	//>> NW information
-	rLoopManager = rLoopManager.Define(
-		"prediction", 
-		NeutrinoWeightingWrapper, 
-	//	{"lepton_lvec_for_truth", "whad_lvec_for_truth", "met_value_for_truth", "met_phi_for_truth"}
-		{"reco_lepton_lvec", "reco_whad_lvec", "reco_met_value", "reco_met_phi"}
-	);
-
-	rLoopManager = rLoopManager.Define(
-		"NW_weight", 
-		ExtractWeight, 
-		{"prediction"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_weight_sum", 
-		ExtractWeightSum, 
-		{"prediction"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_H_smear", 
-		ExtractHiggsSmear, 
-		{"prediction"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_nu_eta", 
-		ExtractEstimatedEtaNu, 
-		{"prediction"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_wlep_mass", 
-		ExtractEstimatedMassWLep, 
-		{"prediction"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_nu_px", 
-		ExtractEstimatedPx, 
-		{"prediction"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_nu_py", 
-		ExtractEstimatedPy, 
-		{"prediction"}
-	);
-	rLoopManager = rLoopManager.Define(
-		"NW_nu_phi", 
-		ExtractEstimatedPhiNu, 
-		{"prediction"}
-	);
+	////>> NW information
+	//rLoopManager = rLoopManager.Define(
+	//	"prediction", 
+	//	NeutrinoWeightingWrapper, 
+	////	{"lepton_lvec_for_truth", "whad_lvec_for_truth", "met_value_for_truth", "met_phi_for_truth"}
+	//	{"reco_lepton_lvec", "reco_whad_lvec_without_spanet", "reco_met_value", "reco_met_phi"}
+	//);
+//
+	//rLoopManager = rLoopManager.Define(
+	//	"NW_weight", 
+	//	ExtractWeight, 
+	//	{"prediction"}
+	//);
+	//rLoopManager = rLoopManager.Define(
+	//	"NW_H_smear", 
+	//	ExtractHiggsSmear, 
+	//	{"prediction"}
+	//);
+	//rLoopManager = rLoopManager.Define(
+	//	"NW_nu_eta", 
+	//	ExtractEstimatedEtaNu, 
+	//	{"prediction"}
+	//);
+	//rLoopManager = rLoopManager.Define(
+	//	"NW_wlep_mass", 
+	//	ExtractEstimatedMassWLep, 
+	//	{"prediction"}
+	//);
+	//rLoopManager = rLoopManager.Define(
+	//	"NW_nu_px", 
+	//	ExtractEstimatedPx, 
+	//	{"prediction"}
+	//);
+	//rLoopManager = rLoopManager.Define(
+	//	"NW_nu_py", 
+	//	ExtractEstimatedPy, 
+	//	{"prediction"}
+	//);
+	//rLoopManager = rLoopManager.Define(
+	//	"NW_nu_phi", 
+	//	ExtractEstimatedPhiNu, 
+	//	{"prediction"}
+	//);
+	//rLoopManager = rLoopManager.Define(
+	//	"NW_H_mass", 
+	//	ExtractEstimatedHiggsMass, 
+	//	{"prediction"}
+	//);
 
 
 
 
 	//>> full NW information for 2D plots
-	//rLoopManager = rLoopManager.Define(
-	//	"prediction_full",
-	//	NeutrinoWeightingWrapperFull,
-	////	{"lepton_lvec_for_truth", "whad_lvec_for_truth", "met_value_for_truth", "met_phi_for_truth"}
-	//	{"reco_lepton_lvec", "reco_whad_lvec", "reco_met_value", "reco_met_phi"}
-	//);
-//
-	//rLoopManager = rLoopManager.Define(
-	//	"NW_full_weight",
-	//	ExtractWeightFull,
-	//	{"prediction_full"}
-	//);
-	//rLoopManager = rLoopManager.Define(
-	//	"NW_full_wlep_mass",
-	//	ExtractWlepMassesFull,
-	//	{"prediction_full"}
-	//);
-	//rLoopManager = rLoopManager.Define(
-	//	"NW_full_nu_eta",
-	//	ExtractNuEtaFull,
-	//	{"prediction_full"}
-	//);
+	rLoopManager = rLoopManager.Define(
+		"prediction_full",
+		NeutrinoWeightingWrapperFull,
+		{"lepton_lvec_for_truth", "whad_lvec_for_truth", "met_value_for_truth", "met_phi_for_truth"}
+	//	{"reco_lepton_lvec", "reco_whad_lvec_without_spanet", "reco_met_value", "reco_met_phi"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"NW_full_weight",
+		ExtractWeightFull,
+		{"prediction_full"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"NW_full_wlep_mass",
+		ExtractWlepMassesFull,
+		{"prediction_full"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"NW_full_nu_eta",
+		ExtractNuEtaFull,
+		{"prediction_full"}
+	);
 	
 	
 
 
 	///----------  Output  ----------///
+	auto rLoopManagerFiltered = rLoopManager.Filter(FILTER).Range(MAX_NUMBER_OF_EVENTS);
 	//>> save snapshot
 	cout << " > saving snapshot to " << OUTPUT_FILE << endl;
-	rLoopManager.Snapshot(
+	rLoopManagerFiltered.Snapshot(
 		"neutrino_weighting", 
 		OUTPUT_FILE,
 		OUTPUT_COLOUMN_NAMES

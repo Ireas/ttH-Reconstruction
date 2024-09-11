@@ -15,7 +15,7 @@ plt.rc('figure', titlesize=16)  # fontsize of the figure title
 
 
 # CONSTANTS
-INJECTED_ROOT_FILE = "/media/ireas/Data/v5/weighted/all_8+j_1530766e_weighted.root"
+INPUT_ROOT_FILE = "/media/ireas/Data/v6/weighted/all_5+j_truncated_20-1436656e_weighted.root"
 PLOT_DESTINATION = "/home/ireas/git_repos/master/plots/more_plots/"
 
 CLASSIFIER_VARIABLE_NAME = "neutrino_weighting/classification_event_completion"
@@ -25,20 +25,20 @@ SKIP_AUGMENTING = False
 
 
 PLOT_TUPLES = [
-    (
-        "short_NW_weight", # variable name
-        np.linspace(0,1,11), # binning
-        "NW Weights (no solution excluded)", #title
-        r"Weight", #x-axis
-        False,
-    ),
-    (
-        "short_NW_wlep_mass", # variable name
-        np.linspace(0,50,11), # binning
-        "NW Prediction (no solution excluded)", #title
-        r"Mass $m_{W,\text{lep}}$ [GeV]", #x-axis
-        False,
-    ),
+#    (
+#        "short_NW_weight", # variable name
+#        np.linspace(0,1,11), # binning
+#        "NW Weights (no solution excluded)", #title
+#        r"Weight", #x-axis
+#        False,
+#    ),
+#    (
+#        "short_NW_wlep_mass", # variable name
+#        np.linspace(0,50,11), # binning
+#        "NW Prediction (no solution excluded)", #title
+#        r"Mass $m_{W,\text{lep}}$ [GeV]", #x-axis
+#        False,
+#    ),
 #    (
 #        "neutrino_weighting/spanet_t1_assignment_probability", # variable name
 #        np.linspace(0,1,11), # binning
@@ -192,18 +192,10 @@ def plot_2d_hist(name, dist1, bin1, dist2, bin2, normalize="not", plot_options=N
 
 
 def main():
-
-
-    with uproot.open(INJECTED_ROOT_FILE) as root_file:			
+    with uproot.open(INPUT_ROOT_FILE) as root_file:			
         nw_weights = np.array( root_file["neutrino_weighting/NW_weight"].array() )
         met_values = np.array( root_file["neutrino_weighting/reco_met_value"].array() )/1e3
-        lepton_energies = np.array( root_file["neutrino_weighting/reco_lepton_e"].array() )/1e3
-        lepton_pts = np.array( root_file["neutrino_weighting/reco_lepton_pt"].array() )/1e3
-        classification_event = np.array( root_file["neutrino_weighting/classification_event_completion"].array() )
-        classification_t1 = np.array( root_file["neutrino_weighting/classification_true_t1_decay"].array() )
-        classification_t2 = np.array( root_file["neutrino_weighting/classification_true_t2_decay"].array() )
-        classification_higgs = np.array( root_file["neutrino_weighting/classification_true_higgs_decay"].array() )
-        classification_onshell = np.array( root_file["neutrino_weighting/classification_onshell_whad"].array() )
+        classification_event = np.array( root_file["neutrino_weighting/classification_event_channel"].array() )
 
 
         spanet_probabilities_t1_assignment = np.array( root_file["neutrino_weighting/spanet_t1_assignment_probability"].array() )
@@ -217,18 +209,20 @@ def main():
         spanet_probabilities_HW_marginal = np.array( root_file["neutrino_weighting/spanet_HW_marginal_probability"].array() )
 
 
-        short_t1_ass = np.array([])
-        short_met = np.array([])
+        short_t1_ass = []
+        short_t2_ass = []
+        short_nw_weight = []
         #short_t1 = np.array([])
         #short_t2 = np.array([])
         #short_HW = np.array([])
             
-        for (event, met, assignment) in zip(classification_event, met_values, spanet_probabilities_t1_assignment):
-            if event!=-2:
+        for (event_channel, t1_assignment, t2_assignment, nw_weight) in zip(classification_event, spanet_probabilities_t1_assignment, spanet_probabilities_t2_assignment, nw_weights):
+            if event_channel!=1:
                 continue
             
-            short_t1_ass = np.append(short_t1_ass, assignment)
-            short_met = np.append(short_met, met)
+            short_t1_ass.append(t1_assignment)
+            short_t2_ass.append(t2_assignment)
+            short_nw_weight.append(nw_weight)
             #short_t1 = np.append(short_t1, t1)
             #short_t2 = np.append(short_t2, t2)
             #short_HW = np.append(short_HW, higgs)
@@ -236,16 +230,29 @@ def main():
 
         # test plot
         plot_2d_hist(
-            "t1_assignment_vs_met_incomplete", 
+            "ttbar_only_t1_assignment_vs_nw_weight", 
             short_t1_ass,
             np.linspace(0,1,11),
-            short_met,
-            np.linspace(0,200,11),
-            normalize = "hist",
+            short_nw_weight,
+            np.linspace(0,1,11),
+            normalize = "col",
             plot_options = {
-                "title" : r"$t\bar{t}(H\rightarrow WW\rightarrow qql\nu)$ + not all jets found only",
+                "title" : r"$t\bar{t} only",
                 "xlabel" : r"$t_1$ Assignment Probability",
-                "ylabel" : r"Missing Transverse Energy [GeV]",
+                "ylabel" : r"Neutrino Weighting Weight",
+            }
+        )
+        plot_2d_hist(
+            "ttbar_only_t2_assignment_vs_nw_weight", 
+            short_t2_ass,
+            np.linspace(0,1,11),
+            short_nw_weight,
+            np.linspace(0,1,11),
+            normalize = "col",
+            plot_options = {
+                "title" : r"$t\bar{t} only",
+                "xlabel" : r"$t_2$ Assignment Probability",
+                "ylabel" : r"Neutrino Weighting Weight",
             }
         )
         #plot_2d_hist(

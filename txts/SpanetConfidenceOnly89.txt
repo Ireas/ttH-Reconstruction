@@ -1,0 +1,33 @@
+Signal Region: t_marginal_confidence>=0.8, HW_marginal_confidence>=0.9
+Control Region: lower same values
+
+Number of Events: 285733.17 
+Number of Signal Events: 165.53 (0.0006)
+
+Signal Region
+  (11) tt(H->WW->qqlv): 0.11 (0.0053)  ->  0.07% of all signal | 0.53% of that region
+  (10) tt(H->WW->qqqq): 0.03 (0.0017)
+  (12) tt(H->WW->lvlv): 0.01 (0.0004)
+  (2)  tt(H->bb):       0.05 (0.0022)
+  (3)  tt(H->cc):       0.0 (0.0002)
+  (4)  tt(H->tautau):   0.01 (0.0006)
+  (1)  ttbar:           20.3 (0.9873)
+  (9)  ttbar:           0.04 (0.0019)
+Control Region tt(H->bb)
+  (11) tt(H->WW->qqlv): 165.42 (0.0006)  ->  99.93% of all signal | 0.06% of that region
+  (10) tt(H->WW->qqqq): 121.13 (0.0004)
+  (12) tt(H->WW->lvlv): 29.71 (0.0001)
+  (2)  tt(H->bb):       645.74 (0.0023)
+  (3)  tt(H->cc):       29.62 (0.0001)
+  (4)  tt(H->tautau):   69.5 (0.0002)
+  (1)  ttbar:           284541.85 (0.9959)
+  (9)  ttbar:           78.17 (0.0003)
+Rest Region
+  (11) tt(H->WW->qqlv): 0 (0.0)  ->  0.0% of all signal | 0.0% of that region
+  (10) tt(H->WW->qqqq): 0 (0.0)
+  (12) tt(H->WW->lvlv): 0 (0.0)
+  (2)  tt(H->bb):       0 (0.0)
+  (3)  tt(H->cc):       0 (0.0)
+  (4)  tt(H->tautau):   0 (0.0)
+  (1)  ttbar:           0 (0.0)
+  (9)  ttbar:           0 (0.0)

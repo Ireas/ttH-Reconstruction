@@ -1,0 +1,33 @@
+Signal Region: bjets==2, met<60 GeV, t_probability>0.4
+Control Region: bjets>2
+
+Number of Events: 285733.17 
+Number of Signal Events: 165.53 (0.0006)
+
+Signal Region
+  (11) tt(H->WW->qqlv): 32.14 (0.001)  ->  19.41% of all signal | 0.1% of that region
+  (10) tt(H->WW->qqqq): 17.46 (0.0005)
+  (12) tt(H->WW->lvlv): 3.56 (0.0001)
+  (2)  tt(H->bb):       19.86 (0.0006)
+  (3)  tt(H->cc):       2.94 (0.0001)
+  (4)  tt(H->tautau):   7.32 (0.0002)
+  (1)  ttbar:           33664.33 (0.997)
+  (9)  other:           12.15 (0.0004)
+Control Region tt(H->bb)
+  (11) tt(H->WW->qqlv): 64.53 (0.0007)  ->  38.99% of all signal | 0.07% of that region
+  (10) tt(H->WW->qqqq): 46.79 (0.0005)
+  (12) tt(H->WW->lvlv): 11.97 (0.0001)
+  (2)  tt(H->bb):       537.05 (0.0056)
+  (3)  tt(H->cc):       16.35 (0.0002)
+  (4)  tt(H->tautau):   33.11 (0.0003)
+  (1)  ttbar:           95658.12 (0.9922)
+  (9)  other:           25.52 (0.0003)
+Rest Region
+  (11) tt(H->WW->qqlv): 68.86 (0.0004)  ->  41.6% of all signal | 0.04% of that region
+  (10) tt(H->WW->qqqq): 56.91 (0.0004)
+  (12) tt(H->WW->lvlv): 14.18 (0.0001)
+  (2)  tt(H->bb):       88.88 (0.0006)
+  (3)  tt(H->cc):       10.33 (0.0001)
+  (4)  tt(H->tautau):   29.09 (0.0002)
+  (1)  ttbar:           155239.7 (0.9979)
+  (9)  other:           40.54 (0.0003)

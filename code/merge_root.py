@@ -7,8 +7,7 @@ from timeit import default_timer as timer
 
 
 # constants
-INPUT_FOLDER = "all_8+j/"
-
+INPUT_FOLDER = "all_5+j_truncated_50_ttHWW_amplified/"
 INPUT_PATH = "/media/ireas/Data/v6/matched/"
 OUTPUT_PATH = "/media/ireas/Data/v6/merged_root/"
 

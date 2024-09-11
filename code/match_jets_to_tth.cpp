@@ -31,17 +31,18 @@ const float PDG_MASS_WBOSON = 80.3692e3; // mass in MeV
 const float THRESHOLD_DELTA_R = 0.4; // maximum reco jet deviation from the truth for matching
 const float THRESHOLD_ONSHELL_DEFINITION = 1e3; // maximum deviation from DPG mass in MeV to classify as onshell
 
-const float LUMINOSITY = 300 * 1e3; //convert fm⁻1 to pb^-1 
+const float LUMINOSITY = 139 * 1e3; //convert fm⁻1 to pb^-1, value from Baptiste full ATLAS run 2 set
+const int TRUNCATE = 50; // Take only every i-th event to reduce file size (0 to disable truncating)
 
 // Event Filter String
-const string FILTER = "(number_of_jets>=8) && (classification_event_channel>=0) && (number_of_matches>0)";// && classification_true_higgs_decay==-1 && classification_true_t1_decay==1 && classification_true_t2_decay==1";
+const string FILTER = "(count_var==1) && (number_of_jets>=5) && (classification_event_channel>=0) && (number_of_matches>0)";// && classification_true_higgs_decay==-1 && classification_true_t1_decay==1 && classification_true_t2_decay==1";
 const bool BREAK_AFTER_FIRST_FILE = false;
 //&& ( signature_higgs_decay<0 || classification_onshell_whad==1 )
 
 
 // Paths
 const string INPUT_PATH = "/media/ireas/Data/download/";
-const string OUTPUT_PATH = "/media/ireas/Data/v6/matched/all_8+j/";
+const string OUTPUT_PATH = "/media/ireas/Data/v6/matched/all_5+j_truncated_50_ttHWW_amplified/";
 
 // File path
 std::string XSEC_PATH = "/media/ireas/Data/PMGxsecDB_mc16.txt";
@@ -347,6 +348,10 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	"reco_lepton_e",
 	"reco_met_value", // met
 	"reco_met_phi",
+	"reco_whad_pt",
+	"reco_whad_eta",
+	"reco_whad_phi",
+	"reco_whad_e",
 
 	// true values
 	"true_lepton_pt", // lepton
@@ -380,10 +385,6 @@ const initializer_list<string> OUTPUT_COLOUMN_NAMES = {
 	// true event signatures
 	"signature_abs_lepton_pdgid",
 
-	// reco event classifier
-	"higgs_decay_mode_custom",
-	"higgs_decay_decay_mode",
-
 	// evaluation
 	"successful_matches",
 };
@@ -413,19 +414,6 @@ enum TRUTH_PARTONS{
 	Wdecay1_from_H = 6,
 	Wdecay2_from_H = 7,
 };
-
-enum HIGGS_DECAY_MODE{
-	undefined = -1,
-	b_b = 0,
-	e_e = 1,
-	mu_mu = 2,
-	tau_tau = 3,
-	y_y = 4,
-	w_w = 5,
-	z_z = 6,
-	other = 7,
-};
-
 
 
 // ==========  FUNCTION DECLARATION  ==========
@@ -492,6 +480,11 @@ float ExtractEta(PtEtaPhiMVector lvec){return lvec.Eta();}
 float ExtractPhi(PtEtaPhiMVector lvec){return lvec.Phi();}
 float ExtractM(PtEtaPhiMVector lvec){return lvec.M();}
 
+float ExtractPtE(PtEtaPhiEVector lvec){return lvec.Pt();}
+float ExtractEtaE(PtEtaPhiEVector lvec){return lvec.Eta();}
+float ExtractPhiE(PtEtaPhiEVector lvec){return lvec.Phi();}
+float ExtractEE(PtEtaPhiEVector lvec){return lvec.E();}
+
 // generate vectors of lorentz vectors for easier access
 vector<PtEtaPhiMVector> GenerateTruthLvecs(
 	PtEtaPhiMVector truthLvecBFromT, 
@@ -554,10 +547,6 @@ PtEtaPhiEVector ReconstructWFromTBar(vector<PtEtaPhiEVector> jetLvecs, vector<in
 PtEtaPhiEVector ReconstructHW(vector<PtEtaPhiEVector> jetLvecs, vector<int> jetFinalMatchMasks);
 
 
-
-// higgs
-int GenerateHiggsDecayModeCustom(int higgsDecay1PdgId, int higgsDecay2PdgId);
-vector<int> GenerateHiggsDecayDecayMode(int higgsDecayMode, int higgsDecay11, int higgsDecay12, int higgsDecay21, int higgsDecay22);
 int GetFilteredPdgIDs(Int_t pdgId);
 
 
@@ -761,7 +750,7 @@ int ClassifyEventChannel(
 	// check for others not H->WW decays
 	if( !(abs(pgdid_H_d1)==24 && abs(pgdid_H_d2)==24) )
 	{
-		return 4; // tt(H->OTHER)
+		return 9; // tt(H->OTHER)
 	}
 
 
@@ -869,6 +858,16 @@ PtEtaPhiMVector GenerateLorentzVectorLeptonTrue(vector<PtEtaPhiMVector> lvecsHde
 
 PtEtaPhiMVector CombineTwoPtEtaPhiM(PtEtaPhiMVector v1, PtEtaPhiMVector v2){return v1+v2;}
 
+
+PtEtaPhiEVector GenerateWhadLvec(vector<PtEtaPhiEVector> lvecs, vector<int> indicies_fixxed)
+{
+	if(indicies_fixxed[6]==-1 || indicies_fixxed[7]==-1 || indicies_fixxed[6]==indicies_fixxed[7])
+	{
+		return PtEtaPhiEVector(0,0,0,0);
+	}
+
+	return lvecs[indicies_fixxed[6]] + lvecs[indicies_fixxed[7]];
+}
 
 
 
@@ -1153,6 +1152,30 @@ double GenerateSMWeights(float mc_weight)
 	return mc_weight * LUMINOSITY * xSecs[currentDSID] * genFiltersEff[currentDSID] * kFactors[currentDSID] / sumOfWeights[currentDSID];
 }
 
+int eventCounter = 0;
+
+int CountEvents(int event_channel){
+	// take every signal event
+	if(event_channel>=10)
+	{
+		return 1;
+	}
+
+	eventCounter++;
+	// ignore event truntuation
+	if(TRUNCATE<=0)
+	{
+		return 1;
+	}
+	// count events, truncate to every x element
+	else if(eventCounter==TRUNCATE)
+	{
+		eventCounter = 0; // reset counter
+		return 1;
+	}
+	
+	return -1;
+}
 
 int EvalutateMatching(
 	int pgdid_t1_W_q1, int pgdid_t1_W_q2, int pgdid_t2_W_q1, int pgdid_t2_W_q2, 
@@ -1305,6 +1328,7 @@ int EvalutateMatching(
 }
 
 
+
 // ==========  MAIN  ==========
 // ===========================
 int match(string input_file);
@@ -1437,6 +1461,8 @@ int match(string input_file)
 	}
 
 
+
+
 	// GENERATE SM WEIGHTS
 	// ==============================
 	// get proper SM weights
@@ -1549,6 +1575,34 @@ int match(string input_file)
 		CollectJetToObjectIndiciesFixed,
 		{"jet_final_match_mask"}
 	);
+
+	rLoopManager = rLoopManager.Define(
+		"reco_whad_lvec",
+		GenerateWhadLvec,
+		{"lvecs_jets", "jet_to_object_indicies_fixed"}
+	);
+
+	rLoopManager = rLoopManager.Define(
+		"reco_whad_pt",
+		ExtractPtE,
+		{"reco_whad_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"reco_whad_eta",
+		ExtractEtaE,
+		{"reco_whad_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"reco_whad_phi",
+		ExtractPhiE,
+		{"reco_whad_lvec"}
+	);
+	rLoopManager = rLoopManager.Define(
+		"reco_whad_e",
+		ExtractEE,
+		{"reco_whad_lvec"}
+	);
+
 
 	// classification
 	rLoopManager = rLoopManager.Define(
@@ -1724,20 +1778,6 @@ int match(string input_file)
 		ReconstructHW,
 		{"lvecs_jets", "jet_final_match_mask"}
 	); 
-
-	// get higgs information
-	rLoopManager = rLoopManager.Define(
-		"higgs_decay_mode_custom",
-		GenerateHiggsDecayModeCustom,
-		{"truth.Tth_MC_Higgs_decay1_pdgId", "truth.Tth_MC_Higgs_decay2_pdgId"}
-	);
-	
-	rLoopManager = rLoopManager.Define(
-		"higgs_decay_decay_mode",
-		GenerateHiggsDecayDecayMode,
-		{"higgs_decay_mode_custom", "truth.Tth_MC_Higgs_decay1_from_decay1_pdgId", "truth.Tth_MC_Higgs_decay2_from_decay1_pdgId", "truth.Tth_MC_Higgs_decay1_from_decay2_pdgId", "truth.Tth_MC_Higgs_decay2_from_decay2_pdgId"}
-	);
-
 	
 	//>> filter pdgIds (exclude invalid ids and take absolute value)
 	rLoopManager = rLoopManager.Define(
@@ -1961,6 +2001,17 @@ int match(string input_file)
 		{"met_phi_NOSYS"}
 	);
 	
+
+
+
+	// TRUNCTUATE
+	// ==============================
+	rLoopManager = rLoopManager.Define(
+		"count_var", 
+		CountEvents, 
+		{"classification_event_channel"}
+	);
+
 
 	// EVALUATION
 	// ==============================
@@ -2274,73 +2325,6 @@ vector<int> CollectJetToObjectIndiciesFixed(vector<int> jetFinalMatchMasks){
 
 
 // ==========  HIGGS
-int GenerateHiggsDecayModeCustom(int higgsDecay1PdgId, int higgsDecay2PdgId){
-	int pdgid1 = -1;
-	int pdgid2 = -1;
-	
-	higgsDecay1PdgId = abs(higgsDecay1PdgId);
-	higgsDecay2PdgId = abs(higgsDecay2PdgId);
-
-	if(higgsDecay1PdgId!=higgsDecay1PdgId)
-		return HIGGS_DECAY_MODE::undefined;
-
-	if(higgsDecay1PdgId>999)
-		return HIGGS_DECAY_MODE::undefined;
-	
-	if(higgsDecay1PdgId==5)
-		return HIGGS_DECAY_MODE::b_b;
-	
-	if(higgsDecay1PdgId==11)
-		return HIGGS_DECAY_MODE::e_e;
-	
-	if(higgsDecay1PdgId==13)
-		return HIGGS_DECAY_MODE::mu_mu;
-	
-	if(higgsDecay1PdgId==15)
-		return HIGGS_DECAY_MODE::tau_tau;
-	
-	if(higgsDecay1PdgId==22)
-		return HIGGS_DECAY_MODE::y_y;
-	
-	if(higgsDecay1PdgId==23)
-		return HIGGS_DECAY_MODE::z_z;
-	
-	if(higgsDecay1PdgId==24)
-		return HIGGS_DECAY_MODE::w_w;
-	
-	return HIGGS_DECAY_MODE::other;
-}
-
-vector<int> GenerateHiggsDecayDecayMode(int higgsDecayMode, Int_t higgsDecay11, Int_t higgsDecay12, Int_t higgsDecay21, Int_t higgsDecay22){
-	if(higgsDecayMode!=HIGGS_DECAY_MODE::w_w && higgsDecayMode!=HIGGS_DECAY_MODE::z_z){
-		return vector<int>{-1};
-	}
-
-	int indexHiggsDecay11 = -1;
-	int indexHiggsDecay12 = -1;
-	int indexHiggsDecay21 = -1;
-	int indexHiggsDecay22 = -1;
-
-	if(abs(higgsDecay11)<1000)
-		indexHiggsDecay11 = abs(higgsDecay11);
-	if(abs(higgsDecay12)<1000)
-		indexHiggsDecay12 = abs(higgsDecay12);
-	if(abs(higgsDecay21)<1000)
-		indexHiggsDecay21 = abs(higgsDecay21);
-	if(abs(higgsDecay22)<1000)
-		indexHiggsDecay22 = abs(higgsDecay22);
-
-	if(indexHiggsDecay11<0)
-		indexHiggsDecay11 = -1;
-	if(indexHiggsDecay12<0)
-		indexHiggsDecay12 = -1;
-	if(indexHiggsDecay21<0)
-		indexHiggsDecay21 = -1;
-	if(indexHiggsDecay22<0)
-		indexHiggsDecay22 = -1;
-
-	return vector<int>{indexHiggsDecay11, indexHiggsDecay12, indexHiggsDecay21, indexHiggsDecay22};
-}
 
 int GetFilteredPdgIDs(Int_t pdgId){
 	int newPdgId = abs(pdgId);

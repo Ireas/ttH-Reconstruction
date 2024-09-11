@@ -4,9 +4,8 @@ import matplotlib.pyplot as plt
 
 
 # constants
-PREDICTION_FILE = "/media/ireas/Data/v6/predicted/all_8+j_1573904e_predicted.h5"
-TRUTH_FILE = "/media/ireas/Data/v6/merged_h5/all_8+j_1573904e.h5"
-
+PREDICTION_FILE = "/media/ireas/Data/v6/predicted/all_5+j_truncated_20_ttHWW_amplified_predicted.h5"
+TRUTH_FILE = "/media/ireas/Data/v6/merged_h5/all_5+j_truncated_20_ttHWW_amplified_2503624e.h5"
 FULL_VALID_EVENTS_ONLY = False
 
 # try to make a number sheme (2-gidits=(process,particle)->correct percentage)

@@ -9,8 +9,7 @@ from timeit import default_timer as timer
 
 # ==========  CONVERT .root TO .h5 FILES  ==========
 # ==================================================
-CURRENT_FOLDER = "all_8+j/"
-
+CURRENT_FOLDER = "all_5+j_truncated_50_ttHWW_amplified/"
 INPUT_PATH = "/media/ireas/Data/v6/matched/"
 OUTPUT_PATH = "/media/ireas/Data/v6/converted/"
 
@@ -210,7 +209,7 @@ def fill_h5_from_root(h5_file, root_file):
 	# here branches can be customized if desired
 	event_number = other_group.create_dataset("eventNumber", spanet_other_dimension, dtype=np.intc)
 	mc_channel_number = other_group.create_dataset("mcChannelNumber", spanet_other_dimension, dtype=np.intc)
-	classification_event_completion = other_group.create_dataset("classification_event_completion", spanet_other_dimension, dtype=np.intc)
+	classification_event_channel = other_group.create_dataset("classification_event_channel", spanet_other_dimension, dtype=np.intc)
 	classification_true_higgs_decay = other_group.create_dataset("classification_true_higgs_decay", spanet_other_dimension, dtype=np.intc)
 	classification_true_t1_decay = other_group.create_dataset("classification_true_t1_decay", spanet_other_dimension, dtype=np.intc)
 	classification_true_t2_decay = other_group.create_dataset("classification_true_t2_decay", spanet_other_dimension, dtype=np.intc)
@@ -220,7 +219,7 @@ def fill_h5_from_root(h5_file, root_file):
 	# prepare root_files for fast access
 	root_event_number = root_file['matched/eventNumber'].array()
 	root_mc_channel_number = root_file['matched/mcChannelNumber'].array()
-	root_classification_event_completion = root_file['matched/classification_event_completion'].array()
+	root_classification_event_channel = root_file['matched/classification_event_channel'].array()
 	root_classification_true_higgs_decay = root_file['matched/classification_true_higgs_decay'].array()
 	root_classification_true_t1_decay = root_file['matched/classification_true_t1_decay'].array()
 	root_classification_true_t2_decay = root_file['matched/classification_true_t2_decay'].array()
@@ -239,7 +238,7 @@ def fill_h5_from_root(h5_file, root_file):
 		# important is fixed order within root file structured set in c++ code
 		event_number[i] = root_event_number[i]
 		mc_channel_number[i] = root_mc_channel_number[i]
-		classification_event_completion[i] = root_classification_event_completion[i]
+		classification_event_channel[i] = root_classification_event_channel[i]
 		classification_true_higgs_decay[i] = root_classification_true_higgs_decay[i]
 		classification_true_t1_decay[i] = root_classification_true_t1_decay[i]
 		classification_true_t2_decay[i] = root_classification_true_t2_decay[i]

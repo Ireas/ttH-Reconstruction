@@ -1,0 +1,52 @@
+Signal Region: njets>=8, bjets==2, t_probability>0.85, HW_probability>0.85
+Control Region ttbar: njets<8, bjets==2, t_probability<0.85, HW_probability<0.85
+Control Region Hbb: bjets>=3
+
+Number of Events: 6433033.79 
+Number of Signal Events: 886.12 (0.0028)
+
+
+Signal Region
+  (0)  total:           1661.93 (total yield: 0.03%)
+  (11) tt(H->WW->qqlv): 4.66 (0.0028)  ->  0.53% of all signal | 0.28% of that region
+  (10) tt(H->WW->qqqq): 1.38 (0.0008)
+  (12) tt(H->WW->lvlv): 0.14 (0.0001)
+  (2)  tt(H->bb):       1.54 (0.0009)
+  (3)  tt(H->cc):       0.22 (0.0001)
+  (4)  tt(H->tautau):   0.37 (0.0002)
+  (1)  ttbar:           1652.75 (0.9945)
+  (9)  other:           0.64 (0.0004)
+
+Control Region ttbar
+  (0)  total:           5012773.91 (total yield: 77.92%)
+  (11) tt(H->WW->qqlv): 613.66 (0.0001)  ->  69.25% of all signal | 0.01% of that region
+  (10) tt(H->WW->qqqq): 439.01 (0.0001)
+  (12) tt(H->WW->lvlv): 155.18 (0.0)
+  (2)  tt(H->bb):       1250.62 (0.0002)
+  (3)  tt(H->cc):       107.54 (0.0)
+  (4)  tt(H->tautau):   307.24 (0.0001)
+  (1)  ttbar:           5009398.44 (0.9993)
+  (9)  other:           382.42 (0.0001)
+
+Control Region tt(H->bb)
+  (0)  total:           1418597.95 (total yield: 22.05%)
+  (11) tt(H->WW->qqlv): 267.81 (0.0002)  ->  30.22% of all signal | 0.02% of that region
+  (10) tt(H->WW->qqqq): 188.22 (0.0001)
+  (12) tt(H->WW->lvlv): 63.88 (0.0)
+  (2)  tt(H->bb):       3720.86 (0.0026)
+  (3)  tt(H->cc):       99.11 (0.0001)
+  (4)  tt(H->tautau):   193.67 (0.0001)
+  (1)  ttbar:           1413872.72 (0.9967)
+  (9)  other:           120.51 (0.0001)
+
+Rest Region (should be empty)
+  (0)  total:           0 (total yield: 0.0%)
+  (11) tt(H->WW->qqlv): 0 (0.0)  ->  0.0% of all signal | 0.0% of that region
+  (10) tt(H->WW->qqqq): 0 (0.0)
+  (12) tt(H->WW->lvlv): 0 (0.0)
+  (2)  tt(H->bb):       0 (0.0)
+  (3)  tt(H->cc):       0 (0.0)
+  (4)  tt(H->tautau):   0 (0.0)
+  (1)  ttbar:           0 (0.0)
+  (9)  other:           0 (0.0)
+

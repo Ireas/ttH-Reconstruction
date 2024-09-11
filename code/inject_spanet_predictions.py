@@ -12,10 +12,11 @@ import numpy as np
 
 
 # CONSTANTS
-MATCHED_ROOT_FILE = "/media/ireas/Data/v6/merged_root/all_8+j_1530557e_merged.root"
-CONVERTED_H5_FILE = "/media/ireas/Data/v5/merged_h5/all_8+j_1530766e.h5"
-SPANET_PREDICTION_H5_FILE = "/media/ireas/Data/v5/predicted/prediction_all_8+j_1530766e.h5"
-INJECTED_OUTPUT_ROOT_FILE = "/media/ireas/Data/v6/injected/all_8+j_1530557e_injected.root"
+MATCHED_ROOT_FILE = "/media/ireas/Data/v6/merged_root/all_5+j_truncated_50_ttHWW_amplified_1675331e_merged.root"
+CONVERTED_H5_FILE = "/media/ireas/Data/v6/merged_h5/all_5+j_truncated_50_ttHWW_amplified_1675331e.h5"
+SPANET_PREDICTION_H5_FILE = "/media/ireas/Data/v6/predicted/all_5+j_truncated_50_ttHWW_amplified_1675331e_predicted_alt.h5"
+INJECTED_OUTPUT_ROOT_FILE = "/media/ireas/Data/v6/injected/all_5+j_truncated_50_ttHWW_amplified_1675331e_injected_alt.root"
+
 
 
 def main():
@@ -115,47 +116,47 @@ def inject_prediction(injected_root_file, matched_root_file, lookup_table):
 		return
 	
 	# variable containers
-	t1_q1 = np.array([], dtype=np.intc)
-	t1_q2 = np.array([], dtype=np.intc)
-	t1_b = np.array([], dtype=np.intc)
-	t2_q1 = np.array([], dtype=np.intc)
-	t2_q2 = np.array([], dtype=np.intc)
-	t2_b = np.array([], dtype=np.intc)
-	HW_q1 = np.array([], dtype=np.intc)
-	HW_q2 = np.array([], dtype=np.intc)
-	t1_detection_probabilities = np.array([], dtype=np.float32)
-	t1_assignment_probabilities = np.array([], dtype=np.float32)
-	t1_marginal_probabilities = np.array([], dtype=np.float32)
-	t2_detection_probabilities = np.array([], dtype=np.float32)
-	t2_assignment_probabilities = np.array([], dtype=np.float32)
-	t2_marginal_probabilities = np.array([], dtype=np.float32)
-	HW_detection_probabilities = np.array([], dtype=np.float32)
-	HW_assignment_probabilities = np.array([], dtype=np.float32)
-	HW_marginal_probabilities = np.array([], dtype=np.float32)
+	t1_q1 = []
+	t1_q2 = []
+	t1_b = []
+	t2_q1 = []
+	t2_q2 = []
+	t2_b = []
+	HW_q1 = []
+	HW_q2 = []
+	t1_detection_probabilities = []
+	t1_assignment_probabilities = []
+	t1_marginal_probabilities = []
+	t2_detection_probabilities = []
+	t2_assignment_probabilities = []
+	t2_marginal_probabilities = []
+	HW_detection_probabilities = []
+	HW_assignment_probabilities = []
+	HW_marginal_probabilities = []
 
 	# loop over all events and order them correctly
 	for (mc_channel_number,event_number) in zip(mc_channel_numbers, event_numbers):
 		# get entries
 		entry = lookup_table[(mc_channel_number,event_number)]
 
-		t1_q1 = np.append( t1_q1, entry[0] )
-		t1_q2 = np.append( t1_q2, entry[1] )
-		t1_b = np.append( t1_b, entry[2] )
-		t2_q1 = np.append( t2_q1, entry[3] )
-		t2_q2 = np.append( t2_q2, entry[4] )
-		t2_b = np.append( t2_b, entry[5] )
-		HW_q1 = np.append( HW_q1, entry[6] )
-		HW_q2 = np.append( HW_q2, entry[7] )
+		t1_q1.append(entry[0])
+		t1_q2.append(entry[1])
+		t1_b.append(entry[2])
+		t2_q1.append(entry[3])
+		t2_q2.append(entry[4])
+		t2_b.append(entry[5])
+		HW_q1.append(entry[6])
+		HW_q2.append(entry[7])
 		
-		t1_detection_probabilities = np.append( t1_detection_probabilities, entry[8] )
-		t1_assignment_probabilities = np.append( t1_assignment_probabilities, entry[9] )
-		t1_marginal_probabilities = np.append( t1_marginal_probabilities, entry[10] )
-		t2_detection_probabilities = np.append( t2_detection_probabilities, entry[11] )
-		t2_assignment_probabilities = np.append( t2_assignment_probabilities, entry[12] )
-		t2_marginal_probabilities = np.append( t2_marginal_probabilities, entry[13] )
-		HW_detection_probabilities = np.append( HW_detection_probabilities, entry[14] )
-		HW_assignment_probabilities = np.append( HW_assignment_probabilities, entry[15] )
-		HW_marginal_probabilities = np.append( HW_marginal_probabilities, entry[16] )
+		t1_detection_probabilities.append(entry[8])
+		t1_assignment_probabilities.append(entry[9])
+		t1_marginal_probabilities.append(entry[10])
+		t2_detection_probabilities.append(entry[11])
+		t2_assignment_probabilities.append(entry[12])
+		t2_marginal_probabilities.append(entry[13])
+		HW_detection_probabilities.append(entry[14])
+		HW_assignment_probabilities.append(entry[15])
+		HW_marginal_probabilities.append(entry[16])
 
 
 	# inject them properly
