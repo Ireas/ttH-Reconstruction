@@ -417,11 +417,11 @@ INPUT ./figures/methods/spanet_architecture_2.jpg
 INPUT ./figures/methods/spanet_architecture_2.jpg
 INPUT ./figures/methods/spanet_architecture_2.jpg
 INPUT ./figures/methods/spanet_architecture_2.jpg
-INPUT ./figures/Neutrino Weighting/cherry_13.png
-INPUT ./figures/Neutrino Weighting/cherry_13.png
-INPUT ./figures/Neutrino Weighting/cherry_13.png
-INPUT ./figures/Neutrino Weighting/cherry_13.png
-INPUT ./figures/Neutrino Weighting/cherry_13.png
+INPUT ./figures/Neutrino Weighting/cherry_14.png
+INPUT ./figures/Neutrino Weighting/cherry_14.png
+INPUT ./figures/Neutrino Weighting/cherry_14.png
+INPUT ./figures/Neutrino Weighting/cherry_14.png
+INPUT ./figures/Neutrino Weighting/cherry_14.png
 INPUT ./figures/separation_power/separation_split_number_of_jets.png
 INPUT ./figures/separation_power/separation_split_number_of_jets.png
 INPUT ./figures/separation_power/separation_split_number_of_jets.png
@@ -452,11 +452,16 @@ INPUT ./figures/separation_power/separation_split_spanet_HW_assignment_probabili
 INPUT ./figures/separation_power/separation_split_spanet_HW_assignment_probability.png
 INPUT ./figures/separation_power/separation_split_spanet_HW_assignment_probability.png
 INPUT ./figures/separation_power/separation_split_spanet_HW_assignment_probability.png
-INPUT ./figures/SPANet/assignment.png
-INPUT ./figures/SPANet/assignment.png
-INPUT ./figures/SPANet/assignment.png
-INPUT ./figures/SPANet/assignment.png
-INPUT ./figures/SPANet/assignment.png
+INPUT ./figures/event_selection/regions.png
+INPUT ./figures/event_selection/regions.png
+INPUT ./figures/event_selection/regions.png
+INPUT ./figures/event_selection/regions.png
+INPUT ./figures/event_selection/regions.png
+INPUT ./figures/assignment_matrix/assignment_matrix.png
+INPUT ./figures/assignment_matrix/assignment_matrix.png
+INPUT ./figures/assignment_matrix/assignment_matrix.png
+INPUT ./figures/assignment_matrix/assignment_matrix.png
+INPUT ./figures/assignment_matrix/assignment_matrix.png
 INPUT ./figures/SPANet/spanet_probability_detection_normed.png
 INPUT ./figures/SPANet/spanet_probability_detection_normed.png
 INPUT ./figures/SPANet/spanet_probability_detection_normed.png
@@ -467,16 +472,30 @@ INPUT ./figures/SPANet/spanet_probability_assignment_normed.png
 INPUT ./figures/SPANet/spanet_probability_assignment_normed.png
 INPUT ./figures/SPANet/spanet_probability_assignment_normed.png
 INPUT ./figures/SPANet/spanet_probability_assignment_normed.png
-INPUT ./figures/Neutrino Weighting/heatmap-nw_true.png
-INPUT ./figures/Neutrino Weighting/heatmap-nw_true.png
-INPUT ./figures/Neutrino Weighting/heatmap-nw_true.png
-INPUT ./figures/Neutrino Weighting/heatmap-nw_true.png
-INPUT ./figures/Neutrino Weighting/heatmap-nw_true.png
-INPUT ./figures/Neutrino Weighting/heatmap-nw_true_125-2.png
-INPUT ./figures/Neutrino Weighting/heatmap-nw_true_125-2.png
-INPUT ./figures/Neutrino Weighting/heatmap-nw_true_125-2.png
-INPUT ./figures/Neutrino Weighting/heatmap-nw_true_125-2.png
-INPUT ./figures/Neutrino Weighting/heatmap-nw_true_125-2.png
+INPUT ./figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png
+INPUT ./figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png
+INPUT ./figures/placeholder.png
+INPUT ./figures/placeholder.png
+INPUT ./figures/placeholder.png
+INPUT ./figures/placeholder.png
+INPUT ./figures/placeholder.png
 INPUT ./zwischenreport.bbl
 INPUT ./zwischenreport.bbl
 INPUT zwischenreport.bbl

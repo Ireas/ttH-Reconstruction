@@ -366,7 +366,7 @@ The thin gab chambers \cite{atlas:tech_design_report_01,atlas:muon_chamber} are 
 \subsubsection*{Trigger System}
 The aforementioned detector systems are able to detect and record significant amounts of data. The initial bunch-crossing rate of up to 40\,MHz result in an interaction rate of $\sim$1\,GHz \cite{atlas:tech_design_report_01} which is too much to save. Approximately only 0.1\,kHz of data is suited for permanent storage. Thus, a very fast selection must be defined and implemented that discards most of the events to a manageable level. For that purpose, an online multi-level trigger system is introduced. Each trigger level refines the selection done from the previous level.
 
-The first level (L1) trigger \cite{atlas:tech_design_report_01,atlas:trigger_run2} is a hardware-based system and makes the initial selection. It is subdivided into the L1 calorimeter trigger and the L1 muon trigger. The L1 calorimeter trigger utilises signals from the calorimeter in the Cluster and Jet/Energy-sum Processor. The Cluster Processor identifies potential $e$, $\gamma$, $\tau$ candidates. This is supplemented by the Jet/Energy-sum Processor which identifies jet candidates and calculates the total and missing energy. The L1 muon trigger, uses signals from the muon spectrometer to identify $\mu$ candidates. The LVL1 decision is formed by the Central Trigger Processor and is based on the signal of the previous two trigger systems as well as some additional detector subsystems. The maximum rate for the L1 trigger is up to 100\,kHz, within a decision latency of up to 2.5\,$\upmu$s. The selected events of the L1 trigger are temporary saved into readout drivers and then readout buffers. Furthermore, the L1 trigger identifies regions of interest, which are further investigated by the second trigger stage.
+The first level (L1) trigger \cite{atlas:tech_design_report_01,atlas:trigger_run2} is a hardware-based system and makes the initial selection. It is subdivided into the L1 calorimeter trigger and the L1 muon trigger. The L1 calorimeter trigger utilises signals from the calorimeter in the Cluster and Jet/Energy-sum Processor. The Cluster Processor identifies potential $e$, $\gamma$, $\tau$ candidates. This is supplemented by the Jet/Energy-sum Processor which identifies jet candidates and calculates the total and missing energy. The L1 muon trigger, uses signals from the muon spectrometer to identify $\mu$ candidates. The LVL1 decision is formed by the Central Trigger Processor and is based on the signal of the previous two trigger systems as well as some additional detector sub-systems. The maximum rate for the L1 trigger is up to 100\,kHz, within a decision latency of up to 2.5\,$\upmu$s. The selected events of the L1 trigger are temporary saved into readout drivers and then readout buffers. Furthermore, the L1 trigger identifies regions of interest, which are further investigated by the second trigger stage.
 
 The event data stays on the readout buffers until the high level (HLT) trigger \cite{atlas:tech_design_report_01,atlas:trigger_run2} either rejects or accepts them. The second trigger level is a software-based systema and utilises the aforementioned regions of interest. The HLT trigger uses only the necessary information but has access to the full resolution information from the detectors. Its average rate reaches 1.2\,kHz which corresponds to approximately 1.2\,GB/s data. Its latency is variable but in the order of magnitude 100\,$\upmu$s. Events that pass both triggers are then transferred to an offline event filter system that performs the final selection.
 
@@ -482,11 +482,11 @@ The algorithm outputs an estimation for these free parameters and a weight, $w$,
 % TODO: is it possible to fix the hadronic W boson mass to the actual invariant mass of the candidate pair of jets?
 % TODO: pseudorapidity is not bounded by ±3, so how is that justified?
 % TODO: what equations are being solved? how do you get estimates of px and py?
-To apply the \NW algorithm, some assumptions need to be made to constrain the otherwise underconstrained \HWW subsystem. First, the mass of the Higgs boson is assumed to equal the SM prediction, $M_H=125.20\,\text{GeV}$ \cite{pdg}. Additionally, the mass of the on-shell $W$-boson is fixed at $M_W=80.379\,\text{GeV}$ \cite{pdg}. Lastly, the on-shell $W$-boson is further assumed to decay hadronically. Then, the \HWW subsystem can be reconstructed by estimating the off-shell leptonic $W^*$-boson and combining it with the hadronic $W$-boson to form a Higgs boson.
+To apply the \NW algorithm, some assumptions need to be made to constrain the otherwise underconstrained \HWW sub-system. First, the mass of the Higgs boson is assumed to equal the SM prediction, $M_H=125.20\,\text{GeV}$ \cite{pdg}. Additionally, the mass of the on-shell $W$-boson is fixed at $M_W=80.379\,\text{GeV}$ \cite{pdg}. Lastly, the on-shell $W$-boson is further assumed to decay hadronically. Then, the \HWW sub-system can be reconstructed by estimating the off-shell leptonic $W^*$-boson and combining it with the hadronic $W$-boson to form a Higgs boson.
 
 To find the best estimation for $W^*$, several combinations of the off-shell mass, $m_{W^*}$, and the pseudo-rapidity of the neutrino $\eta_\nu$ are sampled using a grid-based search. The grid samples 300 $\eta_\nu$ points from $[-3,3]$ and 250 $m_{W^*}$ points within [$0,50$]\,GeV. All points are distributed equidistantly.
 
-Due to the assumptions, the \HWW subsystem is fully constrained \cite{neutrino_weighting:adaptation} and the neutrino transverse momentum $p_T^\nu$ can be calculated. This reconstructed neutrino momentum, $p_T^\nu$, can be compared to the observed missing transverse momentum, $p_T^\text{miss}$. For that, the transverse momenta are split into their two components $p_x$ and $p_y$ with $p_T^2=p_x^2+p_y^2$. The weight of one solution is calculated as
+Due to the assumptions, the \HWW sub-system is fully constrained \cite{neutrino_weighting:adaptation} and the neutrino transverse momentum $p_T^\nu$ can be calculated. This reconstructed neutrino momentum, $p_T^\nu$, can be compared to the observed missing transverse momentum, $p_T^\text{miss}$. For that, the transverse momenta are split into their two components $p_x$ and $p_y$ with $p_T^2=p_x^2+p_y^2$. The weight of one solution is calculated as
 
 \begin{align}
     w = \exp{\frac{(p_x^\nu-p_x^\text{miss})^2}{\sigma_x^2}} \cdot \exp{\frac{(p_y^\nu-p_y^\text{miss})^2}{\sigma_y^2}}.
@@ -496,9 +496,9 @@ The variable $\sigma_{x/y}$ is the experimental resolution of the missing moment
 
 For each event the sampled $m_{W^*}$ and $\eta_\nu$ can be visualised together with the weight of each grid point to form a distribution as seen in Figure~\ref{FIG:neutrino_weighting:cherry_picked}. The maximum of this distribution corresponds to the most likely combination of the unknown parameters. White regions are kinematically forbidden and thus, no solutions can be found for these regions. 
 
-\begin{figure}[H]
+\begin{figure}
     \centering  
-    \includegraphics[width=0.7\textwidth]{figures/Neutrino Weighting/cherry_13.png}
+    \includegraphics[width=0.7\textwidth]{figures/Neutrino Weighting/cherry_14.png}
     \caption{Example of the samples weight disitribution for a cherry-picked event. The heighest weighted solution (star) and the true values (cross) are marked.}
     \label{FIG:neutrino_weighting:cherry_picked}
 \end{figure}
@@ -526,41 +526,58 @@ The region of interest increase the processing time by ~15\% independent of the 
 
 
 \chapter{Event Selection}
-This chapter covers the event selection strategy used to separate the targeted semileptonic \ttHWW decays from other background processes. Section~\ref{sec:event_selection:objects_of_target} introduces the event topology in greater detail and explains the deployed assumptions. Section~\ref{sec:event_selection:separation_power} defines separation power and showcases some of the investigated variables. The behaviour of several event topologies are compared in respect to these variables. Lastly, sensitive variables are used in Section~\ref{sec:event_selection:region_definition} for the final region definition.  
+\label{ch:event_selection}
+This chapter covers the event selection strategy used to separate the targeted semileptonic \ttHWW decays from other background processes. Section~\ref{sec:event_selection:objects_of_target} introduces the event topology in greater detail and explains the used assumptions. Section~\ref{sec:event_selection:separation_power} defines the separation power and showcases some of the investigated variables. The behaviour of several event topologies are compared with respect to these variables. Lastly, sensitive variables are used in Section~\ref{sec:event_selection:region_definition} for the final region definition.  
 
-\section{Objects of Target Event Topology}
+\section{Objects of the Target Event Topology}
 \label{sec:event_selection:objects_of_target}
-The targeted semileptonic \ttHWW event topology is introduced in Sec.~\ref{sec:theory:tthww}. Its final state consists of eight jets and a single lepton-neutrino pair. Six of these jets originate from the \ttbar decays, while the remaining two jets stem from the Higgs decay subsystem. Among the eight jets, exactly two are tagged as $b$-jets which orignitate from the $t$ quark decay $t \rightarrow Wb$. For the purposes of event reconstruction, three simplifying assumptions are made. 
+The targeted semileptonic \ttHWW event topology is introduced in Sec.~\ref{sec:theory:tthww}. Its final state consists of eight jets and a single lepton-neutrino pair. Six of these jets originate from the \ttbar decays, while the remaining two jets stem from the $H$-boson decay sub-system. Among the eight jets, exactly two are tagged as $b$-jets which originate from the $t$ quark decay ($t \rightarrow Wb$). For the purposes of event reconstruction, three simplifying assumptions are made. 
 
 First, it is assumed that the \ttbar system decays fully hadronically. This assumption implies that the observed lepton does not come from the $t$ quark decay but is instead produced in the $H$-boson decay chain. Only then can the implemented \NW technique be applied properly.
 
-The second assumption posits that the $H$-boson is produced on-shell, with a SM mass of $M_H=125.20\pm0.11$\,GeV. Given the energy constraints, the Higgs boson cannot decay into two on-shell $W$-bosons. Therefore, one of the $W$-bosons must be off-shell. 
+The second assumption posits that the $H$-boson is produced on-shell, with a SM mass of $M_H=125.20\pm0.11$\,GeV. The simulated MC samples were tested and the on-shell $H$-boson production dominates since this is a resonance process. Given the energy constraints, the Higgs boson cannot decay into two on-shell $W$-bosons. Therefore, one of the $W$-bosons must be off-shell. 
 
-The third assumption specifies that the $W^*$-boson decaying leptonically is off-shell, marked by the asterisk $^*$. This is crucial because, without the on-shell constrain on the hadronic $W$-boson, it would be almost impossible to assign the jets to the $W$-boson, as any combination of jets could potentially reconstruct an off-shell $W^*$-boson with an indeterminate mass.
+The third assumption specifies that the $W^*$-boson decaying leptonically is off-shell, marked by the asterisk. This is crucial because, without the on-shell constraint on the hadronic $W$-boson, it would be almost impossible to assign the jets to the $W$-boson, as any combination of jets could potentially reconstruct an off-shell $W^*$-boson with an indeterminate mass.
 
-These assumptions constrain the kinematics of the event. Specifically, the energy of the lepton and neutrino is limited to approximately $\leq 50$ GeV, caused by the limited off-shell mass of the $W^*$-boson. Additionally, the two jets assigned to the on-shell $W$-boson are expected to have an invariant mass close to the SM $W$-boson mass value of $M_W=80.3692\pm0.0133$\,GeV.
+These assumptions constrain the kinematics of the event. Specifically, the energy of the lepton and neutrino is limited to approximately $\leq 50$ GeV, caused by the limited off-shell mass of the $W^*$-boson. Additionally, the two jets assigned to the on-shell $W$-boson are expected to have an invariant mass close to the SM $W$-boson mass value of $M_W=80.3692\pm0.0133$\,GeV \cite{pdg}.
 
 As explained in Sec.~\ref{sec:theory:tthww}, the primary background arises from \ttbar events, which have a significantly larger production cross section compared to the signal \ttHWW events. \ttHbb and \ttHtautau events also contribute significantly, due to their comparitevly high $H$ decay ratio of ($53\pm8$)\,\% and ($6.0\pm0.8$)\,\%, respectively \cite{theory:higgs_branching_ratio}. Additional backgrounds can arise from \ttHcc events and hadronic or dileptonic \ttHWW decays. These background processes are considered during the variable investigation and in the final region definition.
 
 \section{Separation Power}
 \label{sec:event_selection:separation_power}
-To compare the performance of using certain variables to separate signal and background, the corresponding distributions are plotted together. Here, signal is defined to only include semileptonic \ttHWW events while background includes everything else. Naturally, the background contains the majority of all events. For a fair comparison, both signal and background are normalised to unity and binned using the same steps. The choice of variables is physically motivated by identifing measurable differences in the signal and background processes.
+To compare the performance of using certain variables to separate signal and background, the corresponding distributions are displayed together. Here, the signal is defined to only include semileptonic \ttHWW events while the background includes everything else. Naturally, the background contains the majority of all events. For a fair comparison, both signal and background are normalised to unity and binned using the same steps. The choice of variables is physically motivated by identifing measurable differences in the signal and background processes.
 
-Furthermore, the separation power $\Gamma$ can be calculated using
+Furthermore, the separation power $\mathcal{S}$ can be calculated using
 \begin{align}
-    \Gamma &= \frac{1}{2} \sum_i^\text{bins} \frac{\left(s_i-b_i\right)^2}{s_i+b_i}\,.     
+    \mathcal{S} &= \frac{1}{2} \sum_i^\text{bins} \frac{\left(s_i-b_i\right)^2}{s_i+b_i}\,.
 \end{align}
-For each bin $i$, the variables $s_i$ and $b_i$ equal the normalised signal and background distributions, respectively. Since the separation power $\Gamma$ is dependent on the binning, the absolute value has no physical meaning. However, when choosing the same binning, the separation power of several variables can be compared to identify the best performing ones. 
+For each bin $i$, the variables $s_i$ and $b_i$ equal the normalised signal and background distributions, respectively. Since the separation power $\mathcal{S}$ is dependent on the binning, the absolute value has no physical meaning. However, when choosing the same binning, the separation power of several variables can be compared to identify the best performing ones. 
+
+\begin{table}
+    \centering
+    \caption{Summary of the investigated variables sorted by their caluclated separation powers $\mathcal{S}$.}
+    \begin{tabular}{l|c}
+        Variable & $\mathcal{S}$\\
+        \hline
+        Total Jet Multiplicity & 21.9\,\% \\
+        $t$ Assignment Probability & 21.2\,\% \\
+        $W_\text{had}$ Assignment Probability & 9.0\,\% \\
+        Missing Transverse Energy $E_T^\text{miss}$ & 3.0\,\% \\
+        Lepton Energy $E_l$ & 1.2\,\% \\
+        $b$-Jet Multiplicity & 0.2\,\% \\
+    \end{tabular}
+    \label{tab:event_selection:separation_power}
+\end{table}
+
 
 \subsection*{Jet Multiplicities}
 Figure~\ref{FIG:separation_power_plots:jet_multiplicities} shows two distributions of events per total jet and $b$-jet multiplicity, respectively.
 
-As expected, the distribution \ttHbb of events is peaking at higher $b$-jet multiplicity than any other distribution. While all distributions peak at 2 $b$-jets, the \ttHbb event distribution peaks at 3 $b$-jets due to the two additional $b$-quarks in the final state. The $b$-jet separation power $\Gamma=0.002$ is relatively low, since most backgrounds behave identifcal to signal in respect to the number of $b$-jets. Hence, this variable is mainly used to separate \ttHbb background.
+As expected, the distribution \ttHbb of events is peaking at higher $b$-jet multiplicity than any other distribution. While all distributions peak at 2 $b$-jets, the \ttHbb event distribution peaks at 3 $b$-jets due to the two additional $b$-quarks in the final state. The $b$-jet separation power $\mathcal{S}=0.2\,\%$ is relatively low. The reason for this is that most background processes expect the same number of $b$-jets. Only \ttHbb background can be separated efficiently from the signal using this variable.
 
-The total number of jets shows similar distributions for all events. \ttbar events slightly favour low jet multiplicities which can be explained by their final state containing only 6 jets. The targeted semileptonic \ttHWW final state contains 8 jets. Moreover, hadronic \ttHWW events contain 10 jets in their final state. Hence, the number of jets can be used to separate some of the backgrounds. However, due to additional jets or jets lost during reconstruction, the distributions do not clearly peak at their expected jet multiplicities. The separation power $\Gamma=0.219$ is the highest value of all investigated variables. This supports the importance of this variable for separating signal from background.
+The total number of jets shows similar distributions for all events. \ttbar events slightly favours low jet multiplicities which can be explained by this final state containing only 6 jets. The targeted semileptonic \ttHWW final state contains 8 jets. Moreover, hadronic \ttHWW events contain 10 jets in their final state. Hence, the number of jets can be used to separate some of the backgrounds from the signal and each other. However, due to additional jets or jets lost during reconstruction, the distributions do ynot clearly peak at their expected jet multiplicities. The separation power $\mathcal{S}=21.9\,\%$ is the highest value of all investigated variables. This supports the importance of this variable for separating signal from background.
 
-
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split_number_of_jets.png}\hspace{0.02\textwidth}
     \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split_number_of_bjets.png}
@@ -573,11 +590,11 @@ The distributions in Figure~\ref{FIG:separation_power_plots:lepton_energies} sho
 
 Due to the implemented single lepton triggers, every event contains exactly one lepton and thus, the choice of lepton is unambiguous.
 
-For the missing transverse energy $E_T^\text{miss}$, the targeted semileptonic \ttHWW events peak approximately 10\,GeV lower than most other processes. In these events, the missing energy is expected to originate from the neutrino decay within the \HWW subsystem. Hence, $E_T^\text{miss}$ is limited by the energy of the leptonic $W^*$-boson decay. Furthermore, the reconstruction in this analysis assumes the leptonic $W^*$-boson to be off-shell which limits the maximum $E_T^\text{miss}$ energy to approximately $\leq50$\,GeV for an on-shell Higgs boson. Hence, the missing transverse energy can be used to identify events which fulfill the leptonic off-shell $W^*$-boson assumption. The separation power reaches $\Gamma=0.030$ which corresponds to a similar sensitivity to signal and background.
+For the missing transverse energy $E_T^\text{miss}$, the targeted semileptonic \ttHWW events peak approximately 10\,GeV lower than most other processes. In these events, the missing energy is expected to originate from the neutrino decay within the \HWW sub-system. Hence, $E_T^\text{miss}$ is limited by the energy of the leptonic $W^*$-boson decay. Furthermore, the reconstruction in this analysis assumes the leptonic $W^*$-boson to be off-shell which limits the maximum $E_T^\text{miss}$ energy to approximately $\leq50$\,GeV for an on-shell Higgs boson.Hence, the missing transverse energy can be used to identify events which fulfill the leptonic off-shell $W^*$-boson assumption. The separation power reaches $\mathcal{S}=3.0\,\%$ which corresponds to a similar sensitivity to signal and background.
 
-The energies of the lepton $E_\text{lep}$ show a behaviour similar to $E_T^\text{miss}$. The targeted semileptonic \ttHWW events generally have lower lepton energies which again originates from the leptonic off-shell $W^*$-boson assumption. However, here the dileptonic \ttHWW events behave very similar to the semileptonic decays. This similarity is expected since the production of the leptons is identical for both the semileptonic and dileptonic decay mode. Here, the separation power is $\Gamma=0.012$ which is caused by the very similar behaviour of the dileptonic \ttHWW and \ttHtautau backgrounds. The dileptonic \ttHWW can separated by $E_T^\text{miss}$ since these events contain two neutrinos and thus, generally higher $E_T^\text{miss}$.
+The energies of the lepton $E_\text{lep}$ show a behaviour similar to $E_T^\text{miss}$. The targeted semileptonic \ttHWW events generally have lower lepton energies which again originates from the leptonic off-shell $W^*$-boson assumption. However, here the dileptonic \ttHWW events behave very similar to the semileptonic decays. This similarity is expected since the production of the leptons is identical for both the semileptonic and dileptonic decay mode. Here, the separation power is $\mathcal{S}=1.2\,\%$ which is caused by the very similar behaviour of the dileptonic \ttHWW and \ttHtautau backgrounds. The dileptonic \ttHWW can separated by $E_T^\text{miss}$ since these events contain two neutrinos and thus, generally higher $E_T^\text{miss}$.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split_reco_met_value_gev.png}\hspace{0.02\textwidth}
     \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split_reco_lepton_e_gev.png}
@@ -588,17 +605,21 @@ The energies of the lepton $E_\text{lep}$ show a behaviour similar to $E_T^\text
 \subsection*{SPA-Net Output Probabilities}
 Figure~\ref{FIG:separation_power_plots:spanet_output_probabilities} includes two distributions of \spanets output probabilities. These probabilities are calculated during the jet assignment prediction. Events with high probabilities are more likely to be correctly matched. Both the $t$ and the $W_\text{had.}$ assignment probabilities show significantly different behaviours for the event topologies. 
 
-The $t$ assignment proability generally is higher for the semileptonic and dileptonic \ttHWW events which peak at 0.7 and 0.6, respectively. \ttbar events score the lowest. Its peak is below 0.05. The 8+ jet limitation causes \ttbar events to have at least two additional jets measured. Hence, the additional possible jet choices reduce the probability of the correct jet assignment. The \ttHbb events also peak at 0.05 which is caused by the two additional $b$ quarks. These $b$ quarks from the $H$-boson decay can be misidentified as the $b$ quark from the $t$ quark decays. The average of both $t_1$ and $t_2$ assignment probability is $\Gamma=0.212$ which is the second highest separation power of all variables.  
+The $t$ assignment proability generally is higher for the semileptonic and dileptonic \ttHWW events which peak at 0.7 and 0.6, respectively, while \ttbar events score the lowest. The \ttHbb events also peak at 0.05 which is caused by the two additional $b$ quarks. These $b$ quarks from the $H$-boson decay can be misidentified as the $b$ quark from the $t$ quark decays. The average of both $t_1$ and $t_2$ assignment probability is $\mathcal{S}=21.2\,\%$ which is the second highest separation power of all variables.  
 
-Similarly, the $W_\text{had.}$ assignment probability also separates the different events topolgies. However, the distributions are not as clearly separated compared to the $t$ assignment probabilities. Here, \ttbar and \ttHbb peak at around 0.3 while the semileptonic \ttHWW peaks at 0.55. This variable reaches a separation power of $\Gamma=0.090$. Compared to $\Gamma$ of the $t$ assignment probability, this variable is less sensitive to signal. Still, both output probabilities are used to define the final event regions.
+Similarly, the $W_\text{had.}$ assignment probability also separates the different events topolgies. However, the distributions are not as clearly separated compared to the $t$ assignment probabilities. Here, \ttbar and \ttHbb peak at around 0.3 while the semileptonic \ttHWW peaks at 0.55. This variable reaches a separation power of $\mathcal{S}=9.0\,\%$. Compared to $\mathcal{S}$ of the $t$ assignment probability, this variable is less sensitive to signal. Still, both output probabilities are used to define the final event regions.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split_spanet_t2_assignment_probability.png}\hspace{0.02\textwidth}
     \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split_spanet_HW_assignment_probability.png}
     \caption{Distributions of different event topologies for \spanets assignment probabilities of (left) the top $t_2$ and (right) the hadronic $W$-boson from the Higgs decay.}
     \label{FIG:separation_power_plots:spanet_output_probabilities}
 \end{figure}
+
+\subsection*{Neutrino Weighting Output}
+% TODO: Include weight distribution
+
 
 % TODO: Include preselection?
 % \section{Event Preselection}
@@ -622,9 +643,11 @@ Similarly, the $W_\text{had.}$ assignment probability also separates the differe
 
 \section{Region Definition}
 \label{sec:event_selection:region_definition}
-To separate signal and background, the overall phase space is subdivided in signal regions $S$ and control regions $C$. If defined properly, the signal region is expected to include a relatively high purity of the targeted semileptonic \ttHWW events while excluding as much of background contamination as possible. The control regions contain the remaining events with high background yields. Each control region targets one of multiple background processes. Only reconstructable events by the \NW algorithm are selected. Given the rarity of the \ttHWW process, it is important that the union of all regions covers the entire remaining phase space to avoid discarding events.
+% TODO: rewrite section with rejection, accaptance and purities
+To separate signal and background, the overall phase space is subdivided in signal regions $SR$ and control regions $CR$. If defined properly, the signal region is expected to include a relatively high purity of the targeted semileptonic \ttHWW events while excluding as much of background contamination as possible. The control regions contain the remaining events with high background yields. Each control region targets one of multiple background processes. Only events where the \NW algorithm yields a prediction for the unknown neutrino and leptonic $W^*$-boson are reconstructable. Hence, only these events with a \NW solution are selected in the following. Given the rarity of the \ttHWW process, it is important that the union of all regions covers the entire remaining phase space to avoid discarding events.
 
-The signal and control regions are constructed to be non-overlapping, ensuring that the control regions remain orthogonal to the signal regions. Again, the choice of variables and the selected cuts for each region is driven by their respective separation power. The qualitative cut values are chosen by analysing their separation power. An overview of all regions is given in Tab.~\ref{TAB:EVENT_CLASSIFICATION:regions} with their relative yields in Tab.~\ref{TAB:EVENT_CLASSIFICATION:regions_yields}.
+The $SR$ and $CR$ are constructed to be orthogonal. Again, the choice of variables and the selected cuts for each region is driven by their respective separation power. The qualitative cut values are chosen by analysing their separation power. An overview of all regions is given in Tab.~\ref{TAB:EVENT_CLASSIFICATION:regions} with their relative yields in Tab.~\ref{TAB:EVENT_CLASSIFICATION:regions_yields}.
+
 
 \begin{table}
     \centering
@@ -647,7 +670,7 @@ The signal and control regions are constructed to be non-overlapping, ensuring t
     \centering
     \caption{Overview of the expected relative yields in each defined regions. The last row summarises the relative proportion of the region in respect to the full MC sampleset.}
     \begin{tabular}{l|r|r|r}
-        & \multicolumn{1}{c|}{$S$} & \multicolumn{1}{c|}{$C_{t\bar{t}}$} & \multicolumn{1}{c}{$C_{H\rightarrow bb}$}\\
+        & \multicolumn{1}{c|}{$SR$} & \multicolumn{1}{c|}{$CR_{t\bar{t}}$} & \multicolumn{1}{c}{$CR_{H\rightarrow bb}$}\\
         \hline
         \ttbar      & 99.45\,\% & 99.93\,\% & 99.67\,\% \\
         \ttHbb      & 0.09\,\% & 0.02\,\% & 0.26\,\% \\
@@ -665,7 +688,7 @@ The signal and control regions are constructed to be non-overlapping, ensuring t
 \end{table}
 
 \subsection*{Signal Region}
-One signal region $S$ is defined to separate as much signal events from background contamination. 
+One $SR$ is defined to separate as much signal events from background contamination as possible. 
 
 The targeted topology expects 8 jets of which two jets are $b$-tagged. Hence, these variables are crucial for the region definition as summarised in TaTab.ble~\ref{TAB:EVENT_CLASSIFICATION:regions}. The total event multiplicity was varied. However, a lower limit decreases the purity significantly due to \ttbar events. A higher jet limit on the other hand decreases the total signal events drastically.
 
@@ -674,15 +697,22 @@ Furthermore, the \spanet assignment probability for each $t$ quark and $H$-boson
 As listed in Tab.~\ref{TAB:EVENT_CLASSIFICATION:regions_yields}, the signal region $S$ consists of 0.28\,\% of signal events which corresponds to 0.53\% of all signal events. This signal purity is mainly dominated by \ttbar events which have significant higher cross-section and similar kinematics.
 
 \subsection*{Control Regions}
-Two additional control regions $C_{t\bar{t}}$ and $C_{H\rightarrow bb}$ are defined to separate \ttbar and \ttHbb events, respectively. 
+Two additional $CR$s, $CR_{t\bar{t}}$ and $CR_{H\rightarrow bb}$, are defined to separate \ttbar and \ttHbb events, respectively. 
 
-The $C_{t\bar{t}}$ control region targets the dominating \ttbar process. Using the two subregions as defined in Tab.~\ref{TAB:EVENT_CLASSIFICATION:regions}, 99.93\,\% of events are \ttbar events.
+The $CR_{t\bar{t}}$ targets the dominating \ttbar process. Using the two subregions as defined in Tab.~\ref{TAB:EVENT_CLASSIFICATION:regions}, 99.93\,\% of events are \ttbar events.
 
-For the $C_{H\rightarrow bb}$ control region, the $b$-jet multiplicity is of particular interest. Since it is the only background process with a higher expected number of $b$-quarks in the final state, it can be separated by cutting events with more than two $b$-jets detected. This behaviour can also be seen in Fig.~\ref{FIG:separation_power_plots:jet_multiplicities}. This results in a region containing 0.26\,\% \ttHbb events as seen in Tab.~\ref{TAB:EVENT_CLASSIFICATION:regions_yields}.
+For the $CR_{H\rightarrow bb}$ control region, the $b$-jet multiplicity is of particular interest. Since it is the only background process with a higher expected number of $b$-quarks in the final state, it can be separated by cutting events with more than two $b$-jets detected. This behaviour can also be seen in Fig.~\ref{FIG:separation_power_plots:jet_multiplicities}. This results in a region containing 0.26\,\% \ttHbb events as seen in Tab.~\ref{TAB:EVENT_CLASSIFICATION:regions_yields}.
 
+% TODO: update region plot
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/event_selection/regions.png}
+    \caption{Overview of the region definition. For visual clarity, the \ttbar events have been scaled down by a factor of 100.}
+    \label{FIG:event_selection:regions}
+\end{figure}
 
 \chapter{Results}
-In this chapter, the results of this study are summarised. First, the validation and performance of the truth matching script are stated in Section~\ref{results:truth_matching}. Sections~\ref{results:spanet} and \ref{results:neutrino_weighting} list the results from implementing \spanet and \NW, respectively. The final Section~\ref{results:combination} includes the final results from combining all anaylsis steps.
+In this chapter, the results of this study are summarised. First, the validation and performance of the truth matching script are stated in Section~\ref{results:truth_matching}. Sections~\ref{results:spanet} and \ref{results:neutrino_weighting} list the results from implementing \spanet and \NW, respectively. The final Section~\ref{results:data} includes the final results from combining all anaylsis steps and applying it on real data.
 
 \section{Truth Matching}
 \label{results:truth_matching}
@@ -695,6 +725,7 @@ The first matching scheme compares only the spatial separation between the poten
 
 The success ratios for matching individual particles or the \ttH system are summarised in Table~\ref{tab:results:truth_matching:final_matching_sheme}. For the test, 1.5 million events were used and the table shows that the $\Delta R$ scheme performs the best. Hence, it is chosen for this analysis.
 
+% TODO: Update values
 \begin{table}
     \centering
     \caption{Overview of the three different matching schemes tested for the final jet matching. It shows the success fraction for each resonance parton for \ttH. The highlighted $\Delta R$ only approach yields the best results and is chosen for the analysis.}
@@ -762,17 +793,17 @@ Moreover, the architecture and other hyperparameters were optimised in a grid-se
 
 
 \subsection*{Assignment Matrix}
-To better understand \spanets output, the predicted assignment for each jet is plotted vs the true labels from the truth matching algorithm. The resulting assignment matrix is shown in Figure~\ref{fig:results:spanet:assignment_matrix}. Note that each column is normalised to unity. Objects that have no truth matched jet are not considered.  
+To better understand \spanets output, the predicted assignment for each jet is listed against the true parton. The resulting assignment matrix is shown in Fig.~\ref{fig:results:spanet:assignment_matrix}. Note that each column is normalised to unity. Moreover, no partial events are including which means that every parton has a jet assigned. 
 
-A diagonal matrix would correspond to a perfect prediction. The $(q_1,q_2)$ 2x2 submatricies for $t_1$, $t_1$ and $W_\text{had.}$ show the predefined allowed permutations during learning. Hence, a off-diagonal term within these submatricies is considered as a correct assignment.
-% TODO: describe assignment matrix further
+The figure shows dominating diagonal terms, with over 80-90\,\% of events included. A diagonal matrix would correspond to a perfect prediction where every \spanet assignment equals the true assignment. The $(q_1,q_2)$ 2x2 submatricies for $t_1$, $t_2$ and $W_\text{had}$ show the predefined allowed permutations during learning. Hence, a off-diagonal term within these submatricies is considered as a correct assignment since the permutation does not change the underlying phyiscs. These outputs indicate a well-trained neural network.
 
-\begin{figure}[H]
+\begin{figure}
     \centering  
-    \includegraphics[width=0.7\textwidth]{figures/SPANet/assignment.png}
-    \caption{Overview of \spanet assignment matrix showing the predicted and true labels. Each column is normalised to unity. The predefined permutations between the untagged light jets are clearly visible.}
+    \includegraphics[width=0.7\textwidth]{figures/assignment_matrix/assignment_matrix.png}
+    \caption{Overview of \spanet assignment matrix showing the predicted and true labels. Each column is normalised to unity. Only events with all partons matched are included.}
     \label{fig:results:spanet:assignment_matrix}
 \end{figure}
+
 
 \subsection*{Assignment Efficiencies}
 The evaluation of \spanets overall assignment is done for each resonance particle ($t_1$, $t_2$, $W_\text{had.}$) and is further split into different processes. The results are listed in Table~\ref{tab:results:spanet:correct_assignment}. These values are based on the final MC run including approximately 1.5 million events.
@@ -800,7 +831,7 @@ Furthermore, the used \spanet implementation outputs a detection and assignment 
 % TODO: describe distributions of events depending on spanet probabilities
 % TODO: use output probability as event classifier
 
-\begin{figure}[H]
+\begin{figure}
     \centering  
     \includegraphics[width=0.47\textwidth]{figures/SPANet/spanet_probability_detection_normed.png}\hspace{0.02\textwidth}
     \includegraphics[width=0.47\textwidth]{figures/SPANet/spanet_probability_assignment_normed.png}
@@ -811,64 +842,117 @@ Furthermore, the used \spanet implementation outputs a detection and assignment 
 
 \section{Neutrino Weighting}
 \label{results:neutrino_weighting}
-% TODO: short introduction neutrino weighting estimations (what, rückbezug wie)
+As explained in Ch.~\ref{ch:neutrino_weighting}, the deployed \NW algorithm predicts the unknown parameters $\eta_\nu$ and $m_{W^*}$. This is done by calculating the most likely combination of these parameters while using the hadronic $W$-boson from the $H$-boson decay and missing transverse energy $E_T^\text{miss}$ as input. Assuming the mass and decay mode of the $H$-boson as outlined in Ch.~\ref{ch:event_selection}, the event can be reconstructed using \NW estimations.
 
 %\subsection*{Grid Search}
 %Besides using the calculated weight for each event to estimate the most likely unknown parameters, it can also be used in the event selection to reduce backgrounds. Previously, this technique has been estimated to greatly suppress backgrounds in \HWW systems by discarding all events with a neutrino weight $w<0.7$. Using this selection, a theoretical signal purity of 20\% was calculated \cite{neutrino_weighting:adaptation}.
 % TODO: State the used sigma_x/sigma_y, city energy dependence resolution (worst case)
 
 \subsection*{Validation}
-To validate the accuracy of the NW algorithm, the estimated solutions are compared to the true values of the MC samples. Here, the \NW algorithm also uses the truth information as input. Hence, effects due to simulated detector inefficiencies are ignored in the comparison. 
-% TODO: FINALE HEATMAPS FOR ETA AND MLEP
-% TODO: CHERRY PICKED EVENTS
+To validate the accuracy of the NW algorithm, the estimated solutions are compared to the true values of the MC samples. %Fig.~\ref{fig:results:neutrino_weighting:cherry} shows a distribution of the \NW output. 
+Here, the \NW algorithm uses the truth information as input. Hence, effects due to simulated detector inefficiencies are ignored in the comparison. 
 
-\subsubsection{Higgs Mass}
-As an additional validation step, the assumed Higgs mass $m_H$ is varied. The used MC samples for validation uses a true mass of $M_H=125$\,GeV. The \NW algorithm is tested by assuming the correct mass of $m_H=M_H$ and a slightly off-set mass $m_H=125.20$\,GeV.
+%\begin{figure}
+%    \centering  
+%    \includegraphics[width=0.7\textwidth]{figures/Neutrino Weighting/cherry_13.png}
+%    \caption{Visualisation of the \NW output of a single cherry-picked event. For each sampled combination of $\eta_\nu$ and $m_{W^*}$, calculated weight is shown. The maximum of the weight distribution and the true solutions are marked.}
+%    \label{fig:results:neutrino_weighting:cherry}
+%\end{figure}
 
-Fig.~\ref{FIG:neutrino_weighting:validation_higgs_mass} shows the difference of the estimated values of $\eta_\nu$ and $m_W$ for both assumptions. The heatmaps clearly show the sensibility of the algorithm in respect to the assumed Higgs mass. Furthermore, for a correct assumption $m_H=M_H$, the distribution peaks around ($\nu_\eta=0$,$m_W=0$\,GeV) as expected. Using a different Higgs mass significantly changes the estimated mass its decay particle $W_\text{lep}$. Hence, when using $m_H=125.20$\,GeV the estiamted mass $m_W$ is increased by around 200\,MeV in respect to the true value due to kinematic conservation laws. 
+As an additional validation step, the assumed Higgs mass $m_H$ is varied. The used MC samples for validation uses a true mass of $m_H^\text{MC}=125$\,GeV. The \NW algorithm is tested by assuming the correct mass of $m_H=m_H^\text{MC}$ and a slightly off-set mass $m_H=125.20$\,GeV. Fig.~\ref{FIG:neutrino_weighting:validation_higgs_mass} shows the difference of the estimated values of $\eta_\nu$ and $m_W$ for both assumptions. The heatmaps clearly show the sensibility of the algorithm in respect to the assumed $H$-boson mass. Furthermore, for a correct assumption $m_H=m_H^\text{MC}$, the distribution peaks around ($\nu_\eta=0$,$m_W=0$\,GeV) as expected. Using a different $H$-boson mass significantly changes the estimated mass its decay particle $W_\text{lep}$. Hence, when using $m_H=125.20$\,GeV the estiamted mass $m_W$ is increased by around 200\,MeV in respect to the true value due to kinematic conservation laws. 
 
-Both observations behave as physically expected, indicating the \NW alrgorithm is working properly.
-
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[width=0.46\textwidth]{figures/Neutrino Weighting/heatmap-nw_true.png}\hspace{0.02\textwidth}
-    \includegraphics[width=0.46\textwidth]{figures/Neutrino Weighting/heatmap-nw_true_125-2.png}
-    \caption{Comparison of two heatmaps showing the difference between the estimated and true values. The two heatmaps use (left) the correct $m_H=125$\,GeV and (right) the offset $m_H=125.20$\,GeV.}
+    \includegraphics[width=0.46\textwidth]{figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png}\hspace{0.02\textwidth}
+    \includegraphics[width=0.46\textwidth]{figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png}
+    \caption{Comparison of two heatmaps showing the difference between the estimated and true values. The two heatmaps use (left) the correct $m_H=m_H^\text{MC}$ and (right) the off-set $m_H=125.20$\,GeV.}
     \label{FIG:neutrino_weighting:validation_higgs_mass}
 \end{figure}
 
-\subsection*{Performance}
+Furthermore, in Fig.~\ref{FIG:neutrino_weighting:true_and_reco} the same distribution is shown. Here the $H$-boson mass is not varied, but the input uses the reconstructed information, including simulated detector effects. Again, the predictions are centered around ($\nu_\eta=0$,$m_W=0$\,GeV). However, when using reconstructed information as input, the \NW estimations deviate stronger from the true values. These inaccuracies are expected due to less accurate inputs.
 
-\section{Combined Data Run}
-\label{results:combination}
-% TODO: Merge of SPANet and Neutrino Weighting
+\begin{figure}
+    \centering
+    \includegraphics[width=0.46\textwidth]{figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png}\hspace{0.02\textwidth}
+    \includegraphics[width=0.46\textwidth]{figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png}
+    \caption{Comparison showing the \NW output difference when using (left) true informatio and (right) reconstructed information as input.}
+    \label{FIG:neutrino_weighting:true_and_reco}
+\end{figure}
+
+\subsection*{Performance}
+To evaluate the \NW algorithm, its output weights are analysed per process which are summarised in Tab.~\ref{tab:results:neutrino_weighting:counts}. Using the true values as input yields insight into the mathematical accuarcy of the reconstruction when ignoring detector effects and \spanet assignment efficiencies. Naturally, the \NW is almost 100\% accurate. When using the reconstructed information as input, the performance is more realistic due to the simulated detector inaccuracies. 
+
+\begin{table}
+    \centering
+    \caption{List of reconstructable events by \NW split by different inputs. Events are counted as reconstructable when at least one solution was found. Note the different scales.}
+    \begin{tabular}{l|c|c|c|}
+        & true & reconstructed & reconstructed input\\
+        & input & input &  \& optimisations\\
+        \hline
+        \ttHWWlvqq & XX.X & 0.11 & XX.X \\
+        \ttHWW & XX.X & XX.X & XX.X \\
+        \ttHbb & XX.X & XX.X & XX.X \\
+        \ttHother & XX.X & XX.X & XX.X \\
+        \ttbar & XX.X & XX.X & XX.X \\
+        other & XX.X & XX.X & XX.X \\
+    \end{tabular}
+    \label{tab:results:neutrino_weighting:counts}
+\end{table}
+The distribution of weights is shown in Fig.~\ref{fig:results:neutrino_weighting:weight_distribution}. 
+
+% TODO: Weight values
+
+% TODO: Update weight destribution
+\begin{figure}
+    \centering  
+    \includegraphics[width=0.7\textwidth]{figures/placeholder.png}
+    \caption{Summary of the \NW output distribution split into different processes. Here, only events with at least one solution are included.}
+    \label{fig:results:neutrino_weighting:weight_distribution}
+\end{figure}
+
+
+\section{Data}
+\label{results:data}
+% TODO: Merge of SPANet and Neutrino Weighting DATA
 \subsection*{Regions}
 \subsection*{Reconstruction}
 
+
+
 \chapter{Discussion}
+To conclude this thesis, a summary of the main results is given in Sec.~\ref{sec:discussion:summary}. This section will reiterate the main measurements with respect to the main goal of this analysis. Lastly, inspiration for future steps in this analysis are explained in Sec.~\ref{sec:discussion:future}.
+
 \section{Summary}
+\label{sec:discussion:summary}
 % TODO: conclude Thesis, recapture important findings
 % TODO: difficult channel, as expected hard to differentiate, still important for background studies and testing new techniques
 % TODO: Compare to Steffens Paper, Numbers for certrain event types (e.g. ttbar, ttH->WW->qqlv, ...)
 % TODO: Bedeutung für Fragestellung
 
 \section{Future Aspects}
-This section outlines potential tasks for the future. While this study has provides insights into the \ttHWW event separation, there remain several opportunities for refinement in both the \spanet training and \NW algorithm. These potential future tasks are explained briefly. However, due to time constraints these optimisations exceeded the scope of this work.
+\label{sec:discussion:future}
+This section outlines potential tasks for the future. While this study provides insights into the \ttHWW event separation, there remain opportunities for refinement. These potential future tasks are explained briefly. However, due to time constraints these optimisations exceeded the scope of this work.
 
-\subsection*{Neutrino Weighting Optimisation}
-% TODO: make eta scanning dependent on event energy (distributions are correlated)
+\subsection*{Include Systematic Uncertainties}
+This study only includes statistical uncertainties for the final results. Hence, systematic uncertainties due to detector calibrations, theoretical models, luminosity and other effects are not incoperated. In the future, this analysis should be complemented by introducing these systematic uncertainties.
 
-\subsection*{Retain SPA-Net without Single Lepton Triggers}
-% TODO: retrain SPANet without any triggers to better learn main background ttbar
+Combining systematic and statistical uncertainties will yield more realistic uncertainties for the measurements. Moreover, varying the systematic uncertainties would show the sensitivity of the measurements with respect to the investigated uncertatinties. Hence, the reduction of the most sensitive uncertainties should then be prioritised to improve the results of this study. 
 
-\subsection*{Include Systematics}
-% TODO: 
+\subsection*{Further Optimisation}
+While this study includes several technical optimisations, additional improvements should be tested in the future. 
+
+As seen in this study, \spanets prediction accuarcy is limited by the correct \ttbar assignment. Hence, training the neural network to assign these jets correctly should improve the overall performance of this analysis. This could be done, by initially training \spanet only on \ttbar events and then fine-tuning the parameters for \ttHWWlvqq events. Since \ttbar events are the main background in this analysis, this could also help to increase the signal purity in the event selection. 
+
+The \NW algorithm also includes some optimisations such as the regions of interest and $H$-boson mass smearing. As an additional improvement, changing the $\eta_\nu$ sampling to an adaptive approach could improve the performance. The expected $\eta_\nu$ is depent on the overall event energy, making certain regions more likely. Hence, these regions should be sampled with more granular steps to find the best solutions.
 
 
 \bibliography{datenbank} 
 
 \appendix
 
+
+% TODO: Clean up Appendix
+\chapter{Full Split PLots}
 
 \chapter{Temporary Other Stuff}
 \begin{figure}
@@ -886,7 +970,7 @@ This section outlines potential tasks for the future. While this study has provi
 \begin{otherlanguage}{ngerman}
     \Declaration
     
-    \begin{figure}[H]
+    \begin{figure}
         \centering
         \vspace*{-35mm}    
         \hspace{20mm}\includegraphics[width=.6\textwidth]{figures/signature.png}	

@@ -19,21 +19,21 @@
 \contentsline {section}{\numberline {6.1}Parameter Estimation}{29}{section.6.1}%
 \contentsline {section}{\numberline {6.2}Optimisation}{31}{section.6.2}%
 \contentsline {chapter}{\numberline {7}Event Selection}{33}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Objects of Target Event Topology}{33}{section.7.1}%
+\contentsline {section}{\numberline {7.1}Objects of the Target Event Topology}{33}{section.7.1}%
 \contentsline {section}{\numberline {7.2}Separation Power}{34}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Region Definition}{37}{section.7.3}%
+\contentsline {section}{\numberline {7.3}Region Definition}{38}{section.7.3}%
 \contentsline {chapter}{\numberline {8}Results}{41}{chapter.8}%
 \contentsline {section}{\numberline {8.1}Truth Matching}{41}{section.8.1}%
 \contentsline {section}{\numberline {8.2}SPA-Net}{43}{section.8.2}%
 \contentsline {section}{\numberline {8.3}Neutrino Weighting}{45}{section.8.3}%
-\contentsline {subsubsection}{\nonumberline Higgs Mass}{45}{subsubsection*.34}%
-\contentsline {section}{\numberline {8.4}Combined Data Run}{46}{section.8.4}%
-\contentsline {chapter}{\numberline {9}Discussion}{47}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Summary}{47}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Future Aspects}{47}{section.9.2}%
-\contentsline {chapter}{\numberline {10}Bibliography}{49}{chapter.10}%
-\contentsline {chapter}{\numberline {A}Temporary Other Stuff}{55}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Declaration}{57}{appendix.B}%
+\contentsline {section}{\numberline {8.4}Data}{48}{section.8.4}%
+\contentsline {chapter}{\numberline {9}Discussion}{49}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Summary}{49}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Future Aspects}{49}{section.9.2}%
+\contentsline {chapter}{\numberline {10}Bibliography}{51}{chapter.10}%
+\contentsline {chapter}{\numberline {A}Full Split PLots}{57}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Temporary Other Stuff}{59}{appendix.B}%
+\contentsline {chapter}{\numberline {C}Declaration}{61}{appendix.C}%
 \babel@toc {ngerman}{}\relax 
 \babel@toc {english}{}\relax 
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
