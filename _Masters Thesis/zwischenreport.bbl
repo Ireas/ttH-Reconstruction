@@ -82,10 +82,10 @@
 {D{\O} Collaboration}, \emph{Observation of the top quark}, Phys. Rev. Lett. \textbf{74(14)} (1995)
 
 \bibitem{btag:atlas}
-{ATLAS Collaboration}, \emph{Performance of $b$-Jet Identification in the ATLAS Experiment}, J. Sci. Instrum. \textbf{8(4)} (2016)
+{ATLAS Collaboration}, \emph{Performance of $b$-Jet Identification in the ATLAS Experiment}, JINST \textbf{8(4)} (2016)
 
 \bibitem{btag:cms}
-{CMS Collaboration}, \emph{Identification of b-Quark Jets with the CMS Experiment}, J. Sci. Instrum. \textbf{8(4)} (2013)
+{CMS Collaboration}, \emph{Identification of b-Quark Jets with the CMS Experiment}, JINST \textbf{8(4)} (2013)
 
 \bibitem{btag:performance}
 {ATLAS Collaboration}, \emph{ATLAS b-jet identification performance and efficiency measurement with $t{\bar{t}}$ events in pp collisions at $\sqrt{s}=13$ TeV}, Eur. Phys. J. C \textbf{79(11)} (2019)
@@ -115,10 +115,10 @@
 {T. Damour and A.M. Polyakov}, \emph{String theory and gravity}, Gen. Relat. Gravit. \textbf{26} (1994)
 
 \bibitem{bsm_dark_matter_01}
-{V. Trimble}, \emph{Existence and nature of dark matter in the universe}, Annu. Rev. Astron. Astr. \textbf{25(1)} (1987)
+{V. Trimble}, \emph{Existence and nature of dark matter in the universe}, Annu. Rev. Astron. Astrophys. \textbf{25(1)} (1987)
 
 \bibitem{bsm_dark_matter_02}
-{M.E. Peskin}, \emph{Dark matter and particle physics}, J. Phys. Soc. Jpn \textbf{76(11)} (2007)
+{M. E. Peskin}, \emph{Dark matter and particle physics}, J. Phys. Soc. Japan \textbf{76(11)} (2007)
 
 \bibitem{bsm_dark_matter_03}
 {F. Zwicky}, \emph{Die Rotverschiebung von extragalaktischen Nebeln}, Helv. Phys. Acta \textbf{6} (1933)
@@ -135,23 +135,26 @@
 \bibitem{bsm_mond}
 {T. Clifton et. al}, \emph{Modified gravity and cosmology}, Phys. Rep. \textbf{513(1-3)} (2012)
 
+\bibitem{ttbar_cross_section_theoretical}
+{ATLAS Collaboration}, \emph{{Inclusive and differential cross-sections for dilepton $ t\overline{t} $ production measured in $ \sqrt{s} $ = 13 TeV pp collisions with the ATLAS detector}}, JHEP \textbf{07} (2023)
+
+\bibitem{higgs_cross_section_theoretical}
+{ATLAS Collaboration}, \emph{{Observation of Higgs boson production in association with a top quark pair at the LHC with the ATLAS detector}}, {Phys. Lett. B} \textbf{784} (2018)
+
+\bibitem{yellow_report_4_higgs}
+{LHC Collaboration}, \emph{{Handbook of LHC Higgs Cross Sections: 4. Deciphering the Nature of the Higgs Sector}}, CERN (2017)
+
 \bibitem{theory:cross_sections}
-{ATLAS Collaboration}, \emph{Top cross section summary plots - April 2024}, Technical report (2024)
-
-\bibitem{theory:higgs_branching_ratio}
-{ATLAS Collaboration}, \emph{A detailed map of Higgs boson interactions by the ATLAS experiment ten years after the discovery}, Nature \textbf{607(7917)} (2022)
-
-\bibitem{theory:w_branching_ratio}
-{CMS Collaboration}, \emph{Precision measurement of the W boson decay branching fractions in proton-proton collisions at $\sqrt{s}$ = 13 TeV}, Phys. Rev. D \textbf{105(7)} (2022)
+{ATLAS Collaboration}, \emph{Top cross section summary plots - April 2024}  (2024)
 
 \bibitem{lhc_01}
-{L. Evans and P. Bryant}, \emph{{LHC Machine}}, J. Sci. Instrum. \textbf{3(8)} (2008)
+{L. Evans and P. Bryant}, \emph{{LHC Machine}}, JINST \textbf{3(8)} (2008)
 
 \bibitem{lhc_02}
 {L. R. Evans}, \emph{The Large Hadron Collider (LHC)}, New J. Phys. \textbf{9(9)} (2007)
 
 \bibitem{atlas}
-{ATLAS Collaboration}, \emph{The ATLAS experiment at the CERN large hadron collider}, J. Sci. Instrum. \textbf{3(8)} (2008)
+{ATLAS Collaboration}, \emph{The ATLAS experiment at the CERN large hadron collider}, JINST \textbf{3(8)} (2008)
 
 \bibitem{atlas:tech_design_report_01}
 {ATLAS Collaboration}, \emph{ATLAS: Detector and physics performance technical design report. Volume 1}, CERN-LHCC-99-14, ATLAS-TDR-14  (1999)
@@ -172,7 +175,7 @@
 {ATLAS Collaboration}, \emph{Technical Design Report for the ATLAS Inner Tracker Strip Detector}, CERN-LHCC-2017-005, ATLAS-TDR-025  (2017)
 
 \bibitem{atlas:transition_detector}
-{ATLAS Collaboration}, \emph{The ATLAS Transition Radiation Tracker (TRT) proportional drift tube: Design and performance}, J. Sci. Instrum. \textbf{3(2)} (2008)
+{ATLAS Collaboration}, \emph{The ATLAS Transition Radiation Tracker (TRT) proportional drift tube: Design and performance}, JINST \textbf{3(2)} (2008)
 
 \bibitem{atlas:calorimeter}
 {ATLAS Collaboration}, \emph{ATLAS Calorimeter: Run 2 performance and Phase-II upgrades}, PoS Proc. Sci. \textbf{314(11)} (2017)
@@ -190,19 +193,19 @@
 {ATLAS Collaboration}, \emph{Operation of the ATLAS trigger system in Run 2}, JINST \textbf{15(10)} (2020)
 
 \bibitem{other:cms}
-{CMS Collaboration}, \emph{The CMS Experiment at the CERN LHC}, J. Sci. Instrum. \textbf{3(8)} (2008)
+{CMS Collaboration}, \emph{The CMS Experiment at the CERN LHC}, JINST \textbf{3(8)} (2008)
 
 \bibitem{other:alice}
-{ALICE Collaboration}, \emph{The ALICE experiment at the CERN LHC}, J. Sci. Instrum. \textbf{3(8)} (2008)
+{ALICE Collaboration}, \emph{The ALICE experiment at the CERN LHC}, JINST \textbf{3(8)} (2008)
 
 \bibitem{other:lhcb}
-{LHCb Collaboration}, \emph{The LHCb Detector at the LHC}, J. Sci. Instrum. \textbf{3(8)} (2008)
+{LHCb Collaboration}, \emph{The LHCb Detector at the LHC}, JINST \textbf{3(8)} (2008)
 
 \bibitem{spanet_01}
 {A. Shmakov et a.}, \emph{{SPANet: Generalized permutationless set assignment for particle physics using symmetry preserving attention}}, SciPost Phys. \textbf{12(5)} (2022)
 
 \bibitem{spanet_02}
-{M. J.Fenton et al.}, \emph{Reconstruction of Unstable Heavy Particles Using Deep Symmetry-Preserving Attention Networks}, arXiv pre-print  (2023)
+{M. J. Fenton et al.}, \emph{Reconstruction of Unstable Heavy Particles Using Deep Symmetry-Preserving Attention Networks}, Commun. Phys. \textbf{7(1)} (2024)
 
 \bibitem{nn:chi_squared}
 {S. Baker and R. D. Cousins}, \emph{Clarification of the use of chi-square and likelihood functions in fits to histograms}, Nucl. Instr. Meth. Phys. Res. \textbf{221(2)} (1984)
@@ -211,10 +214,13 @@
 {M. J. Fenton et al.}, \emph{Permutationless many-jet event reconstruction with symmetry preserving attention networks}, Phys. Rev. D \textbf{105(11)} (2022)
 
 \bibitem{neutrino_weighting:original}
-{D\O Collaboration}, \emph{Measurement of the Top Quark Mass Using Dilepton Events}, Phys. Rev. Lett. \textbf{80(10)} (1998)
+{D\O{} Collaboration}, \emph{Measurement of the Top Quark Mass Using Dilepton Events}, Phys. Rev. Lett. \textbf{80(10)} (1998)
 
 \bibitem{neutrino_weighting:adaptation}
 {F. Fabbri, J. Howarth and T. Maurin}, \emph{{Isolating semi-leptonic $H\rightarrow WW^*$ decays for Bell inequality tests}}, {Eur. Phys. J. C} \textbf{84(1)} (2024)
+
+\bibitem{higgs_mass_combined}
+{ATLAS and CMS Collaborations}, \emph{{Combined Measurement of the Higgs Boson Mass in $pp$ Collisions at $\sqrt{s}=7$ and 8 TeV with the ATLAS and CMS Experiments}}, Phys. Rev. Lett. \textbf{114} (2015)
 
 \bibitem{atlas:met_resolution}
 {ATLAS Collaboration}, \emph{Performance of missing transverse momentum reconstruction with the ATLAS detector using proton-proton collisions at $\sqrt{s}$ = 13 TeV}, Eur. Phys. J. C \textbf{78(11)} (2018)
