@@ -27,12 +27,12 @@
 \contentsline {section}{\numberline {8.2}SPA-Net}{45}{section.8.2}%
 \contentsline {section}{\numberline {8.3}Neutrino Weighting}{47}{section.8.3}%
 \contentsline {section}{\numberline {8.4}Data}{51}{section.8.4}%
-\contentsline {chapter}{\numberline {9}Discussion}{53}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Summary}{53}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Future Aspects}{54}{section.9.2}%
-\contentsline {chapter}{Bibliography}{57}{chapter*.39}%
-\contentsline {chapter}{\numberline {A}SPA-Net Output Probabilities}{63}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Declaration}{67}{appendix.B}%
+\contentsline {chapter}{\numberline {9}Discussion}{55}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Summary}{55}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Future Aspects}{56}{section.9.2}%
+\contentsline {chapter}{Bibliography}{59}{chapter*.39}%
+\contentsline {chapter}{\numberline {A}Additional SPA-Net Output Probabilities}{65}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Additional Comparisons of Atlas Dataset and MC Samples}{67}{appendix.B}%
 \babel@toc {ngerman}{}\relax 
 \babel@toc {english}{}\relax 
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

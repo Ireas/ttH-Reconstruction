@@ -367,11 +367,11 @@ INPUT c:/TeXLive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc
 INPUT c:/TeXLive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmr8.tfm
 INPUT c:/TeXLive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmr6.tfm
 INPUT c:/TeXLive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc
-INPUT ./figures/feynman/feynman_labeled.png
-INPUT ./figures/feynman/feynman_labeled.png
-INPUT ./figures/feynman/feynman_labeled.png
-INPUT ./figures/feynman/feynman_labeled.png
-INPUT ./figures/feynman/feynman_labeled.png
+INPUT ./figures/feynman/feynman_labeled2.png
+INPUT ./figures/feynman/feynman_labeled2.png
+INPUT ./figures/feynman/feynman_labeled2.png
+INPUT ./figures/feynman/feynman_labeled2.png
+INPUT ./figures/feynman/feynman_labeled2.png
 INPUT ./figures/cross_section/top_total_cross_sections.png
 INPUT ./figures/cross_section/top_total_cross_sections.png
 INPUT ./figures/cross_section/top_total_cross_sections.png
@@ -422,66 +422,66 @@ INPUT ./figures/Neutrino Weighting/cherry_14.png
 INPUT ./figures/Neutrino Weighting/cherry_14.png
 INPUT ./figures/Neutrino Weighting/cherry_14.png
 INPUT ./figures/Neutrino Weighting/cherry_14.png
-INPUT ./figures/separation_power/separation_split_number_of_jets.png
-INPUT ./figures/separation_power/separation_split_number_of_jets.png
-INPUT ./figures/separation_power/separation_split_number_of_jets.png
-INPUT ./figures/separation_power/separation_split_number_of_jets.png
-INPUT ./figures/separation_power/separation_split_number_of_jets.png
-INPUT ./figures/separation_power/separation_split2_number_of_bjets.png
-INPUT ./figures/separation_power/separation_split2_number_of_bjets.png
-INPUT ./figures/separation_power/separation_split2_number_of_bjets.png
-INPUT ./figures/separation_power/separation_split2_number_of_bjets.png
-INPUT ./figures/separation_power/separation_split2_number_of_bjets.png
-INPUT ./figures/separation_power/separation_split2_reco_met_value_gev.png
-INPUT ./figures/separation_power/separation_split2_reco_met_value_gev.png
-INPUT ./figures/separation_power/separation_split2_reco_met_value_gev.png
-INPUT ./figures/separation_power/separation_split2_reco_met_value_gev.png
-INPUT ./figures/separation_power/separation_split2_reco_met_value_gev.png
-INPUT ./figures/separation_power/separation_split2_reco_lepton_e_gev.png
-INPUT ./figures/separation_power/separation_split2_reco_lepton_e_gev.png
-INPUT ./figures/separation_power/separation_split2_reco_lepton_e_gev.png
-INPUT ./figures/separation_power/separation_split2_reco_lepton_e_gev.png
-INPUT ./figures/separation_power/separation_split2_reco_lepton_e_gev.png
-INPUT ./figures/separation_power/separation_split2_spanet_t2_assignment_probability.png
-INPUT ./figures/separation_power/separation_split2_spanet_t2_assignment_probability.png
-INPUT ./figures/separation_power/separation_split2_spanet_t2_assignment_probability.png
-INPUT ./figures/separation_power/separation_split2_spanet_t2_assignment_probability.png
-INPUT ./figures/separation_power/separation_split2_spanet_t2_assignment_probability.png
-INPUT ./figures/separation_power/separation_split2_spanet_HW_assignment_probability.png
-INPUT ./figures/separation_power/separation_split2_spanet_HW_assignment_probability.png
-INPUT ./figures/separation_power/separation_split2_spanet_HW_assignment_probability.png
-INPUT ./figures/separation_power/separation_split2_spanet_HW_assignment_probability.png
-INPUT ./figures/separation_power/separation_split2_spanet_HW_assignment_probability.png
-INPUT ./figures/separation_power/separation_split2_NW_weight.png
-INPUT ./figures/separation_power/separation_split2_NW_weight.png
-INPUT ./figures/separation_power/separation_split2_NW_weight.png
-INPUT ./figures/separation_power/separation_split2_NW_weight.png
-INPUT ./figures/separation_power/separation_split2_NW_weight.png
-INPUT ./figures/separation_power/separation_split2_short_NW_weight.png
-INPUT ./figures/separation_power/separation_split2_short_NW_weight.png
-INPUT ./figures/separation_power/separation_split2_short_NW_weight.png
-INPUT ./figures/separation_power/separation_split2_short_NW_weight.png
-INPUT ./figures/separation_power/separation_split2_short_NW_weight.png
-INPUT ./figures/abcd/abcd_background_$t$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_background_$t$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_background_$t$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_background_$t$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_background_$t$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_signal_$t$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_signal_$t$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_signal_$t$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_signal_$t$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_signal_$t$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability $p$.png
-INPUT ./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability $p$.png
+INPUT ./figures/separation_power/separation_splitnew_number_of_jets.png
+INPUT ./figures/separation_power/separation_splitnew_number_of_jets.png
+INPUT ./figures/separation_power/separation_splitnew_number_of_jets.png
+INPUT ./figures/separation_power/separation_splitnew_number_of_jets.png
+INPUT ./figures/separation_power/separation_splitnew_number_of_jets.png
+INPUT ./figures/separation_power/separation_splitnew_number_of_bjets.png
+INPUT ./figures/separation_power/separation_splitnew_number_of_bjets.png
+INPUT ./figures/separation_power/separation_splitnew_number_of_bjets.png
+INPUT ./figures/separation_power/separation_splitnew_number_of_bjets.png
+INPUT ./figures/separation_power/separation_splitnew_number_of_bjets.png
+INPUT ./figures/separation_power/separation_splitnew_reco_met_value_gev.png
+INPUT ./figures/separation_power/separation_splitnew_reco_met_value_gev.png
+INPUT ./figures/separation_power/separation_splitnew_reco_met_value_gev.png
+INPUT ./figures/separation_power/separation_splitnew_reco_met_value_gev.png
+INPUT ./figures/separation_power/separation_splitnew_reco_met_value_gev.png
+INPUT ./figures/separation_power/separation_splitnew_reco_lepton_e_gev.png
+INPUT ./figures/separation_power/separation_splitnew_reco_lepton_e_gev.png
+INPUT ./figures/separation_power/separation_splitnew_reco_lepton_e_gev.png
+INPUT ./figures/separation_power/separation_splitnew_reco_lepton_e_gev.png
+INPUT ./figures/separation_power/separation_splitnew_reco_lepton_e_gev.png
+INPUT ./figures/separation_power/separation_splitnew_spanet_t2_assignment_probability.png
+INPUT ./figures/separation_power/separation_splitnew_spanet_t2_assignment_probability.png
+INPUT ./figures/separation_power/separation_splitnew_spanet_t2_assignment_probability.png
+INPUT ./figures/separation_power/separation_splitnew_spanet_t2_assignment_probability.png
+INPUT ./figures/separation_power/separation_splitnew_spanet_t2_assignment_probability.png
+INPUT ./figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png
+INPUT ./figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png
+INPUT ./figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png
+INPUT ./figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png
+INPUT ./figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png
+INPUT ./figures/separation_power/separation_splitnew_NW_weight.png
+INPUT ./figures/separation_power/separation_splitnew_NW_weight.png
+INPUT ./figures/separation_power/separation_splitnew_NW_weight.png
+INPUT ./figures/separation_power/separation_splitnew_NW_weight.png
+INPUT ./figures/separation_power/separation_splitnew_NW_weight.png
+INPUT ./figures/separation_power/separation_splitnew_short_NW_weight.png
+INPUT ./figures/separation_power/separation_splitnew_short_NW_weight.png
+INPUT ./figures/separation_power/separation_splitnew_short_NW_weight.png
+INPUT ./figures/separation_power/separation_splitnew_short_NW_weight.png
+INPUT ./figures/separation_power/separation_splitnew_short_NW_weight.png
+INPUT ./figures/abcd/abcd_background_$t$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_background_$t$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_background_$t$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_background_$t$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_background_$t$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_signal_$t$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_signal_$t$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_signal_$t$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_signal_$t$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_signal_$t$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png
+INPUT ./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png
 INPUT ./figures/assignment_matrix/assignment_matrix_a.png
 INPUT ./figures/assignment_matrix/assignment_matrix_a.png
 INPUT ./figures/assignment_matrix/assignment_matrix_a.png
@@ -521,6 +521,26 @@ INPUT ./figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png
 INPUT ./figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png
 INPUT ./figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png
 INPUT ./figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png
+INPUT ./figures/comparison/number_of_bjets.png
+INPUT ./figures/comparison/number_of_bjets.png
+INPUT ./figures/comparison/number_of_bjets.png
+INPUT ./figures/comparison/number_of_bjets.png
+INPUT ./figures/comparison/number_of_bjets.png
+INPUT ./figures/comparison/reco_met_value.png
+INPUT ./figures/comparison/reco_met_value.png
+INPUT ./figures/comparison/reco_met_value.png
+INPUT ./figures/comparison/reco_met_value.png
+INPUT ./figures/comparison/reco_met_value.png
+INPUT ./figures/comparison/spanet_HW_detection_probability.png
+INPUT ./figures/comparison/spanet_HW_detection_probability.png
+INPUT ./figures/comparison/spanet_HW_detection_probability.png
+INPUT ./figures/comparison/spanet_HW_detection_probability.png
+INPUT ./figures/comparison/spanet_HW_detection_probability.png
+INPUT ./figures/comparison/NW_weight.png
+INPUT ./figures/comparison/NW_weight.png
+INPUT ./figures/comparison/NW_weight.png
+INPUT ./figures/comparison/NW_weight.png
+INPUT ./figures/comparison/NW_weight.png
 INPUT ./zwischenreport.bbl
 INPUT ./zwischenreport.bbl
 INPUT zwischenreport.bbl
@@ -534,11 +554,6 @@ INPUT ./figures/baptiste/$t_1$ Assignment Probability.png
 INPUT ./figures/baptiste/$t_1$ Assignment Probability.png
 INPUT ./figures/baptiste/$t_1$ Assignment Probability.png
 INPUT ./figures/baptiste/$t_1$ Assignment Probability.png
-INPUT ./figures/baptiste/$t_1$ Marginal Probability.png
-INPUT ./figures/baptiste/$t_1$ Marginal Probability.png
-INPUT ./figures/baptiste/$t_1$ Marginal Probability.png
-INPUT ./figures/baptiste/$t_1$ Marginal Probability.png
-INPUT ./figures/baptiste/$t_1$ Marginal Probability.png
 INPUT ./figures/baptiste/$t_2$ Detection Probability.png
 INPUT ./figures/baptiste/$t_2$ Detection Probability.png
 INPUT ./figures/baptiste/$t_2$ Detection Probability.png
@@ -549,11 +564,6 @@ INPUT ./figures/baptiste/$t_2$ Assignment Probability.png
 INPUT ./figures/baptiste/$t_2$ Assignment Probability.png
 INPUT ./figures/baptiste/$t_2$ Assignment Probability.png
 INPUT ./figures/baptiste/$t_2$ Assignment Probability.png
-INPUT ./figures/baptiste/$t_2$ Marginal Probability.png
-INPUT ./figures/baptiste/$t_2$ Marginal Probability.png
-INPUT ./figures/baptiste/$t_2$ Marginal Probability.png
-INPUT ./figures/baptiste/$t_2$ Marginal Probability.png
-INPUT ./figures/baptiste/$t_2$ Marginal Probability.png
 INPUT ./figures/baptiste/$W_.text{had}$ Detection Probability.png
 INPUT ./figures/baptiste/$W_.text{had}$ Detection Probability.png
 INPUT ./figures/baptiste/$W_.text{had}$ Detection Probability.png
@@ -562,11 +572,36 @@ INPUT ./figures/baptiste/$W_.text{had}$ Assignment Probability.png
 INPUT ./figures/baptiste/$W_.text{had}$ Assignment Probability.png
 INPUT ./figures/baptiste/$W_.text{had}$ Assignment Probability.png
 INPUT ./figures/baptiste/$W_.text{had}$ Assignment Probability.png
-INPUT ./figures/baptiste/$W_.text{had}$ Marginal Probability.png
-INPUT ./figures/baptiste/$W_.text{had}$ Marginal Probability.png
-INPUT ./figures/baptiste/$W_.text{had}$ Marginal Probability.png
-INPUT ./figures/baptiste/$W_.text{had}$ Marginal Probability.png
-INPUT ./figures/baptiste/$W_.text{had}$ Marginal Probability.png
+INPUT ./figures/comparison/number_of_jets.png
+INPUT ./figures/comparison/number_of_jets.png
+INPUT ./figures/comparison/number_of_jets.png
+INPUT ./figures/comparison/number_of_jets.png
+INPUT ./figures/comparison/number_of_jets.png
+INPUT ./figures/comparison/reco_met_phi.png
+INPUT ./figures/comparison/reco_met_phi.png
+INPUT ./figures/comparison/reco_met_phi.png
+INPUT ./figures/comparison/reco_met_phi.png
+INPUT ./figures/comparison/reco_met_phi.png
+INPUT ./figures/comparison/reco_lepton_e.png
+INPUT ./figures/comparison/reco_lepton_e.png
+INPUT ./figures/comparison/reco_lepton_e.png
+INPUT ./figures/comparison/reco_lepton_e.png
+INPUT ./figures/comparison/reco_lepton_e.png
+INPUT ./figures/comparison/reco_lepton_pt.png
+INPUT ./figures/comparison/reco_lepton_pt.png
+INPUT ./figures/comparison/reco_lepton_pt.png
+INPUT ./figures/comparison/reco_lepton_pt.png
+INPUT ./figures/comparison/reco_lepton_pt.png
+INPUT ./figures/comparison/spanet_t1_detection_probability.png
+INPUT ./figures/comparison/spanet_t1_detection_probability.png
+INPUT ./figures/comparison/spanet_t1_detection_probability.png
+INPUT ./figures/comparison/spanet_t1_detection_probability.png
+INPUT ./figures/comparison/spanet_t1_detection_probability.png
+INPUT ./figures/comparison/spanet_t1_assignment_probability.png
+INPUT ./figures/comparison/spanet_t1_assignment_probability.png
+INPUT ./figures/comparison/spanet_t1_assignment_probability.png
+INPUT ./figures/comparison/spanet_t1_assignment_probability.png
+INPUT ./figures/comparison/spanet_t1_assignment_probability.png
 INPUT ./figures/signature.png
 INPUT ./figures/signature.png
 INPUT ./figures/signature.png

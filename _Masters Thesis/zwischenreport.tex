@@ -34,7 +34,7 @@ Over the following millennia, this idea was refined by several researchers using
 
 At the forefront of this quest for knowledge stands the Large Hadron Collider (\lhc) situated at \cern (European Organization for Nuclear Research). The \lhc, the world's most powerful particle accelerator, collides protons which reach nearly the speed of light, mimicking conditions that prevailed in the universe mere moments after the Big Bang. Through detailed analysis of these collisions, scientists aim to validate and refine the Standard Model of particle physics. 
 
-One of the main parts at the \lhc is the \atlas experiment which takes data using a toroidally shaped particle detector around the collision beam pipe utilising cutting-edge technologies.
+One of the main parts at the \lhc is the \atlas experiment which takes data using a toroidally shaped particle detector around the collision beam pipe utilising cutting-edge technologies. This data is then used to study the laws of physics and to formulate models based on these observations.
 
 The task of this analysis is to identify, separate and reconstruct the top quark pair production with an associated Higgs boson ($H$-boson) in which the $H$-boson decays into two $W$-bosons. Specifically, the single-leptonic channel is targeted. Due to its challenging topology and low cross-section, this particular channel has not been analysed independently before. Hence, a modern approach utilising techniques such as neural networks and \NW is deployed. The goal is to efficiently reconstruct the targeted events from the \atlas dataset collected in \runii and to separate them from other processes. A successful reconstruction with background separation would allow for several measurements such as the top Yukawa coupling and Higgs branching ratios using this channel. Furthermore, this study analysis the usage of neural networks and neutrino reconstruction algorithms for event reconstructions. 
 
@@ -215,7 +215,7 @@ The targeted event topology is the $H$-boson associated top quark pair productio
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=.6\textwidth]{figures/feynman/feynman_labeled.png}
+    \includegraphics[width=.6\textwidth]{figures/feynman/feynman_labeled2.png}
     \caption{Feynman diagram of the targeted \ttHWW event topology.}
     \label{fig:feynman_tthww}
 \end{figure}
@@ -224,14 +224,14 @@ The rarity of the semileptonic \ttHWW events makes its measurement difficult. Fi
 
 However, this study focuses on a particular $H$-boson decay mode. Hence, the branching ratio of the Higgs decay must be taken into account. For the previously stated SM $H$-boson mass $M_H$, the theoretical branching ratio of $H\rightarrow WW$ is the second highest at ($21.5\pm1.0$)\,\% \cite{yellow_report_4_higgs}. Furthermore, the $W$-boson decay ratios are ($67.41\pm0.27$)\,\% hadronically and ($32.58\pm0.47$)\,\% leptonically \cite{pdg}. Multiplying the \ttH cross-section with these decay ratios and taking the $W$-permutations into account yields a final cross-section of ($56.8\pm12.3$)\,fb for the targeted semileptonic \ttHWW event topology. This results in more than 10000 expected \ttbar events per semileptonic \ttHWW event. Taking other background processes into account, semileptonic \ttHWW events become even more difficult to measure.
 
-To reduce some of the backgrounds, the semileptonic decay mode is chosen. The implemented single lepton limitation helps surpressing $W$+jets and QCD multijet backgrounds. 
+To reduce some of the backgrounds, the semileptonic decay mode is chosen. The implemented single lepton limitation helps suppressing $W$+jets and QCD multijet backgrounds. 
 
-In the targeted topology, the $H$-boson production is expected to be a resonance process. Hence, only on-shell $H$-boson masses are considered. Due to the insufficient mass of the $H$-boson to create two on-shell $W$-bosons, one of the two $W$-bosons must be off-shell. This is denoted by the asterisk superscript $W^*$. The analysis restricts to events where the on-shell $W$-boson is decaying hadronically. This simplifies the event reconstruction since the invariant mass of the two selected decay jets should match the SM $W$-boson mass $M_W$ as close as possible. Thus, it can be used to supress some of the main backgrounds due to the constraint on the decay jet properties. However, it also necessitates that the off-shell $W^*$-boson decays leptonically which complicates the leptonic reconstruction.
+In the targeted topology, the $H$-boson production is expected to be a resonance process. Hence, only on-shell $H$-boson masses are considered. Due to the insufficient mass of the $H$-boson to create two on-shell $W$-bosons, one of the two $W$-bosons must be off-shell. This is denoted by the asterisk superscript $W^*$. The analysis restricts to events where the on-shell $W$-boson is decaying hadronically. This simplifies the event reconstruction since the invariant mass of the two selected decay jets should match the SM $W$-boson mass $M_W$ as close as possible. Thus, it can be used to suppress some of the main backgrounds due to the constraint on the decay jet properties. However, it also necessitates that the off-shell $W^*$-boson decays leptonically which complicates the leptonic reconstruction.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=.95\textwidth]{figures/cross_section/top_total_cross_sections.png}
-    \caption{Summary of several $t$ quark related production cross-section measurements. The theoretical expectations were calculated at next to leading order or higher \cite{theory:cross_sections}.}
+    \caption{Overview of several $t$ quark related production cross-section measurements with theoretical predictions calculated at next to leading order or higher \cite{theory:cross_sections}.}
     \label{fig:theory:total_crosssections}
 \end{figure}
 
@@ -252,7 +252,7 @@ It is used to create and accelerate bunches of protons close to the speed of lig
 \begin{figure}[t]
     \centering
     \includegraphics[width=.80\textwidth]{figures/lhc/lhc_overview.jpg}
-    \caption{Aerial view above the Large Hadron Collider showing its size. The different experiments are marked along the \lhc course. \copyright{\cern}}
+    \caption{Aerial view above the Large Hadron Collider showing its size. The different experiments are marked along the \lhc course. \copyright{} \cern, Maximilien Brice}
     \label{fig:lhc_aerial_view}
 \end{figure}
 
@@ -269,7 +269,7 @@ The currently active \runiii launched in April 2022 with a centre-of-mass energy
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=.66\textwidth]{figures/lhc/atlas_overview.jpg}
+    \includegraphics[width=.75\textwidth]{figures/lhc/atlas_overview.jpg}
     \caption{Overview of the \atlas detector showing its size and structure. Moreover, every important component is labelled. \copyright{\cern}}
     \label{fig:atlas_overview}
 \end{figure}
@@ -283,7 +283,7 @@ The \atlas detector is built as a cylinder. Thus, a fitting coordinate system mu
     \eta = -\text{ln}\left(\text{tan}\frac{\theta}{2}\right)
 \end{align}
 
-with $\theta$ the polar angle. Figure~\ref{fig:atlas_coordinate_system} illustrates a 2 dimensional projection of the cylinder at a fixed distance from the center. 
+with $\theta$ the polar angle. Figure~\ref{fig:atlas_coordinate_system} illustrates a 2 dimensional projection of the cylinder at a fixed distance from the centre. 
 
 \begin{figure}[t]
     \centering
@@ -307,7 +307,7 @@ The detector of the \atlas experiment is of particular interest for this project
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=.61\textwidth]{figures/lhc/atlas_layers.png}
+    \includegraphics[width=.70\textwidth]{figures/lhc/atlas_layers.png}
     \caption{Cross-section of the concentric layers within the \atlas detector. \copyright{\cern}}
     \label{fig:atlas_layers}
 \end{figure}
@@ -320,13 +320,13 @@ It includes a central solenoid magnet surrounding the Inner Detector. It provide
 Furthermore, three large air-core toroids generate an additional magnetic field for the outer muon spectrometer. Each consisting of eight symmetrical coils placed radially around the beam axis \cite{atlas:tech_design_report_01}. These magnet systems are cooled using liquid Helium at 4.5\,K \cite{atlas:tech_design_report_01}. 
 
 \subsubsection*{The Inner Detector}
-The Inner Detector \cite{atlas:tech_design_report_inner_01,atlas:tech_design_report_inner_02} is a combined system of high-resolution detectors close to the beam pipe and continuos tracking elements at outer radii. Its task is to measure the particles' momentum. As mention before, the complete Inner Detector is surrounded by the 2\,T central solenoid magnet. Charged particles are deflected inside the detector, due to the Lorentz force. By precisely measuring the curvature, momentum measurements and particle track reconstruction are achieved.
+The Inner Detector \cite{atlas:tech_design_report_inner_01,atlas:tech_design_report_inner_02} is a combined system of high-resolution detectors close to the beam pipe and continuous tracking elements at outer radii. Its task is to measure the particles' momentum. As mention before, the complete Inner Detector is surrounded by the 2\,T central solenoid magnet. Charged particles are deflected inside the detector, due to the Lorentz force. By precisely measuring the curvature, momentum measurements and particle track reconstruction are achieved.
 
 Its detector modules are placed either in the barrel or the end-cap region. The first region is arranged on concentric cylinders surrounding the beam axis and typically covers the low $\eta$ region. The later regions detectors are installed on disks perpendicular to the beam axis and cover the remaining space for a full coverage up to $\eta\pm2.5$.
 
 The innermost detector tiles are semiconductor pixel detectors \cite{atlas:tech_design_report_01,atlas:pixel_detector}. The first barrel layer is only 4\,cm from the beam pipe, covers an area of 0.2\,m$^2$ and measures the complete space up to $\eta=\pm2.5$. It reaches a resolution of $\sigma_{R\phi}=12\,\upmu\text{m}$ and $\sigma_{z}=66\,\upmu\text{m}$. This layer is followed by two more barrel layers that cover $\eta=\pm1.7$ and reach the same resolution. To compensate this lower $\eta$ acceptance, 5 end-cap disks are placed in each side. These cover the remaining space up to $\eta=\pm2.5$. Each module is only 21.4\,mm wide and 62.4\,mm long containing 61440 pixels controlled by 16 chips. Every pixel detector has its individual circuit including buffering to store data until the trigger decision. While the precision and radiation resistance of these pixel detectors are remarkable, they also introduce some material before the calorimeters and are expensive. Hence, the amount of pixel detectors that can be included in the detector is limited. 
 
-Directly surrounding the pixel modules, the silicon strips are introduced \cite{atlas:tech_design_report_01,atlas:strip_detector}. It is subdivided into four barrel layers for the $\eta$-range up to $\eta=\pm1.4$ and 9 end-cap wheels on each side for the remaining space up to $\eta=\pm2.5$. Compared to the pixel modules, they achieve slightly lower precisions of $\sigma_{R\phi}=16\,\upmu\text{m}$ and $\sigma_{z/R}=580\,\upmu\text{m}$. Each detector is 6.28x6.40\,cm$^2$ in size and includes 768 strips. Moreover, each module consists of four of these silicon detectors.
+Directly surrounding the pixel modules, the silicon strips are introduced \cite{atlas:tech_design_report_01,atlas:strip_detector}. It is subdivided into four barrel layers for the $\eta$-range up to $\eta=\pm1.4$ and 9 end-cap wheels on each side for the remaining space up to $\eta=\pm2.5$. Compared to the pixel modules, they achieve a slightly lower precision of $\sigma_{R\phi}=16\,\upmu\text{m}$ and $\sigma_{z/R}=580\,\upmu\text{m}$. Each detector is 6.28x6.40\,cm$^2$ in size and includes 768 strips. Moreover, each module consists of four of these silicon detectors.
 
 Straw tube trackers around the previous modules allow for a lot of measured tracking points \cite{atlas:tech_design_report_01,atlas:transition_detector}. In the barrel regions, these are placed parallel to the beam axis. In contrast to the end-caps where these are aligned perpendicular to the beam axis. Previously, these were filled with a Xenon gas mixture. However, due some leakage this Xenon was changed to Argon to reduce costs. While these achieve significantly worse resolutions of $\sigma=170\,\upmu\text{m}$, they can cover a greater area at lower cost and less material per tracking point. Hence, they strongly contribute the precise momentum measurements.
 
@@ -335,14 +335,14 @@ The calorimeters \cite{atlas:tech_design_report_01,atlas:calorimeter} are used t
 
 The first of these calorimeters, the electromagnetic calorimeter \cite{atlas:tech_design_report_01}, is built from lead, liquid argon and kapton electrodes. It covers the pseudorapidity range up to $\eta=\pm3.2$ while the barrel region can detect up to $\eta=\pm1.475$. It is the innermost calorimeter and is primarily responsible for detecting photons and electrons. 
 
-The hadronic calorimeter \cite{atlas:tech_design_report_01} is build around the electromagnetic calorimeter and is build from plastic scintillator plates and iron absorber in the barrel region and from copper, lead and liquid argon in the end-cap regions. This separation is done to optimise the detector for the varying requirements of the great $\eta$ range. The barrel region reaches up to $\eta=\pm1.7$ and the end-caps up to $\eta=\pm3.2$. Its thickness is one of the most important parameters for the calorimeter, since it has to contain the hadronic showers and thus, minimize punch-trough into the adjacent Muon Spectrometer.
+The hadronic calorimeter \cite{atlas:tech_design_report_01} is build around the electromagnetic calorimeter and is build from plastic scintillator plates and iron absorber in the barrel region and from copper, lead and liquid argon in the end-cap regions. This separation is done to optimise the detector for the varying requirements of the great $\eta$ range. The barrel region reaches up to $\eta=\pm1.7$ and the end-caps up to $\eta=\pm3.2$. Its thickness is one of the most important parameters for the calorimeter, since it has to contain the hadronic showers and thus, minimise punch-trough into the adjacent Muon Spectrometer.
 
 The forward hadronic calorimeter \cite{atlas:tech_design_report_01} is implemented to cover the strongly boosted region of $3.1<|\eta|=4.9$. It as well is build from a lead liquid argon mixture with additional electrodes from copper or a tungsten alloy.
 
 \subsubsection*{The Muon Spectrometer}
 The outermost measurement part of the \atlas detector is the Muon Spectrometer \cite{atlas:tech_design_report_01,atlas:muon_chamber}. It bends the muon tracks by utilising the previously explained air-core magnets. The magnetic field is mostly orthogonal to the muon trajectories. In the region up to $\eta=\pm1.0$ the large barrel toroid magnet provides the needed magnetic field. Within the acceptance range of $1.4\leq|\eta|\leq2.7$ two smaller end-cap magnets bend the tracks. Between of these regions is the transition region where the deflection of the muon trajectories is done by the magnet field of both magnetic systems. The muon spectrometer consists of four parts.
 
-The first part is the monitored drift tube chamber which make up 800\,m$^3$ in volume. It consists of 30\,mm diameter aluminium tubes operating with a mixture of 93\% argon and 7\% CO$_2$. The single-wire resolution is $\sim$80\,$\upmu$m. To increase the overall resolution, multilayer pairs of multiple tubes are utilised.
+The first part is the monitored drift tube chamber which make up 800\,m$^3$ in volume. It consists of 30\,mm diameter aluminium tubes operating with a mixture of 93\% argon and 7\% CO$_2$. The single-wire resolution is $\sim$80\,$\upmu$m. To increase the overall resolution, multi-layer pairs of multiple tubes are utilised.
 
 The New Small Wheel project replaced the original Cathode Strip Chambers \cite{atlas:muon_chamber,atlas:muon_chamber_upgrade,atlas:new_small_wheel}. It was installed after \runii and uses Micro-Mesh Gaseous Structure as well as small-strip thing gab chambers. The former being a detector consisting of a planar electrode and a thin steel mesh forming a drift chamber. It is filled with the same argon-CO$_2$ mixture as the first drift tube chamber. Its spatial resolution reaches 73\,$\upmu$m. The later thing gab chambers consist of a gold-plated tungsten wire grid placed between two electrodes. The electrodes are made from a carbon-epoxy mixture. The detector module reaches a spatial resolution of 100\,$\upmu$m at the rate of up to 20\,kHz/cm$^2$.
 
@@ -355,7 +355,7 @@ The aforementioned detector systems are able to detect and record significant am
 
 The first level (L1) trigger \cite{atlas:tech_design_report_01,atlas:trigger_run2} is a hardware-based system and makes the initial selection. It is subdivided into the L1 calorimeter trigger and the L1 muon trigger. The L1 calorimeter trigger utilises signals from the calorimeter in the Cluster and Jet/Energy-sum Processor. The Cluster Processor identifies potential $e$, $\gamma$, $\tau$ candidates. This is supplemented by the Jet/Energy-sum Processor which identifies jet candidates and calculates the total and missing energy. The L1 muon trigger, uses signals from the muon spectrometer to identify $\mu$ candidates. The LVL1 decision is formed by the Central Trigger Processor and is based on the signal of the previous two trigger systems as well as some additional detector sub-systems. The maximum rate for the L1 trigger is up to 100\,kHz, within a decision latency of up to 2.5\,$\upmu$s. The selected events of the L1 trigger are temporary saved into readout drivers and then readout buffers. Furthermore, the L1 trigger identifies regions of interest, which are further investigated by the second trigger stage.
 
-The event data stays on the readout buffers until the high level (HLT) trigger \cite{atlas:tech_design_report_01,atlas:trigger_run2} either rejects or accepts them. The second trigger level is a software-based systema and utilises the aforementioned regions of interest. The HLT trigger uses only the necessary information but has access to the full resolution information from the detectors. Its average rate reaches 1.2\,kHz which corresponds to approximately 1.2\,GB/s data. Its latency is variable but in the order of magnitude 100\,$\upmu$s. Events that pass both triggers are then transferred to an offline event filter system that performs the final selection.
+The event data stays on the readout buffers until the high level (HLT) trigger \cite{atlas:tech_design_report_01,atlas:trigger_run2} either rejects or accepts them. The second trigger level is a software-based system and utilises the aforementioned regions of interest. The HLT trigger uses only the necessary information but has access to the full resolution information from the detectors. Its average rate reaches 1.2\,kHz which corresponds to approximately 1.2\,GB/s data. Its latency is variable but in the order of magnitude 100\,$\upmu$s. Events that pass both triggers are then transferred to an offline event filter system that performs the final selection.
 
 \section{Other Experiments}
 \label{sec:exp:other_experiments}
@@ -395,7 +395,7 @@ Training a neural network as explained in Chapter~\ref{ch:spanet} requires suffi
 
 \section{Algorithm}
 \label{sec:truth_matching:algorithm}
-To produce the training data, the algorithm begins by scanning the input MC samples. Each sample includes truth information of the partons before interacting with the detector. The truth information also includes the true identification of particles as well as their decay products. Furthermore, the samples inclide the reconstructed information at detector level. Here, the particles and their properties are simulated as they would appear in data. Pairing the reconstructed and truth information of each event, allows generating training sets that uses the reconstructed information with true labels. 
+To produce the training data, the algorithm begins by scanning the input MC samples. Each sample includes truth information of the partons before interacting with the detector. The truth information also includes the true identification of particles as well as their decay products. Furthermore, the samples include the reconstructed information at detector level. Here, the particles and their properties are simulated as they would appear in data. Pairing the reconstructed and truth information of each event, allows generating training sets that uses the reconstructed information with true labels. 
 
 The algorithm analyses each event by iterating through all truth-level final state partons. Around each of these partons, the algorithm searches possible jet matches. All jets within a spatial cone around a parton are considered as its candidate matches. Here, the cone is defined by $\Delta R\leq0.4$ as introduced in Section~\ref{sec:exp:atlas_coordinate_system}. For the targeted \ttHWW semileptonic final state, 8 quarks (3 per $t$ quark + 2 for the hadronic $W$-boson from the $H$-boson) have to be matched. 
 
@@ -403,7 +403,7 @@ If there is no jet within the cone of a parton, then that parton is not matched.
 
 Each matched jet is made unavailable for other partons. Hence, each jet-parton assignment is unique which is required for training the neural network. Afterwards, the algorithm proceeds to combine the matched particles. The four-vectors of the jets are added up to get the four-vector of the expected resonance particles.
 
-Furthermore, several technical optimisations such as hashmaps and bit-shifting operations are implemented to increase the processing speed. To implement bit-shifting, each jet gets an integer number assinged. Each parton corresponds to one of the bits in the integers bit-representation. Bit values of 1 mean the jet is potentially matched to the corresponding parton, while 0 means that the parton is not included withing the jets $\Delta R$ cone. Each parton has a fixxed position in the bit-representatin. Hence, checking a potential parton-jet match is done efficiently by bit-operations.
+Furthermore, several technical optimisations such as hashmaps and bit-shifting operations are implemented to increase the processing speed. To implement bit-shifting, each jet gets an integer number assigned. Each parton corresponds to one of the bits in the integers bit-representation. Bit values of 1 mean the jet is potentially matched to the corresponding parton, while 0 means that the parton is not included withing the jets $\Delta R$ cone. Each parton has a fixed position in the bit-representation. Hence, checking a potential parton-jet match is done efficiently by bit-operations.
 
 \chapter{SPA-Net: Symmetry Preserving Attention Networks}
 \label{ch:spanet}
@@ -432,7 +432,7 @@ One of \spanets features is the utilisation of symmetries in the event topology.
 
 The jet symmetry describes that labelling certain particles is symmetric and thus, changing their labels does not change their physical behaviour. In the \ttHWW topology, this symmetry is present in the hadronic $W$-boson decays which produce two quarks $q\bar{q}'$. %Their labels are set arbitrary and can be swapped without any change in the physical reconstruction. %Under the assumption that the $W$-boson couples evenly to both quarks, their labelling can be changed without any physical consequence. While this assumption ignores the parity violating properties of the $W$-boson \cite{theory:electroweak_01}, it is expected to serve as a practical approximation.
 
-The particle symmetry depicts the symmetry with respect to the particle origin. Particles that originate from a quark or its respective antiquark are symmetric, when disregarding their charge. For the targeted \ttHWW topology, the symmetry is applicable in the decays of either the $t$ or $\bar{t}$ quark. While there might be subtle differences in the hadronic charge distributions of the $t$ and $\bar{t}$ quarks, we do not expect to be able to resolve them. Hence, the jet assignment treats both particles equally.
+The particle symmetry depicts the symmetry with respect to the particle origin. Particles that originate from a quark or its respective anti-quark are symmetric, when disregarding their charge. For the targeted \ttHWW topology, the symmetry is applicable in the decays of either the $t$ or $\bar{t}$ quark. While there might be subtle differences in the hadronic charge distributions of the $t$ and $\bar{t}$ quarks, we do not expect to be able to resolve them. Hence, the jet assignment treats both particles equally.
 
 By considering these symmetries, the number of possible permutations is reduced and the processing speed increases. The run-time is reduced to $\mathcal{O}(N_\text{jets}^3)$ compared to the baseline $\chi^2$ method with a expected run-time of $\mathcal{O}(N_\text{jets}^C)$ \cite{spanet_01}. Here, $N_\text{jets}$ are the number of jets within a given event and $C=8$ is the number of final state partons or $C'=6$ when separating $b$-tagged jets. 
 
@@ -440,20 +440,20 @@ By considering these symmetries, the number of possible permutations is reduced 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=.84\textwidth]{figures/methods/spanet_architecture_2.jpg}
+    \includegraphics[width=.8\textwidth]{figures/methods/spanet_architecture_2.jpg}
     \caption{Overview of \spanets architecture including its four regions and the additional embeddings for additional lepton and global information such as the missing transverse energy \cite{spanet_02}.}
     \label{fig:spanet}
 \end{figure}
 
 During training, each prediction is split into three steps. First, the amount of valid jet assignment permutations is reduced by splitting up events into sub-structures which are predefined by the event topology. Then each jet-parton assignment sub-problem is solved by applying a `Symmetric Tensor Attention' \cite{spanet_01} layer, producing a single tensor. Each tensor is a multi-dimensional array. These tensors contain an entry for each sub-assignment including the probability that any particular combination is the correct sub-assignment. These tensors are combined into a final jet-parton prediction by calculating the combined symmetric loss \cite{spanet_01}. The approach of splitting up the individual particles allows partial event reconstruction which is vital for this study. 
 
-Particle symmetries are implemented in the symmetric cross entropy loss during training. Changes which obey these symmetries do not change the loss value. This behaviour is achieved by allowing the network to train any equivalent assignment as long as the overall loss is minimised. Jet symmetries are included in permutation groups which are used by the Symmetric Tensor Attention layer \cite{spanet_01}. The attention refers to \spanets ability to dynamically weight different parts of the input to improve the overall performance by focussing on relevant features.
+Particle symmetries are implemented in the symmetric cross entropy loss during training. Changes which obey these symmetries do not change the loss value. This behaviour is achieved by allowing the network to train any equivalent assignment as long as the overall loss is minimised. Jet symmetries are included in permutation groups which are used by the Symmetric Tensor Attention layer \cite{spanet_01}. The attention refers to \spanets ability to dynamically weight different parts of the input to improve the overall performance by focusing on relevant features.
 
-During inference, the combined symmetric loss is not calcuated. Instead, \spanet iteratively assigns jets to the to expected particles by selecting the most likely assignment from each output tensor $\mathcal{P}_p$. The used permutations are bijective to ensure a unique jet-parton assignment \cite{spanet_01}. Hence, in cases where one jet is assigned more than once, the highest probability score is selected and the others are evaluated again.
+During inference, the combined symmetric loss is not calculated. Instead, \spanet iteratively assigns jets to the to expected particles by selecting the most likely assignment from each output tensor $\mathcal{P}_p$. The used permutations are bijective to ensure a unique jet-parton assignment \cite{spanet_01}. Hence, in cases where one jet is assigned more than once, the highest probability score is selected and the others are evaluated again.
 
 In comparison to other techniques, \spanet offers several advantages. Firstly, \spanet is agnostic to the number of input objects. Hence, training and prediction can be done using samples containing any jet multiplicity. Secondly, all predicted jet matches are unique. Furthermore, each prediction is also rated using an assignment probability that represents \spanets confidence for that particular prediction. And lastly, the expected symmetries due to the event topology are predefined which leads to significantly higher processing speed by simplifying the training and prediction task.
 
-For training \spanet to the targeted topology, a suitable training sample is created using \ttbar and \ttH events. The needed truth-matching algorithm for creating such training sampels is explained in Chapter~\ref{ch:truth_matching}.
+For training \spanet to the targeted topology, a suitable training sample is created using \ttbar and \ttH events. The needed truth-matching algorithm for creating such training samples is explained in Chapter~\ref{ch:truth_matching}.
 
 
 \chapter{Neutrino Weighting}
@@ -482,7 +482,7 @@ For each event the sampled $m_{W^*}$ and $\eta_\nu$ can be visualised together w
 \begin{figure}
     \centering  
     \includegraphics[width=0.7\textwidth]{figures/Neutrino Weighting/cherry_14.png}
-    \caption{Example of a sampled weight disitribution for a cherry-picked event. The heighest weighted solution in the region of interest (star) and the true values (cross) are marked.}
+    \caption{Example of a sampled weight distribution for a cherry-picked event. The highest weighted solution in the region of interest (star) and the true values (cross) are marked.}
     \label{FIG:neutrino_weighting:cherry_picked}
 \end{figure}
 
@@ -493,7 +493,7 @@ Since the targeted \ttHWW process is rare, it is crucial to maximise the number 
 \subsection*{Higgs Mass Smearing}
 Some events do not yield any solution during the initial grid-based search. Hence, there is no estimation for $m_{W^*}$ or $\eta_\nu$. To decrease the amount of events with no solution, the assumed Higgs boson mass $m_H$. can be altered slightly. This approach is valid since reconstruction effects can change the measured energies of jets, leptons or the missing transverse energy. Then, the precise $H$-boson mass might not yield a solution. Then it is viable to also test masses close to the expected $m_H$ to counteract these reconstruction effects.
 
-Hence, if an event has no solution, the assummed $H$-boson mass is varied in a range of $\pm1$\,GeV using 0.1\,GeV steps around $m_H$. The grid-based search is repeated for each alternative assumption $m_H'$. If any solution is found using the alternative Higgs mass $m_H'$, it is used to estimate $\eta_\nu$ and $m_{W^*}$.
+Hence, if an event has no solution, the assumed $H$-boson mass is varied in a range of $\pm1$\,GeV using 0.1\,GeV steps around $m_H$. The grid-based search is repeated for each alternative assumption $m_H'$. If any solution is found using the alternative Higgs mass $m_H'$, it is used to estimate $\eta_\nu$ and $m_{W^*}$.
 
 This additional step increases the processing time for the \NW algorithm by $\sim$10-50\%. The specific time increase is dependent on the sample composition. Due to this additional step, around 1\% of events that would be rejected become reconstructable.
 
@@ -524,11 +524,11 @@ Lastly, the off-shell $W^*$-boson is expected to decay leptonically. This is cru
 
 This also means that the two jets assigned to the on-shell $W$-boson are expected to have an invariant mass close to the SM $W$-boson mass value of $M_W=80.37\pm0.02$\,GeV \cite{pdg}.
 
-As explained in Sec.~\ref{sec:theory:tthww}, the primary background arises from \ttbar events, which have a significantly larger production cross-section compared to the signal \ttHWW events. \ttHbb and \ttHtautau events also contribute significantly, due to their comparitevly high $H$ decay ratio of ($58\pm12$)\,\% and ($6.3\pm1.7$)\,\%, respectively \cite{yellow_report_4_higgs}. Additional backgrounds can arise from \ttHcc events and hadronic or dileptonic \ttHWW decays. These background processes are considered during the variable investigation and in the final region definition.
+As explained in Sec.~\ref{sec:theory:tthww}, the primary background arises from \ttbar events, which have a significantly larger production cross-section compared to the signal \ttHWW events. \ttHbb and \ttHtautau events also contribute significantly, due to their comparatively high $H$ decay ratio of ($58\pm12$)\,\% and ($6.3\pm1.7$)\,\%, respectively \cite{yellow_report_4_higgs}. Additional backgrounds can arise from \ttHcc events and hadronic or dileptonic \ttHWW decays. These background processes are considered during the variable investigation and in the final region definition.
 
 \section{Separation Power}
 \label{sec:event_selection:separation_power}
-To compare the performance of certain variables to separate signal and background, the corresponding distributions are displayed together. Here, the signal is defined to only include semileptonic \ttHWW events while the background includes everything else. Naturally, the background contains the majority of all events. For a fair comparison, both signal and background are normalised to unity and binned using the same edges. The choice of variables is physically motivated by identifing measurable differences in the signal and background processes.
+To compare the performance of certain variables to separate signal and background, the corresponding distributions are displayed together. Here, the signal is defined to only include semileptonic \ttHWW events while the background includes everything else. Naturally, the background contains the majority of all events. For a fair comparison, both signal and background are normalised to unity and binned using the same edges. The choice of variables is physically motivated by identifying measurable differences in the signal and background processes.
 
 Furthermore, the separation power $\mathcal{S}$ can be calculated using
 \begin{align}
@@ -542,14 +542,14 @@ For each bin $i$, the variables $s_i$ and $b_i$ equal the normalised signal and 
     \begin{tabular}{l|c}
         Investigated Variable & $\mathcal{S}$\\
         \hline
-        total jet multiplicity & 21.9\,\% \\
-        \spanet $t$ assignment probability & 21.2\,\% \\
-        \spanet $W_\text{had}$ assignment probability & 9.0\,\% \\
-        \NW reconstructable classifier & 1.7\,\% \\
-        missing transverse energy $E_T^\text{miss}$ & 3.0\,\% \\
-        lepton energy $E_l$ & 1.2\,\% \\
-        \NW output weight & 0.4\,\% \\
-        $b$-jet multiplicity & 0.2\,\% \\
+        Total Jet Multiplicity & 21.9\,\% \\
+        \spanet $t$ Assignment Probability & 21.2\,\% \\
+        \spanet $W_\text{had}$ Assignment Probability & 9.0\,\% \\
+        \NW Reconstructable & 1.7\,\% \\
+        Missing Transverse Energy $E_T^\text{miss}$ & 3.0\,\% \\
+        Lepton Energy $E_\text{lep}$ & 1.2\,\% \\
+        \NW Output Weight & 0.4\,\% \\
+        $b$-Jet Multiplicity & 0.2\,\% \\
     \end{tabular}
     \label{tab:event_selection:separation_power}
 \end{table}
@@ -562,11 +562,10 @@ As expected, the distribution of \ttHbb events is peaking at higher $b$-jet mult
 
 The total number of jets shows similar distributions for all events. \ttbar events slightly favours low jet multiplicities which can be explained by this final state containing only 6 jets. The targeted semileptonic \ttHWW final state contains 8 jets. Moreover, hadronic \ttHWW events contain 10 jets in their final state. Hence, the number of jets can be used to separate some of the backgrounds from the signal and each other. However, due to additional jets or jets lost during reconstruction, the distributions do not clearly peak at their expected jet multiplicities. The separation power $\mathcal{S}=21.9\,\%$ is the highest value of all investigated variables. This supports the importance of this variable for separating signal from background.
 
-% TODO: declutter plots
 \begin{figure}
     \centering
-    \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split_number_of_jets.png}\hspace{0.02\textwidth}
-    \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split2_number_of_bjets.png}
+    \includegraphics[width=.49\textwidth]{figures/separation_power/separation_splitnew_number_of_jets.png}\hfill
+    \includegraphics[width=.49\textwidth]{figures/separation_power/separation_splitnew_number_of_bjets.png}
     \caption{Distributions of different event topologies for (left) the total jet multiplicity and (right) the $b$-jet multiplicity per event.}
     \label{FIG:separation_power_plots:jet_multiplicities}
 \end{figure}
@@ -582,8 +581,8 @@ The energies of the lepton $E_\text{lep}$ show a behaviour similar to $E_T^\text
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split2_reco_met_value_gev.png}\hspace{0.02\textwidth}
-    \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split2_reco_lepton_e_gev.png}
+    \includegraphics[width=.49\textwidth]{figures/separation_power/separation_splitnew_reco_met_value_gev.png}\hfill
+    \includegraphics[width=.49\textwidth]{figures/separation_power/separation_splitnew_reco_lepton_e_gev.png}
     \caption{Distributions of different event topologies for (left) the missing energy per event and (right) the energy of the identified lepton.}
     \label{FIG:separation_power_plots:lepton_energies}
 \end{figure}
@@ -597,8 +596,8 @@ Similarly, the $W_\text{had.}$ assignment probability also separates the differe
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split2_spanet_t2_assignment_probability.png}\hspace{0.02\textwidth}
-    \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split2_spanet_HW_assignment_probability.png}
+    \includegraphics[width=.49\textwidth]{figures/separation_power/separation_splitnew_spanet_t2_assignment_probability.png}\hfill
+    \includegraphics[width=.49\textwidth]{figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png}
     \caption{Distributions of different event topologies for \spanets assignment probabilities of (left) the top $t_2$ and (right) the hadronic $W$-boson from the Higgs decay.}
     \label{FIG:separation_power_plots:spanet_output_probabilities}
 \end{figure}
@@ -608,11 +607,10 @@ After estimating the unknown parameters of the event structure, the \NW algorith
 
 Separating events with and without \NW solution yields a separation power $\mathcal{S}=1.7\,\%$. Looking at the weight distribution of all reconstructable yields $\mathcal{S}=0.4\,\%$. In comparison to the \spanet output probabilities, the separation power is lower and thus, does not separate the signal as efficiently. However, the \NW weight can still be used to separate signal events, when combining it with \spanets probabilities. 
 
-% TODO: make left plot beatufiful
 \begin{figure}
     \centering
-    \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split2_NW_weight.png}\hspace{0.02\textwidth}
-    \includegraphics[width=0.48\textwidth]{figures/separation_power/separation_split2_short_NW_weight.png}
+    \includegraphics[width=.49\textwidth]{figures/separation_power/separation_splitnew_NW_weight.png}\hfill
+    \includegraphics[width=.49\textwidth]{figures/separation_power/separation_splitnew_short_NW_weight.png}
     \caption{Distributions of different event topologies for \NW output weight while (left) including events without any solution and (right) excluding events without any solution. Events with no solution are visualised as negative weight.}
     \label{FIG:separation_power_plots:neutrino_weights}
 \end{figure}
@@ -685,14 +683,13 @@ The $SR$ and $CR$ are constructed to be orthogonal. The choice of variables is d
 \subsection*{Variable Combination}
 To increase the performance of the outputs from \spanet and the \NW algorithm, the distributions are combinated in several 2-dimensional histrograms. In Fig.~\ref{FIG:separation_power_plots:abcd} the histrogram for the $t$ assignment probability and the \NW weight is shown for signal and background events.
 
-% TODO: beautficate plots
 \begin{figure}
     \centering
-    \includegraphics[width=0.48\textwidth]{figures/abcd/abcd_background_$t$ Assignment Probability $p$.png}\hspace{0.02\textwidth}
-    \includegraphics[width=0.48\textwidth]{figures/abcd/abcd_signal_$t$ Assignment Probability $p$.png}
+    \includegraphics[width=.49\textwidth]{figures/abcd/abcd_background_$t$ Assignment Probability.png}\hfill
+    \includegraphics[width=.49\textwidth]{figures/abcd/abcd_signal_$t$ Assignment Probability.png}
     
-    \includegraphics[width=0.48\textwidth]{figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability $p$.png}\hspace{0.02\textwidth}
-    \includegraphics[width=0.48\textwidth]{figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability $p$.png}
+    \includegraphics[width=.49\textwidth]{figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png}\hfill
+    \includegraphics[width=.49\textwidth]{figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png}
     \caption{Histogram combining \spanets assignment probability and \NW outputs for (left) background events and (right) signal events. here the partons are split into (upper) $t$ quark and (lower) $W_\text{had}$ from $H$-boson decay. The signal events have higher contributions in upper probability and weight regions.}
     \label{FIG:separation_power_plots:abcd}
 \end{figure}
@@ -812,15 +809,15 @@ Moreover, the architecture and other hyperparameters were optimised in a grid-se
 \end{table}
 
 \subsection*{Assignment Matrix}
-To better understand \spanets output, the predicted assignment for each jet is listed against the true parton label. The resulting normalised confusion matricies are shown in Fig.~\ref{fig:results:spanet:assignment_matrix}. 
+To better understand \spanets output, the predicted assignment for each jet is listed against the true parton label. The resulting normalised confusion matrices are shown in Fig.~\ref{fig:results:spanet:assignment_matrix}. 
 
-The first matrix includes no partial events which means that every parton has a true jet assignment. The figure shows dominating diagonal terms, with over 70-90\,\% of events included. A diagonal matrix would correspond to a perfect prediction where every \spanet assignment equals the true assignment. The $(q_1,q_2)$ 2x2 submatricies for $t_1$, $t_2$ and $W_\text{had}$ show the predefined allowed permutations during learning. Hence, an off-diagonal term within these submatricies is considered as a correct, but swapped, assignment since the permutation does not change the underlying physics.
+The first matrix includes no partial events which means that every parton has a true jet assignment. The figure shows dominating diagonal terms, with over 70-90\,\% of events included. A diagonal matrix would correspond to a perfect prediction where every \spanet assignment equals the true assignment. The $(q_1,q_2)$ 2x2 submatrices for $t_1$, $t_2$ and $W_\text{had}$ show the predefined allowed permutations during learning. Hence, an off-diagonal term within these submatrices is considered as a correct, but swapped, assignment since the permutation does not change the underlying physics.
 
-The second matrix includes partial and complete events. Hence, where some particles are not matched on truth-level. The result shows that \spanet is quite sensitive to partial events. The distribution generally becomes broader with only 30-60\,\% diagonal entries. Furthermore, the $t$ quark 2x2 submatricies are less visible, since some light quarks get matched as $b$-quarks and vice versa. The light jet assigned to the $t_1q_2$ and $t_2q_2$ particles get assigend to the wrong $t$ quark in 24-47\,\% of all events. The jets from the $W_\text{had}$-boson also gets mislabeled more often. In approximately 30\,\% of events, the light jets are wrongly identified as a $t$ quark jet. Interesstingly, \spanet only rarely swap the $b$-tagged jets from the different $t$ quarks.
+The second matrix includes partial and complete events. Hence, where some particles are not matched on truth-level. The result shows that \spanet is quite sensitive to partial events. The distribution generally becomes broader with only 30-60\,\% diagonal entries. Furthermore, the $t$ quark 2x2 submatrices are less visible, since some light quarks get matched as $b$-quarks and vice versa. The light jet assigned to the $t_1q_2$ and $t_2q_2$ particles get assigned to the wrong $t$ quark in 24-47\,\% of all events. The jets from the $W_\text{had}$-boson also gets mislabelled more often. In approximately 30\,\% of events, the light jets are wrongly identified as a $t$ quark jet. Interestingly, \spanet only rarely swap the $b$-tagged jets from the different $t$ quarks.
 
 The results show that \spanet is able to predict events correctly, if every expected particle is measured and thus can be matched. If any particle is not detected, the neural network accuracy reduces significantly. 
 
-In Tab.~\ref{tab:results:spanet:probability_yields} shows how many events get assigned correctly, swapped or incorrectly. If a parton is not matched on truth-level, it is not considered. Swapped assignments allow permutations within the 2x2 submatricies. The overview shows that \spanet assignes the $t$ quarks correctly or swapped in 17.6\,\% of events. For the remaining 84.4\,\%, at least one decay particle is assigned wrong. The hadronic $W$-boson reaches 27.9\,\% correct or swapped assignments. The majority of wrong assignments for each parton is caused by the high amount of partial events in the used sample.
+In Tab.~\ref{tab:results:spanet:probability_yields} shows how many events get assigned correctly, swapped or incorrectly. If a parton is not matched on truth-level, it is not considered. Swapped assignments allow permutations within the 2x2 submatrices. The overview shows that \spanet assigns the $t$ quarks correctly or swapped in 17.6\,\% of events. For the remaining 84.4\,\%, at least one decay particle is assigned wrong. The hadronic $W$-boson reaches 27.9\,\% correct or swapped assignments. The majority of wrong assignments for each parton is caused by the high amount of partial events in the used sample.
 
 To better identify events with accurate predictions, \spanet outputs certain probabilities which can be used.
 
@@ -828,7 +825,7 @@ To better identify events with accurate predictions, \spanet outputs certain pro
     \centering  
     \includegraphics[width=0.48\textwidth]{figures/assignment_matrix/assignment_matrix_a.png}
     \includegraphics[width=0.48\textwidth]{figures/assignment_matrix/assignment_matrix_1.png}
-    \caption{The \spanet prediction confusion matricies showing the predicted and true labels using (left) full events and (right) full and partial events. Each column is normalised to unity.}
+    \caption{The \spanet prediction confusion matrices showing the predicted and true labels using (left) full events and (right) full and partial events. Each column is normalised to unity.}
     \label{fig:results:spanet:assignment_matrix}
 \end{figure}
 
@@ -892,7 +889,7 @@ As an additional validation step, the assumed Higgs mass $m_H$ is varied. The MC
     \label{FIG:neutrino_weighting:validation_higgs_mass}
 \end{figure}
 
-Furthermore, in Fig.~\ref{FIG:neutrino_weighting:true_and_reco} the same distribution is shown. Here, the $H$-boson mass is not varied, but the input uses the reconstructed information, including simulated detector effects. Again, the predictions are centered around ($\nu_\eta=0$,$m_{W^*}=0$\,GeV). However, when using reconstructed information as input, the \NW estimations deviate stronger from the true values. These inaccuracies are expected due to less accurate inputs. Hence, the dependence on the jet and kinematic accuracies is expected to be an important systematic that should be studied. 
+Furthermore, in Fig.~\ref{FIG:neutrino_weighting:true_and_reco} the same distribution is shown. Here, the $H$-boson mass is not varied, but the input uses the reconstructed information, including simulated detector effects. Again, the predictions are centred around ($\nu_\eta=0$,$m_{W^*}=0$\,GeV). However, when using reconstructed information as input, the \NW estimations deviate stronger from the true values. These inaccuracies are expected due to less accurate inputs. Hence, the dependence on the jet and kinematic accuracies is expected to be an important systematic that should be studied. 
 
 \begin{figure}
     \centering
@@ -909,9 +906,9 @@ The average signal weight $\bar{w}_\text{signal}$ from the \NW algorithm is an i
 
 All metrics should be optimised simultaneously to ensure sufficient numbers of signal events with high quality solutions. The table shows that the algorithm is able to achieve a 100\,\% purity when using the truth values as input. While this result is unrealistic, it further validates the algorithm's estimations. As expected, the average weight and efficiency is the highest when using the exact truth values as input.
 
-Three more test were conducted when using the reconstructed input while ignoring the \spanet prediction. Instead, the correct assignment is used. These three test give a more realistic insight into how well the algorithm works independently of the \spanet performance. All three metrics decrease overall which is expected due to the less accurate input. When increasing the grid granularity, the average weight and purity increase slightly. However, this effect can also be achieved by using the aforementioned optimisations. The increase in $\bar{w}_\text{signal}$ originates from the introduced regions of intereset while the changes in the efficiency and purity originate from the $H$-boson mass smearing. The comparison shows that a 100x100 grid size including the optimisations is sufficient. Additionally, the optimised setup uses fewer computing resources than using bigger grid sizes.
+Three more test were conducted when using the reconstructed input while ignoring the \spanet prediction. Instead, the correct assignment is used. These three test give a more realistic insight into how well the algorithm works independently of the \spanet performance. All three metrics decrease overall which is expected due to the less accurate input. When increasing the grid granularity, the average weight and purity increase slightly. However, this effect can also be achieved by using the aforementioned optimisations. The increase in $\bar{w}_\text{signal}$ originates from the introduced regions of interest while the changes in the efficiency and purity originate from the $H$-boson mass smearing. The comparison shows that a 100x100 grid size including the optimisations is sufficient. Additionally, the optimised setup uses fewer computing resources than using bigger grid sizes.
 
-Lastly, the final setup is evaluated which uses the 100x100 grid with optimisation but also uses \spanets predictions. Due to the \spanet performance, some jets are incorrectly matched. The resulting incorrect parton reconstruction leads to more background events being reconstructable and thus, the purity decreasing to 45.3\,\%. Moreover, more signal events are now reconstructable which can be seen in the increase of $\epsilon_\text{signal}$. This is expected to originate from signal events that do not fulfill the event assumptions. With correct assignments, the \NW algorithm does not find a solution. When some partons are assigned incorrectly, the reconstructed properties vary. Thus, the incorrect event properties can yield a solution event when the onshell or decay assumption is not fulfilled. Overall, the reconstruction quality is slightly seen by the decreased average weight.
+Lastly, the final setup is evaluated which uses the 100x100 grid with optimisation but also uses \spanets predictions. Due to the \spanet performance, some jets are incorrectly matched. The resulting incorrect parton reconstruction leads to more background events being reconstructable and thus, the purity decreasing to 45.3\,\%. Moreover, more signal events are now reconstructable which can be seen in the increase of $\epsilon_\text{signal}$. This is expected to originate from signal events that do not fulfil the event assumptions. With correct assignments, the \NW algorithm does not find a solution. When some partons are assigned incorrectly, the reconstructed properties vary. Thus, the incorrect event properties can yield a solution event when the on-shell or decay assumption is not fulfilled. Overall, the reconstruction quality is slightly seen by the decreased average weight.
 
 \begin{table}
     \centering
@@ -935,7 +932,7 @@ Lastly, the final setup is evaluated which uses the 100x100 grid with optimisati
 This section contains the analysis of the combined \runi and \runii{} \atlas dataset using the final \spanet model and the optimised \NW algorithm.
 
 \subsection*{Signal and Control Regions}
-Firstly, the region yield is compared when using data instead of the MC samples. The results for data can be seen in Tab.~\ref{tab:data:regions}. Compared to the results in Tab.~\ref{tab:event_selection:regions}, the relative yield of each region differs by less than 2\,\%. When taking the statistical uncertainties into account, he $SR$ contributions are within a $1\sigma$-interval. For both $CR$s, the statistical uncertainties become relatively small due to their high amount of events per region. Hence, an investigation into systematic uncertainties would be beneficial to evaluate high-statistic regions. In particular, systematic uncertainties regarding the variables used in the region definition and the theoretical modelling uncertainties for \ttbar and \ttHbb are expected to be important contributions.
+The region yield is compared when using data instead of the MC samples. The results for data can be seen in Tab.~\ref{tab:data:regions}. Compared to the results in Tab.~\ref{tab:event_selection:regions}, the relative yield of each region differs by less than 2\,\%. When taking the statistical uncertainties into account, he $SR$ contributions are within a $1\sigma$-interval. For both $CR$s, the statistical uncertainties become relatively small due to their high amount of events per region. Hence, an investigation into systematic uncertainties would be beneficial to evaluate high-statistic regions. In particular, systematic uncertainties regarding the variables used in the region definition and the theoretical modelling uncertainties for \ttbar and \ttHbb are expected to be important contributions.
 
 \begin{table}
     \centering
@@ -949,24 +946,40 @@ Firstly, the region yield is compared when using data instead of the MC samples.
     \label{tab:data:regions}
 \end{table}
 
-\subsection*{Comparison}
-% TODO: Compare distributions and find differences, SPANET, NW, stuff
 
+\subsection*{Comparison}
+Several variables have been investigated to further compare the \atlas dataset to the MC simulation. The event distributions of several selected variables are shown in Fig.~\ref{fig:data:comparison}. All other investigated variables show similar behaviour. Their distributions can be found in Appx.~\ref{appendix:mc_data_comparisons}.
+
+The MC samples and dataset show similar behaviour for measured quantities and derived variables alike. The normalised event distributions have almost identical shapes and their respective values are mostly within a $3\sigma$-interval of each other although only statistical uncertainties are included. Due to the high statistics available, some bins contain very small uncertainties. 
+
+The most notable difference is seen in the missing transverse energy $E_T^\text{miss}$ and the $b$-jet multiplicity. The MC sample contains higher contributions of events with $E_T^\text{miss}>70\,$GeV and thus, the shape is slightly shifted towards higher $E_T^\text{miss}$. Moreover, the $b$-jet multiplicity shows a deficit of 5-20\,\% for events with $\geq3$ $b$-jets when comparing the MC sample to the dataset.
+
+However, the mentioned deviations as well as others exceeding a $3\sigma$-interval are expected to be resolved when including their respective systematic uncertainties such as $b$-tagging efficiencies or $E_T^\text{miss}$ resolution. For the derived quantities such as \spanets probabilities and \NW output, systematic uncertainties related to their input variables should resolve significant deviations. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.49\textwidth]{figures/comparison/number_of_bjets.png}\hspace{0.01\textwidth}
+    \includegraphics[width=0.49\textwidth]{figures/comparison/reco_met_value.png}
+
+    \includegraphics[width=0.49\textwidth]{figures/comparison/spanet_HW_detection_probability.png}\hspace{0.01\textwidth}
+    \includegraphics[width=0.49\textwidth]{figures/comparison/NW_weight.png}
+    \caption{Comparison of the normalised MC and data event distributions for selected variables. These include the (top left) total jet multiplicity, (top right) missing transverse energy, (bottom left) \spanets $W_\text{had}$ detection probability and (bottom right) \NW output. Only statistical uncertainties are shown.}
+    \label{fig:data:comparison}
+\end{figure}
 
 
 \chapter{Discussion}
 \label{ch:outlook}
 To conclude this thesis, a summary of the main results is given in Sec.~\ref{sec:discussion:summary}. This section will reiterate the main measurements with respect to the main goal of this analysis. Lastly, inspiration for future steps of this analysis are explained in Sec.~\ref{sec:discussion:future}.
 
+% - Compare to Steffens Paper, Numbers for certrain event types (e.g. ttbar, ttH->WW->qqlv, ...)
 \section{Summary}
 \label{sec:discussion:summary}
 As explained in Sec.~\ref{sec:theory:tthww}, the targeted semileptonic \ttHWW event topology is difficult to measure due to its rarity. The theoretical calculation expects over 10000 background events per signal event. This corresponds to a signal purity of less than 0.01\,\%. Using \spanet and \NW to analyse and separate the simulated events led to the region definition in Sec.~\ref{sec:event_selection:region_definition}. For the signal region $SR$ the purity of \ttHWW events reaches 0.44\,\%. However, the main \ttbar background still dominates the $SR$ region with over 99\,\% contribution which is caused by the significant higher cross-section of this process. The \ttHbb background was efficiently separated by simply selecting an excess in $b$-jets. This singular selection separated 75.0\,\% of the \ttHbb background. This sensitivity study shows that the outputs of the deployed techniques can be used to increase the signal sensitivity significantly, but the event channel remains difficult to separate from background.
 
-This study further tested and evaluated the adaptation of \spanet and \NW for event studies. It is shown that a properly trained neural network can efficiently assign jets to expected parton as demonstrated in Sec.~\ref{sec:results:spanet}. Simultaneously, \spanet produces output probabilities which can be used for the event definition. Furthermore, as shown in Sec.~\ref{sec:results:neutrino_weighting}, the \NW algorithm can be successfully adapted to events with only one neutrino in the final state. When using a truth-based input, the algorithm is able to reconstruct the unknown parameters with <1\,\% deviation. While this is unrealistic, this demonstrates its ability to precisely estimate unknown kinematics when using sufficiently accurate input. Moreover, the deployed optimisations as explained in Sec.~\ref{sec:neutrino_weighting:optimisation} are efficient additions to the \NW. They omit the need of additional grid points which reduces the needed computing ressources. Additionally, the event acceptance is increased due to the smearing of assumed $H$-boson mass. However, the results also show that the algorithm is highly dependent on the input accuracy. Therefore, the \NW is only viable when the analysis uses precise measurements and confident jet assignments.
+This study further tested and evaluated the adaptation of \spanet and \NW for event studies. It is shown that a properly trained neural network can efficiently assign jets to expected parton as demonstrated in Sec.~\ref{sec:results:spanet}. Simultaneously, \spanet produces output probabilities which can be used for the event definition. Furthermore, as shown in Sec.~\ref{sec:results:neutrino_weighting}, the \NW algorithm can be successfully adapted to events with only one neutrino in the final state. When using a truth-based input, the algorithm is able to reconstruct the unknown parameters with <1\,\% deviation. While this is unrealistic, this demonstrates its ability to precisely estimate unknown kinematics when using sufficiently accurate input. Moreover, the deployed optimisations as explained in Sec.~\ref{sec:neutrino_weighting:optimisation} are efficient additions to the \NW. They omit the need of additional grid points which reduces the needed computing resources. Additionally, the event acceptance is increased due to the smearing of assumed $H$-boson mass. However, the results also show that the algorithm is highly dependent on the input accuracy. Therefore, the \NW is only viable when the analysis uses precise measurements and confident jet assignments.
 
-% TODO: conclude Thesis, recapture important findings
-% - Data vs MC
-% - Compare to Steffens Paper, Numbers for certrain event types (e.g. ttbar, ttH->WW->qqlv, ...)
+For the comparison of the \atlas dataset of \runi and \runii combined to the MC samples, the regions and several variables were investigated. The results in Sec.~\ref{results:data} show similar behaviour with little differences in the overall shape. The normalised values of each distribution mostly match within a $3\sigma$-interval when considering statistical uncertainties only. The remaining deviations are expected to resolve when including the respective systematic uncertainties as explained. Especially the control region comparison will benefit greatly from systematic uncertainties due to the very high statistics in both $CR$. In conclusion, this study substantiates that the MC samples for \atlas dataset is well modelled and hence, can be used reliable when training neural networks and evaluating algorithms.
 
 
 \section{Future Aspects}
@@ -974,63 +987,54 @@ This study further tested and evaluated the adaptation of \spanet and \NW for ev
 This section outlines potential tasks for the future. While this study provides insights into the \ttHWW event separation, there remain opportunities for refinement. These potential future tasks are explained briefly. However, due to time constraints these optimisations exceeded the scope of this work.
 
 \subsection*{Include Systematic Uncertainties}
-This study only includes statistical uncertainties for the final results. Hence, systematic uncertainties due to detector calibrations, theoretical models, luminosity and other effects are not incoperated. In the future, this analysis should be complemented by introducing these systematic uncertainties. 
+This study only includes statistical uncertainties for the final results. Hence, systematic uncertainties due to detector calibrations, theoretical models, luminosity and other effects are not included. In the future, this analysis should be complemented by introducing these systematic uncertainties. 
 
-Espacially the \NW performance evaluation would benefit studying the systematic uncertainties introduced by the used input as explained in Sec.~\ref{sec:results:neutrino_weighting}. Varying the systematic uncertainties would result in a more detailed understanding of the algrithm and its sensitivity in respect to the input.
+Especially the \NW performance evaluation would benefit studying the systematic uncertainties introduced by the used input as explained in Sec.~\ref{sec:results:neutrino_weighting}. Varying the systematic uncertainties would result in a more detailed understanding of the algorithm and its sensitivity in respect to the input.
 
-Combining systematic and statistical uncertainties will yield more realistic uncertainties for the measurements. Moreover, varying the systematic uncertainties would show the sensitivity of the measurements with respect to the investigated uncertatinties. Hence, the reduction of the most sensitive uncertainties should then be prioritised to improve the results of this study. 
+Combining systematic and statistical uncertainties will yield more realistic uncertainties for the measurements. Moreover, varying the systematic uncertainties would show the sensitivity of the measurements with respect to the investigated uncertainties. Hence, the reduction of the most sensitive uncertainties should then be prioritised to improve the results of this study. 
 
 \subsection*{Further Optimisation}
 While this study includes several technical optimisations, additional improvements should be tested in the future. 
 
-As seen in this study, \spanets prediction accuarcy is limited by the correct \ttbar assignment. Hence, training the neural network to assign these jets correctly should improve the overall performance of this analysis. This could be done, by initially training \spanet only on \ttbar events and then fine-tuning the parameters for \ttHWWlvqq events. Since \ttbar events are the main background in this analysis, this could also help to increase the signal purity in the event selection. 
+As seen in this study, \spanets prediction accuracy is limited by the correct \ttbar assignment. Hence, training the neural network to assign these jets correctly should improve the overall performance of this analysis. This could be done, by initially training \spanet only on \ttbar events and then fine-tuning the parameters for \ttHWWlvqq events. Since \ttbar events are the main background in this analysis, this could also help to increase the signal purity in the event selection. 
 
-The \NW algorithm also includes some optimisations such as the regions of interest and $H$-boson mass smearing. As an additional improvement, changing the $\eta_\nu$ sampling to an adaptive approach could improve algorithm by reducing the number of needed samples. The expected $\eta_\nu$ is depent on the overall event energy, making certain regions more likely to contain a solution.
+The \NW algorithm also includes some optimisations such as the regions of interest and $H$-boson mass smearing. As an additional improvement, changing the $\eta_\nu$ sampling to an adaptive approach could improve algorithm by reducing the number of needed samples. The expected $\eta_\nu$ is depend on the overall event energy, making certain regions more likely to contain a solution.
 
 
 \bibliography{datenbank} 
 
 \appendix
-
-\chapter{SPA-Net Output Probabilities}
+\chapter{Additional SPA-Net Output Probabilities}
 \label{appendix:spanet_output_probabilities}
-
-\begin{figure}
+\begin{figure}[H]
     \centering  
-    \includegraphics[width=0.55\textwidth]{figures/baptiste/$t_1$ Detection Probability.png}
+    \includegraphics[width=0.49\textwidth]{figures/baptiste/$t_1$ Detection Probability.png}\hfill
+    \includegraphics[width=0.49\textwidth]{figures/baptiste/$t_1$ Assignment Probability.png}
 
-    \includegraphics[width=0.55\textwidth]{figures/baptiste/$t_1$ Assignment Probability.png}
+    \includegraphics[width=0.49\textwidth]{figures/baptiste/$t_2$ Detection Probability.png}\hfill
+    \includegraphics[width=0.49\textwidth]{figures/baptiste/$t_2$ Assignment Probability.png}
 
-    \includegraphics[width=0.55\textwidth]{figures/baptiste/$t_1$ Marginal Probability.png}
-    \caption{Normalised distributions of \spanets output probabilities for the $t_1$ quark.}
-    \label{fig:appendix:spanet_probabilities:t1}
+    \includegraphics[width=0.49\textwidth]{figures/baptiste/$W_.text{had}$ Detection Probability.png}\hfill
+    \includegraphics[width=0.49\textwidth]{figures/baptiste/$W_.text{had}$ Assignment Probability.png}
 \end{figure}
 
-\begin{figure}
-    \centering  
-    \includegraphics[width=0.55\textwidth]{figures/baptiste/$t_2$ Detection Probability.png}
+\chapter{Additional Comparisons of Atlas Dataset and MC Samples}
+\label{appendix:mc_data_comparisons}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\textwidth]{figures/comparison/number_of_jets.png}\hspace{0.01\textwidth}
+    \includegraphics[width=0.49\textwidth]{figures/comparison/reco_met_phi.png}
 
-    \includegraphics[width=0.55\textwidth]{figures/baptiste/$t_2$ Assignment Probability.png}
+    \includegraphics[width=0.49\textwidth]{figures/comparison/reco_lepton_e.png}\hspace{0.01\textwidth}
+    \includegraphics[width=0.49\textwidth]{figures/comparison/reco_lepton_pt.png}
 
-    \includegraphics[width=0.55\textwidth]{figures/baptiste/$t_2$ Marginal Probability.png}
-    \caption{Normalised distributions of \spanets output probabilities for the $t_2$ quark.}
-    \label{fig:appendix:spanet_probabilities:t2}
+    \includegraphics[width=0.49\textwidth]{figures/comparison/spanet_t1_detection_probability.png}\hspace{0.01\textwidth}
+    \includegraphics[width=0.49\textwidth]{figures/comparison/spanet_t1_assignment_probability.png}
+    \label{fig:data:comparison}
 \end{figure}
-
-\begin{figure}
-    \centering  
-    \includegraphics[width=0.55\textwidth]{figures/baptiste/$W_.text{had}$ Detection Probability.png}
-
-    \includegraphics[width=0.55\textwidth]{figures/baptiste/$W_.text{had}$ Assignment Probability.png}
-
-    \includegraphics[width=0.55\textwidth]{figures/baptiste/$W_.text{had}$ Marginal Probability.png}
-    \caption{Normalised distributions of \spanets output probabilities for the hadronic $W$-boson from the $H$-boson decay.}
-    \label{fig:appendix:spanet_probabilities:whad}
-\end{figure}
-
 
 % obligatory declaration
-\chapter{Declaration}
+\chapter*{Declaration}
 \vfill
 \begin{otherlanguage}{ngerman}
     \Declaration
