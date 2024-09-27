@@ -8,31 +8,32 @@
 \contentsline {chapter}{\numberline {3}Experimental Setup}{13}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Large Hadron Collider}{13}{section.3.1}%
 \contentsline {section}{\numberline {3.2}The ATLAS Experiment}{14}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Components of the ATLAS Detector}{15}{subsection.3.2.1}%
 \contentsline {section}{\numberline {3.3}Other Experiments}{20}{section.3.3}%
 \contentsline {chapter}{\numberline {4}Truth Matching}{23}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Algorithm}{23}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Optimisation}{24}{section.4.2}%
 \contentsline {chapter}{\numberline {5}SPA-Net: Symmetry Preserving Attention Networks}{25}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Classical $\chi ^2$ Method}{25}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Modern DNN Method}{26}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Advantages}{28}{section.5.3}%
 \contentsline {chapter}{\numberline {6}Neutrino Weighting}{29}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Parameter Estimation}{29}{section.6.1}%
 \contentsline {section}{\numberline {6.2}Optimisation}{30}{section.6.2}%
 \contentsline {chapter}{\numberline {7}Event Selection}{33}{chapter.7}%
 \contentsline {section}{\numberline {7.1}Objects of the Target Event Topology}{33}{section.7.1}%
 \contentsline {section}{\numberline {7.2}Separation Power}{34}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Region Definition}{38}{section.7.3}%
+\contentsline {section}{\numberline {7.3}Region Definition}{39}{section.7.3}%
 \contentsline {chapter}{\numberline {8}Results}{43}{chapter.8}%
 \contentsline {section}{\numberline {8.1}Truth Matching}{43}{section.8.1}%
-\contentsline {section}{\numberline {8.2}SPA-Net}{45}{section.8.2}%
-\contentsline {section}{\numberline {8.3}Neutrino Weighting}{47}{section.8.3}%
+\contentsline {section}{\numberline {8.2}SPA-Net}{44}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Neutrino Weighting}{48}{section.8.3}%
 \contentsline {section}{\numberline {8.4}Data}{51}{section.8.4}%
 \contentsline {chapter}{\numberline {9}Discussion}{55}{chapter.9}%
 \contentsline {section}{\numberline {9.1}Summary}{55}{section.9.1}%
 \contentsline {section}{\numberline {9.2}Future Aspects}{56}{section.9.2}%
-\contentsline {chapter}{Bibliography}{59}{chapter*.39}%
+\contentsline {chapter}{Bibliography}{59}{chapter*.45}%
 \contentsline {chapter}{\numberline {A}Additional SPA-Net Output Probabilities}{65}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Additional Comparisons of Atlas Dataset and MC Samples}{67}{appendix.B}%
+\contentsline {chapter}{\numberline {B}Additional Comparisons of ATLAS Dataset and MC Samples}{67}{appendix.B}%
 \babel@toc {ngerman}{}\relax 
 \babel@toc {english}{}\relax 
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

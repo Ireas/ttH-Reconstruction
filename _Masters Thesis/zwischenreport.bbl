@@ -96,6 +96,9 @@
 \bibitem{theory:higgs_discovery_02}
 {CMS Collaboration}, \emph{Observation of a New Boson at a Mass of 125 GeV with the CMS Experiment at the LHC}, Phys. Lett. B \textbf{716(1)} (2012)
 
+\bibitem{higgs_mass_combined}
+{ATLAS and CMS Collaborations}, \emph{{Combined Measurement of the Higgs Boson Mass in $pp$ Collisions at $\sqrt{s}=7$ and 8 TeV with the ATLAS and CMS Experiments}}, Phys. Rev. Lett. \textbf{114} (2015)
+
 \bibitem{bsm_neutrino_oscillation_01}
 {SNO Collaboration}, \emph{Direct Evidence for Neutrino Flavor Transformation from Neutral-Current Interactions in the Sudbury Neutrino Observatory}, Phys. Rev. Lett. \textbf{89(1)} (2002)
 
@@ -218,9 +221,6 @@
 
 \bibitem{neutrino_weighting:adaptation}
 {F. Fabbri, J. Howarth and T. Maurin}, \emph{{Isolating semi-leptonic $H\rightarrow WW^*$ decays for Bell inequality tests}}, {Eur. Phys. J. C} \textbf{84(1)} (2024)
-
-\bibitem{higgs_mass_combined}
-{ATLAS and CMS Collaborations}, \emph{{Combined Measurement of the Higgs Boson Mass in $pp$ Collisions at $\sqrt{s}=7$ and 8 TeV with the ATLAS and CMS Experiments}}, Phys. Rev. Lett. \textbf{114} (2015)
 
 \bibitem{atlas:met_resolution}
 {ATLAS Collaboration}, \emph{Performance of missing transverse momentum reconstruction with the ATLAS detector using proton-proton collisions at $\sqrt{s}$ = 13 TeV}, Eur. Phys. J. C \textbf{78(11)} (2018)

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.14)  24 SEP 2024 10:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.14)  27 SEP 2024 08:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -680,11 +680,7 @@ LaTeX Info: Redefining \\ on input line 3180.
 LaTeX Font Info:    Trying to load font information for T1+lmr on input line 5.
  (c:/TeXLive/2024/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) (./zwischenreport.aux
-
-LaTeX Warning: Label `fig:data:comparison' multiply defined.
-
-)
+) (./zwischenreport.aux)
 \openout1 = `zwischenreport.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
@@ -869,7 +865,10 @@ Overfull \hbox (95.59737pt too wide) in paragraph at lines 22--22
 {c:/TeXLive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/TeXLive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc} <./figures/Logo_Uni_Goettingen.pdf> <./figures/Logo_Physik_links.pdf>] [2
 
 
-] (./zwischenreport.toc [3
+] (./zwischenreport.toc
+Underfull \vbox (badness 1147) has occurred while \output is active []
+
+ [3
 
 
 {c:/TeXLive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/TeXLive/2024/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}])
@@ -888,53 +887,56 @@ chapter 2.
 [3
 
 
-{c:/TeXLive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}] [4] [5{c:/TeXLive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}] [6] [7]
-Underfull \vbox (badness 6125) has occurred while \output is active []
+{c:/TeXLive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}] [4]
+Underfull \vbox (badness 1852) has occurred while \output is active []
 
- [8] [9]
-<figures/feynman/feynman_labeled2.png, id=287, 780.9175pt x 654.445pt>
+ [5{c:/TeXLive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}] [6] [7] [8] [9]
+<figures/feynman/feynman_labeled2.png, id=290, 780.9175pt x 654.445pt>
 File: figures/feynman/feynman_labeled2.png Graphic file (type png)
 <use figures/feynman/feynman_labeled2.png>
 Package pdftex.def Info: figures/feynman/feynman_labeled2.png  used on input line 218.
 (pdftex.def)             Requested size: 273.14922pt x 228.9094pt.
  [10]
-<figures/cross_section/top_total_cross_sections.png, id=311, 2855.66875pt x 2144.01pt>
+<figures/cross_section/top_total_cross_sections.png, id=314, 2855.66875pt x 2144.01pt>
 File: figures/cross_section/top_total_cross_sections.png Graphic file (type png)
 <use figures/cross_section/top_total_cross_sections.png>
 Package pdftex.def Info: figures/cross_section/top_total_cross_sections.png  used on input line 233.
 (pdftex.def)             Requested size: 432.48048pt x 324.69554pt.
  [11 <./figures/feynman/feynman_labeled2.png>] [12 <./figures/cross_section/top_total_cross_sections.png>]
 chapter 3.
-<figures/lhc/lhc_overview.jpg, id=339, 580.1675pt x 326.72063pt>
+<figures/lhc/lhc_overview.jpg, id=342, 580.1675pt x 326.72063pt>
 File: figures/lhc/lhc_overview.jpg Graphic file (type jpg)
 <use figures/lhc/lhc_overview.jpg>
 Package pdftex.def Info: figures/lhc/lhc_overview.jpg  used on input line 254.
-(pdftex.def)             Requested size: 364.19664pt x 205.09724pt.
+(pdftex.def)             Requested size: 409.71689pt x 230.7319pt.
 [13
 
 
 ]
-<figures/lhc/atlas_overview.jpg, id=354, 602.25pt x 361.35pt>
+<figures/lhc/atlas_overview.jpg, id=355, 602.25pt x 361.35pt>
 File: figures/lhc/atlas_overview.jpg Graphic file (type jpg)
 <use figures/lhc/atlas_overview.jpg>
-Package pdftex.def Info: figures/lhc/atlas_overview.jpg  used on input line 272.
-(pdftex.def)             Requested size: 341.43306pt x 204.86888pt.
+Package pdftex.def Info: figures/lhc/atlas_overview.jpg  used on input line 276.
+(pdftex.def)             Requested size: 400.617pt x 240.37744pt.
+
+Underfull \vbox (badness 3333) has occurred while \output is active []
+
  [14{c:/TeXLive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc} <./figures/lhc/lhc_overview.jpg>]
 <figures/lhc/atlas_coordinate_system.excalidraw.png, id=365, 1996.45876pt x 1106.1325pt>
 File: figures/lhc/atlas_coordinate_system.excalidraw.png Graphic file (type png)
 <use figures/lhc/atlas_coordinate_system.excalidraw.png>
-Package pdftex.def Info: figures/lhc/atlas_coordinate_system.excalidraw.png  used on input line 290.
-(pdftex.def)             Requested size: 327.77629pt x 181.59256pt.
+Package pdftex.def Info: figures/lhc/atlas_coordinate_system.excalidraw.png  used on input line 294.
+(pdftex.def)             Requested size: 364.19664pt x 201.77888pt.
  [15 <./figures/lhc/atlas_overview.jpg>]
-<figures/lhc/atlas_layers.png, id=377, 853.1875pt x 691.58376pt>
+<figures/lhc/atlas_layers.png, id=378, 853.1875pt x 691.58376pt>
 File: figures/lhc/atlas_layers.png Graphic file (type png)
 <use figures/lhc/atlas_layers.png>
-Package pdftex.def Info: figures/lhc/atlas_layers.png  used on input line 310.
-(pdftex.def)             Requested size: 318.66946pt x 258.3091pt.
- [16 <./figures/lhc/atlas_coordinate_system.excalidraw.png>]
-Underfull \vbox (badness 1168) has occurred while \output is active []
+Package pdftex.def Info: figures/lhc/atlas_layers.png  used on input line 314.
+(pdftex.def)             Requested size: 300.46275pt x 243.55641pt.
 
- [17 <./figures/lhc/atlas_layers.png>] [18] [19] [20] [21] [22
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [16 <./figures/lhc/atlas_coordinate_system.excalidraw.png>] [17 <./figures/lhc/atlas_layers.png>] [18] [19] [20] [21] [22
 
 
 ]
@@ -942,190 +944,219 @@ chapter 4.
 [23] [24]
 chapter 5.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <17.28> on input line 412.
+(Font)              <17.28> on input line 417.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 412.
-
-Underfull \vbox (badness 2012) has occurred while \output is active []
-
- [25
+(Font)              <10> on input line 417.
+[25
 
 
-]
-<figures/methods/spanet_architecture_2.jpg, id=493, 302.5704pt x 167.9073pt>
+] [26]
+<figures/methods/spanet_architecture_2.jpg, id=503, 302.5704pt x 167.9073pt>
 File: figures/methods/spanet_architecture_2.jpg Graphic file (type jpg)
 <use figures/methods/spanet_architecture_2.jpg>
-Package pdftex.def Info: figures/methods/spanet_architecture_2.jpg  used on input line 443.
+Package pdftex.def Info: figures/methods/spanet_architecture_2.jpg  used on input line 451.
 (pdftex.def)             Requested size: 364.19664pt x 202.1103pt.
- [26] [27 <./figures/methods/spanet_architecture_2.jpg>] [28]
+
+Underfull \vbox (badness 1210) has occurred while \output is active []
+
+ [27 <./figures/methods/spanet_architecture_2.jpg>] [28]
 chapter 6.
 [29
 
 
 ]
-<figures/Neutrino Weighting/cherry_14.png, id=533, 722.7pt x 578.16pt>
+<figures/Neutrino Weighting/cherry_14.png, id=539, 722.7pt x 578.16pt>
 File: figures/Neutrino Weighting/cherry_14.png Graphic file (type png)
 <use figures/Neutrino Weighting/cherry_14.png>
-Package pdftex.def Info: figures/Neutrino Weighting/cherry_14.png  used on input line 484.
+Package pdftex.def Info: figures/Neutrino Weighting/cherry_14.png  used on input line 504.
 (pdftex.def)             Requested size: 318.66946pt x 254.93814pt.
- [30] [31 <./figures/Neutrino Weighting/cherry_14.png>] [32]
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [30]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [31 <./figures/Neutrino Weighting/cherry_14.png>] [32]
 chapter 7.
 [33
 
 
-] [34]
-<figures/separation_power/separation_splitnew_number_of_jets.png, id=574, 722.7pt x 578.16pt>
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [34]
+<figures/separation_power/separation_splitnew_number_of_jets.png, id=579, 722.7pt x 578.16pt>
 File: figures/separation_power/separation_splitnew_number_of_jets.png Graphic file (type png)
 <use figures/separation_power/separation_splitnew_number_of_jets.png>
-Package pdftex.def Info: figures/separation_power/separation_splitnew_number_of_jets.png  used on input line 567.
+Package pdftex.def Info: figures/separation_power/separation_splitnew_number_of_jets.png  used on input line 587.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/separation_power/separation_splitnew_number_of_bjets.png, id=575, 722.7pt x 578.16pt>
+<figures/separation_power/separation_splitnew_number_of_bjets.png, id=580, 722.7pt x 578.16pt>
 File: figures/separation_power/separation_splitnew_number_of_bjets.png Graphic file (type png)
 <use figures/separation_power/separation_splitnew_number_of_bjets.png>
-Package pdftex.def Info: figures/separation_power/separation_splitnew_number_of_bjets.png  used on input line 568.
+Package pdftex.def Info: figures/separation_power/separation_splitnew_number_of_bjets.png  used on input line 588.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [35 <./figures/separation_power/separation_splitnew_number_of_jets.png> <./figures/separation_power/separation_splitnew_number_of_bjets.png>]
-<figures/separation_power/separation_splitnew_reco_met_value_gev.png, id=585, 722.7pt x 578.16pt>
+ [35]
+<figures/separation_power/separation_splitnew_reco_met_value_gev.png, id=591, 722.7pt x 578.16pt>
 File: figures/separation_power/separation_splitnew_reco_met_value_gev.png Graphic file (type png)
 <use figures/separation_power/separation_splitnew_reco_met_value_gev.png>
-Package pdftex.def Info: figures/separation_power/separation_splitnew_reco_met_value_gev.png  used on input line 584.
+Package pdftex.def Info: figures/separation_power/separation_splitnew_reco_met_value_gev.png  used on input line 602.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/separation_power/separation_splitnew_reco_lepton_e_gev.png, id=586, 722.7pt x 578.16pt>
+<figures/separation_power/separation_splitnew_reco_lepton_e_gev.png, id=592, 722.7pt x 578.16pt>
 File: figures/separation_power/separation_splitnew_reco_lepton_e_gev.png Graphic file (type png)
 <use figures/separation_power/separation_splitnew_reco_lepton_e_gev.png>
-Package pdftex.def Info: figures/separation_power/separation_splitnew_reco_lepton_e_gev.png  used on input line 585.
+Package pdftex.def Info: figures/separation_power/separation_splitnew_reco_lepton_e_gev.png  used on input line 603.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [36 <./figures/separation_power/separation_splitnew_reco_met_value_gev.png> <./figures/separation_power/separation_splitnew_reco_lepton_e_gev.png>]
-<figures/separation_power/separation_splitnew_spanet_t2_assignment_probability.png, id=596, 722.7pt x 578.16pt>
-File: figures/separation_power/separation_splitnew_spanet_t2_assignment_probability.png Graphic file (type png)
-<use figures/separation_power/separation_splitnew_spanet_t2_assignment_probability.png>
-Package pdftex.def Info: figures/separation_power/separation_splitnew_spanet_t2_assignment_probability.png  used on input line 599.
+ [36 <./figures/separation_power/separation_splitnew_number_of_jets.png> <./figures/separation_power/separation_splitnew_number_of_bjets.png>]
+<figures/separation_power/separation_splitnew_spanet_t1_assignment_probability.png, id=602, 722.7pt x 578.16pt>
+File: figures/separation_power/separation_splitnew_spanet_t1_assignment_probability.png Graphic file (type png)
+<use figures/separation_power/separation_splitnew_spanet_t1_assignment_probability.png>
+Package pdftex.def Info: figures/separation_power/separation_splitnew_spanet_t1_assignment_probability.png  used on input line 619.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png, id=597, 722.7pt x 578.16pt>
+<figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png, id=603, 722.7pt x 578.16pt>
 File: figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png Graphic file (type png)
 <use figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png>
-Package pdftex.def Info: figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png  used on input line 600.
+Package pdftex.def Info: figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png  used on input line 620.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
- [37 <./figures/separation_power/separation_splitnew_spanet_t2_assignment_probability.png> <./figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png>]
-<figures/separation_power/separation_splitnew_NW_weight.png, id=609, 722.7pt x 578.16pt>
+<figures/separation_power/separation_splitnew_NW_weight.png, id=605, 722.7pt x 578.16pt>
 File: figures/separation_power/separation_splitnew_NW_weight.png Graphic file (type png)
 <use figures/separation_power/separation_splitnew_NW_weight.png>
-Package pdftex.def Info: figures/separation_power/separation_splitnew_NW_weight.png  used on input line 612.
+Package pdftex.def Info: figures/separation_power/separation_splitnew_NW_weight.png  used on input line 632.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/separation_power/separation_splitnew_short_NW_weight.png, id=610, 722.7pt x 578.16pt>
+<figures/separation_power/separation_splitnew_short_NW_weight.png, id=606, 722.7pt x 578.16pt>
 File: figures/separation_power/separation_splitnew_short_NW_weight.png Graphic file (type png)
 <use figures/separation_power/separation_splitnew_short_NW_weight.png>
-Package pdftex.def Info: figures/separation_power/separation_splitnew_short_NW_weight.png  used on input line 613.
-(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
- [38 <./figures/separation_power/separation_splitnew_NW_weight.png> <./figures/separation_power/separation_splitnew_short_NW_weight.png>]
-<figures/abcd/abcd_background_$t$ Assignment Probability.png, id=620, 722.7pt x 578.16pt>
-File: figures/abcd/abcd_background_$t$ Assignment Probability.png Graphic file (type png)
-<use figures/abcd/abcd_background_$t$ Assignment Probability.png>
-Package pdftex.def Info: figures/abcd/abcd_background_$t$ Assignment Probability.png  used on input line 688.
-(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/abcd/abcd_signal_$t$ Assignment Probability.png, id=621, 722.7pt x 578.16pt>
-File: figures/abcd/abcd_signal_$t$ Assignment Probability.png Graphic file (type png)
-<use figures/abcd/abcd_signal_$t$ Assignment Probability.png>
-Package pdftex.def Info: figures/abcd/abcd_signal_$t$ Assignment Probability.png  used on input line 689.
-(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png, id=622, 722.7pt x 578.16pt>
-File: figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png Graphic file (type png)
-<use figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png>
-Package pdftex.def Info: figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png  used on input line 691.
-(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png, id=623, 722.7pt x 578.16pt>
-File: figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png Graphic file (type png)
-<use figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png>
-Package pdftex.def Info: figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png  used on input line 692.
+Package pdftex.def Info: figures/separation_power/separation_splitnew_short_NW_weight.png  used on input line 633.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
 
-Underfull \hbox (badness 2205) in paragraph at lines 693--693
+Underfull \vbox (badness 2005) has occurred while \output is active []
+
+ [37 <./figures/separation_power/separation_splitnew_reco_met_value_gev.png> <./figures/separation_power/separation_splitnew_reco_lepton_e_gev.png>] [38 <./figures/separation_power/separation_splitnew_spanet_t1_assignment_probability.png> <./figures/separation_power/separation_splitnew_spanet_HW_assignment_probability.png> <./figures/separation_power/separation_splitnew_NW_weight.png> <./figures/separation_power/separation_splitnew_short_NW_weight.png>] [39]
+<figures/abcd/abcd_background_$t$ Assignment Probability.png, id=635, 722.7pt x 578.16pt>
+File: figures/abcd/abcd_background_$t$ Assignment Probability.png Graphic file (type png)
+<use figures/abcd/abcd_background_$t$ Assignment Probability.png>
+Package pdftex.def Info: figures/abcd/abcd_background_$t$ Assignment Probability.png  used on input line 708.
+(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
+<figures/abcd/abcd_signal_$t$ Assignment Probability.png, id=636, 722.7pt x 578.16pt>
+File: figures/abcd/abcd_signal_$t$ Assignment Probability.png Graphic file (type png)
+<use figures/abcd/abcd_signal_$t$ Assignment Probability.png>
+Package pdftex.def Info: figures/abcd/abcd_signal_$t$ Assignment Probability.png  used on input line 709.
+(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
+<figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png, id=637, 722.7pt x 578.16pt>
+File: figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png Graphic file (type png)
+<use figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png>
+Package pdftex.def Info: figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png  used on input line 711.
+(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
+<figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png, id=638, 722.7pt x 578.16pt>
+File: figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png Graphic file (type png)
+<use figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png>
+Package pdftex.def Info: figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png  used on input line 712.
+(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
+
+Underfull \hbox (badness 2205) in paragraph at lines 713--713
 [][][]\T1/lmr/m/n/12 Histogram com-bin-ing \T1/lmr/m/it/12 SPA-Net\T1/lmr/m/n/12 's as-sign-ment prob-a-bil-ity and \T1/lmr/m/it/12 Neu-trino
  []
 
-[39]
-Underfull \vbox (badness 1127) has occurred while \output is active []
 
- [40 <./figures/abcd/abcd_background_$t$ Assignment Probability.png> <./figures/abcd/abcd_signal_$t$ Assignment Probability.png> <./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png> <./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png>] [41] [42
+Overfull \hbox (5.79437pt too wide) in paragraph at lines 724--725
+\T1/lmr/m/n/12 Two ad-di-tional con-trol re-gions, $\OML/lmm/m/it/12 CR[]$ \T1/lmr/m/n/12 and $\OML/lmm/m/it/12 CR[]$\T1/lmr/m/n/12 , are de-fined to sep-a-rate [] and []
+ []
+
+[40] [41 <./figures/abcd/abcd_background_$t$ Assignment Probability.png> <./figures/abcd/abcd_signal_$t$ Assignment Probability.png> <./figures/abcd/abcd_background_$W_.text{had}$ Assignment Probability.png> <./figures/abcd/abcd_signal_$W_.text{had}$ Assignment Probability.png>] [42
 
 
 ]
 chapter 8.
-[43] [44] [45]
-<figures/assignment_matrix/assignment_matrix_a.png, id=684, 794.97pt x 578.16pt>
+[43]
+Underfull \vbox (badness 1377) has occurred while \output is active []
+
+ [44] [45]
+Underfull \vbox (badness 1776) has occurred while \output is active []
+
+ [46]
+<figures/assignment_matrix/assignment_matrix_a.png, id=695, 794.97pt x 578.16pt>
 File: figures/assignment_matrix/assignment_matrix_a.png Graphic file (type png)
 <use figures/assignment_matrix/assignment_matrix_a.png>
-Package pdftex.def Info: figures/assignment_matrix/assignment_matrix_a.png  used on input line 826.
+Package pdftex.def Info: figures/assignment_matrix/assignment_matrix_a.png  used on input line 845.
 (pdftex.def)             Requested size: 218.51521pt x 158.9195pt.
-<figures/assignment_matrix/assignment_matrix_1.png, id=685, 794.97pt x 578.16pt>
+<figures/assignment_matrix/assignment_matrix_1.png, id=696, 794.97pt x 578.16pt>
 File: figures/assignment_matrix/assignment_matrix_1.png Graphic file (type png)
 <use figures/assignment_matrix/assignment_matrix_1.png>
-Package pdftex.def Info: figures/assignment_matrix/assignment_matrix_1.png  used on input line 827.
+Package pdftex.def Info: figures/assignment_matrix/assignment_matrix_1.png  used on input line 846.
 (pdftex.def)             Requested size: 218.51521pt x 158.9195pt.
- [46]
-<figures/baptiste/$W_.text{had}$ Detection Probability.png, id=693, 722.7pt x 578.16pt>
+<figures/baptiste/$W_.text{had}$ Detection Probability.png, id=699, 722.7pt x 578.16pt>
 File: figures/baptiste/$W_.text{had}$ Detection Probability.png Graphic file (type png)
 <use figures/baptiste/$W_.text{had}$ Detection Probability.png>
-Package pdftex.def Info: figures/baptiste/$W_.text{had}$ Detection Probability.png  used on input line 844.
+Package pdftex.def Info: figures/baptiste/$W_.text{had}$ Detection Probability.png  used on input line 863.
 (pdftex.def)             Requested size: 218.51521pt x 174.80792pt.
-<figures/baptiste/$W_.text{had}$ Assignment Probability.png, id=694, 722.7pt x 578.16pt>
+<figures/baptiste/$W_.text{had}$ Assignment Probability.png, id=700, 722.7pt x 578.16pt>
 File: figures/baptiste/$W_.text{had}$ Assignment Probability.png Graphic file (type png)
 <use figures/baptiste/$W_.text{had}$ Assignment Probability.png>
-Package pdftex.def Info: figures/baptiste/$W_.text{had}$ Assignment Probability.png  used on input line 845.
+Package pdftex.def Info: figures/baptiste/$W_.text{had}$ Assignment Probability.png  used on input line 864.
 (pdftex.def)             Requested size: 218.51521pt x 174.80792pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
  [47 <./figures/assignment_matrix/assignment_matrix_a.png> <./figures/assignment_matrix/assignment_matrix_1.png>] [48 <./figures/baptiste/$W_.text{had}$ Detection Probability.png> <./figures/baptiste/$W_.text{had}$ Assignment Probability.png>]
-<figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png, id=714, 867.24pt x 578.16pt>
+<figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png, id=720, 867.24pt x 578.16pt>
 File: figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png Graphic file (type png)
 <use figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png>
-Package pdftex.def Info: figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png  used on input line 886.
+Package pdftex.def Info: figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png  used on input line 905.
 (pdftex.def)             Requested size: 223.0721pt x 148.71245pt.
-<figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png, id=715, 867.24pt x 578.16pt>
+<figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png, id=721, 867.24pt x 578.16pt>
 File: figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png Graphic file (type png)
 <use figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png>
-Package pdftex.def Info: figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png  used on input line 887.
+Package pdftex.def Info: figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png  used on input line 906.
 (pdftex.def)             Requested size: 223.0721pt x 148.71245pt.
 File: figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png Graphic file (type png)
 <use figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png>
-Package pdftex.def Info: figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png  used on input line 896.
+Package pdftex.def Info: figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png  used on input line 915.
 (pdftex.def)             Requested size: 223.0721pt x 148.71245pt.
-<figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png, id=717, 867.24pt x 578.16pt>
+<figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png, id=723, 867.24pt x 578.16pt>
 File: figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png Graphic file (type png)
 <use figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png>
-Package pdftex.def Info: figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png  used on input line 897.
+Package pdftex.def Info: figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png  used on input line 916.
 (pdftex.def)             Requested size: 223.0721pt x 148.71245pt.
- [49 <./figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png> <./figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png>] [50 <./figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png>] [51]
-<figures/comparison/number_of_bjets.png, id=749, 722.7pt x 578.16pt>
+ [49 <./figures/Neutrino Weighting/truth_2d_delta_mw_delta_nueta.png> <./figures/Neutrino Weighting/truth_alt_2d_delta_mw_delta_nueta.png>]
+Underfull \vbox (badness 1082) has occurred while \output is active []
+
+ [50 <./figures/Neutrino Weighting/reco_2d_delta_mw_delta_nueta.png>]
+Underfull \vbox (badness 3735) has occurred while \output is active []
+
+ [51]
+<figures/comparison/number_of_bjets.png, id=753, 722.7pt x 578.16pt>
 File: figures/comparison/number_of_bjets.png Graphic file (type png)
 <use figures/comparison/number_of_bjets.png>
-Package pdftex.def Info: figures/comparison/number_of_bjets.png  used on input line 961.
+Package pdftex.def Info: figures/comparison/number_of_bjets.png  used on input line 980.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/comparison/reco_met_value.png, id=750, 722.7pt x 578.16pt>
+<figures/comparison/reco_met_value.png, id=754, 722.7pt x 578.16pt>
 File: figures/comparison/reco_met_value.png Graphic file (type png)
 <use figures/comparison/reco_met_value.png>
-Package pdftex.def Info: figures/comparison/reco_met_value.png  used on input line 962.
+Package pdftex.def Info: figures/comparison/reco_met_value.png  used on input line 981.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/comparison/spanet_HW_detection_probability.png, id=751, 722.7pt x 578.16pt>
+<figures/comparison/spanet_HW_detection_probability.png, id=755, 722.7pt x 578.16pt>
 File: figures/comparison/spanet_HW_detection_probability.png Graphic file (type png)
 <use figures/comparison/spanet_HW_detection_probability.png>
-Package pdftex.def Info: figures/comparison/spanet_HW_detection_probability.png  used on input line 964.
+Package pdftex.def Info: figures/comparison/spanet_HW_detection_probability.png  used on input line 983.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/comparison/NW_weight.png, id=752, 722.7pt x 578.16pt>
+<figures/comparison/NW_weight.png, id=756, 722.7pt x 578.16pt>
 File: figures/comparison/NW_weight.png Graphic file (type png)
 <use figures/comparison/NW_weight.png>
-Package pdftex.def Info: figures/comparison/NW_weight.png  used on input line 965.
+Package pdftex.def Info: figures/comparison/NW_weight.png  used on input line 984.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
  [52] [53 <./figures/comparison/number_of_bjets.png> <./figures/comparison/reco_met_value.png> <./figures/comparison/spanet_HW_detection_probability.png> <./figures/comparison/NW_weight.png>] [54
 
 
 ]
 chapter 9.
-[55] [56] (./zwischenreport.bbl [57] [58
+
+Overfull \hbox (3.89726pt too wide) in paragraph at lines 1002--1003
+\T1/lmr/m/n/12 led to the re-gion def-i-ni-tion in Sec. []7.3[]. For the sig-nal re-gion $\OML/lmm/m/it/12 SR$ \T1/lmr/m/n/12 the pu-rity of []
+ []
+
+
+Underfull \vbox (badness 1147) has occurred while \output is active []
+
+ [55] [56] (./zwischenreport.bbl [57] [58
 
 
 ] [59] [60] [61] [62]) [63] [64
@@ -1133,68 +1164,59 @@ chapter 9.
 
 ]
 chapter A.
-<figures/baptiste/$t_1$ Detection Probability.png, id=832, 722.7pt x 578.16pt>
+<figures/baptiste/$t_1$ Detection Probability.png, id=844, 722.7pt x 578.16pt>
 File: figures/baptiste/$t_1$ Detection Probability.png Graphic file (type png)
 <use figures/baptiste/$t_1$ Detection Probability.png>
-Package pdftex.def Info: figures/baptiste/$t_1$ Detection Probability.png  used on input line 1011.
+Package pdftex.def Info: figures/baptiste/$t_1$ Detection Probability.png  used on input line 1041.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/baptiste/$t_1$ Assignment Probability.png, id=833, 722.7pt x 578.16pt>
+<figures/baptiste/$t_1$ Assignment Probability.png, id=845, 722.7pt x 578.16pt>
 File: figures/baptiste/$t_1$ Assignment Probability.png Graphic file (type png)
 <use figures/baptiste/$t_1$ Assignment Probability.png>
-Package pdftex.def Info: figures/baptiste/$t_1$ Assignment Probability.png  used on input line 1012.
+Package pdftex.def Info: figures/baptiste/$t_1$ Assignment Probability.png  used on input line 1042.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/baptiste/$t_2$ Detection Probability.png, id=834, 722.7pt x 578.16pt>
+<figures/baptiste/$t_2$ Detection Probability.png, id=846, 722.7pt x 578.16pt>
 File: figures/baptiste/$t_2$ Detection Probability.png Graphic file (type png)
 <use figures/baptiste/$t_2$ Detection Probability.png>
-Package pdftex.def Info: figures/baptiste/$t_2$ Detection Probability.png  used on input line 1014.
+Package pdftex.def Info: figures/baptiste/$t_2$ Detection Probability.png  used on input line 1049.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/baptiste/$t_2$ Assignment Probability.png, id=835, 722.7pt x 578.16pt>
+<figures/baptiste/$t_2$ Assignment Probability.png, id=847, 722.7pt x 578.16pt>
 File: figures/baptiste/$t_2$ Assignment Probability.png Graphic file (type png)
 <use figures/baptiste/$t_2$ Assignment Probability.png>
-Package pdftex.def Info: figures/baptiste/$t_2$ Assignment Probability.png  used on input line 1015.
-(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-File: figures/baptiste/$W_.text{had}$ Detection Probability.png Graphic file (type png)
-<use figures/baptiste/$W_.text{had}$ Detection Probability.png>
-Package pdftex.def Info: figures/baptiste/$W_.text{had}$ Detection Probability.png  used on input line 1017.
-(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-File: figures/baptiste/$W_.text{had}$ Assignment Probability.png Graphic file (type png)
-<use figures/baptiste/$W_.text{had}$ Assignment Probability.png>
-Package pdftex.def Info: figures/baptiste/$W_.text{had}$ Assignment Probability.png  used on input line 1018.
+Package pdftex.def Info: figures/baptiste/$t_2$ Assignment Probability.png  used on input line 1050.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [65] [66 <./figures/baptiste/$t_1$ Detection Probability.png> <./figures/baptiste/$t_1$ Assignment Probability.png> <./figures/baptiste/$t_2$ Detection Probability.png> <./figures/baptiste/$t_2$ Assignment Probability.png>]
+ [65 <./figures/baptiste/$t_1$ Detection Probability.png> <./figures/baptiste/$t_1$ Assignment Probability.png>]
+File: figures/baptiste/$W_.text{had}$ Detection Probability.png Graphic file (type png)
+<use figures/baptiste/$W_.text{had}$ Detection Probability.png>
+Package pdftex.def Info: figures/baptiste/$W_.text{had}$ Detection Probability.png  used on input line 1057.
+(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
+File: figures/baptiste/$W_.text{had}$ Assignment Probability.png Graphic file (type png)
+<use figures/baptiste/$W_.text{had}$ Assignment Probability.png>
+Package pdftex.def Info: figures/baptiste/$W_.text{had}$ Assignment Probability.png  used on input line 1058.
+(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
+ [66 <./figures/baptiste/$t_2$ Detection Probability.png> <./figures/baptiste/$t_2$ Assignment Probability.png>]
 chapter B.
-<figures/comparison/number_of_jets.png, id=848, 722.7pt x 578.16pt>
+<figures/comparison/number_of_jets.png, id=867, 722.7pt x 578.16pt>
 File: figures/comparison/number_of_jets.png Graphic file (type png)
 <use figures/comparison/number_of_jets.png>
-Package pdftex.def Info: figures/comparison/number_of_jets.png  used on input line 1025.
+Package pdftex.def Info: figures/comparison/number_of_jets.png  used on input line 1069.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/comparison/reco_met_phi.png, id=849, 722.7pt x 578.16pt>
+<figures/comparison/reco_met_phi.png, id=868, 722.7pt x 578.16pt>
 File: figures/comparison/reco_met_phi.png Graphic file (type png)
 <use figures/comparison/reco_met_phi.png>
-Package pdftex.def Info: figures/comparison/reco_met_phi.png  used on input line 1026.
+Package pdftex.def Info: figures/comparison/reco_met_phi.png  used on input line 1070.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/comparison/reco_lepton_e.png, id=850, 722.7pt x 578.16pt>
+<figures/comparison/reco_lepton_e.png, id=869, 722.7pt x 578.16pt>
 File: figures/comparison/reco_lepton_e.png Graphic file (type png)
 <use figures/comparison/reco_lepton_e.png>
-Package pdftex.def Info: figures/comparison/reco_lepton_e.png  used on input line 1028.
+Package pdftex.def Info: figures/comparison/reco_lepton_e.png  used on input line 1077.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/comparison/reco_lepton_pt.png, id=851, 722.7pt x 578.16pt>
+<figures/comparison/reco_lepton_pt.png, id=870, 722.7pt x 578.16pt>
 File: figures/comparison/reco_lepton_pt.png Graphic file (type png)
 <use figures/comparison/reco_lepton_pt.png>
-Package pdftex.def Info: figures/comparison/reco_lepton_pt.png  used on input line 1029.
-(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/comparison/spanet_t1_detection_probability.png, id=852, 722.7pt x 578.16pt>
-File: figures/comparison/spanet_t1_detection_probability.png Graphic file (type png)
-<use figures/comparison/spanet_t1_detection_probability.png>
-Package pdftex.def Info: figures/comparison/spanet_t1_detection_probability.png  used on input line 1031.
-(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
-<figures/comparison/spanet_t1_assignment_probability.png, id=853, 722.7pt x 578.16pt>
-File: figures/comparison/spanet_t1_assignment_probability.png Graphic file (type png)
-<use figures/comparison/spanet_t1_assignment_probability.png>
-Package pdftex.def Info: figures/comparison/spanet_t1_assignment_probability.png  used on input line 1032.
+Package pdftex.def Info: figures/comparison/reco_lepton_pt.png  used on input line 1078.
 (pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1202,11 +1224,22 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [67
 
 
-] [68 <./figures/comparison/number_of_jets.png> <./figures/comparison/reco_met_phi.png> <./figures/comparison/reco_lepton_e.png> <./figures/comparison/reco_lepton_pt.png> <./figures/comparison/spanet_t1_detection_probability.png> <./figures/comparison/spanet_t1_assignment_probability.png>]
-<figures/signature.png, id=868, 1129.21875pt x 286.06876pt>
+ <./figures/comparison/number_of_jets.png> <./figures/comparison/reco_met_phi.png>]
+<figures/comparison/spanet_t1_detection_probability.png, id=880, 722.7pt x 578.16pt>
+File: figures/comparison/spanet_t1_detection_probability.png Graphic file (type png)
+<use figures/comparison/spanet_t1_detection_probability.png>
+Package pdftex.def Info: figures/comparison/spanet_t1_detection_probability.png  used on input line 1085.
+(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
+<figures/comparison/spanet_t1_assignment_probability.png, id=881, 722.7pt x 578.16pt>
+File: figures/comparison/spanet_t1_assignment_probability.png Graphic file (type png)
+<use figures/comparison/spanet_t1_assignment_probability.png>
+Package pdftex.def Info: figures/comparison/spanet_t1_assignment_probability.png  used on input line 1086.
+(pdftex.def)             Requested size: 223.0721pt x 178.46024pt.
+ [68 <./figures/comparison/reco_lepton_e.png> <./figures/comparison/reco_lepton_pt.png> <./figures/comparison/spanet_t1_detection_probability.png> <./figures/comparison/spanet_t1_assignment_probability.png>]
+<figures/signature.png, id=890, 1129.21875pt x 286.06876pt>
 File: figures/signature.png Graphic file (type png)
 <use figures/signature.png>
-Package pdftex.def Info: figures/signature.png  used on input line 1045.
+Package pdftex.def Info: figures/signature.png  used on input line 1100.
 (pdftex.def)             Requested size: 273.14922pt x 69.19916pt.
  [69
 
@@ -1216,26 +1249,22 @@ Package pdftex.def Info: figures/signature.png  used on input line 1045.
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2020/03/25>
  ***********
-
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package rerunfilecheck Info: File `zwischenreport.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 20215 strings out of 474104
- 371751 string characters out of 5747502
- 1944496 words of memory out of 5000000
- 41919 multiletter control sequences out of 15000+600000
+ 20232 strings out of 474104
+ 371879 string characters out of 5747502
+ 1945496 words of memory out of 5000000
+ 41923 multiletter control sequences out of 15000+600000
  620477 words of font info for 88 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 122i,17n,121p,11047b,836s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 122i,17n,121p,11047b,832s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/TeXLive/2024/texmf-dist/fonts/type1/public/amsfonts/euler/eurm10.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmro12.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/TeXLive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb>
-Output written on zwischenreport.pdf (73 pages, 2715667 bytes).
+Output written on zwischenreport.pdf (73 pages, 2727639 bytes).
 PDF statistics:
- 1111 PDF objects out of 1200 (max. 8388607)
- 900 compressed objects within 9 object streams
- 259 named destinations out of 1000 (max. 500000)
- 505 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1139 PDF objects out of 1200 (max. 8388607)
+ 927 compressed objects within 10 object streams
+ 272 named destinations out of 1000 (max. 500000)
+ 513 words of extra memory for PDF output out of 10000 (max. 10000000)
 
